@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,7 +16,10 @@ public class FacultyViewActivity extends AppCompatActivity {
 
         Intent intentFaculties = getIntent();
         String facultyName = intentFaculties.getStringExtra(Intent.EXTRA_TEXT);
-        getSupportActionBar().setTitle(facultyName);
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(facultyName);
+            getSupportActionBar().show();
+        }
     }
 }

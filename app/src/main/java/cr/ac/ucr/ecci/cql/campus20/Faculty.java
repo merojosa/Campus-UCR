@@ -68,5 +68,5 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
 //        DataAccess.close();
 //        Collections.sort(list);
 //        return list;
-//    }
+ //   }
 }
