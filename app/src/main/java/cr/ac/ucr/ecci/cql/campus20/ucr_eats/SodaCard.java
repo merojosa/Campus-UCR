@@ -1,16 +1,15 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-public class Soda
+public class SodaCard
 {
     private String nombre;
     private int foto;
 
-    public Soda(String nombre, int foto)
+    public SodaCard(String nombre, int foto)
     {
         this.nombre = nombre;
         this.foto = foto;
     }
-
 
     public String getNombre() {
         return nombre;

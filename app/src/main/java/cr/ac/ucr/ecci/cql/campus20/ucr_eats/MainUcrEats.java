@@ -15,8 +15,8 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
-    private List<Soda> sodas;
-    private RecyclerView rv;
+    private List<SodaCard> sodaCards = null;
+    private RecyclerView recyclerViewSodas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,27 +24,34 @@ public class MainUcrEats extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ucr_eats);
 
+        recyclerViewSodas = (RecyclerView)findViewById(R.id.ucr_eats_rv);
 
-        rv = (RecyclerView)findViewById(R.id.ucr_eats_rv);
+        recyclerViewSodas.setLayoutManager(new LinearLayoutManager(this));
+        // Si no se cambia el tamanno, hacer esto mejora el performance
+        recyclerViewSodas.setHasFixedSize(true);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true); // Si no se cambia el tamanno, hacer esto mejorar el performance
-
-        initializeData();
-        initializeAdapter();
+        obtenerSodas();
+        inicializarAdapter();
     }
 
-    private void initializeData()
+    /*
+     * Esto creo que es lo de Diego, la cosa es usar la consulta de la base de datos y ojo, muy importante,
+     * la unica informacion que se ocupa es el nombre de la soda y el nombre de la imagen (que tiene que estar en la carpeta
+     * drawable). Por lo tanto, para encapsularlo y evitarnos conflictos, hice una clase SodaCard (que tiene nombre e imagen nada
+     * mas). Entonces, Diego, use esa clase para inicializar la lista sodaCards. El brete suyo me parece que es filtrar esa
+     * info para solamente tener dicho nombre e imagen.
+     */
+    private void obtenerSodas()
     {
-        sodas = new ArrayList<>();
+        sodaCards = new ArrayList<>();
         // Importante tener el nombre de las imagenes con caracteres alfanumericos y '_' unicamente.
-        sodas.add(new Soda("Soda La U", R.drawable.la_u));
-        sodas.add(new Soda("Plaza Chou", R.drawable.plaza_chou));
+        sodaCards.add(new SodaCard("Soda La U", R.drawable.la_u));
+
+        sodaCards.add(new SodaCard("Plaza Chou", R.drawable.plaza_chou));
     }
 
-    private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(sodas);
-        rv.setAdapter(adapter);
+    private void inicializarAdapter(){
+        RVAdapter adapter = new RVAdapter(sodaCards);
+        recyclerViewSodas.setAdapter(adapter);
     }
 }
