@@ -15,7 +15,7 @@ public class FacultyViewActivity extends AppCompatActivity {
 
         Intent intentFaculties = getIntent();
         String facultyName = intentFaculties.getStringExtra(Intent.EXTRA_TEXT);
-        TextView title = findViewById(R.id.tv_Faculty_Title);
-        title.setText(facultyName);
+        getSupportActionBar().setTitle(facultyName);
+
     }
 }

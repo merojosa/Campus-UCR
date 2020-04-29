@@ -25,7 +25,9 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list_item);
+        getSupportActionBar().setTitle("Facultades");
+
+        mRecyclerView = findViewById(R.id.rv_list_item);
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);

@@ -47,7 +47,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
                             "Educación", "Farmacia","Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
 
         for (String faculty:Faculties) {
-            list.add(new Faculty("Facultad de " + faculty, ""));
+            list.add(new Faculty(faculty, ""));
         }
         return list;
     }
