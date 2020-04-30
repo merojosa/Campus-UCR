@@ -6,4 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ucr_eats.MainUcrEats">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
