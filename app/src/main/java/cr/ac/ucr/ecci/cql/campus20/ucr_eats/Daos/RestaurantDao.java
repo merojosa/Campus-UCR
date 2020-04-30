@@ -15,17 +15,20 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 public interface RestaurantDao
 {
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    void insertRestaurant(Restaurant restaurant);
+    void insert(Restaurant restaurant);
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    void updateRestaurant(Restaurant restaurant);
+    void update(Restaurant restaurant);
 
     @Delete
-    void deleteRestaurant(Restaurant restaurant);
+    void delete(Restaurant restaurant);
 
     @Query("SELECT * FROM Restaurant WHERE name LIKE :name")
     List<Restaurant> searchRestaurantByName(String name);
 
     @Query("SELECT * FROM Restaurant")
     List<Restaurant> getAllRestaurants();
+
+    @Query("DELETE FROM Restaurant")
+    void deleteAll();
 }
