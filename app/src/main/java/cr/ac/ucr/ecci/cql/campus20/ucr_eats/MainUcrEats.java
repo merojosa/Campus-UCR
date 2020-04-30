@@ -27,6 +27,7 @@ public class MainUcrEats extends AppCompatActivity
         recyclerViewSodas = (RecyclerView)findViewById(R.id.ucr_eats_rv);
 
         recyclerViewSodas.setLayoutManager(new LinearLayoutManager(this));
+
         // Si no se cambia el tamanno, hacer esto mejora el performance
         recyclerViewSodas.setHasFixedSize(true);
 
@@ -46,7 +47,6 @@ public class MainUcrEats extends AppCompatActivity
         sodaCards = new ArrayList<>();
         // Importante tener el nombre de las imagenes con caracteres alfanumericos y '_' unicamente.
         sodaCards.add(new SodaCard("Soda La U", R.drawable.la_u));
-
         sodaCards.add(new SodaCard("Plaza Chou", R.drawable.plaza_chou));
     }
 

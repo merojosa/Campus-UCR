@@ -9,27 +9,24 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/imagen_soda"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/nombre_soda"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="26sp"
-
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/imagen_soda"
-            android:layout_alignEnd="@+id/imagen_soda"
-            />
-    </RelativeLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:textSize="20dp"/>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

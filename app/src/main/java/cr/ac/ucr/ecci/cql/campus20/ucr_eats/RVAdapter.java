@@ -3,6 +3,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -39,7 +40,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void onBindViewHolder(SodaViewHolder sodaViewHolder, int i)
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
- //       sodaViewHolder.imagenSoda.setImageResource(sodas.get(i).getFoto());
+        sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
     }
 
     @Override
@@ -53,7 +54,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     {
         CardView cardView;
         TextView nombreSoda;
-        //    ImageView imagenSoda;
+        ImageView imagenSoda;
 
         SodaViewHolder(View itemView)
         {
@@ -62,7 +63,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             // Elementos del layout
             cardView = itemView.findViewById(R.id.cv);
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
-            //      imagenSoda = (ImageView)itemView.findViewById(R.id.person_photo);
+            imagenSoda = itemView.findViewById(R.id.imagen_soda);
         }
     }
 }
