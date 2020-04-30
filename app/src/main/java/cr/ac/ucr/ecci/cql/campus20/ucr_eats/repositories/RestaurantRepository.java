@@ -1,8 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RestaurantDao;
@@ -24,18 +27,57 @@ public class RestaurantRepository
                 this.restaurantDao.deleteAll());
     }
 
-    public void insert(Restaurant restaurant)
+    public boolean insert(Restaurant restaurant)
     {
+        if(searchRestaurantById(restaurant.id) != null)
+            return false;
+
         UcrEatsDatabase.databaseWriteExecutor.execute( () ->
                 this.restaurantDao.insert(restaurant));
+
+        return true;
     }
 
     public List<Restaurant> getAllRestaurants()
     {
-        AtomicReference<List<Restaurant>> restaurants = new AtomicReference<>();
-        UcrEatsDatabase.databaseWriteExecutor.execute( () ->
-                restaurants.set(this.restaurantDao.getAllRestaurants()));
+        List<Restaurant> restaurants = null;
 
-        return restaurants.get();
+        Future<List<Restaurant>> data = UcrEatsDatabase.databaseWriteExecutor.submit( () ->
+                this.restaurantDao.getAllRestaurants());
+
+        try {
+            restaurants = data.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return restaurants;
+    }
+
+    public List<Restaurant> searchRestaurantByName(String name)
+    {
+        List<Restaurant> restaurants = null;
+
+        Future<List<Restaurant>> data = UcrEatsDatabase.databaseWriteExecutor.submit( () ->
+                this.restaurantDao.searchRestaurantByName(name));
+
+        try {
+            restaurants = data.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return restaurants;
+    }
+
+    public Restaurant searchRestaurantById(int id)
+    {
+        try {
+            return UcrEatsDatabase.databaseWriteExecutor.submit( () ->
+                    this.restaurantDao.searchRestaurantById(id)).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

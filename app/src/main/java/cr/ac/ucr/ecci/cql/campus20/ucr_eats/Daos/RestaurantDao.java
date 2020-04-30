@@ -23,10 +23,13 @@ public interface RestaurantDao
     @Delete
     void delete(Restaurant restaurant);
 
-    @Query("SELECT * FROM Restaurant WHERE name LIKE :name")
+    @Query("SELECT * FROM Restaurant WHERE name LIKE '%' || :name || '%' ")
     List<Restaurant> searchRestaurantByName(String name);
 
-    @Query("SELECT * FROM Restaurant")
+    @Query("SELECT * FROM Restaurant WHERE id = :id")
+    Restaurant searchRestaurantById(int id);
+
+    @Query("SELECT * FROM Restaurant ORDER BY id")
     List<Restaurant> getAllRestaurants();
 
     @Query("DELETE FROM Restaurant")
