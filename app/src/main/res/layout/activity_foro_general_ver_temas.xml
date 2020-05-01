@@ -4,23 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".foro_general.MainForoGeneral">
+    tools:context=".foro_general.ForoGeneralVerTemas">
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenido al foro"
+        android:text="Lista de temas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonTemas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ver temas"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="195dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
