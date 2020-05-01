@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -56,7 +57,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         TextView nombreSoda;
         ImageView imagenSoda;
 
-        SodaViewHolder(View itemView)
+        public SodaViewHolder(View itemView)
         {
             super(itemView);
 
@@ -65,5 +66,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
         }
+    }
+
+    public void filter(ArrayList<SodaCard> filtroSodas) {
+        this.sodaCards = filtroSodas;
+        notifyDataSetChanged();
     }
 }
