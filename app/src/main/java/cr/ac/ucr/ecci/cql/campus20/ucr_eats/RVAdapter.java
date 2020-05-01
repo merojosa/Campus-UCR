@@ -55,25 +55,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void onBindViewHolder(SodaViewHolder sodaViewHolder, int i)
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
-
         //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
+        loadCardImage(sodaViewHolder, i);
 
-        // Acá la primera opción debería ser extraer la imagen de la memoria, pero dado que aún no
-        // se descarga, se usará imágenes en resources/drawable para pruebas de concepto
-        // por ahora, el id de la soda = R.drawable..., lo que nos es útil para esta prueba
-        this.picasso.load(sodaCards.get(i).getId() /* ToDo: acá la imagen que está en memoria*/)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(sodaViewHolder.imagenSoda, new Callback() {
-                // Si la imagen no está en cache, se busca en linea
-                        @Override
-                        public void onSuccess() {
-                        }
-                        @Override
-                        public void onError(Exception e) {
-                            picasso.load("https://url-a-la-imagen")
-                                    .into(sodaViewHolder.imagenSoda);
-                        }
-                    });
     }
 
     @Override
@@ -103,5 +87,27 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void filter(ArrayList<SodaCard> filtroSodas) {
         this.sodaCards = filtroSodas;
         notifyDataSetChanged();
+    }
+
+    private void loadCardImage(SodaViewHolder sodaViewHolder, int i)
+    {
+        // Acá la primera opción debería ser extraer la imagen de la memoria, pero dado que aún no
+        // se descarga, se usará imágenes en resources/drawable para pruebas de concepto
+        // por ahora, el id de la soda = R.drawable..., lo que nos es útil para esta prueba
+        this.picasso.load(sodaCards.get(i).getId() /* ToDo: acá la imagen que está en memoria*/)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .placeholder(R.drawable.soda_placeholder)
+                .into(sodaViewHolder.imagenSoda, new Callback() {
+                    // Si la imagen no está en cache, se busca en linea
+                    @Override
+                    public void onSuccess() {
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        picasso.load("https://url-a-la-imagen")
+                                .placeholder(R.drawable.soda_placeholder)
+                                .into(sodaViewHolder.imagenSoda);
+                    }
+                });
     }
 }
