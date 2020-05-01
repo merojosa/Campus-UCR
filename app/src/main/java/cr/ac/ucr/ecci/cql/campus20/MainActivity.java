@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    }
-
-}
 
     private void goInterestPoints() {
         Intent intent = new Intent(this, InterestPointsActivity.class);
