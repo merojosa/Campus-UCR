@@ -10,7 +10,7 @@ public class DatabaseContract {
 
     private DatabaseContract () {}
 
-    private static final String COMMA = ",";
+    private static final String COMMA = ", ";
     private static final String TEXT_TYPE = " TEXT ";
     private static final String INTEGER_TYPE = " INTEGER ";
     private static final String REAL_TYPE = " REAL ";
@@ -94,10 +94,13 @@ public class DatabaseContract {
             public static final String SQL_CREATE_SCHOOL =
                     "CREATE TABLE " + SchoolTable.TABLE_NAME + " (" +
                             SchoolTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
-                            SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + INTEGER_TYPE + FK + REF + FacultyTable.TABLE_NAME + " (" + FacultyTable.TABLE_COLUMN_ID + ") " + COMMA +
-                            SchoolTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + FK + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " + COMMA +
+                            SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + INTEGER_TYPE + COMMA +
+                            SchoolTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
-                            SchoolTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + " )";
+                            SchoolTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
+                            FK + "(" + SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + ")" + REF + FacultyTable.TABLE_NAME + " (" + FacultyTable.TABLE_COLUMN_ID + ") " + COMMA +
+                            FK + "(" + SchoolTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
+                            " )";
 
             public static final String SQL_DELETE_SCHOOL =
                     "DROP TABLE IF EXISTS " + SchoolTable.TABLE_NAME;
@@ -107,7 +110,9 @@ public class DatabaseContract {
     public static String[] DeploymentScript = {
             InterestPoints.PlaceTable.SQL_DELETE_PLACE,
             InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
+            InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
             InterestPoints.PlaceTable.SQL_CREATE_PLACE,
             InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
+            InterestPoints.SchoolTable.SQL_CREATE_SCHOOL
     };
 }

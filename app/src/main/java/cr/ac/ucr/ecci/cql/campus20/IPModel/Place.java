@@ -127,11 +127,11 @@ public class Place implements Parcelable {
      * @param context Current app context.
      * @return List containing all the rows in the table.
      * */
-    public List<Place> getPlacesList(Context context) {
+    public static List<Place> getPlacesList(Context context) {
         List<Place> list = new ArrayList<>();
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
-        Cursor cursor = dataAccess.selectAll("Place");
+        Cursor cursor = dataAccess.selectAll(DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             list.add(new Place(
@@ -166,6 +166,7 @@ public class Place implements Parcelable {
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
         long result = dataAccess.insert(DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME, values);
+        dataAccess.close();
         return result;
     }
 }

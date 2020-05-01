@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**Increment this counter by one whenever the database model is modified.*/
-    private static final int VERSION = 5;
+    private static final int VERSION = 9;
 
     private static final String DB_NAME = "CampusDB.db";
 
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         for(String statement : DatabaseContract.DeploymentScript){
-            db.execSQL(statement);
+            db.execSQL(statement.replaceAll("\\s+", " "));
         }
     }
 

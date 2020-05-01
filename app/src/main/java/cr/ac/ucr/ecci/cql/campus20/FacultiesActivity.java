@@ -6,12 +6,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
 
 public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
@@ -44,8 +47,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mRecyclerView.setAdapter(mListAdapter);
 
         //createFaculties();
-        faculty = new Faculty();
-        facultiesList = faculty.getFacultiesList(getApplicationContext());
+        facultiesList = Faculty.getFacultiesList(getApplicationContext());
 
         setDataList();
         mListAdapter.setListData(temp);
@@ -64,6 +66,13 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
+        /*Prueba de escuelas, obtiene las escuelas asociadas a la facultad.*/
+        List<School> schools = new ArrayList<>();
+        schools = School.read(getApplicationContext(), index);
+        for(School s : schools){
+            Log.d("schoolName", s.getName());
+        }
+
         Intent childActivity = new Intent(FacultiesActivity.this, FacultyViewActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
 //        childActivity.putExtra("attribute", Integer.toString(facultiesList.get(index).getAttribute()));
