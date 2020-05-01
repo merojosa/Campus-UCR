@@ -6,7 +6,6 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridLayout;
 
 public class InterestPointsActivity extends AppCompatActivity {
@@ -23,18 +22,7 @@ public class InterestPointsActivity extends AppCompatActivity {
 
         //Set Event
         setSingleEvent(mainGrid);
-//
-//        Button buttonFacultiesList = findViewById(R.id.buttonFacultiesList);
-//        buttonFacultiesList.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                goFacultiesList();
-//            }
-//        });
-//    }
-//
-//    private void goFacultiesList() {
-//        Intent intent = new Intent(this, FacultiesActivity.class);
-//        startActivity(intent);
+
     }
 
     private void setSingleEvent(GridLayout mainGrid) {
