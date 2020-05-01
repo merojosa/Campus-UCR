@@ -1,6 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.IPModel;
 
-import android.net.wifi.p2p.WifiP2pManager;
 import android.provider.BaseColumns;
 
 /* @class DatabaseContract
@@ -51,22 +50,36 @@ public class DatabaseContract {
         /*TO-DO: Fill table attributes and statements.*/
         /*Comment table.*/
         public static final class Comment implements BaseColumns{
-            public static final String TABLE_COMMENT = "Comment";
+            public static final String TABLE_NAME = "Comment";
         }
 
         /*Coordinate table.*/
         public static final class Coordinate implements BaseColumns{
-            public static final String TABLE_COORDINATE = "Coordinate";
+            public static final String TABLE_NAME = "Coordinate";
         }
 
         /*Faculty table.*/
-        public static final class Faculty implements BaseColumns{
-            public static final String TABLE_FACULTY = "Faculty";
+        public static final class FacultyTable implements BaseColumns{
+            /*Table name*/
+            public static final String TABLE_NAME = "Faculty";
+            /*Columns*/
+            public static final String TABLE_COLUMN_ID = "Id";
+            public static final String TABLE_COLUMN_NAME = "Name";
+            public static final String TABLE_COLUMN_DESCRIPTION = "Description";
+            /*Statements*/
+            public static final String SQL_CREATE_FACULTY =
+                    "CREATE TABLE " + FacultyTable.TABLE_NAME + " (" +
+                            FacultyTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
+                            FacultyTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
+                            FacultyTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + " )";
+
+            public static final String SQL_DELETE_FACULTY =
+                    "DROP TABLE IF EXISTS " + FacultyTable.TABLE_NAME;
         }
 
         /*School table.*/
         public static final class School implements BaseColumns {
-            public static final String TABLE_SCHOOL = "School";
+            public static final String TABLE_NAME = "School";
         }
     }
 }

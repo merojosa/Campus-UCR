@@ -69,7 +69,12 @@ public class DataAccess {
      * @return The row ID of the newly inserted row, or -1 if an error occurred.
      * */
     public long insert(String tableName, ContentValues values){
-        long result = database.insert(tableName, null, values);
+        long result = 0;
+        try {
+            result = database.insert(tableName, null, values);
+        }catch(Exception e){
+            Log.d("exception", e.toString());
+        }
         Log.d("insert", Long.toString(result));
         return result;
     }

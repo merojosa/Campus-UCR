@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 4;
 
     private static final String DB_NAME = "CampusDB.db";
 
@@ -20,11 +20,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DatabaseContract.InterestPoints.PlaceTable.SQL_CREATE_PLACE);
+        db.execSQL(DatabaseContract.InterestPoints.FacultyTable.SQL_CREATE_FACULTY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DatabaseContract.InterestPoints.PlaceTable.SQL_DELETE_PLACE);
+        db.execSQL(DatabaseContract.InterestPoints.FacultyTable.SQL_DELETE_FACULTY);
         onCreate(db);
     }
 
