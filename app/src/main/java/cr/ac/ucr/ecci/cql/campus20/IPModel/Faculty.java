@@ -71,6 +71,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
         long result = dataAccess.insert(DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME, values);
+        dataAccess.close();
         return result;
     }
 
@@ -78,7 +79,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
      * @param context Current app context.
      * @return List containing all the rows in the table.
      * */
-    public List<Faculty> getFacultiesList(Context context) {
+    public static List<Faculty> getFacultiesList(Context context) {
         List<Faculty> list = new ArrayList<>();
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();

@@ -63,6 +63,18 @@ public class DataAccess {
     }
 
     /**
+     * Performs a SELECT [columns] FROM table WHERE [condition].
+     * @param fromTable The table whose rows are to be retrieved.
+     * @return A Cursor object containing the results of the SELECT operation.
+     * */
+    public Cursor select(String projection, String fromTable, String where){
+        if(projection == null)
+            projection = "*";
+        String query = "SELECT " + projection + " FROM " + fromTable + " WHERE " + where + ";";
+        return database.rawQuery(query, null);
+    }
+
+    /**
      * Performs an INSERT operation without WHERE clause.
      * @param tableName The table where the data is going to be inserted.
      * @param values The key-value map containing all the data.
@@ -77,6 +89,14 @@ public class DataAccess {
         }
         Log.d("insert", Long.toString(result));
         return result;
+    }
+
+    /**
+     * Cleans the database to avoid Primary key constraint conflicts.
+     * */
+    public void resetDatabase(){
+        this.database = openHelper.getWritableDatabase();
+        openHelper.onCreate(database);
     }
 
 }

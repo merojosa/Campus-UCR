@@ -6,11 +6,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
 
 public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
@@ -42,9 +46,8 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
 
-        createFaculties();
-        faculty = new Faculty();
-        facultiesList = faculty.getFacultiesList(getApplicationContext());
+        //createFaculties();
+        facultiesList = Faculty.getFacultiesList(getApplicationContext());
 
         setDataList();
         mListAdapter.setListData(temp);
@@ -63,6 +66,13 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
+        /*Prueba de escuelas, obtiene las escuelas asociadas a la facultad.*/
+        List<School> schools = new ArrayList<>();
+        schools = School.read(getApplicationContext(), index);
+        for(School s : schools){
+            Log.d("schoolName", s.getName());
+        }
+
         Intent childActivity = new Intent(FacultiesActivity.this, FacultyViewActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
 //        childActivity.putExtra("attribute", Integer.toString(facultiesList.get(index).getAttribute()));
@@ -73,9 +83,11 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     public void setDataList(){
         temp.addAll(facultiesList);
     }
-
+/*
     // Únicamente para efectos de prueba
     public void createFaculties() {
+        DataAccess db = new DataAccess(getApplicationContext());
+        db.resetDatabase();
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
                 "Educación", "Farmacia","Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
@@ -84,9 +96,8 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
             list.add(new Faculty(i, Faculties[i], ""));
         }
         for(Faculty f : list){
-            //TODO: Fix primary key constraint violation, check if records already exist in database before inserting.
             f.insert(getApplicationContext());
         }
-    }
+    }*/
 
 }
