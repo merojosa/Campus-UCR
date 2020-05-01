@@ -25,7 +25,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    // For the mapbox implementations
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
+    // End of mapbox implementations
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Campus 2.0</string>
+    <string name="MAPBOX_ACCESS_TOKEN">pk.eyJ1IjoiYXBsaWNhY2lvbmVzbW92aWxlcyIsImEiOiJjazlvZnAybjEwMDRxM3ZxcXNyd29ueXQzIn0.LvWHKVTUqzPXriPY_NY0sQ</string>
 </resources>
