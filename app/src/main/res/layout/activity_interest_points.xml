@@ -17,12 +17,12 @@
 
         <TextView
             android:id="@+id/textGrid"
-            android:text="CAMPUS MP"
-            android:textSize="34sp"
-            android:textColor="@android:color/white"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Puntos de Interés"
+            android:textColor="@android:color/white"
+            android:textSize="34sp" />
 
     </RelativeLayout>
 
