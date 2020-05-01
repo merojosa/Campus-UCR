@@ -2,13 +2,21 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 public class SodaCard
 {
+    int id;
     private String nombre;
-    private int foto;
+    private String foto;
 
-    public SodaCard(String nombre, int foto)
+    public SodaCard(int id, String nombre, String foto)
     {
+        this.id = id;
         this.nombre = nombre;
         this.foto = foto;
+    }
+
+    public int getId() { return id; }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -19,11 +27,9 @@ public class SodaCard
         this.nombre = nombre;
     }
 
-    public int getFoto() {
-        return foto;
-    }
+    public String getFoto() { return foto; }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }
