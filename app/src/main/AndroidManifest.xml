@@ -10,12 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Map"></activity>
+        <activity android:name=".FacultyViewActivity"
+            android:theme="@style/AppTheme.InterestsTheme">
+        </activity>
+        <activity android:name=".FacultiesActivity"
+            android:theme="@style/AppTheme.InterestsTheme">
+        </activity>
+        <activity android:name=".InterestPointsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
