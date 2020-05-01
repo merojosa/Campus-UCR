@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
 
 // Referencias para crear lista de cards:
 // https://github.com/tutsplus/Android-CardViewRecyclerView
@@ -20,9 +22,11 @@ public class MainUcrEats extends AppCompatActivity
 {
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
-
-    private List<SodaCard> sodaCards = null;
     private RecyclerView recyclerViewSodas;
+
+    private RestaurantRepository repository;
+    private List<Restaurant> restaurantsList = null;
+    private List<SodaCard> sodaCards = null;
 
 
     @Override
@@ -31,11 +35,13 @@ public class MainUcrEats extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ucr_eats);
         getSupportActionBar().hide();
+        this.repository = new RestaurantRepository(getApplication());
 
+        fillRestaurants();
         setupInputSearch();
         setupRecyclerView();
 
-        obtenerSodas();
+        createSodaCards();
         inicializarAdapter();
     }
 
@@ -51,7 +57,7 @@ public class MainUcrEats extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                filtrar(s.toString());
+                filter(s.toString());
             }
         });
     }
@@ -64,7 +70,7 @@ public class MainUcrEats extends AppCompatActivity
         recyclerViewSodas.setHasFixedSize(true);
     }
 
-    private void filtrar(String texto) {
+    private void filter(String texto) {
 
         ArrayList<SodaCard> filtrarLista = new ArrayList<>();
 
@@ -77,34 +83,32 @@ public class MainUcrEats extends AppCompatActivity
         sodasAdapter.filter(filtrarLista);
     }
 
-    private void obtenerSodas()
+    private void createSodaCards()
     {
-        // initialize the soda list
         sodaCards = new ArrayList<>();
-        int index = 0;
-        // get soda names
-        List<String> sodaName = obtenerNombreSodas();
+        List<Restaurant> restaurantList = this.repository.getAllRestaurants();
 
-        // fill soda list
-        sodaCards.add(new SodaCard(sodaName.get(index++), R.drawable.la_u));
-        sodaCards.add(new SodaCard(sodaName.get(index++), R.drawable.plaza_chou));
-        sodaCards.add(new SodaCard(sodaName.get(index++), R.drawable.la_u));
+        for (int index = 0; index < restaurantList.size(); ++index)
+            sodaCards.add(new SodaCard(restaurantList.get(index).name, restaurantList.get(index).id));
     }
 
-    /**
-     * metodo que se espera tenga el retorno de una lista de string con los nombres de las sodas
-     */
-    private List<String> obtenerNombreSodas() {
-        List<String> names = new ArrayList<String>();
-        names.add("Soda La U");
-        names.add("Plaza Chou");
-        names.add("Soda Facultad Derecho");
-
-        return names;
-    }
 
     private void inicializarAdapter(){
         this.sodasAdapter = new RVAdapter(sodaCards);
         recyclerViewSodas.setAdapter(sodasAdapter);
     }
+
+    /**
+     * método con fines sólo de prueba de concepto.
+     */
+    private void fillRestaurants() {
+        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", 0, 0.0,0.0,
+                "Mo", (short)0, (short)1000);
+        repository.insert(restaurant1);
+
+        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", 0, 0.0,0.0,
+                "Mo", (short)0, (short)1000);
+        repository.insert(restaurant2);
+    }
+
 }
