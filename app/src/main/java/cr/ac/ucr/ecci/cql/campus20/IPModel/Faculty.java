@@ -71,6 +71,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
         long result = dataAccess.insert(DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME, values);
+        dataAccess.close();
         return result;
     }
 

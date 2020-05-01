@@ -79,4 +79,12 @@ public class DataAccess {
         return result;
     }
 
+    /**
+     * Cleans the database to avoid Primary key constraint conflicts.
+     * */
+    public void resetDatabase(){
+        this.database = openHelper.getWritableDatabase();
+        openHelper.onCreate(database);
+    }
+
 }
