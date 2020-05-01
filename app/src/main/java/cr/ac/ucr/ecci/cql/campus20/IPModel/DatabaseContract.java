@@ -55,8 +55,28 @@ public class DatabaseContract {
         }
 
         /*Coordinate table.*/
-        public static final class Coordinate implements BaseColumns{
+        public static final class CoordinateTable implements BaseColumns{
+            /*Table name*/
             public static final String TABLE_NAME = "Coordinate";
+
+            /*Columns*/
+            public static final String TABLE_COLUMN_ID = "Id";
+            public static final String TABLE_COLUMN_ID_PLACE_FK = "Id_place_FK";
+            public static final String TABLE_COLUMN_LATITUDE = "Latitude";
+            public static final String TABLE_COLUMN_LONGITUDE = "Longitude";
+
+            /*Statements*/
+            public static final String SQL_CREATE_COORDINATE =
+                    "CREATE TABLE " + CoordinateTable.TABLE_NAME + " (" +
+                            CoordinateTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
+                            CoordinateTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + COMMA +
+                            CoordinateTable.TABLE_COLUMN_LATITUDE + REAL_TYPE + COMMA +
+                            CoordinateTable.TABLE_COLUMN_LONGITUDE + REAL_TYPE + COMMA +
+                            FK + "(" + CoordinateTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
+                            " )";
+
+            public static final String SQL_DELETE_COORDINATE =
+                    "DROP TABLE IF EXISTS " + CoordinateTable.TABLE_NAME;
         }
 
         /*Faculty table.*/
@@ -107,12 +127,15 @@ public class DatabaseContract {
         }
     }
 
+    /*All statements here are executed whenever the database is created or updated.*/
     public static String[] DeploymentScript = {
             InterestPoints.PlaceTable.SQL_DELETE_PLACE,
             InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
             InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
+            InterestPoints.CoordinateTable.SQL_DELETE_COORDINATE,
             InterestPoints.PlaceTable.SQL_CREATE_PLACE,
             InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
-            InterestPoints.SchoolTable.SQL_CREATE_SCHOOL
+            InterestPoints.SchoolTable.SQL_CREATE_SCHOOL,
+            InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE
     };
 }
