@@ -124,4 +124,16 @@ public class School {
         Log.d("schoolRead", "The schools from faculty id: " + Integer.toString(id_faculty_fk) + " had been read from database.");
         return schools;
     }
+
+    /**
+     * @param context Current app context.
+     * @pram faculty Actual faculty
+     * @retunr List with those schools
+     */
+    public static List<School> getSchoolList(Context context, int faculty){
+        List<School> list = new ArrayList<>();
+        return list;
+    }
+
+
 }

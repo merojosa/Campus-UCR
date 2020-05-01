@@ -24,8 +24,31 @@ public class School extends GeneralData {
     @Override
     public String getDescription() { return schoolDescription; }
 
-    public List<School> getSchoolList(Context context, String faculty){
-        List<School> list = new ArrayList<>();
+    //public List<School> getSchoolList(Context context, String faculty){
+
+
+   // }
+    // Metodo para obtener las facultades una vez esté implementada la BD
+//    public List<Faculty> getFacultiesList(Context context){
+//        List<Faculty> list = new ArrayList<>();
+//        DataAccess dataAccess = DataAccess.getInstance(context);
+//        dataAccess.open();
+//        Cursor cursor = dataAccess.getList("Faculty");
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()) {
+//            list.add(new Faculty(cursor.getString(0),... // Obtener atributos
+//            ));
+//            cursor.moveToNext();
+//        }
+//        cursor.close();
+//        DataAccess.close();
+//        Collections.sort(list);
+//        return list;
+    //   }
+
+
+    /*
+     List<School> list = new ArrayList<>();
 
         //Se necesita hacer una lista de escuelas por cada facultad
         HashMap<String, String[]> schools = new HashMap<String, String[]>();
@@ -61,25 +84,8 @@ public class School extends GeneralData {
             return list;
         }
         return list;
+     */
 
-    }
-    // Metodo para obtener las facultades una vez esté implementada la BD
-//    public List<Faculty> getFacultiesList(Context context){
-//        List<Faculty> list = new ArrayList<>();
-//        DataAccess dataAccess = DataAccess.getInstance(context);
-//        dataAccess.open();
-//        Cursor cursor = dataAccess.getList("Faculty");
-//        cursor.moveToFirst();
-//        while (!cursor.isAfterLast()) {
-//            list.add(new Faculty(cursor.getString(0),... // Obtener atributos
-//            ));
-//            cursor.moveToNext();
-//        }
-//        cursor.close();
-//        DataAccess.close();
-//        Collections.sort(list);
-//        return list;
-    //   }
 
 
 }
