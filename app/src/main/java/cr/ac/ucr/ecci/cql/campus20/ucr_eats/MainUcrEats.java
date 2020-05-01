@@ -89,12 +89,12 @@ public class MainUcrEats extends AppCompatActivity
         List<Restaurant> restaurantList = this.repository.getAllRestaurants();
 
         for (int index = 0; index < restaurantList.size(); ++index)
-            sodaCards.add(new SodaCard(restaurantList.get(index).name, restaurantList.get(index).id));
+            sodaCards.add(new SodaCard(restaurantList.get(index).id, restaurantList.get(index).name, restaurantList.get(index).photo));
     }
 
 
     private void inicializarAdapter(){
-        this.sodasAdapter = new RVAdapter(sodaCards);
+        this.sodasAdapter = new RVAdapter(this, sodaCards);
         recyclerViewSodas.setAdapter(sodasAdapter);
     }
 
@@ -102,11 +102,11 @@ public class MainUcrEats extends AppCompatActivity
      * método con fines sólo de prueba de concepto.
      */
     private void fillRestaurants() {
-        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", 0, 0.0,0.0,
+        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
                 "Mo", (short)0, (short)1000);
         repository.insert(restaurant1);
 
-        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", 0, 0.0,0.0,
+        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
                 "Mo", (short)0, (short)1000);
         repository.insert(restaurant2);
     }

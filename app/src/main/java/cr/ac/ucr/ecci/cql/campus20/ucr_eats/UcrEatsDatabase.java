@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RestaurantDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
-@Database(entities = {Restaurant.class}, version = 2, exportSchema = false)
+@Database(entities = {Restaurant.class}, version = 3, exportSchema = false)
 public abstract class UcrEatsDatabase extends RoomDatabase
 {
     public abstract RestaurantDao restaurantDao();

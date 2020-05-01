@@ -16,7 +16,7 @@ public class Restaurant
     public String name = "";
 
     @ColumnInfo(name = "photo")
-    public int photo = 0;
+    public String photo = "";
 
     @ColumnInfo(name = "latitude")
     public double latitude = 0;
@@ -33,7 +33,7 @@ public class Restaurant
     @ColumnInfo(name = "closing_time")
     public short closingTime = 0;
 
-    public Restaurant(int id, String name, int photo, double latitude, double longitude,
+    public Restaurant(int id, String name, String photo, double latitude, double longitude,
                       String daysOpen, short openingTime, short closingTime)
     {
         this.id = id;
