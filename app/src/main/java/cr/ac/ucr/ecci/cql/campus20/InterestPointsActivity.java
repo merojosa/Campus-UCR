@@ -13,17 +13,17 @@ public class InterestPointsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interest_points);
-
-        Button buttonFacultiesList = findViewById(R.id.buttonFacultiesList);
-        buttonFacultiesList.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                goFacultiesList();
-            }
-        });
-    }
-
-    private void goFacultiesList() {
-        Intent intent = new Intent(this, FacultiesActivity.class);
-        startActivity(intent);
+//
+//        Button buttonFacultiesList = findViewById(R.id.buttonFacultiesList);
+//        buttonFacultiesList.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                goFacultiesList();
+//            }
+//        });
+//    }
+//
+//    private void goFacultiesList() {
+//        Intent intent = new Intent(this, FacultiesActivity.class);
+//        startActivity(intent);
     }
 }
