@@ -42,7 +42,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     {
         MainRedMujeres.this.mapboxMap = mapboxMap;
 
-        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7"),
+        mapboxMap.setStyle(Style.MAPBOX_STREETS,
             new Style.OnStyleLoaded()
             {
                 @Override
