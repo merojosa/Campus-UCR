@@ -60,7 +60,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
-        Intent childActivity = new Intent(FacultiesActivity.this, FacultyViewActivity.class);
+        Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
 //        childActivity.putExtra("attribute", Integer.toString(facultiesList.get(index).getAttribute()));
 

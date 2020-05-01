@@ -5,6 +5,8 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+
 
 public class School extends GeneralData {
 
@@ -22,12 +24,15 @@ public class School extends GeneralData {
     @Override
     public String getDescription() { return schoolDescription; }
 
-    public List<School> getSchoolList(Context context ,String Faculty){
+    public List<School> getSchoolList(Context context, String faculty){
         List<School> list = new ArrayList<>();
 
         //Se necesita hacer una lista de escuelas por cada facultad
+        HashMap<String, String[]> schools = new HashMap<String, String[]>();
 
         String[] Artes = {"Artes Dramáticas", "Artes Plásticas", "Artes Musicales"};
+        schools.put("Artes", Artes);
+
         String[] Ciencias_Agroalimentarias;
         String[] Ciencias_Básicas;
         String[] Ciencias_Económicas;
@@ -37,15 +42,44 @@ public class School extends GeneralData {
         String[] Farmacia;
         String[] Ingeniería;
         String[] Letras = {"Filología, Linguistica y Leteratura", "Filosofía", "Lenguas Modernas"};
+        schools.put("Letras", Letras);
         String[] Medicina;
         String[] Microbiología;
         String[] Odontología;
 
+        String from;
+        String[] selected;
+        if (schools.containsKey(faculty)){
+            from = faculty;
+            selected = schools.get(from);
 
+            for(String schoolSelected:selected){
+                list.add(new School(schoolSelected, "" ));
+
+            }
+        } else {
+            return list;
+        }
         return list;
 
     }
-
+    // Metodo para obtener las facultades una vez esté implementada la BD
+//    public List<Faculty> getFacultiesList(Context context){
+//        List<Faculty> list = new ArrayList<>();
+//        DataAccess dataAccess = DataAccess.getInstance(context);
+//        dataAccess.open();
+//        Cursor cursor = dataAccess.getList("Faculty");
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()) {
+//            list.add(new Faculty(cursor.getString(0),... // Obtener atributos
+//            ));
+//            cursor.moveToNext();
+//        }
+//        cursor.close();
+//        DataAccess.close();
+//        Collections.sort(list);
+//        return list;
+    //   }
 
 
 }
