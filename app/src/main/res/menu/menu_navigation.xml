@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Inicio"
+        android:id="@+id/inicio"
+        android:icon=""
+        />
+    <item android:title="UcrEats"
+        android:id="@+id/ucreats"
+        android:icon=""
+        />
+    <item android:title="Mujeres"
+        android:id="@+id/mujeres"
+        android:icon=""
+        />
+    <item android:title="Foro"
+        android:id="@+id/foro"
+        android:icon=""
+        />
+    <item android:title="Lugares"
+        android:id="@+id/ic_lugares"
+        android:icon=""
+        />
+
+</menu>
