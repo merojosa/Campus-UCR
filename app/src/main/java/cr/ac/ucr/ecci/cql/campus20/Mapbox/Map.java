@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.Mapbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import cr.ac.ucr.ecci.cql.campus20.R;
+
 public class Map extends AppCompatActivity {
     private MapView mapView;
 
@@ -18,23 +20,19 @@ public class Map extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN));
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map);
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
-
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-
                     }
                 });
-
             }
         });
     }
@@ -44,7 +42,6 @@ public class Map extends AppCompatActivity {
         super.onStart();
         mapView.onStart();
     }
-
 
     @Override
     protected void onResume() {
@@ -81,6 +78,4 @@ public class Map extends AppCompatActivity {
         super.onDestroy();
         mapView.onDestroy();
     }
-
-
 }

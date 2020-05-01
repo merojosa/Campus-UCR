@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map"></activity>
-        <activity android:name=".FacultyViewActivity"
-            android:theme="@style/AppTheme.InterestsTheme">
-        </activity>
-        <activity android:name=".FacultiesActivity"
-            android:theme="@style/AppTheme.InterestsTheme">
-        </activity>
+        <activity android:name=".Mapbox.Map"></activity>
+        <activity
+            android:name=".FacultyViewActivity"
+            android:theme="@style/AppTheme.InterestsTheme"></activity>
+        <activity
+            android:name=".FacultiesActivity"
+            android:theme="@style/AppTheme.InterestsTheme"></activity>
         <activity android:name=".InterestPointsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -23,7 +23,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
