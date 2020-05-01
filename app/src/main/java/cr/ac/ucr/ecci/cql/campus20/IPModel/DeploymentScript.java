@@ -23,6 +23,7 @@ public class DeploymentScript {
         createFaculties(context);
         createPlaces(context);
         createSchools(context);
+        createCoordinates(context);
     }
 
     private static void clearDatabase(Context context){
@@ -83,5 +84,21 @@ public class DeploymentScript {
 
         db.close();
         Log.d("places", "Schools were inserted in database.");
+    }
+
+    private static void createCoordinates(Context context){
+        DataAccess db = new DataAccess(context);
+        List<Coordinate> coordinateList = new ArrayList<>();
+        int[] placesFK = {1,2};
+        double[] latitude = {9.9380801, 9.9371256};
+        double[] longitude = {-84.0528859, -84.0441968};
+        for(int i = 0; i < latitude.length; ++i){
+            coordinateList.add(new Coordinate(i, placesFK[i], latitude[i], longitude[i]));
+        }
+        for(Coordinate c : coordinateList){
+            c.insert(context);
+        }
+        db.close();
+        Log.d("coordinates", "Coordinates were inserted in database.");
     }
 }
