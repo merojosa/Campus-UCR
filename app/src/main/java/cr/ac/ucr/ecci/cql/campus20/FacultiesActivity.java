@@ -40,9 +40,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
         mRecyclerView.setHasFixedSize(true);
-
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
 

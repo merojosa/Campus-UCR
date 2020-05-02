@@ -130,17 +130,20 @@ public class School {
      * @pram faculty Actual faculty
      * @retunr List with those schools
      */
-    public static List<School> getSchoolList(Context context, int faculty){
+    public static List<School> getSchoolList(Context context, String faculty){
         List<School> list = new ArrayList<>();
-
 
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
 
-        Cursor cursor = dataAccess.select("id, id_faculty_fk, id_place_fk, name, description",
+        Cursor facultyCursor = dataAccess.select("Id", "Faculty", "Name = " + faculty);//+ faculty
+
+        int actualFaculty = facultyCursor.getInt(facultyCursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID));
+
+        Cursor cursor = dataAccess.select("Id, Id_faculty_FK, Id_place_FK, Name, Description",
                 "School",
-                "id_faculty_fk = " + faculty);
-        cursor.moveToFirst();
+                "Id_faculty_FK = "+ actualFaculty);
+        cursor.moveToFirst(); //Revisar si son may o min
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             list.add(new School(
