@@ -136,16 +136,20 @@ public class School {
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
 
-        Cursor facultyCursor = dataAccess.select("Id", "Faculty", "Name = " + faculty);//+ faculty
+        Cursor facultyCursor = dataAccess.select(
+                "Id",
+                "Faculty",
+                "Name = " + "'" + faculty + "'" );//+ faculty
 
         int actualFaculty = facultyCursor.getInt(facultyCursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID));
+        facultyCursor.close();
 
         Cursor cursor = dataAccess.select("Id, Id_faculty_FK, Id_place_FK, Name, Description",
                 "School",
                 "Id_faculty_FK = "+ actualFaculty);
         cursor.moveToFirst(); //Revisar si son may o min
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while(!cursor.isAfterLast() && cursor != null){
             list.add(new School(
                     cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
