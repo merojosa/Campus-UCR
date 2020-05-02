@@ -10,7 +10,6 @@ import android.widget.Button;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.DeploymentScript;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
