@@ -46,9 +46,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
             mListAdapter = new ListAdapter(this);
             mRecyclerView.setAdapter(mListAdapter);
 
-        schoolsList = school.getSchoolList(getApplicationContext(), facultyName); //revisar la intancia facultyName
+        schoolsList = school.read(getApplicationContext(), facultyName); //revisar la intancia facultyName
 
-        //setDataList();
+        setDataList();
         mListAdapter.setListData(temp);
 
     }
@@ -59,7 +59,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         boolean finded = false;
         int index = 0;
         while (index < schoolsList.size() && !finded){
-            if(schoolsList.get(index).getName().equals(title)){
+            if(schoolsList.get(index).getTitle().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -72,5 +72,5 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         startActivity(childActivity);
     }
 
-   // public void setDataList(){ temp.addAll(schoolsList); }
+   public void setDataList(){ temp.addAll(schoolsList); }
 }

@@ -8,10 +8,12 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.GeneralData;
+
 /**
  * @brief Class that represents a School database entity.
  * */
-public class School {
+public class School extends GeneralData {
 
     /*Columns*/
     private int id;
@@ -65,6 +67,11 @@ public class School {
         this.name = name;
     }
 
+    @Override
+    public String getTitle() {
+        return name;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -96,11 +103,19 @@ public class School {
     /**
      * Retrieves all the Schools related to a given faculty.
      * @param context Current app context.
-     * @param id_faculty_fk Foreign key to the faculty where the schools belong.
+     * @param faculty Foreign key to the faculty where the schools belong.
      * */
-    public static List<School> read(Context context, int id_faculty_fk){
+    public static List<School> read(Context context, String faculty){
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
+
+        Cursor fCursor = dataAccess.select("Id",
+                DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'"+faculty+ "'");
+        fCursor.moveToFirst();
+        int  id_faculty_fk = fCursor.getInt(fCursor.getColumnIndexOrThrow(
+                DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID));
+        fCursor.close();
 
         Cursor cursor = dataAccess.select(
                 null,

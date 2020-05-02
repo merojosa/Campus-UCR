@@ -68,12 +68,13 @@ public class DeploymentScript {
 
     private static void createSchools(Context context){
         DataAccess db = new DataAccess(context);
+        /*
         List<School> schoolList = new ArrayList<>();
         String[] SchoolNames = {"Escuela de Ciencias de la Computación e Informática", "Escuela de Ingeniería Eléctrica"};
         String[] SchoolDescriptions = {"", ""};
-        /*Both belong to Engineering Faculty, in position 8 of Faculties array above.*/
+        /*Both belong to Engineering Faculty, in position 8 of Faculties array above.
         int[] FacultiesFK = {8, 8};
-        /*ECCI is in finca 1, and EIE is in finca 2.*/
+        /*ECCI is in finca 1, and EIE is in finca 2.
         int[] PlacesFK = {1, 2};
         for(int i = 0; i < SchoolNames.length; ++i){
             schoolList.add(new School(i, FacultiesFK[i], PlacesFK[i], SchoolNames[i], SchoolDescriptions[i]));
@@ -81,6 +82,122 @@ public class DeploymentScript {
         for(School s : schoolList){
             s.insert(context);
         }
+*/
+
+        //Schools goes from 0 to n, in alph order
+
+        School artes = new School(0, 0, 0, "Artes Dramáticas", "");
+        artes.insert(context);
+        School artes1 = new School(1, 0, 0, "Artes Plásticas", "");
+        artes1.insert(context);
+        School artes2 = new School(2, 0, 0, "Artes Musicales", "");
+        artes2.insert(context);
+
+        School agro = new School(3, 1, 0, "Agronomía", "");
+        agro.insert(context);
+        School agro1 = new School(4, 1, 0, "Zootecnia", "");
+        agro1.insert(context);
+        School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "");
+        agro2.insert(context);
+
+        School ciencias = new School(6, 2, 0, "Física", "");
+        ciencias.insert(context);
+        School ciencias1 = new School(7, 2, 0, "Geología", "");
+        ciencias1.insert(context);
+        School ciencias2 = new School(8, 2, 0, "Matemática", "");
+        ciencias2.insert(context);
+        School ciencias3 = new School(9, 2, 0, "Química", "");
+        ciencias3.insert(context);
+        School ciencias4 = new School(10, 2, 0, "Biología", "");
+        ciencias4.insert(context);
+
+        School economicas = new School(11, 3, 0, "Administración de Negocios", "");
+        economicas.insert(context);
+        School economicas1 = new School(12, 3, 0, "Administración Pública", "");
+        economicas1.insert(context);
+        School economicas2 = new School(13, 3, 0, "Economía", "");
+        economicas2.insert(context);
+        School economicas3 = new School(14, 3, 0, "Estadística", "");
+        economicas3.insert(context);
+
+        School sociales = new School(15, 4, 1, "Psicología", "");
+        sociales.insert(context);
+        School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "");
+        sociales1.insert(context);
+        School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "");
+        sociales2.insert(context);
+        School sociales3 = new School(18, 4, 1, "Trabajo Social", "");
+        sociales3.insert(context);
+        School sociales4 = new School(19, 4, 1, "Historia", "");
+        sociales4.insert(context);
+        School sociales5 = new School(20, 4, 1, "Geografía", "");
+        sociales5.insert(context);
+        School sociales6 = new School(21, 4, 1, "Antropología", "");
+        sociales6.insert(context);
+        School sociales7 = new School(22, 4, 1, "Sociología", "");
+        sociales7.insert(context);
+
+        School derecho = new School(23, 5, 0, "Derecho", "");
+        derecho.insert(context);
+
+        School educacion = new School(24, 6, 0, "Formación Docente", "");
+        educacion.insert(context);
+        School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "");
+        educacion1.insert(context);
+        School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "");
+        educacion2.insert(context);
+        School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "");
+        educacion3.insert(context);
+        School educacion4 = new School(28, 6, 0, "Administración Educativa", "");
+        educacion4.insert(context);
+
+        School farmacia = new School(29, 7, 0, "Farmacia", "");
+        farmacia.insert(context);
+
+        School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "");
+        ingenieria.insert(context);
+        School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "");
+        ingenieria1.insert(context);
+        School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "");
+        ingenieria2.insert(context);
+        School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "");
+        ingenieria3.insert(context);
+        School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "");
+        ingenieria4.insert(context);
+        School ingenieria5 = new School(35, 8, 0, "Arquitectura", "");
+        ingenieria5.insert(context);
+        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "");
+        ingenieria6.insert(context);
+        School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "");
+        ingenieria7.insert(context);
+        School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "");
+        ingenieria8.insert(context);
+
+        School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "");
+        letras.insert(context);
+        School letras2 = new School(40, 9, 0, "Filosofía", "");
+        letras2.insert(context);
+        School letras3 = new School(41, 9, 0, "Lenguas Modernas", "");
+        letras3.insert(context);
+
+        School medicina = new School(42, 10, 0, "Enfermería", "");
+        medicina.insert(context);
+        School medicina1 = new School(43, 10, 0, "Medicina", "");
+        medicina1.insert(context);
+        School medicina2 = new School(44, 10, 0, "Nutrición", "");
+        medicina2.insert(context);
+        School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "");
+        medicina3.insert(context);
+        School medicina4 = new School(46, 10, 0, "Salud Púbilca", "");
+        medicina4.insert(context);
+
+        School micro = new School(47, 11, 0, "Microbiología", "");
+        micro.insert(context);
+
+        School odonto = new School(48, 12, 0, "Odontología", "");
+        odonto.insert(context);
+
+
 
         db.close();
         Log.d("places", "Schools were inserted in database.");
