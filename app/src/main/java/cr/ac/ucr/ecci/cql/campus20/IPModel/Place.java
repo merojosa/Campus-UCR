@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -168,5 +169,36 @@ public class Place implements Parcelable {
         long result = dataAccess.insert(DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME, values);
         dataAccess.close();
         return result;
+    }
+
+    /**
+     * Retrieves the Place object identified by its id.
+     * @param context Current app context.
+     * @param id Foreign key to the place where the coordinate belongs.
+     * */
+    public static Place read(Context context, int id){
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+
+        Cursor cursor = dataAccess.select(
+                null,
+                DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID + " = " + Integer.toString(id)
+        );
+        cursor.moveToFirst();
+        Place place = new Place();
+
+        if (!cursor.isAfterLast()) {
+            place.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID)));
+            place.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_NAME)));
+            place.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_DESCRIPTION)));
+            place.setType(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE)));
+            place.setRating(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING)));
+            place.setFloor(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR)));
+        }
+        cursor.close();
+        dataAccess.close();
+        Log.d("placeRead", "The place with id: " + Integer.toString(id) + " had been read from database.");
+        return place;
     }
 }

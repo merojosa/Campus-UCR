@@ -12,8 +12,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
 
 public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -64,16 +66,10 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
-        /*Prueba de escuelas, obtiene las escuelas asociadas a la facultad.*/
-        List<School> schools = new ArrayList<>();
-        schools = School.read(getApplicationContext(), index);
-        for(School s : schools){
-            Log.d("schoolName", s.getName());
-        }
+        testDatabase(index);
 
         Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-//        childActivity.putExtra("attribute", Integer.toString(facultiesList.get(index).getAttribute()));
 
         startActivity(childActivity);
     }
@@ -81,21 +77,17 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     public void setDataList(){
         temp.addAll(facultiesList);
     }
-/*
-    // Únicamente para efectos de prueba
-    public void createFaculties() {
-        DataAccess db = new DataAccess(getApplicationContext());
-        db.resetDatabase();
-        List<Faculty> list = new ArrayList<>();
-        String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
-                "Educación", "Farmacia","Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
 
-        for (int i = 0; i < Faculties.length; ++i) {
-            list.add(new Faculty(i, Faculties[i], ""));
+    private void testDatabase(int index){
+        /*Prueba de base de datos, obtiene las escuelas de una facultad y la ubicación de cada escuela.*/
+        List<School> schools = new ArrayList<>();
+        schools = School.read(getApplicationContext(), index);
+        for(School s : schools){
+            Log.d("schoolName", s.getName());
+            Place p = Place.read(getApplicationContext(), s.getId_place_fk());
+            Coordinate c = Coordinate.read(getApplicationContext(), p.getId());
+            Log.d("coordinate", "Coordinates for " + s.getName() + ": " + Double.toString(c.getLatitude()) + ", " + Double.toString(c.getLongitude()));
         }
-        for(Faculty f : list){
-            f.insert(getApplicationContext());
-        }
-    }*/
+    }
 
 }

@@ -16,6 +16,8 @@
         <activity
             android:name=".FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
+        <activity android:name=".Mapbox.Map"></activity>
+
         <activity android:name=".InterestPointsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

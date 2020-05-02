@@ -124,43 +124,4 @@ public class School {
         Log.d("schoolRead", "The schools from faculty id: " + Integer.toString(id_faculty_fk) + " had been read from database.");
         return schools;
     }
-
-    /**
-     * @param context Current app context.
-     * @pram faculty Actual faculty
-     * @retunr List with those schools
-     */
-    public static List<School> getSchoolList(Context context, String faculty){
-        List<School> list = new ArrayList<>();
-
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-
-        Cursor facultyCursor = dataAccess.select(
-                "Id",
-                "Faculty",
-                "Name = " + "'" + faculty + "'" );//+ faculty
-
-        int actualFaculty = facultyCursor.getInt(facultyCursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID));
-        facultyCursor.close();
-
-        Cursor cursor = dataAccess.select("Id, Id_faculty_FK, Id_place_FK, Name, Description",
-                "School",
-                "Id_faculty_FK = "+ actualFaculty);
-        cursor.moveToFirst(); //Revisar si son may o min
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast() && cursor != null){
-            list.add(new School(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION))
-            ));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        dataAccess.close();
-        return list;
-    }
 }
