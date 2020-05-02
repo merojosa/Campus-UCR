@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ucr_eats.MainUcrEats"></activity>
-        <activity android:label="@string/app_name" android:name=".red_mujeres.MainRedMujeres"/>
+        <activity android:name=".foro_general.MainForoGeneral" />
+        <activity android:name=".ucr_eats.MainUcrEats" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
