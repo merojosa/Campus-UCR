@@ -96,6 +96,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mTemas.add(new Temas("Residencias", R.drawable.foro_residencias, "Mas barato que alquilar ..."));
         mTemas.add(new Temas("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
         mTemas.add(new Temas("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas mas valoradas por la comunidad"));
+        mTemas.add(new Temas("Comodin", R.drawable.foro_comodin, "un elemento mas a la lista"));
+        mTemas.add(new Temas("Comodin2", R.drawable.foro_comodin, "un elemento mas a la lista"));
 
         return mTemas;
     }
