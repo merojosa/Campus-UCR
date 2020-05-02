@@ -50,8 +50,28 @@ public class DatabaseContract {
 
         /*TODO: Fill table attributes and statements.*/
         /*Comment table.*/
-        public static final class Comment implements BaseColumns{
+        public static final class CommentTable implements BaseColumns{
+            /*Table name*/
             public static final String TABLE_NAME = "Comment";
+
+            /*Columns*/
+            public static final String TABLE_COLUMN_ID = "Id";
+            public static final String TABLE_COLUMN_ID_PLACE_FK = "Id_place_FK";
+            public static final String TABLE_COLUMN_DESCRIPTION = "Description";
+            public static final String TABLE_COLUMN_DATE = "Date";
+
+            /*Statements*/
+            public static final String SQL_CREATE_COMMENT =
+                    "CREATE TABLE " + CommentTable.TABLE_NAME + " (" +
+                            CommentTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
+                            CommentTable.TABLE_COLUMN_ID_PLACE_FK+ INTEGER_TYPE + COMMA +
+                            CommentTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + COMMA +
+                            CommentTable.TABLE_COLUMN_DATE + TEXT_TYPE + COMMA +
+                            FK + "(" + CommentTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
+                            " )";
+
+            public static final String SQL_DELETE_COMMENT =
+                    "DROP TABLE IF EXISTS " + CommentTable.TABLE_NAME;
         }
 
         /*Coordinate table.*/
@@ -133,9 +153,11 @@ public class DatabaseContract {
             InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
             InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
             InterestPoints.CoordinateTable.SQL_DELETE_COORDINATE,
+            InterestPoints.CommentTable.SQL_DELETE_COMMENT,
             InterestPoints.PlaceTable.SQL_CREATE_PLACE,
             InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
             InterestPoints.SchoolTable.SQL_CREATE_SCHOOL,
-            InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE
+            InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE,
+            InterestPoints.CommentTable.SQL_CREATE_COMMENT
     };
 }

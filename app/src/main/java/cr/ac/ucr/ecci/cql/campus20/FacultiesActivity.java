@@ -12,6 +12,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
@@ -89,6 +90,11 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
             Place p = Place.read(getApplicationContext(), s.getId_place_fk());
             Coordinate c = Coordinate.read(getApplicationContext(), p.getId());
             Log.d("coordinate", "Coordinates for " + s.getName() + ": " + Double.toString(c.getLatitude()) + ", " + Double.toString(c.getLongitude()));
+            List<Comment> commentList = new ArrayList<>();
+            commentList = Comment.read(getApplicationContext(), s.getId_place_fk());
+            for(Comment comment : commentList){
+                Log.d("comment", comment.getDescription() + " " + comment.getDate());
+            }
         }
     }
 
