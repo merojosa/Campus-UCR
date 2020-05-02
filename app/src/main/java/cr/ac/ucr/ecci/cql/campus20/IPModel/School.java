@@ -132,8 +132,28 @@ public class School {
      */
     public static List<School> getSchoolList(Context context, int faculty){
         List<School> list = new ArrayList<>();
+
+
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+
+        Cursor cursor = dataAccess.select("id, id_faculty_fk, id_place_fk, name, description",
+                "School",
+                "id_faculty_fk = " + faculty);
+        cursor.moveToFirst();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            list.add(new School(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION))
+            ));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        dataAccess.close();
         return list;
     }
-
-
 }

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
+
 
 public class SchoolsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
@@ -44,6 +46,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
 
         school = new School();
+
         schoolsList = school.getSchoolList(getApplicationContext(), facultyName);
 
         setDataList();

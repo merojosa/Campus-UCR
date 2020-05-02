@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 
-
+/*
 public class School extends GeneralData {
 
     String schoolName;
@@ -88,4 +88,4 @@ public class School extends GeneralData {
 
 
 
-}
+//}
