@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        /*
         //boton temporal para ir al foro general
         Button buttonForoGeneral = (Button) findViewById(R.id.buttonForoGeneral);
 
@@ -31,10 +31,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+         */
+
         // Inicialización de la barra de navegación general
         BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
-        // Dejar por defecto el Inicio seleccionado
-        generalNavigationView.setSelectedItemId(R.id.inicio);
+
+        // Se deja todos los íconos de la barra sin seleccionar por defecto
+        generalNavigationView.getMenu().getItem(0).setCheckable(false);
 
         // Ejecución del listener para cambiar de actividad
         generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,11 +64,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+/*
     // Ir al foro
     private void irForoGeneral () {
         Intent intent = new Intent(this, MainForoGeneral.class);
         // Llamada a la actividad
         startActivity(intent);
     }
+
+ */
 }

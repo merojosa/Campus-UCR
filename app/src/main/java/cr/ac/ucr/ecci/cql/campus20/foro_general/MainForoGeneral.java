@@ -44,9 +44,6 @@ public class MainForoGeneral extends AppCompatActivity {
 
                 // Dependiendo del item seleccionado, ejecutará el Intent del módulo específico
                 switch(menuItem.getItemId()){
-                    case R.id.inicio:
-                        Intent intentInicio = new Intent(MainForoGeneral.this, MainActivity.class);
-                        startActivity(intentInicio);
                     case R.id.ucreats:
                         break;
                     case R.id.mujeres:
