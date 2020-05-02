@@ -89,11 +89,13 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ArrayList<Temas> GetArrayItems(){
         ArrayList<Temas> mTemas = new ArrayList<>();
 
-        mTemas.add(new Temas("Agua", R.drawable.i01, "Al menos 8 vasos al día"));
-        mTemas.add(new Temas("Vino", R.drawable.i02, "No exceda una copa al día"));
-        mTemas.add(new Temas("Café", R.drawable.i03, "Evite tomarlo"));
-        mTemas.add(new Temas("Carnes", R.drawable.i04, "Al menos tres veces a la semana"));
-        mTemas.add(new Temas("Hamburguesa", R.drawable.i05, "Solo caseras y bajas en grasa"));
+        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo mas nuevo"));
+        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "."));
+        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "."));
+        mTemas.add(new Temas("Becas", R.drawable.foro_becas, "Desde como aplicar hasta como gastar"));
+        mTemas.add(new Temas("Residencias", R.drawable.foro_residencias, "Mas barato que alquilar ..."));
+        mTemas.add(new Temas("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
+        mTemas.add(new Temas("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas mas valoradas por la comunidad"));
 
         return mTemas;
     }
