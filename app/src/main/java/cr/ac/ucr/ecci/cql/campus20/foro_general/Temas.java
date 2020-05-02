@@ -1,13 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 public class Temas {
-    public static final String IMAGEN = "i";
 
-    private final String name;
-    private final String img;
-    private final String description;
+    private String name;
+    private int img;
+    private String description;
 
-    public Temas(String name, String img, String description) {
+    public Temas(String name, int img, String description) {
         this.name = name;
         this.img = img;
         this.description = description;
@@ -17,7 +16,7 @@ public class Temas {
         return name;
     }
 
-    public String getImg() {
+    public int getImg() {
         return img;
     }
 
@@ -26,8 +25,8 @@ public class Temas {
     }
 
     // Para el ListView
-    @Override
-    public String toString() {
+    //@Override
+    /*public String toString() {
         return this.name;
-    }
+    }*/
 }
