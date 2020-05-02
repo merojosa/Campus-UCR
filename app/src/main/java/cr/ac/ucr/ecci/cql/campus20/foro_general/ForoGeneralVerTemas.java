@@ -89,17 +89,27 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ArrayList<Temas> GetArrayItems(){
         ArrayList<Temas> mTemas = new ArrayList<>();
 
-        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo mas nuevo"));
-        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "."));
-        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "."));
+        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
+        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
+        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
         mTemas.add(new Temas("Becas", R.drawable.foro_becas, "Desde como aplicar hasta como gastar"));
-        mTemas.add(new Temas("Residencias", R.drawable.foro_residencias, "Mas barato que alquilar ..."));
+        mTemas.add(new Temas("Residencias", R.drawable.foro_residencias, "Más barato que alquilar ..."));
         mTemas.add(new Temas("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
-        mTemas.add(new Temas("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas mas valoradas por la comunidad"));
-        mTemas.add(new Temas("Comodin", R.drawable.foro_comodin, "un elemento mas a la lista"));
-        mTemas.add(new Temas("Comodin2", R.drawable.foro_comodin, "un elemento mas a la lista"));
+        mTemas.add(new Temas("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas más valoradas por la comunidad"));
 
         return mTemas;
     }
+
+    // Metodo para retornar temas recomendados para la pantalla de inicio
+    public ArrayList<Temas> GetTemasRecomendados(){
+        ArrayList<Temas> mTemas = new ArrayList<>();
+
+        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
+        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
+        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
+
+        return mTemas;
+    }
+
 }
 

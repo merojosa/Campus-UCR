@@ -8,8 +8,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -28,6 +33,17 @@ public class MainForoGeneral extends AppCompatActivity {
         buttonTemas.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 irATemas();
+            }
+        });
+
+        // Boton flotante de Agregar Preguntas
+        FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
+
+        // Asocia evento clic al boton
+        buttonAgregarPreguntas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearPregunta();
             }
         });
 
@@ -57,13 +73,24 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-
-
+        // Codigo que realiza el llenado de la lista de temas recomendados
+        ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
+        ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
+        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.GetTemasRecomendados());
+        listaTemasRecomendados.setAdapter(adaptadorTemas);
     }
+
+    // Ir a pantalla de agregar pregunta
+    private void crearPregunta() {
+        Intent intent = new Intent(this, CrearPreguntaForoGeneral.class);
+        // Llamada a la actividad de crear pregunta
+        startActivity(intent);
+    }
+
     // Ir al foro
     private void irATemas() {
         Intent intent = new Intent(this, ForoGeneralVerTemas.class);
-        // Llamada a la actividad
+        // Llamada a la actividad de mostrar temas
         startActivity(intent);
     }
 }
