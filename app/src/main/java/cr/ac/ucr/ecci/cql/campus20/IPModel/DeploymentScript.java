@@ -4,7 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.Utilities.UtilDates;
 
 /**
  * @class DeploymentScript
@@ -24,6 +28,7 @@ public class DeploymentScript {
         createPlaces(context);
         createSchools(context);
         createCoordinates(context);
+        createComments(context);
     }
 
     private static void clearDatabase(Context context){
@@ -74,7 +79,7 @@ public class DeploymentScript {
         /*Both belong to Engineering Faculty, in position 8 of Faculties array above.*/
         int[] FacultiesFK = {8, 8};
         /*ECCI is in finca 1, and EIE is in finca 2.*/
-        int[] PlacesFK = {1, 2};
+        int[] PlacesFK = {0, 1};
         for(int i = 0; i < SchoolNames.length; ++i){
             schoolList.add(new School(i, FacultiesFK[i], PlacesFK[i], SchoolNames[i], SchoolDescriptions[i]));
         }
@@ -89,7 +94,7 @@ public class DeploymentScript {
     private static void createCoordinates(Context context){
         DataAccess db = new DataAccess(context);
         List<Coordinate> coordinateList = new ArrayList<>();
-        int[] placesFK = {1,2};
+        int[] placesFK = {0,1};
         double[] latitude = {9.9380801, 9.9371256};
         double[] longitude = {-84.0528859, -84.0441968};
         for(int i = 0; i < latitude.length; ++i){
@@ -100,5 +105,20 @@ public class DeploymentScript {
         }
         db.close();
         Log.d("coordinates", "Coordinates were inserted in database.");
+    }
+
+    private static void createComments(Context context){
+        DataAccess db = new DataAccess(context);
+        List<Comment> commentList = new ArrayList<>();
+        int[] placesFK = {0,1};
+        String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
+        for(int i = 0; i < placesFK.length; ++i){
+            commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime())));
+        }
+        for(Comment c : commentList){
+            c.insert(context);
+        }
+        db.close();
+        Log.d("comments", "Comments were inserted in database.");
     }
 }
