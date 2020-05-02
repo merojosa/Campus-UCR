@@ -2,8 +2,15 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -16,16 +23,29 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener  {
     private MapView mapView;
+    private static final String SOURCE_ID = "SOURCE_ID";
+    private static final String ICON_ID = "ICON_ID";
+    private static final String LAYER_ID = "LAYER_ID";
 
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +60,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap)
     {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+
         MainRedMujeres.this.mapboxMap = mapboxMap;
 
-        mapboxMap.setStyle(Style.MAPBOX_STREETS,
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"),
             new Style.OnStyleLoaded()
             {
                 @Override
@@ -51,7 +73,42 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     enableLocationComponent(style);
                 }
             });
+        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
+            @Override
+            public boolean onMapClick(@NonNull LatLng point) {
+                symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(point.getLongitude(),point.getLatitude())));
+                mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
+
+
+                                .withImage(ICON_ID, BitmapFactory.decodeResource(
+                                        MainRedMujeres.this.getResources(), R.drawable.mapbox_logo_icon))
+
+
+                                .withSource(new GeoJsonSource(SOURCE_ID,
+                                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+
+
+                                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                                        .withProperties(
+                                                iconImage(ICON_ID),
+                                                iconAllowOverlap(true),
+                                                iconIgnorePlacement(true),
+                                                iconOffset(new Float[] {0f, -9f}))
+                                ),
+                        new Style.OnStyleLoaded()
+                        {
+                            @Override
+                            public void onStyleLoaded(@NonNull Style style)
+                            {
+                                enableLocationComponent(style);
+                            }
+                        });
+
+                return true;
+            }
+        });
     }
+
 
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
