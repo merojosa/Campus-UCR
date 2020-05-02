@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         // Inicialización de la barra de navegación general
         BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
         // Dejar por defecto el Inicio seleccionado
         generalNavigationView.setSelectedItemId(R.id.inicio);
+
         // Ejecución del listener para cambiar de actividad
         generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
 

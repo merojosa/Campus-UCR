@@ -31,11 +31,12 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-
         // Inicialización de la barra de navegación general
         BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
-        // Dejar por defecto el Inicio seleccionado
+
+        // Dejar por defecto el ícono de foro seleccionado
         generalNavigationView.setSelectedItemId(R.id.foro);
+
         // Ejecución del listener para cambiar de actividad
         generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -58,6 +59,8 @@ public class MainForoGeneral extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
     }
     // Ir al foro
