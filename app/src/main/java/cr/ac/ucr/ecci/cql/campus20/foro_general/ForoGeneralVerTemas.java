@@ -1,8 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -24,6 +28,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ListView lvItems;
     private AdaptadorTemas adaptadorTemas;
     //private List<Temas> mTemas;
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     case R.id.mujeres:
                         break;
                     case R.id.foro:
+                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
+                        startActivity(intentForo);
                         break;
                     case R.id.lugares:
                         break;
@@ -81,7 +90,36 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });
 
+        dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
+        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = (NavigationView)findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.home_foro:
+                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
+                        startActivity(intentForo);
+                        break;
+                    case R.id.temas_foro:
+                        Intent intent2Foro = new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class);
+                        startActivity(intent2Foro);
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+
+            }
+        });
 
     }
 
@@ -100,6 +138,14 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mTemas.add(new Temas("Comodin2", R.drawable.foro_comodin, "un elemento mas a la lista"));
 
         return mTemas;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
     }
 }
 
