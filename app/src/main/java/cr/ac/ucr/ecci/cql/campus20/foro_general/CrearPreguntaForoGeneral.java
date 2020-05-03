@@ -61,7 +61,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nv = (NavigationView)findViewById(R.id.nv);
+        nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

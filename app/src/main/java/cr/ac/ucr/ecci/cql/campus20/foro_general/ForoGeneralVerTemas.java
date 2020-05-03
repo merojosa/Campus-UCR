@@ -7,20 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 import androidx.drawerlayout.widget.DrawerLayout;
-import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
@@ -99,7 +93,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nv = (NavigationView)findViewById(R.id.nv);
+        nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

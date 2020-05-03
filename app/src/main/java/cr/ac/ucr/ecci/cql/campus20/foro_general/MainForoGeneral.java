@@ -10,15 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 import com.google.android.material.navigation.NavigationView;
-
-import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import cr.ac.ucr.ecci.cql.campus20.MainActivity;
@@ -97,7 +92,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nv = (NavigationView)findViewById(R.id.nv);
+        nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -23,7 +23,6 @@
             app:layout_constraintBottom_toTopOf="parent" />
 
         <!-- Código para incluir la barra de navegación general-->
-        <!-- Código para incluir la barra de navegación general-->
         <include
             android:id="@+id/bottom_navigation"
             layout="@layout/barra_navegacion_general"
@@ -34,14 +33,9 @@
 
     </RelativeLayout>
 
-    <!-- Código para incluir el menu de navegación izquierda a derecha-->
-    <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:menu="@menu/menu_nav"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/nav_hl"
-        android:id="@+id/nv">
-    </com.google.android.material.navigation.NavigationView>
+    <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
+    <include
+        android:id="@+id/nv_foro"
+        layout="@layout/nav_izq_der_foro"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
