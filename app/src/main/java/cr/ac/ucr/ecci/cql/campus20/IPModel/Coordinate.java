@@ -8,6 +8,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that represents a Coordinate database entity.
+ * */
 public class Coordinate {
 
     private int id;
@@ -15,6 +18,9 @@ public class Coordinate {
     private double latitude;
     private double longitude;
 
+    /**
+     * Constructor.
+     * */
     public Coordinate(int id, int id_place_fk, double latitude, double longitude) {
         this.id = id;
         this.id_place_fk = id_place_fk;

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @brief Class that represents a School database entity.
+ * Class that represents a School database entity.
  * */
 public class School {
 

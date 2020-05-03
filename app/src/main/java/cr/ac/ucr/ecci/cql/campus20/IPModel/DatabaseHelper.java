@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**Increment this counter by one whenever the database model is modified.*/
-    private static final int VERSION = 10;
+    private static final int VERSION = 11;
 
     private static final String DB_NAME = "CampusDB.db";
 
