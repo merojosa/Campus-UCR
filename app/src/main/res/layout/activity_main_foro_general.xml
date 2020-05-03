@@ -69,16 +69,19 @@
             app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Código para incluir la barra de navegación general-->
-        <include
-            android:id="@+id/bottom_navigation"
-            layout="@layout/barra_navegacion_general"
+    <!-- Código para incluir la barra de navegación general-->
+        <fragment
+            android:id="@+id/NavigationBar"
+            class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </RelativeLayout>
+
 
     <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
     <include

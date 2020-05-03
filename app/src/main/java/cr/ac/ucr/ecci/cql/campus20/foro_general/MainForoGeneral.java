@@ -2,7 +2,9 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -40,42 +44,6 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-        // Boton flotante de Agregar Preguntas
-        FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
-
-        // Asocia evento clic al boton
-        buttonAgregarPreguntas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                crearPregunta();
-            }
-        });
-
-        // Inicialización de la barra de navegación general
-        BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
-
-        // Dejar por defecto el ícono de foro seleccionado
-        generalNavigationView.setSelectedItemId(R.id.foro);
-
-        // Ejecución del listener para cambiar de actividad
-        generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                // Dependiendo del item seleccionado, ejecutará el Intent del módulo específico
-                switch(menuItem.getItemId()){
-                    case R.id.ucreats:
-                        break;
-                    case R.id.mujeres:
-                        break;
-                    case R.id.foro:
-                        break;
-                    case R.id.lugares:
-                        break;
-                }
-                return false;
-            }
-        });
 
         // Codigo que realiza el llenado de la lista de temas recomendados
         ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
@@ -126,7 +94,7 @@ public class MainForoGeneral extends AppCompatActivity {
     // Ir al foro
     private void irATemas() {
         Intent intent = new Intent(this, ForoGeneralVerTemas.class);
-        // Llamada a la actividad de mostrar temas
+        // Llamada a la actividad
         startActivity(intent);
     }
 

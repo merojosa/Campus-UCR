@@ -2,6 +2,12 @@
 <!-- Código para añadir los íconos y opciones de la barra de navegación general-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--
+    <item android:title="Inicio"
+        android:id="@+id/inicio"
+        android:icon="@drawable/ic_inicio"
+        />
+    -->
     <item android:title="UcrEats"
         android:id="@+id/ucreats"
         android:icon="@drawable/ic_ucreats"
