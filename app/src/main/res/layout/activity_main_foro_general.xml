@@ -24,12 +24,14 @@
         tools:layout_editor_absoluteY="195dp" />
 
     <!-- Código para incluir la barra de navegación general-->
-    <!-- Código para incluir la barra de navegación general-->
-    <include
-        layout="@layout/barra_navegacion_general"
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
