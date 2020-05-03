@@ -33,7 +33,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         //se establece la vista de la lista de temas
         lvItems = findViewById(R.id.lvItems);
-        adaptadorTemas = new AdaptadorTemas(this, GetArrayItems());
+        adaptadorTemas = new AdaptadorTemas(this, getArrayItems());
         lvItems.setAdapter(adaptadorTemas);
 
         /*
@@ -118,8 +118,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
     }
 
-    //metodo para obtener la lista de temas
-    private ArrayList<Temas> GetArrayItems(){
+    /**
+     * Método que retorna los Temas para mostrar en la actividad
+     * @return un Array con todos los Temas para mostrar en la actividad y visualizarlos todos en una lista
+     */
+    private ArrayList<Temas> getArrayItems(){
         ArrayList<Temas> mTemas = new ArrayList<>();
 
         mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
@@ -133,8 +136,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         return mTemas;
     }
 
-    // Metodo para retornar temas recomendados para la pantalla de inicio
-    public ArrayList<Temas> GetTemasRecomendados(){
+    /**
+     * Método que retorna los Temas Sugeridos para mostrar en la actividad principal
+     * @return un array de Temas Sugeridos para mostrar en la actividad principal
+     */
+    public ArrayList<Temas> getTemasSugeridos(){
         ArrayList<Temas> mTemas = new ArrayList<>();
 
         mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
@@ -143,6 +149,12 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         return mTemas;
     }
+
+    /**
+     * Este método ...
+     * @param item funciona para ...
+     * @return un booleano que ....
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

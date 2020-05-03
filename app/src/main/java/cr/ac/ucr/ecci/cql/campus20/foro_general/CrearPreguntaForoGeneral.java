@@ -19,6 +19,11 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    /**
+     * Método que se invoca al entrar a la actividad de Crear una pregunta
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +91,11 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

@@ -29,6 +29,12 @@ public class MainForoGeneral extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+    /**
+     * Método que se invoca al iniciar la actividad general del módulo Foro General,
+     * muestra una pequeña lista de temas sugeridos y un botón flotante para agregar una pregunta (pantalla en blanco)
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +51,10 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
+        // Llenado de la lista de temas sugeridos
+        rellenarTemasSugeridos();
 
-
-
-        // Codigo que realiza el llenado de la lista de temas recomendados
-        ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
-        ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
-        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.GetTemasRecomendados());
-        listaTemasRecomendados.setAdapter(adaptadorTemas);
+        // Este código debería ser una llamado y no el código en sí
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general);
@@ -85,9 +87,11 @@ public class MainForoGeneral extends AppCompatActivity {
 
             }
         });
-
     }
-    // Ir a pantalla de agregar pregunta
+
+    /**
+     * Método que crea un Intent para ir a la actividad de CrearPregunta
+     */
     private void crearPregunta() {
         Intent intent = new Intent(this, CrearPreguntaForoGeneral.class);
         // Llamada a la actividad de crear pregunta
@@ -95,6 +99,22 @@ public class MainForoGeneral extends AppCompatActivity {
     }
 
 
+    /**
+     * Método que realiza un llenado de la lista de temas sugeridos
+     */
+    private void rellenarTemasSugeridos(){
+        // Codigo que realiza el llenado de la lista de temas recomendados
+        ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
+        ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
+        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.getTemasSugeridos());
+        listaTemasRecomendados.setAdapter(adaptadorTemas);
+    }
+
+    /**
+     * Este método ...
+     * @param item funciona para ...
+     * @return un booleano que ....
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
