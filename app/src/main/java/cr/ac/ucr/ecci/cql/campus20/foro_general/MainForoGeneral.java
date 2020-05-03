@@ -34,19 +34,6 @@ public class MainForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_foro_general);
 
-        //boton temporal para ir a la pantalla de temas
-        Button buttonTemas = (Button) findViewById(R.id.buttonTemas);
-
-        // Asocia evento clic al boton
-        buttonTemas.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                irATemas();
-            }
-        });
-
-
-
-
         // Boton flotante de Agregar Preguntas
         FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
 
@@ -107,12 +94,6 @@ public class MainForoGeneral extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Ir al foro
-    private void irATemas() {
-        Intent intent = new Intent(this, ForoGeneralVerTemas.class);
-        // Llamada a la actividad
-        startActivity(intent);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
