@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main_foro_general_ver_temas"
-    tools:context=".foro_general.ForoGeneralVerTemas"
+    android:id="@+id/activity_main_crear_pregunta"
+    tools:context=".foro_general.CrearPreguntaForoGeneral"
     android:background="@android:color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/lvItems"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_marginBottom="60dp"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ListView>
+        <TextView
+            android:id="@+id/crearPreguntaTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pantalla de Crear Pregunta Temporal"
+            android:textSize="23dp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="parent" />
 
         <!-- Código para incluir la barra de navegación general-->
         <include
+            android:id="@+id/bottom_navigation"
             layout="@layout/barra_navegacion_general"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
