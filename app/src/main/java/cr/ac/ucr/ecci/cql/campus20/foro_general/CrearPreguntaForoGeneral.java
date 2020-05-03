@@ -24,6 +24,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_pregunta_foro_general);
 
+        /*
         // Inicialización de la barra de navegación general
         BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -50,7 +51,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                 }
                 return false;
             }
-        });
+        });*/
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_crear_pregunta);

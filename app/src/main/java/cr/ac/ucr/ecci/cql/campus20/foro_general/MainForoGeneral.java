@@ -45,6 +45,22 @@ public class MainForoGeneral extends AppCompatActivity {
         });
 
 
+
+
+        // Boton flotante de Agregar Preguntas
+        FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
+
+        // Asocia evento clic al boton
+        buttonAgregarPreguntas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearPregunta();
+            }
+        });
+
+
+
+
         // Codigo que realiza el llenado de la lista de temas recomendados
         ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
         ForoGeneralVerTemas temas = new ForoGeneralVerTemas();

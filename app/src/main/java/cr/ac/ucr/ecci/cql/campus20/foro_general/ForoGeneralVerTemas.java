@@ -55,7 +55,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         */
 
 
-
+/*
         // Inicialización de la barra de navegación general
         BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -82,7 +82,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 }
                 return false;
             }
-        });
+        });*/
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
