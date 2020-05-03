@@ -43,9 +43,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
         mRecyclerView.setHasFixedSize(true);
-
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
 
@@ -69,9 +67,9 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
-        testDatabase(index);
+        //testDatabase(index);
 
-        Intent childActivity = new Intent(FacultiesActivity.this, FacultyViewActivity.class);
+        Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
 
         startActivity(childActivity);
@@ -80,9 +78,9 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     public void setDataList(){
         temp.addAll(facultiesList);
     }
-
+/*
     private void testDatabase(int index){
-        /*Prueba de base de datos, obtiene las escuelas de una facultad y la ubicación de cada escuela.*/
+        /*Prueba de base de datos, obtiene las escuelas de una facultad y la ubicación de cada escuela.
         List<School> schools = new ArrayList<>();
         schools = School.read(getApplicationContext(), index);
         for(School s : schools){
@@ -97,5 +95,5 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
             }
         }
     }
-
+*/
 }
