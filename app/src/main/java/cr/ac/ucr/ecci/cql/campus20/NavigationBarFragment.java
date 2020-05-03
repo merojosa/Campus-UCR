@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // Se importan las actividades principales que estarán disponibles desde el fragmento
+import cr.ac.ucr.ecci.cql.campus20.foro_general.CrearPreguntaForoGeneral;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
@@ -73,7 +75,7 @@ public class NavigationBarFragment extends android.app.Fragment {
                 // Ícono del módulo de mujeres ucr
                 navegacion.getMenu().getItem(1).setChecked(true);
             else*/
-                if (getActivity() instanceof MainForoGeneral)
+                if (getActivity() instanceof MainForoGeneral || getActivity() instanceof CrearPreguntaForoGeneral ||getActivity() instanceof ForoGeneralVerTemas)
                     // Ícono del módulo de foro
                     navegacion.getMenu().getItem(2).setChecked(true);
                 /*else
