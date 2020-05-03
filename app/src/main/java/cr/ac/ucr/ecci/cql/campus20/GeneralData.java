@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+/*Para pasar elementos a la lista*/
 public abstract class GeneralData {
     public abstract String getTitle();
     public abstract String getDescription();

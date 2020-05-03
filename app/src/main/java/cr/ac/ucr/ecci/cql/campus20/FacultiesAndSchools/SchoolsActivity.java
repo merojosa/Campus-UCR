@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.FacultiesAndSchools;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,8 +10,10 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 
 public class SchoolsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {

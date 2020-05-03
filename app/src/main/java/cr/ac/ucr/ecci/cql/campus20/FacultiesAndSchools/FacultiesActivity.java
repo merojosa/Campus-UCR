@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.FacultiesAndSchools;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,18 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Comment;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Coordinate;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.DataAccess;
+import cr.ac.ucr.ecci.cql.campus20.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
+import cr.ac.ucr.ecci.cql.campus20.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
@@ -27,7 +23,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     private List<GeneralData> temp = new ArrayList<>();
     private List<Faculty> facultiesList;
 
-    private Faculty faculty;
+//    private Faculty faculty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +43,6 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
 
-        //createFaculties();
         facultiesList = Faculty.getFacultiesList(getApplicationContext());
 
         setDataList();

@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Botón para ingresar al sub menú de los puntos de interes*/
         DeploymentScript.RunScript(getApplicationContext());
         Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
         buttonInterestPoints.setOnClickListener(new View.OnClickListener() {

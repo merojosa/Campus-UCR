@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SchoolViewActivity"
+            android:name=".FacultiesAndSchools.SchoolViewActivity"
             android:theme="@style/AppTheme.InterestsTheme"
             />
         <activity
-            android:name=".SchoolsActivity"
+            android:name=".FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity
-            android:name=".FacultiesActivity"
+            android:name=".FacultiesAndSchools.FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity android:name=".Mapbox.Map"></activity>
 

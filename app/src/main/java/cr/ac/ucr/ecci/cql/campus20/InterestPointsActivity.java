@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
 
+import cr.ac.ucr.ecci.cql.campus20.FacultiesAndSchools.FacultiesActivity;
+
 public class InterestPointsActivity extends AppCompatActivity {
 
     GridLayout mainGrid;
