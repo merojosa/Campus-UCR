@@ -90,6 +90,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });
 
+        //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 

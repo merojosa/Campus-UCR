@@ -88,6 +88,7 @@ public class MainForoGeneral extends AppCompatActivity {
         AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.GetTemasRecomendados());
         listaTemasRecomendados.setAdapter(adaptadorTemas);
 
+        //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 

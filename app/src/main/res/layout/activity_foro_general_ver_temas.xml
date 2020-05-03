@@ -22,12 +22,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ListView>
 
-    <include
-        layout="@layout/barra_navegacion_general"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <!-- Código para incluir la barra de navegación general-->
+        <!-- Código para incluir la barra de navegación general-->
+        <include
+            layout="@layout/barra_navegacion_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </RelativeLayout>
 
