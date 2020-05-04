@@ -150,11 +150,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 addDestinationIconSymbolLayer(style);
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+
                 button = findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean simulateRoute = true;
+                        boolean simulateRoute = false;
                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                                 .directionsRoute(currentRoute)
                                 .shouldSimulateRoute(simulateRoute)
@@ -201,7 +202,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         getRoute(originPoint, destinationPoint);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapBoxBlue);
+        button.setBackgroundResource(R.color.mapboxBlue);
         return true;
     }
 
@@ -272,6 +273,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             permissionsManager.requestLocationPermissions(this);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
