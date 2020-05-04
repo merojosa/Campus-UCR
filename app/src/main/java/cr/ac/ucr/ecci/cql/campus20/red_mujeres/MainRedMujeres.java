@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
@@ -17,6 +18,9 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import android.view.Menu;
+import android.view.MenuItem;
+
 import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -24,6 +28,7 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
@@ -31,6 +36,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 // Clases para calcular una ruta
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
@@ -145,12 +151,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+                //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
-
+                
                 addDestinationIconSymbolLayer(style);
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
-
                 button = findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -164,10 +170,26 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
                     }
                 });
+
+                //Botón de visibilidad del usuario
+                FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(locationComponent.isLocationComponentEnabled()){
+                            locationComponent.setLocationComponentEnabled(false);
+                        }
+                        else {
+                            locationComponent.setLocationComponentEnabled(true);
+                        }
+                    }
+                });
+
             }
 
         });
     }
+
 
     //*************************************************
     //NAVEGACION:

@@ -9,4 +9,9 @@
     <color name="mapboxPink">#ee4e8b</color>
     <color name="mapboxYellow">#d9d838</color>
     <color name="mapboxRed">#b43b71</color>
+    <color name="azulUCR">#005DA4</color>
+    <color name="celesteUCR">#00C0F3</color>
+    <color name="verdeUCR">#6DC067</color>
+    <color name="amarilloUCR">#FFE06A</color>
+
 </resources>
