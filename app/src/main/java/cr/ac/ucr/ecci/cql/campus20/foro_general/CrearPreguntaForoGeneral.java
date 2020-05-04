@@ -92,9 +92,9 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param item
-     * @return
+     * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     * @param item funciona para indicar el objeto de la lista que se selecionó
+     * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

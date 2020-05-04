@@ -26,6 +26,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+    /**
+     * Método que se invoca al iniciar la actividad temas en el foro general,
+     * muestra una lista de temas, con la imagen y una descripción de los mismos     *
+     * @param savedInstanceState almacena información del estado de la actividad
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,9 +156,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     }
 
     /**
-     * Este método ...
-     * @param item funciona para ...
-     * @return un booleano que ....
+     * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     * @param item funciona para indicar el objeto de la lista que se selecionó
+     * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
