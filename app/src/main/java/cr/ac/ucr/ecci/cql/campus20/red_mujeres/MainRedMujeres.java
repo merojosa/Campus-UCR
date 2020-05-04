@@ -54,14 +54,15 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback,  PermissionsListener  {
+public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener  {
 
     //variables para agregar la capa de localización
     private MapView mapView;
+    private PermissionsManager permissionsManager;
+    private LocationComponent locationComponent;
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
-    private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
 
     //variables para calcular y dibujar una ruta
@@ -82,90 +83,90 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapView.getMapAsync(this);
     }
 
-    @Override
-    public void onMapReady(@NonNull final MapboxMap mapboxMap)
-    {
-        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-
-        MainRedMujeres.this.mapboxMap = mapboxMap;
-
-        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"),
-            new Style.OnStyleLoaded()
-            {
-                @Override
-                public void onStyleLoaded(@NonNull Style style)
-                {
-                    enableLocationComponent(style);
-                }
-            });
-
-        //Para que la brujula que centra la camara no desaparezca
-        mapboxMap.getUiSettings().setCompassFadeFacingNorth(false);
-
-        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
-            @Override
-            public boolean onMapClick(@NonNull LatLng point) {
-                symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(point.getLongitude(),point.getLatitude())));
-                mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
-
-
-                                .withImage(ICON_ID, BitmapFactory.decodeResource(
-                                        MainRedMujeres.this.getResources(), R.drawable.mapbox_logo_icon))
-
-
-                                .withSource(new GeoJsonSource(SOURCE_ID,
-                                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
-
-
-                                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
-                                        .withProperties(
-                                                iconImage(ICON_ID),
-                                                iconAllowOverlap(true),
-                                                iconIgnorePlacement(true),
-                                                iconOffset(new Float[] {0f, -9f}))
-                                ),
-                        new Style.OnStyleLoaded()
-                        {
-                            @Override
-                            public void onStyleLoaded(@NonNull Style style)
-                            {
-                                enableLocationComponent(style);
-                            }
-                        });
-
-                return true;
-            }
-        });
-    }
-
 //    @Override
-//    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//        this.mapboxMap = mapboxMap;
-//        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
+//    public void onMapReady(@NonNull final MapboxMap mapboxMap)
+//    {
+//        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+//
+//        MainRedMujeres.this.mapboxMap = mapboxMap;
+//
+//        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"),
+//            new Style.OnStyleLoaded()
+//            {
+//                @Override
+//                public void onStyleLoaded(@NonNull Style style)
+//                {
+//                    enableLocationComponent(style);
+//                }
+//            });
+//
+//        //Para que la brujula que centra la camara no desaparezca
+//        mapboxMap.getUiSettings().setCompassFadeFacingNorth(false);
+//
+//        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
 //            @Override
-//            public void onStyleLoaded(@NonNull Style style) {
-//                enableLocationComponent(style);
+//            public boolean onMapClick(@NonNull LatLng point) {
+//                symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(point.getLongitude(),point.getLatitude())));
+//                mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
 //
-//                addDestinationIconSymbolLayer(style);
 //
-//                mapboxMap.addOnMapClickListener(MainRedMujeres.this);
-//                button = findViewById(R.id.startButton);
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        boolean simulateRoute = true;
-//                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-//                                .directionsRoute(currentRoute)
-//                                .shouldSimulateRoute(simulateRoute)
-//                                .build();
-//                        // Call this method with Context from within an Activity
-//                        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
-//                    }
-//                });
+//                                .withImage(ICON_ID, BitmapFactory.decodeResource(
+//                                        MainRedMujeres.this.getResources(), R.drawable.mapbox_logo_icon))
+//
+//
+//                                .withSource(new GeoJsonSource(SOURCE_ID,
+//                                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+//
+//
+//                                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+//                                        .withProperties(
+//                                                iconImage(ICON_ID),
+//                                                iconAllowOverlap(true),
+//                                                iconIgnorePlacement(true),
+//                                                iconOffset(new Float[] {0f, -9f}))
+//                                ),
+//                        new Style.OnStyleLoaded()
+//                        {
+//                            @Override
+//                            public void onStyleLoaded(@NonNull Style style)
+//                            {
+//                                enableLocationComponent(style);
+//                            }
+//                        });
+//
+//                return true;
 //            }
-//
 //        });
 //    }
+
+    @Override
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        MainRedMujeres.this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                enableLocationComponent(style);
+
+                addDestinationIconSymbolLayer(style);
+
+                mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+                button = findViewById(R.id.startButton);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean simulateRoute = true;
+                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                .directionsRoute(currentRoute)
+                                .shouldSimulateRoute(simulateRoute)
+                                .build();
+                        // Call this method with Context from within an Activity
+                        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
+                    }
+                });
+            }
+
+        });
+    }
 
     //*************************************************
     //NAVEGACION:
@@ -184,25 +185,25 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
-//    @SuppressWarnings( {"MissingPermission"})
-//    @Override
-//    public boolean onMapClick(@NonNull LatLng point) {
-//
-//        //LocationComponent locationComponent = null;
-//        Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
-//        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-//                locationComponent.getLastKnownLocation().getLatitude());
-//
-//        GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
-//        if (source != null) {
-//            source.setGeoJson(Feature.fromGeometry(destinationPoint));
-//        }
-//
-//        getRoute(originPoint, destinationPoint);
-//        button.setEnabled(true);
-//        button.setBackgroundResource(R.color.mapBoxBlue);
-//        return true;
-//    }
+    @SuppressWarnings( {"MissingPermission"})
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+
+        //LocationComponent locationComponent = null;
+        Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                locationComponent.getLastKnownLocation().getLatitude());
+
+        GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
+        if (source != null) {
+            source.setGeoJson(Feature.fromGeometry(destinationPoint));
+        }
+
+        getRoute(originPoint, destinationPoint);
+        button.setEnabled(true);
+        button.setBackgroundResource(R.color.mapBoxBlue);
+        return true;
+    }
 
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(this)
@@ -250,7 +251,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         if (PermissionsManager.areLocationPermissionsGranted(this))
         {
             // Get an instance of the component
-            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent = mapboxMap.getLocationComponent();
 
             // Activate with options
             locationComponent.activateLocationComponent(
@@ -302,7 +303,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             finish();
         }
     }
-
 
 
     @Override
