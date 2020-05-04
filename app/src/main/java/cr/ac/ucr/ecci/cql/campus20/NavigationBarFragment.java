@@ -79,10 +79,13 @@ public class NavigationBarFragment extends android.app.Fragment {
         navegacion.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Se deja el ícono inicial de la barra sin seleccionar por defecto
-        navegacion.getMenu().getItem(0).setChecked(false);
+        navegacion.getMenu().getItem(0).setCheckable(false);
 
         // Chequea cuál de las actividades principales es la que está llamando al módulo para
         // marcar ese ícono como seleccionado
+        if (getActivity() instanceof MainActivity)
+            navegacion.getMenu().getItem(0).setChecked(false);
+
         if (getActivity() instanceof MainUcrEats)
             // Ícono del módulo de ucr eats
             navegacion.getMenu().getItem(0).setChecked(true);
@@ -115,6 +118,8 @@ public class NavigationBarFragment extends android.app.Fragment {
             switch (item.getItemId()) {
 
                 case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
+                    Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
+                    startActivity(intentUCREats);
                     return true;
 
                 case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
