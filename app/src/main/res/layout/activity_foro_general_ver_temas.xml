@@ -37,8 +37,10 @@
     </RelativeLayout>
 
     <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
-    <include
-        android:id="@+id/nv_foro"
-        layout="@layout/nav_izq_der_foro"/>
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/NavigationDrawer"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationDrawerFragment"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

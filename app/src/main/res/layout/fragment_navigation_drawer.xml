@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NavigationDrawerFragment">
+
+    <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
+    <com.google.android.material.navigation.NavigationView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nv_foro"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu_nav"
+        app:headerLayout="@layout/nav_hl">
+    </com.google.android.material.navigation.NavigationView>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

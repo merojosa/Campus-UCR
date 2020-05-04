@@ -22,9 +22,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ListView lvItems;
     private AdaptadorTemas adaptadorTemas;
     //private List<Temas> mTemas;
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,38 +81,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });*/
 
-        //Codigo que maneja la navegacion de izquierda a derecha
-        dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
-
-        dl.addDrawerListener(t);
-        t.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        nv = (NavigationView)findViewById(R.id.nv_foro);
-        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch(id)
-                {
-                    case R.id.home_foro:
-                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
-                        startActivity(intentForo);
-                        break;
-                    case R.id.temas_foro:
-                        Intent intent2Foro = new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class);
-                        startActivity(intent2Foro);
-                        break;
-                    default:
-                        return true;
-                }
-                return true;
-
-            }
-        });
-
     }
 
     /**
@@ -148,20 +113,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
 
         return mTemas;
-    }
-
-    /**
-     * Este método ...
-     * @param item funciona para ...
-     * @return un booleano que ....
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(t.onOptionsItemSelected(item))
-            return true;
-
-        return super.onOptionsItemSelected(item);
     }
 }
 
