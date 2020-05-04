@@ -1,12 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicReference;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RestaurantDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsDatabase;
