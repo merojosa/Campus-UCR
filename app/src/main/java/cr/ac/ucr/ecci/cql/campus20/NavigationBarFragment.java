@@ -31,26 +31,42 @@ public class NavigationBarFragment extends android.app.Fragment {
 
     int mMenuId;
 
+    /**
+     * Construtor del fragmento
+     */
     public NavigationBarFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Método que se encarga de crear una nueva instancia del fragmento
+     * @return fragment, que es una instancia del fragmento
+     */
     // TODO: Rename and change types and number of parameters
-    public static NavigationBarFragment newInstance(String param1, String param2) {
+    public static NavigationBarFragment newInstance() {
         NavigationBarFragment fragment = new NavigationBarFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-
+    /**
+     * Método que se encarga de hacer inicializar el fragmento
+     * @param savedInstanceState se usa para almacenar información del estado de la actividad
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Función que se encarga de crear la vista del fragmento y devolverla
+     * @param inflater es un componente para crear instancias de View basadas en XML
+     * @param container es el ViewGroup donde la vista del fragmento será insertado
+     * @param savedInstanceState es donde se guarda datos y estados del fragmento
+     * @return v, que es un View que contiene la vista del fragmento
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
