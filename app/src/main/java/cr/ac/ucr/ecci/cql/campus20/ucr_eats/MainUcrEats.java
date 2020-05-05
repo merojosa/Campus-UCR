@@ -34,7 +34,10 @@ public class MainUcrEats extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ucr_eats);
-        getSupportActionBar().hide();
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         this.repository = new RestaurantRepository(getApplication());
 
         fillRestaurants();

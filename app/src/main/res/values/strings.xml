@@ -8,4 +8,9 @@
     <string name="goTo">Go to in maps</string>
     <!-- End of Maps required strings -->
     <string name="buscar">Buscar soda...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>

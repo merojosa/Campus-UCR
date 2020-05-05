@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +18,15 @@ import android.view.View;
 import android.widget.Button;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+
+import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,24 +34,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//
+//        Button button = (Button) findViewById(R.id.button2); //TODO:Cambiar nombre variable. Botón para ir a mapa
+//
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(MainActivity.this, MainRedMujeres.class); //Mapa pantalla principal red mujeres
+//                MainActivity.this.startActivity(myIntent);
+//            }
+//        });
 
-        Button button = (Button) findViewById(R.id.button2); //TODO:Cambiar nombre variable. Botón para ir a mapa
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, MainRedMujeres.class); //Mapa pantalla principal red mujeres
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
-
-        /*Botón para ingresar al sub menú de los puntos de interes*/
+        //Botón para ingresar al sub menú de los puntos de interes*/
         DeploymentScript.RunScript(getApplicationContext());
+
+
         Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
         buttonInterestPoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goInterestPoints();
             }
         });
+
     }
 
     private void goInterestPoints() {

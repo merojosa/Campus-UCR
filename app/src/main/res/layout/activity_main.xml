@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -23,4 +22,17 @@
         android:text="Button"
         tools:layout_editor_absoluteX="154dp"
         tools:layout_editor_absoluteY="90dp" />
+
+
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
