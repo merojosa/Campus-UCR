@@ -18,7 +18,8 @@ public class AdaptadorTemas extends BaseAdapter {
 
     /**
      * Constructor del adaptador personalizado de temas
-     * @param context indica en que contexto se encuentra el objeto actual (la lista)
+     *
+     * @param context   indica en que contexto se encuentra el objeto actual (la lista)
      * @param listItems es donde se guardan los objetos de la lista
      */
     public AdaptadorTemas(Context context, ArrayList<Temas> listItems) {
@@ -28,6 +29,7 @@ public class AdaptadorTemas extends BaseAdapter {
 
     /**
      * lleva la cuenta de cuantos elementos hay en la lista
+     *
      * @return listItems.size que es el numero total de elementos en la lista
      */
     @Override
@@ -37,6 +39,7 @@ public class AdaptadorTemas extends BaseAdapter {
 
     /**
      * Este método devuelve el objeto que se encuentra en la posición dada
+     *
      * @param position es la posición en el array del objeto actual
      * @return
      */
@@ -52,7 +55,8 @@ public class AdaptadorTemas extends BaseAdapter {
 
     /**
      * Este método procesa los elementos para que puedan ser presentados como una lista
-     * @param position la posición actual en la lista
+     *
+     * @param position    la posición actual en la lista
      * @param convertView espacio para la lista personalizada
      * @param parent
      * @return la lista a presentar
@@ -60,15 +64,22 @@ public class AdaptadorTemas extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Temas Item = (Temas) getItem(position);
+        View rowView;
 
-        convertView = LayoutInflater.from(context).inflate(R.layout.item_tema, null);
-        ImageView img = convertView.findViewById(R.id.img);
-        TextView name = convertView.findViewById(R.id.name);
-        TextView description = convertView.findViewById(R.id.description);
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            rowView = inflater.inflate(R.layout.item_tema, null);
+        } else {
+            rowView = convertView;
+        }
+
+        ImageView img = rowView.findViewById(R.id.img);
+        TextView name = rowView.findViewById(R.id.name);
+        TextView description = rowView.findViewById(R.id.description);
 
         img.setImageResource(Item.getImg());
         name.setText(Item.getName());
         description.setText(Item.getDescription());
-        return convertView;
+        return rowView;
     }
 }
