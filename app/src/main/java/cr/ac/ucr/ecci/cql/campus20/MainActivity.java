@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import android.view.View;
+import android.widget.Button;
+
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,15 +21,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // Instanciar boton para pasar a la actividad UcrEats
-        Button buttonUcrEats = (Button) findViewById(R.id.buttonUcrEats);
-        // Asocia evento clic al boton
-        buttonUcrEats.setOnClickListener(new View.OnClickListener() {
+        /*Botón para ingresar al sub menú de los puntos de interes*/
+        DeploymentScript.RunScript(getApplicationContext());
+        Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
+        buttonInterestPoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                irUcrEats();
+                goInterestPoints();
             }
         });
+    }
+
+    private void goInterestPoints() {
+        Intent intent = new Intent(this, InterestPointsActivity.class);
+        startActivity(intent);
     }
 
     private void irUcrEats()
@@ -34,4 +43,5 @@ public class MainActivity extends AppCompatActivity {
         // Llamada a la actividad
         startActivity(intent);
     }
+
 }

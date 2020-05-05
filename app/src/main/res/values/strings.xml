@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Campus 2.0</string>
+    <!-- Maps required strings -->
+    <string name="MAPBOX_ACCESS_TOKEN">pk.eyJ1IjoiYXBsaWNhY2lvbmVzbW92aWxlcyIsImEiOiJjazlvZnAybjEwMDRxM3ZxcXNyd29ueXQzIn0.LvWHKVTUqzPXriPY_NY0sQ</string>
+    <string name="goTo">Go to in maps</string>
+    <!-- End of Maps required strings -->
     <string name="buscar">Buscar soda...</string>
 </resources>
