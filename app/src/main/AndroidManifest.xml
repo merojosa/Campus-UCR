@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".foro_general.MainForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
+        <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
