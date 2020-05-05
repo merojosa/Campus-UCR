@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
 
-import cr.ac.ucr.ecci.cql.campus20.FacultiesAndSchools.FacultiesActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class InterestPointsActivity extends AppCompatActivity {
 

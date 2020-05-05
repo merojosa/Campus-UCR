@@ -1,10 +1,8 @@
-package cr.ac.ucr.ecci.cql.campus20.IPModel;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
 
 import androidx.annotation.Nullable;
 

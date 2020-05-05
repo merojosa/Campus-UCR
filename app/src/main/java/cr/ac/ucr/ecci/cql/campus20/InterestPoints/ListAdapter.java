@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {

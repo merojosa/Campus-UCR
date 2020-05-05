@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.Utilities;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities;
 
 import android.util.Log;
 

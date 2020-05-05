@@ -1,12 +1,9 @@
-package cr.ac.ucr.ecci.cql.campus20.IPModel;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that represents a Coordinate database entity.

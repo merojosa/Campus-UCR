@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.FacultiesAndSchools;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Faculty;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.IPModel.School;
-import cr.ac.ucr.ecci.cql.campus20.ListAdapter;
-import cr.ac.ucr.ecci.cql.campus20.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class SchoolViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {

@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.Mapbox;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

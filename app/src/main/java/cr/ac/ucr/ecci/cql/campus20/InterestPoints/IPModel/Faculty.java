@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.IPModel;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 public class Faculty extends GeneralData {// implements Comparable<Faculty>{
 

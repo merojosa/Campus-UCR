@@ -1,14 +1,13 @@
-package cr.ac.ucr.ecci.cql.campus20.IPModel;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.Utilities.UtilDates;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 
 /**
  * @class DeploymentScript

@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import cr.ac.ucr.ecci.cql.campus20.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override

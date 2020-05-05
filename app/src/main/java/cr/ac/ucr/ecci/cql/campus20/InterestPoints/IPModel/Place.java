@@ -1,17 +1,13 @@
-package cr.ac.ucr.ecci.cql.campus20.IPModel;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 //TODO: Implement CRUD operations using DataAccess helper class.
 /**

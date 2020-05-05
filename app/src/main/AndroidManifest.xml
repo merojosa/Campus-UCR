@@ -12,18 +12,18 @@
         <activity android:name=".foro_general.MainForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
         <activity
-            android:name=".FacultiesAndSchools.SchoolViewActivity"
+            android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
             android:theme="@style/AppTheme.InterestsTheme"
             />
         <activity
-            android:name=".FacultiesAndSchools.SchoolsActivity"
+            android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity
-            android:name=".FacultiesAndSchools.FacultiesActivity"
+            android:name=".InterestPoints.FacultiesAndSchools.FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
-        <activity android:name=".Mapbox.Map"></activity>
+        <activity android:name=".InterestPoints.Mapbox.Map"></activity>
 
-        <activity android:name=".InterestPointsActivity" />
+        <activity android:name=".InterestPoints.InterestPointsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
