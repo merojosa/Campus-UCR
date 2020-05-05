@@ -24,6 +24,7 @@
         <activity android:name=".InterestPoints.Mapbox.Map"></activity>
 
         <activity android:name=".InterestPoints.InterestPointsActivity" />
+        <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

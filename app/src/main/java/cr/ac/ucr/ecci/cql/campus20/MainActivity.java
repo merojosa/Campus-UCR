@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import android.view.View;
@@ -20,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button button = (Button) findViewById(R.id.button2); //TODO:Cambiar nombre variable. Botón para ir a mapa
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, MainRedMujeres.class); //Mapa pantalla principal red mujeres
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
 
         /*Botón para ingresar al sub menú de los puntos de interes*/
         DeploymentScript.RunScript(getApplicationContext());
