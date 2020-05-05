@@ -65,6 +65,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Se lanza cada actividad, dependiendo de la selección del usuario
         nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -111,9 +112,9 @@ public class MainForoGeneral extends AppCompatActivity {
     }
 
     /**
-     * Este método ...
-     * @param item funciona para ...
-     * @return un booleano que ....
+     * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     * @param item funciona para indicar el objeto de la lista que se selecionó
+     * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

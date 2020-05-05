@@ -67,6 +67,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Se lanza cada actividad, dependiendo de la selección del usuario
         nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
