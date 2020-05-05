@@ -15,9 +15,14 @@ import android.view.ViewGroup;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // Se importan las actividades principales que estarán disponibles desde el fragmento
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.CrearPreguntaForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 /**
@@ -90,19 +95,18 @@ public class NavigationBarFragment extends android.app.Fragment {
             // Ícono del módulo de ucr eats
             navegacion.getMenu().getItem(0).setChecked(true);
         else
-            /*if (getActivity() instanceof MainForoGeneral)
+            if (getActivity() instanceof MainRedMujeres)
                 // Ícono del módulo de mujeres ucr
                 navegacion.getMenu().getItem(1).setChecked(true);
-            else*/
+            else
                 if (getActivity() instanceof MainForoGeneral || getActivity() instanceof CrearPreguntaForoGeneral ||getActivity() instanceof ForoGeneralVerTemas)
                     // Ícono del módulo de foro
                     navegacion.getMenu().getItem(2).setChecked(true);
-                /*else
-
-                    if (getActivity() instanceof MainForoGeneral)
+                else
+                    if ( getActivity() instanceof InterestPointsActivity ||  getActivity() instanceof FacultiesActivity ||
+                            getActivity() instanceof SchoolsActivity || getActivity() instanceof SchoolViewActivity)
                         // Ícono del módulo de localización
                         navegacion.getMenu().getItem(3).setChecked(true);
-                     */
 
         // Se devuelve la vista con la barra de navegación creada
         return v;
@@ -128,9 +132,13 @@ public class NavigationBarFragment extends android.app.Fragment {
                     return true;
 
                 case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
+                    Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
+                    startActivity(intentMujeres);
                     return true;
 
                 case R.id.lugares:  // En caso de que se haya seleccionado el ícono de localización
+                    Intent intentLocalizacion = new Intent(getActivity(), InterestPointsActivity.class);
+                    startActivity(intentLocalizacion);
                     return true;
             }
             return false;
