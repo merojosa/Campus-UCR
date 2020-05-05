@@ -34,7 +34,7 @@ public class MainUcrEats extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ucr_eats);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         this.repository = new RestaurantRepository(getApplication());
 
         fillRestaurants();
@@ -102,6 +102,7 @@ public class MainUcrEats extends AppCompatActivity
      * método con fines sólo de prueba de concepto.
      */
     private void fillRestaurants() {
+        repository.deleteAll();
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
                 "Mo", (short)0, (short)1000);
         repository.insert(restaurant1);
