@@ -11,6 +11,10 @@ import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import android.view.View;
+import android.widget.Button;
+
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,4 +46,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InterestPointsActivity.class);
         startActivity(intent);
     }
+
+    private void irUcrEats()
+    {
+        // Intent para llamar a la Actividad MainUcrEats
+        Intent intent = new Intent(this, MainUcrEats.class);
+        // Llamada a la actividad
+        startActivity(intent);
+    }
+
 }
