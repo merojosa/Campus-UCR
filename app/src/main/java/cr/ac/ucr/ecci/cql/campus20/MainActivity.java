@@ -9,6 +9,9 @@ import android.widget.Button;
 
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
