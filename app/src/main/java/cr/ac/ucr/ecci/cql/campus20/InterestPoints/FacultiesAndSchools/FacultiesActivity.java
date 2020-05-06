@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -28,18 +29,19 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-
+        DeploymentScript.RunScript(getApplicationContext());
+        setContentView(R.layout.activity_faculties);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Facultades");
             getSupportActionBar().show();
         }
 
-        mRecyclerView = findViewById(R.id.rv_list_item);
+        /*mRecyclerView = findViewById(R.id.rv_list_item);
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);*/
+        setupRecyclerView();
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
 
@@ -70,25 +72,16 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         startActivity(childActivity);
     }
 
+    private void setupRecyclerView() {
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv_list_item);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Si no se cambia el tamanno, hacer esto mejora el performance
+        mRecyclerView.setHasFixedSize(true);
+    }
+
     public void setDataList(){
         temp.addAll(facultiesList);
     }
-/*
-    private void testDatabase(int index){
-        /*Prueba de base de datos, obtiene las escuelas de una facultad y la ubicación de cada escuela.
-        List<School> schools = new ArrayList<>();
-        schools = School.read(getApplicationContext(), index);
-        for(School s : schools){
-            Log.d("schoolName", s.getName());
-            Place p = Place.read(getApplicationContext(), s.getId_place_fk());
-            Coordinate c = Coordinate.read(getApplicationContext(), p.getId());
-            Log.d("coordinate", "Coordinates for " + s.getName() + ": " + Double.toString(c.getLatitude()) + ", " + Double.toString(c.getLongitude()));
-            List<Comment> commentList = new ArrayList<>();
-            commentList = Comment.read(getApplicationContext(), s.getId_place_fk());
-            for(Comment comment : commentList){
-                Log.d("comment", comment.getDescription() + " " + comment.getDate());
-            }
-        }
-    }
-*/
+
 }

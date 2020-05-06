@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         //Botón para ingresar al sub menú de los puntos de interes*/
-        DeploymentScript.RunScript(getApplicationContext());
-
 
         Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
         buttonInterestPoints.setOnClickListener(new View.OnClickListener() {
