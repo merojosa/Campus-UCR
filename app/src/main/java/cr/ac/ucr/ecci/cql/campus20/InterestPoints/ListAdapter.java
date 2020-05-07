@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -15,6 +16,7 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
     private List<GeneralData> temp;
+    private List<GeneralData> originalData;
     Context context;
 
     private final ListAdapterOnClickHandler mClickHandler;
@@ -75,6 +77,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     public void setListData(List<GeneralData> data){
         temp = data;
+        originalData = temp;
+        notifyDataSetChanged();
+    }
+
+    public void filter(String query){
+        List<GeneralData> newList = new ArrayList<GeneralData>();
+        for(GeneralData elemento : originalData){
+            if(elemento.getTitle().toLowerCase().contains(query.toLowerCase()))
+                newList.add(elemento);
+        }
+        temp = newList;
         notifyDataSetChanged();
     }
 

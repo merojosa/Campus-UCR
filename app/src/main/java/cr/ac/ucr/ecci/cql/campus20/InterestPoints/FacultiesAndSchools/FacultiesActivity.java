@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import androidx.appcompat.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +70,6 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 ++index;
             }
         }
-        //testDatabase(index);
 
         Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
@@ -72,11 +77,33 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         startActivity(childActivity);
     }
 
+    /*This method creates the search box in toolbar and filters the rows according to the search criteria.*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ip_search_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)menuItem.getActionView();
+        searchView.setQueryHint("Buscar...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                onQueryTextChange(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mListAdapter.filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void setupRecyclerView() {
         mRecyclerView = (RecyclerView)findViewById(R.id.rv_list_item);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Si no se cambia el tamanno, hacer esto mejora el performance
         mRecyclerView.setHasFixedSize(true);
     }
 
