@@ -35,7 +35,7 @@ public abstract class UcrEatsDatabase extends RoomDatabase
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             UcrEatsDatabase.class, "UCREats-database")
                             .fallbackToDestructiveMigration()
-//                            .addCallback(callback)
+                            .addCallback(callback)
                             .build();
                 }
             }
