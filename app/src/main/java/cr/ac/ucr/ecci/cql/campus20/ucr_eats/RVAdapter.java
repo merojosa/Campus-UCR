@@ -2,6 +2,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 {
@@ -37,12 +41,33 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 .build();
     }
 
+    public void setSodaCards(List<Restaurant> restaurants)
+    {
+        this.sodaCards = convertToSodaCards(restaurants);
+        notifyDataSetChanged();
+    }
+
+    private List<SodaCard> convertToSodaCards(List<Restaurant> restaurants)
+    {
+        List<SodaCard> cards = new ArrayList<SodaCard>();
+
+        for(Restaurant restaurant : restaurants)
+        {
+            cards.add(
+                new SodaCard(restaurant.id, restaurant.name, restaurant.photo)
+            );
+        }
+
+        return cards;
+    }
+
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView)
     {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    @NotNull
     @Override
     public SodaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
@@ -63,7 +88,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     @Override
     public int getItemCount()
     {
-        return sodaCards.size();
+        return sodaCards == null ? 0 : sodaCards.size();
     }
 
     // El holder del adapter. Aqui va el contenido del card.
