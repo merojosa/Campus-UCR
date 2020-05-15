@@ -14,17 +14,22 @@
             android:name=".foro_general.CrearPreguntaForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral">
         </activity>
+
         <activity android:name=".foro_general.ForoGeneralVerTemas"
             android:theme="@style/AppTheme.ForoGeneral"
-            />
+        />
+
         <activity android:name=".foro_general.MainForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral"
-            />
+        />
+
         <activity android:name=".ucr_eats.MainUcrEats" />
+
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
             android:theme="@style/AppTheme.InterestsTheme"
-            />
+        />
+
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
@@ -34,14 +39,18 @@
         <activity android:name=".InterestPoints.Mapbox.Map"></activity>
 
         <activity android:name=".InterestPoints.InterestPointsActivity" />
+
         <activity android:name=".red_mujeres.MainRedMujeres" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
     </application>
 
 </manifest>

@@ -34,40 +34,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        Button button = (Button) findViewById(R.id.button2); //TODO:Cambiar nombre variable. Botón para ir a mapa
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(MainActivity.this, MainRedMujeres.class); //Mapa pantalla principal red mujeres
-//                MainActivity.this.startActivity(myIntent);
-//            }
-//        });
 
-        //Botón para ingresar al sub menú de los puntos de interes*/
-        DeploymentScript.RunScript(getApplicationContext());
+        Button buttonIniciarSesion = findViewById(R.id.buttonLogin);
 
-
-        Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
-        buttonInterestPoints.setOnClickListener(new View.OnClickListener() {
+        buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                goInterestPoints();
+                validarCredenciales();
             }
         });
-
     }
 
-    private void goInterestPoints() {
-        Intent intent = new Intent(this, InterestPointsActivity.class);
-        startActivity(intent);
-    }
-
-    private void irUcrEats()
+    public void validarCredenciales()
     {
-        // Intent para llamar a la Actividad MainUcrEats
-        Intent intent = new Intent(this, MainUcrEats.class);
-        // Llamada a la actividad
-        startActivity(intent);
+        startActivity(new Intent(this, MainUcrEats.class));
     }
 
 }
