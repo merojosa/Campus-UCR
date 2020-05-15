@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/celesteUCRSecundario">
 
     <TextView
         android:id="@+id/tituloApp"
@@ -13,6 +14,7 @@
         android:layout_marginTop="170dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/app_name"
+        android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +82,10 @@
         android:hint="Correo Institucional"
         android:inputType="textEmailAddress"
         android:padding="8dp"
+        android:textColor="#000000"
+        android:textColorHighlight="@color/azulUCR"
+        android:textColorLink="#FFFFFF"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/editTextContrasenna"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
@@ -95,6 +101,8 @@
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="8dp"
+        android:textColorHighlight="@color/azulUCR"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"

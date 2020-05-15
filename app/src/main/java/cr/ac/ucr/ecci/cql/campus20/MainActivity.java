@@ -34,6 +34,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button buttonIniciarSesion = findViewById(R.id.buttonLogin);
+
+        buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validarCredenciales();
+            }
+        });
+    }
+
+    public void validarCredenciales()
+    {
+        startActivity(new Intent(this, MainUcrEats.class));
     }
 
 }
