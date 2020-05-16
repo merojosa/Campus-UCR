@@ -1,53 +1,97 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
-
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import android.view.View;
-import android.widget.Button;
-
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.ValidacionFirebase;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.ValidacionLogin;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity
+{
+    ValidacionLogin validador;
+
+    private EditText correoInput;
+    private EditText contrasennaInput;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button buttonIniciarSesion = findViewById(R.id.buttonLogin);
+        // DEBUGGING, BORRAR AL HACER MERGE A MASTER
+        FirebaseAuth.getInstance().signOut();
 
-        buttonIniciarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validarCredenciales();
-            }
-        });
+        validador = new ValidacionFirebase();
+
+        if(validador.autenticado())
+            irActividadGuardada();
+
+        Button buttonIniciarSesion = findViewById(R.id.buttonLogin);
+        correoInput = findViewById(R.id.editTextCorreo);
+        contrasennaInput = findViewById(R.id.editTextContrasenna);
+
+        buttonIniciarSesion.setOnClickListener(v -> procesarDatos());
     }
 
-    public void validarCredenciales()
+    public void procesarDatos()
+    {
+        String correo = correoInput.getText().toString().trim();
+        String contrasenna = contrasennaInput.getText().toString();
+
+        if(correo.length() > 0 && contrasenna.length() > 0)
+        {
+            validarCredenciales(correo, contrasenna);
+        }
+        else
+        {
+            mostrarMensajeError();
+        }
+    }
+
+
+    public void validarCredenciales(String correo, String contrasenna)
+    {
+
+        if(validador.autenticado() == false)
+        {
+            Task tareaValidador = validador.validarCredenciales(correo, contrasenna);
+
+            tareaValidador.addOnCompleteListener(this, task ->
+            {
+                if(task.isSuccessful())
+                {
+                    irActividadGuardada();
+                }
+                else
+                {
+                    mostrarMensajeError();
+                }
+            });
+        }
+    }
+
+    public void mostrarMensajeError()
+    {
+        Toast.makeText(this, "Correo o contraseña inválidos", Toast.LENGTH_LONG).show();
+    }
+
+    public void irActividadGuardada()
     {
         startActivity(new Intent(this, MainUcrEats.class));
     }
-
 }
