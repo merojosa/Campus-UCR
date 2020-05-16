@@ -44,21 +44,10 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        //Botón para ingresar al sub menú de los puntos de interes*/
 
-        Button buttonInterestPoints = findViewById(R.id.buttonInterestPoints);
-        buttonInterestPoints.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                goInterestPoints();
-            }
-        });
 
     }
 
-    private void goInterestPoints() {
-        Intent intent = new Intent(this, InterestPointsActivity.class);
-        startActivity(intent);
-    }
 
     private void irUcrEats()
     {
