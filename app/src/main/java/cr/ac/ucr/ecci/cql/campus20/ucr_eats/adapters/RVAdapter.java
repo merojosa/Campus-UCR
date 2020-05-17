@@ -44,13 +44,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 .build();
     }
 
+
     public void setSodaCards(List<Restaurant> restaurants)
     {
         this.sodaCards = convertToSodaCards(restaurants);
         notifyDataSetChanged();
     }
 
-    private List<SodaCard> convertToSodaCards(List<Restaurant> restaurants)
+    public List<SodaCard> convertToSodaCards(List<Restaurant> restaurants)
     {
         List<SodaCard> cards = new ArrayList<SodaCard>();
 

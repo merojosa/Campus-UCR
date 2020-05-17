@@ -54,7 +54,10 @@ public class MainUcrEats extends AppCompatActivity
 
 
         this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
-        this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> sodasAdapter.setSodaCards(restaurants));
+        this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
+            sodaCards = sodasAdapter.convertToSodaCards(restaurants);
+            sodasAdapter.setSodaCards(restaurants);
+        });
     }
 
     private void setupInputSearch() {
