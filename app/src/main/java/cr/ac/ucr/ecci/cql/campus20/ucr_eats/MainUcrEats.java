@@ -1,7 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
@@ -50,17 +50,11 @@ public class MainUcrEats extends AppCompatActivity
         fillRestaurants();
         setupInputSearch();
         setupRecyclerView();
-
         inicializarAdapter();
 
+
         this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
-        this.restaurantViewModel.getAllRestaurants().observe(this, new Observer<List<Restaurant>>() {
-            @Override
-            public void onChanged(List<Restaurant> restaurants)
-            {
-                sodasAdapter.setSodaCards(restaurants);
-            }
-        });
+        this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> sodasAdapter.setSodaCards(restaurants));
     }
 
     private void setupInputSearch() {

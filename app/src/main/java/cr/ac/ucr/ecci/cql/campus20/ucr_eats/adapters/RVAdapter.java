@@ -1,19 +1,19 @@
-package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
+package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
+import timber.log.Timber;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 {
@@ -92,7 +95,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     }
 
     // El holder del adapter. Aqui va el contenido del card.
-    public static class SodaViewHolder extends RecyclerView.ViewHolder
+    public class SodaViewHolder extends RecyclerView.ViewHolder
     {
         CardView cardView;
         TextView nombreSoda;
@@ -106,7 +109,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             cardView = itemView.findViewById(R.id.cv);
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
+
+            // Opens meals activity when card is clicked
+            cardView.setOnClickListener(view -> {
+                SodaCard card = sodaCards.get(getAdapterPosition());
+
+                Intent intent = new Intent(view.getContext(), MealsActivity.class);
+                intent.putExtra("SODACARD", card);
+                view.getContext().startActivity(intent);
+            });
         }
+
     }
 
     public void filter(ArrayList<SodaCard> filtroSodas) {

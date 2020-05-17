@@ -3,6 +3,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -15,6 +16,10 @@ import androidx.room.PrimaryKey;
         indices = {@Index(value={"name"}, unique = true)}) // Unique Meal name
 public class Meal
 {
+    // Enums workaround since Java's enums have a different nature
+    @Ignore
+    public static final int BREAKFAST = 0, LUNCH = 1, DINNER = 2;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
