@@ -40,11 +40,11 @@ public class MealsActivity extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
+        this.repo = new MealRepository(getApplication());
+
         // Get restaurant id from intent
         SodaCard card = Objects.requireNonNull(getIntent().getExtras()).getParcelable("SODACARD");
         ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
-
-        this.repo = new MealRepository(getApplication());
 
         // Create adapter with empty dataset
         this.adapter = new MealsAdapter(this, meals);

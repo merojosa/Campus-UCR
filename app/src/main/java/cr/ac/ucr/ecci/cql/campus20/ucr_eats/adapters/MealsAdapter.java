@@ -49,7 +49,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
     public void onBindViewHolder(MealsViewHolder mealsViewHolder, int position)
     {
         mealsViewHolder.mealName.setText(meals.get(position).getName());
-//        mealsViewHolder.mealPrice.setText(meals.get(position).getPrice());
+        mealsViewHolder.mealPrice.setText(Integer.toString(meals.get(position).getPrice()));
         //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
 //        loadCardImage(sodaViewHolder, position);
     }
