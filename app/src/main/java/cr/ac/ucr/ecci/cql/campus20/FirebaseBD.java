@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
 public class FirebaseBD implements LoginBD
 {
-    FirebaseDatabase mDatabase;
+    private FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
 
     public FirebaseBD()
@@ -24,7 +24,7 @@ public class FirebaseBD implements LoginBD
     }
 
     @Override
-    public Task validarCredenciales(String correo, String contrasenna)
+    public Task iniciarSesion(String correo, String contrasenna)
     {
         return auth.signInWithEmailAndPassword(correo, contrasenna);
     }
@@ -62,5 +62,11 @@ public class FirebaseBD implements LoginBD
                 listener.fallo(databaseError);
             }
         });
+    }
+
+    @Override
+    public void cerrarSesion()
+    {
+        auth.signOut();
     }
 }

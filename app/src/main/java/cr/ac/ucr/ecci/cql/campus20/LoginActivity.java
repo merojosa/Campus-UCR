@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity
 
         if(loginBD.autenticado() == false)
         {
-            Task tareaValidador = loginBD.validarCredenciales(correo, contrasenna);
+            Task tareaValidador = loginBD.iniciarSesion(correo, contrasenna);
 
             tareaValidador.addOnCompleteListener(this, task ->
             {
