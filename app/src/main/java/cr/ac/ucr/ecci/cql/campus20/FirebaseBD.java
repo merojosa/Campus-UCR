@@ -18,7 +18,7 @@ public class FirebaseBD implements LoginBD
 
     public FirebaseBD()
     {
-
+//      FirebaseAuth.getInstance().signOut();
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
     }

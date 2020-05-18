@@ -9,11 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConfiguracionActivity"></activity>
-        <activity android:name=".ucr_eats.activites.MealsActivity"></activity>
+
+        <activity android:name=".MainEmptyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".ucr_eats.activites.MealsActivity" />
         <activity
             android:name=".foro_general.CrearPreguntaForoGeneral"
-            android:theme="@style/AppTheme.ForoGeneral"></activity>
+            android:theme="@style/AppTheme.ForoGeneral" />
         <activity
             android:name=".foro_general.ForoGeneralVerTemas"
             android:theme="@style/AppTheme.ForoGeneral" />
@@ -32,18 +41,11 @@
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity android:name=".InterestPoints.Mapbox.Map" />
         <activity android:name=".InterestPoints.InterestPointsActivity" />
-
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="locked">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        
     </application>
 
 </manifest>
