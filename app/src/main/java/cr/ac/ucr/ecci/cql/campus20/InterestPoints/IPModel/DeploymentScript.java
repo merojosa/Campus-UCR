@@ -13,15 +13,16 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
  * @class DeploymentScript
  * @brief Enables the app to have a single point of database entities creation.
  * Here should be placed all methods with test data to be written to the database.
- * */
+ */
 public class DeploymentScript {
 
     /**
      * Executes all the statements that create and populate the database.
      * Should be called once on application create in MainActivity.
+     *
      * @param context Current application context.
-     * */
-    public static void RunScript(Context context){
+     */
+    public static void RunScript(Context context) {
         clearDatabase(context);
         createFaculties(context);
         createPlaces(context);
@@ -30,7 +31,7 @@ public class DeploymentScript {
         createComments(context);
     }
 
-    private static void clearDatabase(Context context){
+    private static void clearDatabase(Context context) {
         DataAccess db = new DataAccess(context);
         db.resetDatabase();
         Log.d("reset", "Database was reset");
@@ -40,19 +41,19 @@ public class DeploymentScript {
         DataAccess db = new DataAccess(context);
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
-                "Educación", "Farmacia","Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
+                "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
 
         for (int i = 0; i < Faculties.length; ++i) {
             list.add(new Faculty(i, Faculties[i], ""));
         }
-        for(Faculty f : list){
+        for (Faculty f : list) {
             f.insert(context);
         }
         db.close();
         Log.d("faculties", "Faculties were inserted in database.");
     }
 
-    private static void createPlaces(Context context){
+    private static void createPlaces(Context context) {
         DataAccess db = new DataAccess(context);
         List<Place> placesList = new ArrayList<>();
         String[] PlaceNames = {"Finca 1", "Finca 2", "Finca 3"};
@@ -60,17 +61,17 @@ public class DeploymentScript {
         String PlaceType = "Finca";
         int[] rating = {5, 3, 4};
         int floor = 0;
-        for(int i = 0; i < PlaceNames.length; ++i){
+        for (int i = 0; i < PlaceNames.length; ++i) {
             placesList.add(new Place(i, PlaceNames[i], PlaceDescriptions[i], PlaceType, rating[i], floor));
         }
-        for(Place p : placesList){
+        for (Place p : placesList) {
             p.insert(context);
         }
         db.close();
         Log.d("places", "Places were inserted in database.");
     }
 
-    private static void createSchools(Context context){
+    private static void createSchools(Context context) {
         DataAccess db = new DataAccess(context);
         /*
         List<School> schoolList = new ArrayList<>();
@@ -202,36 +203,92 @@ public class DeploymentScript {
         odonto.insert(context);
 
 
-
         db.close();
         Log.d("places", "Schools were inserted in database.");
     }
 
-    private static void createCoordinates(Context context){
+    private static void createCoordinates(Context context) {
         DataAccess db = new DataAccess(context);
         List<Coordinate> coordinateList = new ArrayList<>();
-        int[] placesFK = {0,1};
-        double[] latitude = {9.9380801, 9.9371256};
-        double[] longitude = {-84.0528859, -84.0441968};
-        for(int i = 0; i < latitude.length; ++i){
-            coordinateList.add(new Coordinate(i, placesFK[i], latitude[i], longitude[i]));
+        int size = 49;
+        int[] placesFK = new int[size];
+        for (int i = 0; i < size; ++i) {
+            placesFK[i] = i;
         }
-        for(Coordinate c : coordinateList){
+
+        // Adding the real coordinates
+        double[] pairCoodinates = {
+                9.9342365, -84.050532,
+                9.9363702, -84.0483954,
+                9.9374068, -84.0503629,
+                9.9386464, -84.0505298,
+                9.9393851, -84.0488164,
+                9.9403089, -84.0481914,
+                9.9364933, -84.0523176,
+                9.9381168, -84.0535935,
+                9.9364933, -84.0523176,
+                9.9372417, -84.0490453,
+                9.9376465, -84.0516436,
+                9.9368941, -84.0518023,
+                9.9370248, -84.0514024,
+                9.9372525, -84.0519284,
+                9.9369581, -84.0514777,
+                9.9376971, -84.0441797,
+                9.937377, -84.0444508,
+                9.9375567, -84.0441602,
+                9.9374072, -84.0445572,
+                9.9376551, -84.0444486,
+                9.9373135, -84.0447285,
+                9.9376218, -84.0447799,
+                9.9367071, -84.0529196,
+                9.9367365, -84.0535668,
+                9.9367365, -84.0535668,
+                9.936537, -84.0521004,
+                9.9383532, -84.0556187,
+                9.9439988, -84.0474695,
+                9.9361541, -84.0509078,
+                9.938875, -84.0521707,
+                9.9377147, -84.0439456,
+                9.936884, -84.0442343,
+                9.9376215, -84.0462053,
+                9.9367091, -84.0440834,
+                9.9372878, -84.0501568,
+                9.934584, -84.0547457,
+                9.9379246, -84.0541789,
+                9.9379246, -84.0541789,
+                9.9376555, -84.0463562,
+                9.9384127, -84.0528675,
+                9.9384127, -84.0528675,
+                9.9384127, -84.0528675,
+                9.9230603, -84.052573,
+                9.9387007, -84.0529767,
+                9.9390325, -84.0470175,
+                9.9384571, -84.0560422,
+                9.9388922, -84.0479994,
+                9.9379464, -84.0514961,
+                9.943473, -84.0469052
+        };
+        // End of adding the real coordinates
+
+        for (int i = 0, index = 0; i < pairCoodinates.length - 1; i += 2, ++index) {
+            coordinateList.add(new Coordinate(index, placesFK[index], pairCoodinates[i], pairCoodinates[i + 1]));
+        }
+        for (Coordinate c : coordinateList) {
             c.insert(context);
         }
         db.close();
         Log.d("coordinates", "Coordinates were inserted in database.");
     }
 
-    private static void createComments(Context context){
+    private static void createComments(Context context) {
         DataAccess db = new DataAccess(context);
         List<Comment> commentList = new ArrayList<>();
-        int[] placesFK = {0,1};
+        int[] placesFK = {0, 1};
         String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
-        for(int i = 0; i < placesFK.length; ++i){
+        for (int i = 0; i < placesFK.length; ++i) {
             commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime())));
         }
-        for(Comment c : commentList){
+        for (Comment c : commentList) {
             c.insert(context);
         }
         db.close();

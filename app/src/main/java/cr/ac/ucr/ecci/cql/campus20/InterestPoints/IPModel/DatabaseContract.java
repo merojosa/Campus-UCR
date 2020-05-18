@@ -33,16 +33,18 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_TYPE = "Type";
             public static final String TABLE_COLUMN_RATING = "Rating";
             public static final String TABLE_COLUMN_FLOOR = "Floor";
+            public static final String TABLE_COLUMN_LATITUDE = "Latitude";
+            public static final String TABLE_COLUMN_LONGITUDE = "Longitude";
 
             /*SQL Statements*/
             public static final String SQL_CREATE_PLACE =
                     "CREATE TABLE " + PlaceTable.TABLE_NAME + " (" +
-                            PlaceTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
-                            PlaceTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
-                            PlaceTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + COMMA +
-                            PlaceTable.TABLE_COLUMN_TYPE + TEXT_TYPE + COMMA +
-                            PlaceTable.TABLE_COLUMN_RATING + INTEGER_TYPE + NULLABLE + COMMA +
-                            PlaceTable.TABLE_COLUMN_FLOOR + INTEGER_TYPE + NULLABLE + " )";
+                            PlaceTable.TABLE_COLUMN_ID          + INTEGER_TYPE  + PK        + COMMA +
+                            PlaceTable.TABLE_COLUMN_NAME        + TEXT_TYPE     + COMMA     +
+                            PlaceTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE     + COMMA     +
+                            PlaceTable.TABLE_COLUMN_TYPE        + TEXT_TYPE     + COMMA     +
+                            PlaceTable.TABLE_COLUMN_RATING      + INTEGER_TYPE  + NULLABLE  + COMMA +
+                            PlaceTable.TABLE_COLUMN_FLOOR       + INTEGER_TYPE  + NULLABLE  + " )";
 
             public static final String SQL_DELETE_PLACE =
                     "DROP TABLE IF EXISTS " + PlaceTable.TABLE_NAME;
