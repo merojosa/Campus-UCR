@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity
         // Si no hay actividad guardada, ir a la actividad de configuracion
         String correo = loginBD.obtenerCorreoActual();
         String idUsuario = correo.substring(0, correo.indexOf('@'));
+        Intent intentConfiguracion = new Intent(this, ConfiguracionActivity.class);
+
 
         loginBD.tareaAppDefaultAsync(idUsuario, new FirebaseListener()
         {
@@ -106,7 +108,18 @@ public class MainActivity extends AppCompatActivity
             public void exito(DataSnapshot dataSnapshot)
             {
                 Long appUsuario = (Long) dataSnapshot.getValue();
-                irAppPredeterminada(appUsuario.intValue());
+
+                if(appUsuario != null)
+                {
+                    irAppPredeterminada(appUsuario.intValue());
+                }
+                else
+                {
+                    // No hay actividad guardada, enviar a la configuracion inicial
+                    intentConfiguracion.putExtra(ConfiguracionActivity.KEY_CORREO, idUsuario);
+                    startActivity(intentConfiguracion);
+                }
+
             }
 
             @Override
@@ -115,13 +128,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-        /*
-        // No hay actividad guardada, enviar a la configuracion inicial
-        Intent intent = new Intent(this, ConfiguracionActivity.class);
-        intent.putExtra(ConfiguracionActivity.KEY_CORREO, );
-        startActivity(intent);
-         */
     }
 
     public void irAppPredeterminada(int id)
