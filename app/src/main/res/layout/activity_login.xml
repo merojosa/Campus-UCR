@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="#EDEDED ">
+    android:background="@color/celeste_UCR">
 
     <TextView
         android:id="@+id/tituloApp"
@@ -14,7 +14,7 @@
         android:layout_marginTop="170dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/app_name"
-        android:textColor="@color/azulUCR"
+        android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +40,9 @@
 
         <ImageView
             android:id="@+id/imageView10"
-            android:layout_width="79dp"
-            android:layout_height="108dp"
-            android:layout_marginStart="12dp"
+            android:layout_width="100dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,11 +52,10 @@
             android:id="@+id/imageView11"
             android:layout_width="84dp"
             android:layout_height="84dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.525"
             app:srcCompat="@drawable/lugares" />
 
         <ImageView
@@ -75,10 +74,8 @@
 
     <EditText
         android:id="@+id/editTextCorreo"
-        android:layout_width="0dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/textinputlogin"
         android:ems="10"
@@ -86,7 +83,7 @@
         android:inputType="textEmailAddress"
         android:padding="8dp"
         android:textColor="#000000"
-        android:textColorHighlight="@color/azulUCR"
+        android:textColorHighlight="@color/azul_UCR"
         android:textColorLink="#FFFFFF"
         android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/editTextContrasenna"
@@ -96,17 +93,15 @@
 
     <EditText
         android:id="@+id/editTextContrasenna"
-        android:layout_width="0dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/textinputlogin"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:textColorHighlight="@color/azulUCR"
+        android:textColorHighlight="@color/azul_UCR"
         android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,17 +110,14 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="0dp"
+        android:layout_width="338dp"
         android:layout_height="54dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="170dp"
-        android:background="@color/azulUCR"
         android:text="Iniciar Sesión"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
