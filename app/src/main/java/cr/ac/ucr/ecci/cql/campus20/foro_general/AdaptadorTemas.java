@@ -11,10 +11,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class AdaptadorTemas extends BaseAdapter {
     private Context context;
-    private ArrayList<Temas> listItems;
+    private ArrayList<Tema> listItems;
 
     /**
      * Constructor del adaptador personalizado de temas
@@ -22,7 +23,7 @@ public class AdaptadorTemas extends BaseAdapter {
      * @param context   indica en que contexto se encuentra el objeto actual (la lista)
      * @param listItems es donde se guardan los objetos de la lista
      */
-    public AdaptadorTemas(Context context, ArrayList<Temas> listItems) {
+    public AdaptadorTemas(Context context, ArrayList<Tema> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
@@ -63,7 +64,7 @@ public class AdaptadorTemas extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Temas Item = (Temas) getItem(position);
+        Tema Item = (Tema) getItem(position);
         View rowView;
 
         if (convertView == null) {

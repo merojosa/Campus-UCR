@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -29,34 +31,12 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_pregunta_foro_general);
 
-        /*
-        // Inicialización de la barra de navegación general
-        BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
+        //get the spinner from the xml.
+        Spinner dropdown = findViewById(R.id.listaTemas);
+        String[] items = new String[]{"Tema1", "Tema2", "Tema3"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
 
-        // Dejar por defecto el ícono de foro seleccionado
-        generalNavigationView.setSelectedItemId(R.id.foro);
-
-        // Ejecución del listener para cambiar de actividad
-        generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                // Dependiendo del item seleccionado, ejecutará el Intent del módulo específico
-                switch(menuItem.getItemId()){
-                    case R.id.ucreats:
-                        break;
-                    case R.id.mujeres:
-                        break;
-                    case R.id.foro:
-                        Intent intentForo = new Intent(CrearPreguntaForoGeneral.this, MainForoGeneral.class);
-                        startActivity(intentForo);
-                        break;
-                    case R.id.lugares:
-                        break;
-                }
-                return false;
-            }
-        });*/
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_crear_pregunta);

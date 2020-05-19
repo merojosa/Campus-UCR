@@ -12,17 +12,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Código para incluir la barra de navegación general-->
+
         <TextView
             android:id="@+id/crearPreguntaTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pantalla de Crear Pregunta Temporal"
-            android:textSize="23dp"
             android:textColor="#000000"
+            android:textSize="23dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="parent" />
 
-        <!-- Código para incluir la barra de navegación general-->
+        <Spinner
+            android:id="@+id/listaTemas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/NavigationBar"
+            android:layout_below="@+id/crearPreguntaTemp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="79dp"
+            android:layout_marginEnd="58dp"
+            android:layout_marginBottom="551dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
+        <EditText
+            android:id="@+id/texto"
+            android:layout_width="wrap_content"
+            android:layout_height="270dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginEnd="75dp"
+            android:layout_marginBottom="154dp"
+            android:hint="Digite su pregunta"
+            android:gravity="center_horizontal"
+            android:ellipsize="start"
+            android:inputType="text" />
+
         <fragment
             android:id="@+id/NavigationBar"
             class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
