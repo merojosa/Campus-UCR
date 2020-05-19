@@ -3,7 +3,10 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -12,6 +15,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class Map extends FragmentActivity {
@@ -29,6 +33,14 @@ public class Map extends FragmentActivity {
         Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN));
 
         setContentView(R.layout.activity_map);
+
+        Intent intentItemList = getIntent();
+        String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(itemTitle);
+            getSupportActionBar().show();
+        }
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -50,11 +62,10 @@ public class Map extends FragmentActivity {
         });
     }
 
-    private CameraPosition getCameraPosition() {
-        CameraPosition currentCameraPosition = this.mapboxMap.getCameraPosition();
-        double currentZoom = currentCameraPosition.zoom;
-        double currentTilt = currentCameraPosition.tilt;
-        return currentCameraPosition;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
     }
 
 
@@ -92,6 +103,25 @@ public class Map extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.go_IP_Details);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent schoolDetails = new Intent(Map.this, SchoolViewActivity.class);
+                schoolDetails.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                startActivity(schoolDetails);
+                finish();
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
 }

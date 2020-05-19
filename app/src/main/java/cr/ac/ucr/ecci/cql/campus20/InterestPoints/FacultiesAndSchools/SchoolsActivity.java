@@ -13,6 +13,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 
@@ -67,10 +68,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
                 ++index;
             }
         }
-        Intent childActivity = new Intent(SchoolsActivity.this, SchoolViewActivity.class);
+        Intent childActivity = new Intent(SchoolsActivity.this, Map.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", schoolsList.get(index).getDescription());
-
         startActivity(childActivity);
     }
 
