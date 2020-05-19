@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,7 +87,7 @@ public class NavigationBarFragment extends android.app.Fragment {
 
         // Chequea cuál de las actividades principales es la que está llamando al módulo para
         // marcar ese ícono como seleccionado
-        if (getActivity() instanceof MainActivity)
+        if (getActivity() instanceof LoginActivity)
             navegacion.getMenu().getItem(0).setChecked(false);
 
         if (getActivity() instanceof MainUcrEats)
