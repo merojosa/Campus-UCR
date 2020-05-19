@@ -1,15 +1,18 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -121,6 +124,7 @@ public class NavigationBarFragment extends android.app.Fragment {
             switch (item.getItemId()) {
 
                 case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
+                    confirmacionGuardarAppPredeterminada();
                     Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
                     startActivity(intentUCREats);
                     return true;
@@ -143,4 +147,18 @@ public class NavigationBarFragment extends android.app.Fragment {
             return false;
         }
     };
+
+    public void confirmacionGuardarAppPredeterminada()
+    {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Title")
+                .setMessage("Do you really want to whatever?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Toast.makeText(getActivity(), "Yaay", Toast.LENGTH_SHORT).show();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
 }
