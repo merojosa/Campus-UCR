@@ -1,8 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,35 +21,57 @@ public class MenuRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_red_mujeres);
 
+        if (!validarUsuario()) {
+            popupRegistro();
+        }
+    }
+
+    private void popupRegistro() {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
-        builder.setTitle("Hoki");
-        builder.setMessage("dfkef");
+        builder.setTitle("Oh-uh!");
+        builder.setMessage("Parece que no has enviado la solicitud de registro para unirte a la Red de Mujeres.");
 
-        String positiveText = getString(android.R.string.ok);
+        String positiveText = "Enviar Solicitud";
         builder.setPositiveButton(positiveText,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // dismiss alert dialog, update preferences with game score and restart play fragment
-                        //presenter.updateGameScore(gameScore);
-                        //Log.d("myTag", "positive button clicked");
-                        dialog.dismiss();
+                        enviarSolicitud();
                     }
                 });
 
-        String negativeText = getString(android.R.string.cancel);
+        String negativeText = "Cancelar";
         builder.setNegativeButton(negativeText,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // dismiss dialog, start counter again
-                        dialog.dismiss();
-                        //Log.d("myTag", "negative button clicked");
+                        // En este momento al cancelar el popup se "devuelve" a la pagina principal de Puntos de Interes
+                        // porque no hay pagina principal, no pude volver al login, y es la mas bonita.
+                        startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+    }
+
+    private void enviarSolicitud() {
+        // recibe correo del usuario ya logeado a la aplicacion
+        // mandar solicitud a ese correo
+    }
+
+    private boolean validarUsuario() {
+        boolean validado;
+
+        // recuperar correo del usuario ya logeado a la aplicacion
+        // revisar si la solicitud ya habia sido enviada
+        // si si
+            // revisar si fue aprobada o rechazada
+            validado = false;
+        // si no
+            // enviarla
+        return validado;
     }
 }
