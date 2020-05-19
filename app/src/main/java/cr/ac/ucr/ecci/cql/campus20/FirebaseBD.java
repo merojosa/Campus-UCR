@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import timber.log.Timber;
+
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
 public class FirebaseBD implements LoginBD
 {
@@ -18,7 +20,6 @@ public class FirebaseBD implements LoginBD
 
     public FirebaseBD()
     {
-//      FirebaseAuth.getInstance().signOut();
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
     }
@@ -68,5 +69,13 @@ public class FirebaseBD implements LoginBD
     public void cerrarSesion()
     {
         auth.signOut();
+    }
+
+    // Referencia: https://subscription.packtpub.com/book/web_development/9781788624718/1/ch01lvl1sec12/reading-and-writing-to-realtime-database
+    @Override
+    public void escribirDatos(String path, Object datos)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
 }

@@ -14,4 +14,6 @@ public interface LoginBD
     public void tareaAppDefaultAsync(String idUsuario, FirebaseListener listener);
 
     public void cerrarSesion();
+
+    public void escribirDatos(String path, Object datos);
 }
