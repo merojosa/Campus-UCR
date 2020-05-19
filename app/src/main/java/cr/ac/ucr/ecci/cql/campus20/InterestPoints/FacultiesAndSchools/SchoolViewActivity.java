@@ -64,18 +64,18 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
          return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * EFE: send the user to the location in maps
-     * REQ:
-     * view: send by the button that calls this method
-     * latitude : latitude of the point that the user wants to go.
-     * longitude: longitude of the point that the user wants to go.
-     * MOD: ---
-     * */
-    public void goTo(View view) {
-        Intent intent = new Intent(this, Map.class);
-        startActivity(intent);
-    }
+//    /**
+//     * EFE: send the user to the location in maps
+//     * REQ:
+//     * view: send by the button that calls this method
+//     * latitude : latitude of the point that the user wants to go.
+//     * longitude: longitude of the point that the user wants to go.
+//     * MOD: ---
+//     * */
+//    public void goTo(View view) {
+//        Intent intent = new Intent(this, Map.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public void onClick(String title) {

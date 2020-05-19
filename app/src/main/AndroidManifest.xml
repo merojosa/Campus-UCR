@@ -35,7 +35,8 @@
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
-        <activity android:name=".InterestPoints.Mapbox.Map"></activity>
+        <activity android:name=".InterestPoints.Mapbox.Map"
+            android:theme="@style/AppTheme.InterestsTheme" ></activity>
 
         <activity android:name=".InterestPoints.InterestPointsActivity" />
         <activity android:name=".red_mujeres.MainRedMujeres" />
