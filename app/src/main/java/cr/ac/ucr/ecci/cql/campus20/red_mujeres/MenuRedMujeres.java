@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +39,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        enviarSolicitud();
+                        enviarConfirmacion();
                     }
                 });
 
@@ -58,6 +60,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     private void enviarSolicitud() {
+        enviarConfirmacion();
         // recibe correo del usuario ya logeado a la aplicacion
         // mandar solicitud a ese correo
     }
@@ -73,5 +76,31 @@ public class MenuRedMujeres extends AppCompatActivity {
         // si no
             // enviarla
         return validado;
+    }
+
+    private void enviarConfirmacion() {
+        try {
+            GMailSender sender = new GMailSender("dessalfaro@gmail.com", "");
+            sender.sendMail("This is Subject",
+                    "This is Body",
+                    "dessalfaro@gmail.com",
+                    "dessalfaro@gmail.com");
+
+            Context context = getApplicationContext();
+            CharSequence text = "Hello email!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+        } catch (Exception e) {
+            Context context = getApplicationContext();
+            CharSequence text = "Hello toast!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+        }
     }
 }
