@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/celesteUCRSecundario">
 
     <TextView
         android:id="@+id/tituloApp"
@@ -75,20 +76,48 @@
         android:id="@+id/editTextCorreo"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="90dp" />
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/textinputlogin"
+        android:ems="10"
+        android:hint="Correo Institucional"
+        android:inputType="textEmailAddress"
+        android:padding="8dp"
+        android:textColor="#000000"
+        android:textColorHighlight="@color/azulUCR"
+        android:textColorLink="#FFFFFF"
+        android:textCursorDrawable="@drawable/color_cursor"
+        app:layout_constraintBottom_toTopOf="@+id/editTextContrasenna"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-    <fragment
-        android:id="@+id/NavigationBar"
-        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/editTextContrasenna"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/textinputlogin"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:padding="8dp"
+        android:textColorHighlight="@color/azulUCR"
+        android:textCursorDrawable="@drawable/color_cursor"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="338dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="170dp"
+        android:text="Iniciar Sesión"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
