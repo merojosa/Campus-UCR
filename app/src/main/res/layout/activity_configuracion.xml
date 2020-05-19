@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ConfiguracionActivity"
-    android:background="@color/celesteUCRSecundario">
+    android:background="@color/gris_claro_UCR">
 
     <Button
         android:id="@+id/buttonGuardar"
@@ -73,7 +73,7 @@
             android:id="@+id/radioButtonUcrEats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/azulUCR"
+            android:buttonTint="@color/azul_UCR"
             android:checked="true"
             android:text="UCR Eats"
             android:textColorHighlight="#FFFFFF"
@@ -85,7 +85,7 @@
             android:id="@+id/radioButtonMujeres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/azulUCR"
+            android:buttonTint="@color/azul_UCR"
             android:text="Red de mujeres"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -94,7 +94,7 @@
             android:id="@+id/radioButtonForos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/azulUCR"
+            android:buttonTint="@color/azul_UCR"
             android:text="Foros"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -103,7 +103,7 @@
             android:id="@+id/radioButtonLugares"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/azulUCR"
+            android:buttonTint="@color/azul_UCR"
             android:text="Lugares"
             android:textSize="18sp"
             android:textStyle="bold" />
