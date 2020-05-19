@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@color/celesteUCRSecundario">
+    android:background="@color/celeste_UCR">
 
     <TextView
         android:id="@+id/tituloApp"
@@ -83,7 +83,7 @@
         android:inputType="textEmailAddress"
         android:padding="8dp"
         android:textColor="#000000"
-        android:textColorHighlight="@color/azulUCR"
+        android:textColorHighlight="@color/azul_UCR"
         android:textColorLink="#FFFFFF"
         android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/editTextContrasenna"
@@ -101,7 +101,7 @@
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:textColorHighlight="@color/azulUCR"
+        android:textColorHighlight="@color/azul_UCR"
         android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
