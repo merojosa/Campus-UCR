@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -48,6 +50,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void setSodaCards(List<Restaurant> restaurants)
     {
         this.sodaCards = convertToSodaCards(restaurants);
+
         notifyDataSetChanged();
     }
 
@@ -57,8 +60,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
         for(Restaurant restaurant : restaurants)
         {
+            int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            String horario = "Cerrado";
+
+            Date d = new Date();
+            String nameDay = (String) android.text.format.DateFormat.format("EEE", d);
+
+            if (hour >= restaurant.openingTime && hour < restaurant.closingTime && restaurant.daysOpen.indexOf(nameDay) != -1) {
+                horario = "Abierto";
+            }
+
             cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo)
+                    new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario)
             );
         }
 
@@ -84,7 +97,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void onBindViewHolder(SodaViewHolder sodaViewHolder, int i)
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
-        //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
+        sodaViewHolder.horarioSoda.setText(sodaCards.get(i).getHorario());
         loadCardImage(sodaViewHolder, i);
 
     }
@@ -100,6 +113,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     {
         CardView cardView;
         TextView nombreSoda;
+        TextView horarioSoda;
         ImageView imagenSoda;
 
         public SodaViewHolder(View itemView)
@@ -109,7 +123,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             // Elementos del layout
             cardView = itemView.findViewById(R.id.cv);
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
+            horarioSoda = itemView.findViewById(R.id.horario_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
+
+            for(SodaCard soda : sodaCards) {
+                if (soda.getHorario() == "Abierto")
+                    horarioSoda.setTextColor(context.getResources().getColor(R.color.verdeUCR));
+                if (soda.getHorario() == "Cerrado")
+                    horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
+            }
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {

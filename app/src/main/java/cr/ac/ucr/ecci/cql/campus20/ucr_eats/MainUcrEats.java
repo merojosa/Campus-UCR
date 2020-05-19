@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -48,6 +49,7 @@ public class MainUcrEats extends AppCompatActivity
         this.repository = new RestaurantRepository(getApplication());
 
         fillRestaurants();
+
         setupInputSearch();
         setupRecyclerView();
         inicializarAdapter();
@@ -109,11 +111,11 @@ public class MainUcrEats extends AppCompatActivity
     private void fillRestaurants() {
         repository.deleteAll();
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
-                "Mo", (short)0, (short)1000);
+                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)19);
         repository.insert(restaurant1);
 
         Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
-                "Mo", (short)0, (short)1000);
+                "Mon-Wed-Thu-Fri", (short)10, (short)20);
         repository.insert(restaurant2);
     }
 

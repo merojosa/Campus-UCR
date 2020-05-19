@@ -7,19 +7,22 @@ public class SodaCard implements Parcelable
 {
     int id;
     private String nombre;
+    private String horario;
     private String foto;
 
-    public SodaCard(int id, String nombre, String foto)
+    public SodaCard(int id, String nombre, String foto, String horario)
     {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
+        this.horario = horario;
     }
 
     protected SodaCard(Parcel in) {
         id = in.readInt();
         nombre = in.readString();
         foto = in.readString();
+        horario = in.readString();
     }
 
     @Override
@@ -27,6 +30,7 @@ public class SodaCard implements Parcelable
         dest.writeInt(id);
         dest.writeString(nombre);
         dest.writeString(foto);
+        dest.writeString(horario);
     }
 
     @Override
@@ -47,6 +51,14 @@ public class SodaCard implements Parcelable
     };
 
     public int getId() { return id; }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String id) {
+        this.horario = id;
+    }
 
     public void setId(int id) {
         this.id = id;

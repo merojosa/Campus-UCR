@@ -67,18 +67,18 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         rest.deleteAll();
 
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
-                "Mo", (short)0, (short)1000);
+                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)19);
         rest.insert(restaurant1);
 
         Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
-                "Mo", (short)0, (short)1000);
+                "Mon-Wed-Thu-Fri", (short)10, (short)20);
         rest.insert(restaurant2);
 
         Meal[] meals = {
-            new Meal(R.drawable.la_u, "Desayuno 1", "la_u", Meal.BREAKFAST, 1000),
-            new Meal(R.drawable.la_u, "Almuerzo 1", "la_u", Meal.LUNCH, 1500),
-            new Meal(R.drawable.la_u, "Cena 1", "la_u", Meal.DINNER, 1500),
-            new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
+                new Meal(R.drawable.la_u, "Desayuno 1", "la_u", Meal.BREAKFAST, 1000),
+                new Meal(R.drawable.la_u, "Almuerzo 1", "la_u", Meal.LUNCH, 1500),
+                new Meal(R.drawable.la_u, "Cena 1", "la_u", Meal.DINNER, 1500),
+                new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
         };
 
         for(Meal meal : meals)
