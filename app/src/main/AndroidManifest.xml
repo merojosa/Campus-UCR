@@ -41,6 +41,7 @@
         <activity android:name=".InterestPoints.InterestPointsActivity" />
 
         <activity android:name=".red_mujeres.MainRedMujeres" />
+        <activity android:name=".red_mujeres.MenuRedMujeres" />
 
         <activity android:name=".MainActivity"
             android:screenOrientation="locked">
