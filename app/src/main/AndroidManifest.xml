@@ -16,32 +16,32 @@
         </activity>
 
         <activity android:name=".foro_general.ForoGeneralVerTemas"
-            android:theme="@style/AppTheme.ForoGeneral"
-        />
+            android:theme="@style/AppTheme.ForoGeneral" />
 
         <activity android:name=".foro_general.MainForoGeneral"
-            android:theme="@style/AppTheme.ForoGeneral"
-        />
+            android:theme="@style/AppTheme.ForoGeneral" />
 
         <activity android:name=".ucr_eats.MainUcrEats" />
 
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
-            android:theme="@style/AppTheme.InterestsTheme"
-        />
+            android:theme="@style/AppTheme.InterestsTheme" />
 
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
+
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
+
         <activity android:name=".InterestPoints.Mapbox.Map"></activity>
 
         <activity android:name=".InterestPoints.InterestPointsActivity" />
 
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
+
 
         <activity android:name=".MainActivity"
             android:screenOrientation="locked">
