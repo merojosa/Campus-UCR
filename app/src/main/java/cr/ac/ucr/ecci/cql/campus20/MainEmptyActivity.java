@@ -37,6 +37,9 @@ public class MainEmptyActivity extends AppCompatActivity
         LoginBD loginBD = new FirebaseBD();
         Redireccionador redireccionador = new Redireccionador();
 
+        // TESTING
+        loginBD.cerrarSesion();
+
         if(loginBD.autenticado())
         {
             redireccionador.irActividadGuardada(this);
