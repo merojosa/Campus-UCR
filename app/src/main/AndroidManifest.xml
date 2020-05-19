@@ -26,7 +26,6 @@
 
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
-            android:theme="@style/AppTheme.InterestsTheme"
         />
 
         <activity

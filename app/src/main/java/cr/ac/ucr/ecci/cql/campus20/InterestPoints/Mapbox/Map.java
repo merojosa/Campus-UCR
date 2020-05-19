@@ -114,7 +114,6 @@ public class Map extends AppCompatActivity {
                 Intent schoolDetails = new Intent(Map.this, SchoolViewActivity.class);
                 schoolDetails.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
                 startActivity(schoolDetails);
-                finish();
                 return true;
             }
         });
