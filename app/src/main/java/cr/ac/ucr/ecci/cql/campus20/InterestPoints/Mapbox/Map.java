@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -18,7 +19,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class Map extends FragmentActivity {
+public class Map extends AppCompatActivity {
     private MapView mapView;
 
     private double latitude;
@@ -51,10 +52,7 @@ public class Map extends FragmentActivity {
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-
-
                     }
                 });
 

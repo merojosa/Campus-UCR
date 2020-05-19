@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InterestPoints.Mapbox.MapPlaceDetail">
+    tools:context="cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map">
 
     <ScrollView
         android:layout_width="match_parent"
