@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
     // definimos la lista de datos
@@ -128,16 +128,16 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * Método que retorna los Temas para mostrar en la actividad
      * @return un Array con todos los Temas para mostrar en la actividad y visualizarlos todos en una lista
      */
-    private ArrayList<Temas> getArrayItems(){
-        ArrayList<Temas> mTemas = new ArrayList<>();
+    private ArrayList<Tema> getArrayItems(){
+        ArrayList<Tema> mTemas = new ArrayList<>();
 
-        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
-        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
-        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
-        mTemas.add(new Temas("Becas", R.drawable.foro_becas, "Desde como aplicar hasta como gastar"));
-        mTemas.add(new Temas("Residencias", R.drawable.foro_residencias, "Más barato que alquilar ..."));
-        mTemas.add(new Temas("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
-        mTemas.add(new Temas("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas más valoradas por la comunidad"));
+        mTemas.add(new Tema("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
+        mTemas.add(new Tema("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
+        mTemas.add(new Tema("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
+        mTemas.add(new Tema("Becas", R.drawable.foro_becas, "Desde como aplicar hasta como gastar"));
+        mTemas.add(new Tema("Residencias", R.drawable.foro_residencias, "Más barato que alquilar ..."));
+        mTemas.add(new Tema("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
+        mTemas.add(new Tema("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas más valoradas por la comunidad"));
 
         return mTemas;
     }
@@ -146,12 +146,12 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * Método que retorna los Temas Sugeridos para mostrar en la actividad principal
      * @return un array de Temas Sugeridos para mostrar en la actividad principal
      */
-    public ArrayList<Temas> getTemasSugeridos(){
-        ArrayList<Temas> mTemas = new ArrayList<>();
+    public ArrayList<Tema> getTemasSugeridos(){
+        ArrayList<Tema> mTemas = new ArrayList<>();
 
-        mTemas.add(new Temas("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
-        mTemas.add(new Temas("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
-        mTemas.add(new Temas("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
+        mTemas.add(new Tema("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
+        mTemas.add(new Tema("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
+        mTemas.add(new Tema("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
 
         return mTemas;
     }
