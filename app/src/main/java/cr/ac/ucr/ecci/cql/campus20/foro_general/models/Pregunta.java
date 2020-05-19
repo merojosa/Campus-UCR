@@ -8,7 +8,7 @@ import androidx.room.ForeignKey;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "Pregunta",foreignKeys = @ForeignKey(entity = Tema.class,
+@Entity(tableName = "Pregunta", foreignKeys = @ForeignKey(entity = Tema.class,
         parentColumns = "id",
         childColumns = "temaID",
         onDelete = ForeignKey.RESTRICT))

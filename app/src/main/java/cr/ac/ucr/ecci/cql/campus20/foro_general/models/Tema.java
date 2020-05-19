@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.models;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.ForeignKey;
@@ -8,8 +9,11 @@ import androidx.room.ForeignKey;
 @Entity(tableName = "Tema")
 public class Tema {
 
+    @Ignore
     private String name;
+    @Ignore
     private int img;
+    @Ignore
     private String description;
 
     @PrimaryKey(autoGenerate = true)
@@ -33,6 +37,7 @@ public class Tema {
      * @param description una breve descripción del mismo
      * @param img la imagen a incluir en la lista, para representar el tema
      */
+    @Ignore
     public Tema(String name, int img, String description) {
         this.name = name;
         this.img = img;

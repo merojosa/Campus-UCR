@@ -25,8 +25,11 @@ public interface TemaDao
     @Delete
     void delete(Pregunta pregunta);
 
+    @Query("SELECT * FROM Tema WHERE id = :id")
+    Tema buscarTemaPorID(int id);
+
     @Query("SELECT * FROM Tema")
-    ArrayList<Tema> getTemas(int id);
+    List<Tema> getTemas();
 
     @Query("DELETE FROM Tema")
     void borrarTodo();

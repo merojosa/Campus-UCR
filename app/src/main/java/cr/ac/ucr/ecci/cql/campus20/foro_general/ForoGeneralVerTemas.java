@@ -131,6 +131,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ArrayList<Tema> getArrayItems(){
         ArrayList<Tema> mTemas = new ArrayList<>();
 
+        // SELECT TEMAS DE BASE DE DATOS
+        // Repositorio.getTemas();
+
         mTemas.add(new Tema("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
         mTemas.add(new Tema("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
         mTemas.add(new Tema("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
