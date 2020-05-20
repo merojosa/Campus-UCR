@@ -20,43 +20,6 @@ public class ConfiguracionActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
-
-        Button buttonIniciar = findViewById(R.id.buttonGuardar);
-        buttonIniciar.setOnClickListener(v -> guardarDatos());
-    }
-
-    private void guardarDatos()
-    {
-        RadioGroup apps = findViewById(R.id.radioGroupConfig);
-
-        int appElegido = apps.getCheckedRadioButtonId();
-
-        // El default es UCR Eats
-        int opcion = 0;
-
-        switch (appElegido)
-        {
-            case R.id.radioButtonMujeres:
-            {
-                opcion = 1;
-                break;
-            }
-            case R.id.radioButtonForos:
-            {
-                opcion = 2;
-                break;
-            }
-            case R.id.radioButtonLugares:
-            {
-                opcion = 3;
-                break;
-            }
-        }
-
-        guardarConfiguracion(opcion);
-
-        Redireccionador redireccionador = new Redireccionador();
-        redireccionador.irActividadGuardada(this);
     }
 
     private void guardarConfiguracion(int appId)

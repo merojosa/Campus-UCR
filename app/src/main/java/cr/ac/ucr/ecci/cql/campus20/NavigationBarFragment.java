@@ -124,7 +124,6 @@ public class NavigationBarFragment extends android.app.Fragment {
             switch (item.getItemId()) {
 
                 case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
-                    confirmacionGuardarAppPredeterminada();
                     Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
                     startActivity(intentUCREats);
                     return true;
