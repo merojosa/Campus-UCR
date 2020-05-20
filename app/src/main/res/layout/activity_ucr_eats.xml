@@ -6,12 +6,16 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintVertical_bias="0.0">
 
         <Space
             android:layout_width="match_parent"
@@ -41,6 +45,17 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
+
     <fragment
         android:id="@+id/NavigationBar"
         class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
@@ -48,6 +63,7 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout="@layout/fragment_navigation_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
