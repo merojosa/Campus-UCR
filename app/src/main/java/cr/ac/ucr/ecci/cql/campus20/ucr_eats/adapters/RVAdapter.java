@@ -2,6 +2,8 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +60,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         for(Restaurant restaurant : restaurants)
         {
             cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo)
+                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, restaurant.latitude, restaurant.longitude)
             );
         }
 
@@ -84,8 +86,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void onBindViewHolder(SodaViewHolder sodaViewHolder, int i)
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
+        sodaViewHolder.ubicacionSoda.setImageResource(R.drawable.ic_soda_place);
         //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
         loadCardImage(sodaViewHolder, i);
+
 
     }
 
@@ -101,6 +105,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         CardView cardView;
         TextView nombreSoda;
         ImageView imagenSoda;
+        ImageView ubicacionSoda;
 
         public SodaViewHolder(View itemView)
         {
@@ -110,6 +115,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             cardView = itemView.findViewById(R.id.cv);
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
+            ubicacionSoda = itemView.findViewById(R.id.ubicacion_soda);
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {
@@ -118,6 +124,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 Intent intent = new Intent(view.getContext(), MealsActivity.class);
                 intent.putExtra("SODACARD", card);
                 view.getContext().startActivity(intent);
+            });
+
+            ubicacionSoda.setOnClickListener(view -> {
+                SodaCard card = sodaCards.get(getAdapterPosition());
+
+                irUbicacionSoda(card);
             });
         }
 
@@ -148,5 +160,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                                 .into(sodaViewHolder.imagenSoda);
                     }
                 });
+    }
+
+    // Ir a la localización de la soda en el mapa
+    private void irUbicacionSoda(SodaCard soda){
+        // Intent para ver la localización en el mapa
+        String url = "geo:" + String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud());
+        String q = "?q="+ String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud()) + "(" + soda.getNombre() + ")";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url + q));
+        intent.setPackage("com.google.android.apps.maps");
+        this.context.startActivity(intent);
     }
 }

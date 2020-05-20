@@ -8,18 +8,24 @@ public class SodaCard implements Parcelable
     int id;
     private String nombre;
     private String foto;
+    private double latitud;
+    private double longitud;
 
-    public SodaCard(int id, String nombre, String foto)
+    public SodaCard(int id, String nombre, String foto, double latitud, double longitud)
     {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     protected SodaCard(Parcel in) {
         id = in.readInt();
         nombre = in.readString();
         foto = in.readString();
+        latitud = in.readDouble();
+        longitud = in.readDouble();
     }
 
     @Override
@@ -27,6 +33,8 @@ public class SodaCard implements Parcelable
         dest.writeInt(id);
         dest.writeString(nombre);
         dest.writeString(foto);
+        dest.writeDouble(latitud);
+        dest.writeDouble(longitud);
     }
 
     @Override
@@ -65,4 +73,12 @@ public class SodaCard implements Parcelable
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public double getLatitud() { return latitud; }
+
+    public void setLatitud(double latitud) { this.latitud = latitud; }
+
+    public double getLongitud() { return longitud; }
+
+    public void setLongitud(double longitud) { this.longitud = longitud; }
 }
