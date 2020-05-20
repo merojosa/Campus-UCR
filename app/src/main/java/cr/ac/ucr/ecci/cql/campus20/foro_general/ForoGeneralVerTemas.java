@@ -60,35 +60,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         */
 
 
-/*
-        // Inicialización de la barra de navegación general
-        BottomNavigationView generalNavigationView = findViewById(R.id.bottom_navigation);
-
-        // Dejar por defecto el ícono de foro seleccionado
-        generalNavigationView.setSelectedItemId(R.id.foro);
-
-        // Ejecución del listener para cambiar de actividad
-        generalNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                // Dependiendo del item seleccionado, ejecutará el Intent del módulo específico
-                switch(menuItem.getItemId()){
-                    case R.id.ucreats:
-                        break;
-                    case R.id.mujeres:
-                        break;
-                    case R.id.foro:
-                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
-                        startActivity(intentForo);
-                        break;
-                    case R.id.lugares:
-                        break;
-                }
-                return false;
-            }
-        });*/
-
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);

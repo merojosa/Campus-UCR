@@ -23,7 +23,7 @@ public interface TemaDao
     void update(Tema tema);
 
     @Delete
-    void delete(Pregunta pregunta);
+    void delete(Tema tema);
 
     @Query("SELECT * FROM Tema WHERE id = :id")
     Tema buscarTemaPorID(int id);
