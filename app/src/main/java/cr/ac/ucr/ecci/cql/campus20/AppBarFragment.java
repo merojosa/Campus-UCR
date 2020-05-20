@@ -13,18 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.navigation.NavigationView;
 
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AppBarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AppBarFragment extends Fragment
 {
 
@@ -33,8 +22,8 @@ public class AppBarFragment extends Fragment
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static AppBarFragment newInstance() {
+    public static AppBarFragment newInstance()
+    {
         AppBarFragment fragment = new AppBarFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -55,8 +44,8 @@ public class AppBarFragment extends Fragment
         // Settear el toolbar
         Toolbar toolbar = view.findViewById(R.id.toolBar);
         toolbar.setTitle(R.string.app_name);
+        // Cambiar el color de los 3 puntos.
         toolbar.getOverflowIcon().setColorFilter(ContextCompat.getColor(getContext(), R.color.blanco_UCR), PorterDuff.Mode.SRC_ATOP);
-
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
