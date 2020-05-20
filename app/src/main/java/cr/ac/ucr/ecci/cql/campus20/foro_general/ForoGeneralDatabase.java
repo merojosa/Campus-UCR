@@ -12,8 +12,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
@@ -51,13 +53,16 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
     }
 
     public abstract TemaDao temaDao();
+    public abstract FavoritoDao favoritoDao();
 
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final TemaDao temaDao;
+        private final FavoritoDao favoritoDao;
 
         public PopulateDbAsync(ForoGeneralDatabase instance) {
             temaDao = instance.temaDao();
+            favoritoDao = instance.favoritoDao();
         }
 
         @Override
@@ -65,12 +70,16 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
             temaDao.borrarTodo();
 
             Tema temaUno = new Tema(0, "General", 10);
-            Tema temaDos = new Tema(0, "Info", 3);
-            Tema temaTres = new Tema(0, "Becas", 5);
+            Tema temaDos = new Tema(1, "Info", 3);
+            Tema temaTres = new Tema(2, "Becas", 5);
 
             temaDao.insert(temaUno);
             temaDao.insert(temaDos);
             temaDao.insert(temaTres);
+
+            // Inserta un registro en los favoritos
+            Favorito fav1 = new Favorito(0);
+            favoritoDao.insert(fav1);
 
             return null;
         }
