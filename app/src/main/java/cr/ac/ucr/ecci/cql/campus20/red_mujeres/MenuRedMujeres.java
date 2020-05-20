@@ -8,12 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -79,28 +79,15 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     private void enviarConfirmacion() {
+        List<String> toEmailList = Arrays.asList("correo@ucr.ac.cr"); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
         try {
-            GMailSender sender = new GMailSender("dessalfaro@gmail.com", "");
-            sender.sendMail("This is Subject",
-                    "This is Body",
-                    "dessalfaro@gmail.com",
-                    "dessalfaro@gmail.com");
-
-            Context context = getApplicationContext();
-            CharSequence text = "Hello email!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-
+            new SendMailTask(MenuRedMujeres.this).execute("correo@gmail.com", //remitente
+                    "password", //contraseña remitente
+                     toEmailList, //lista de destinatarios
+                    "Confirmacion Red Mujeres", //asunto
+                    "Su solicitud para unirse a la red de mujeres ha sido aceptada. Ahora puede acceder a grupos de confianza desde la aplicacion CampusUCR."); //mensaje en el cuerpo
         } catch (Exception e) {
-            Context context = getApplicationContext();
-            CharSequence text = "Hello toast!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-
+            Log.i("Excepcion", e.getMessage());
         }
     }
 }
