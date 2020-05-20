@@ -72,7 +72,6 @@ public class MainEmptyActivity extends AppCompatActivity
             {
                 startActivity(new Intent(this, LoginActivity.class));
             }
-            finish();
         }
     }
 }
