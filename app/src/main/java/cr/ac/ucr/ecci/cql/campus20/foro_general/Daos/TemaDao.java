@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.Daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -29,7 +30,7 @@ public interface TemaDao
     Tema buscarTemaPorID(int id);
 
     @Query("SELECT * FROM Tema")
-    List<Tema> getTemas();
+    LiveData<List<Tema>> getTemas();
 
     @Query("DELETE FROM Tema")
     void borrarTodo();

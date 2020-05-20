@@ -10,34 +10,67 @@ import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAdapter.FavoritoViewHolder> {
 
+    // Define listener member variable
+    private OnItemClickListener listener;
+
+    // Define the listener interface para ponerlo en cada item del RecyclewView
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     // Definición del ViewHolder
-    class FavoritoViewHolder extends RecyclerView.ViewHolder {
+    public class FavoritoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView favoritoNombreView;
         private final TextView favoritoDescritionView;
         private final ImageView favoritoImagen;
 
         // Constructor
-        private FavoritoViewHolder(View itemView)
+        public FavoritoViewHolder(View itemView)
         {
             super(itemView);
             // Se obtienen los widgets
-            favoritoNombreView = itemView.findViewById(R.id.name);
+            favoritoNombreView = itemView.findViewById(R.id.nameTema);
             favoritoDescritionView = itemView.findViewById(R.id.description);
             favoritoImagen = itemView.findViewById(R.id.img);
+
+            // Setup the click listener
+            itemView.setOnClickListener(this);
+        }
+
+        // Se sobre escribe el metodo onClick, para el evento de captura del Toggle
+        @Override
+        public void onClick(View v) {
+            // Triggers click upwards to the adapter on click
+            if (listener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(itemView, position);
+                }
+            }
         }
     }
 
     // Definición del Inflater y de la lista de Temas Favoritos
     private final LayoutInflater mInflater;
     private List<Favorito> mFavoritos;
+
+    // PRUEBA PARA TRAER TODOS LOS TEMAS ALMACENADOS
+    private List<Tema> mTemas;
 
     public TemasFavoritosAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
@@ -53,9 +86,19 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
         if (mFavoritos != null) {
             // Se instancia cada tema favorito
             Favorito current = mFavoritos.get(position);
-            holder.favoritoNombreView.setText(Integer.toString(current.getIdTema()));
-            holder.favoritoDescritionView.setText("DescripcionPrueba");
-            holder.favoritoImagen.setImageResource(R.drawable.foro1);
+            int posTema = posicionTema(current.getIdTema());
+            holder.favoritoNombreView.setText(mTemas.get(posTema).getTitulo());
+            holder.favoritoDescritionView.setText(mTemas.get(posTema).getDescription());
+
+            int id = holder.itemView.getContext().getResources().getIdentifier("foro_" +
+                    mTemas.get(posTema).getTitulo().toLowerCase(), "drawable",
+                    holder.itemView.getContext().getPackageName());
+
+            if (mTemas.get(posTema).getTitulo().equals("General"))
+                id = holder.itemView.getContext().getResources().getIdentifier("foro1", "drawable",
+                        holder.itemView.getContext().getPackageName());
+            holder.favoritoImagen.setImageResource(id);
+
         }
         else {
             // Covers the case of data not being ready yet.
@@ -64,9 +107,25 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
         }
     }
 
+    public void setTemas(List<Tema> temas)
+    {
+        mTemas = temas;
+    }
+
     public void setFavoritos(List<Favorito> favoritos){
         mFavoritos = favoritos;
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
+    }
+
+    // Método para devolver la posición del tema que se está por renderizar
+    int posicionTema(int idFavorito)
+    {
+        for(int i = 0; i < mTemas.size(); ++i)
+        {
+            if (mTemas.get(i).getId() == (idFavorito))
+                return i;
+        }
+        return 0;
     }
 
     // getItemCount() is called many times, and when it is first called,

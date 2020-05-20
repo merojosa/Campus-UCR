@@ -19,10 +19,17 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 3, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 5, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
+
+    public abstract TemaDao temaDao();
+    public abstract FavoritoDao favoritoDao();
+
     private static ForoGeneralDatabase INSTANCE;
+    private static final int NUMBER_OF_THREADS = 4;
+    static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
 
     public static ForoGeneralDatabase getDatabase(final Context context) {
@@ -31,57 +38,83 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ForoGeneralDatabase.class, "ForoGeneral-Database")
-                            .allowMainThreadQueries() // SHOULD NOT BE USED IN PRODUCTION !!!
-                            .addCallback(new RoomDatabase.Callback() {
-                                @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                                    super.onCreate(db);
-                                    new PopulateDbAsync(INSTANCE).execute();
-                                }
-                            })
-                            .build();
+                            .fallbackToDestructiveMigration()
+                            .addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }
         return INSTANCE;
     }
 
-    public void clearDb() {
-        if (INSTANCE != null) {
-            new PopulateDbAsync(INSTANCE).execute();
-        }
-    }
-
-    public abstract TemaDao temaDao();
-    public abstract FavoritoDao favoritoDao();
-
-
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-        private final TemaDao temaDao;
-        private final FavoritoDao favoritoDao;
-
-        public PopulateDbAsync(ForoGeneralDatabase instance) {
-            temaDao = instance.temaDao();
-            favoritoDao = instance.favoritoDao();
-        }
-
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        protected Void doInBackground(Void... voids) {
-            temaDao.borrarTodo();
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
 
-            Tema temaUno = new Tema(0, "General", 10);
-            Tema temaDos = new Tema(0, "Info", 3);
-            Tema temaTres = new Tema(0, "Becas", 5);
+            // ESTA MADRE SE COMENTA PARA QUE LOS DATOS INSERTADOS EN LA TABLA SE VAYAN GUARDANDO
+            // DUH
+            // If you want to keep data through app restarts,
+            // comment out the following block
+            databaseWriteExecutor.execute(() -> {
 
-            temaDao.insert(temaUno);
-            temaDao.insert(temaDos);
-            temaDao.insert(temaTres);
+                FavoritoDao daoFavorito = INSTANCE.favoritoDao();
+                // ESTO ES SOLO PARA EFECTO DE PRUEBA DE BORRAR LO QUE SEA QUE TENGA FOLLOW
 
-            // Inserta un registro en los favoritos
-            Favorito fav1 = new Favorito(0);
-            favoritoDao.insert(fav1);
+                TemaDao temaDao = INSTANCE.temaDao();
+                temaDao.borrarTodo();
+                Tema temaUno = new Tema(1, "General", "Lo más nuevo", 10);
+                Tema temaDos = new Tema(2, "Escuelas", "Información sobre distintas escuelas", 3);
+                Tema temaTres = new Tema(3, "Becas", "Desde como aplicar hasta como gastar", 5);
 
-            return null;
+                temaDao.insert(temaUno);
+                temaDao.insert(temaDos);
+                temaDao.insert(temaTres);
+
+                daoFavorito.deleteAll();
+                Favorito follow1 = new Favorito(1);
+                daoFavorito.insert(follow1);
+                Favorito follow2 = new Favorito(2);
+                daoFavorito.insert(follow2);
+                Favorito follow3 = new Favorito(3);
+                daoFavorito.insert(follow3);
+            });
         }
-    }
+    };
+
+
+//    public void clearDb() {
+//        if (INSTANCE != null) {
+//            new PopulateDbAsync(INSTANCE).execute();
+//        }
+//    }
+//
+//
+//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+//        private final TemaDao temaDao;
+//        private final FavoritoDao favoritoDao;
+//
+//        public PopulateDbAsync(ForoGeneralDatabase instance) {
+//            temaDao = instance.temaDao();
+//            favoritoDao = instance.favoritoDao();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            temaDao.borrarTodo();
+//
+//            Tema temaUno = new Tema(0, "General", 10);
+//            Tema temaDos = new Tema(0, "Info", 3);
+//            Tema temaTres = new Tema(0, "Becas", 5);
+//
+//            temaDao.insert(temaUno);
+//            temaDao.insert(temaDos);
+//            temaDao.insert(temaTres);
+//
+//            // Inserta un registro en los favoritos
+//            Favorito fav1 = new Favorito(0);
+//            favoritoDao.insert(fav1);
+//
+//            return null;
+//        }
+//    }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -33,13 +34,18 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.TemasFavoritosAdapter;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class MainForoGeneral extends AppCompatActivity {
 
     // Se define una futura instancia del FavoritoViewModel
     private FavoritoViewModel mFavoritoViewModel;
+
+    private TemaViewModel mTemaViewModel;
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
@@ -61,16 +67,37 @@ public class MainForoGeneral extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mFavoritoViewModel = ViewModelProviders.of(this).get(FavoritoViewModel.class);
+        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
+
+        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                adapter.setTemas(temas);
+            }
+        });
 
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
             @Override
             public void onChanged(@Nullable final List<Favorito> favoritos) {
+
                 // Update the cached copy of the words in the adapter.
-                Favorito prueba = new Favorito(1);
-                favoritos.add(prueba);
                 adapter.setFavoritos(favoritos);
             }
+        });
+
+
+        // MÉTODO O FORMA DE OBTENER EL CLIC DE LA LISTA DE RECYCLEWVIEW
+        adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(View view, int position) {
+                // Aquí va el intent hacia la actividad que muestra las preguntas
+                String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         // Boton flotante de Agregar Preguntas

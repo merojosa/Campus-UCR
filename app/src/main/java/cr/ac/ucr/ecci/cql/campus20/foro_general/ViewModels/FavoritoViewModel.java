@@ -11,6 +11,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 // ESTA CLASE NO USA NINGUN REPOSITORY PORQUE ESTE NO EXISTE
 
@@ -34,4 +35,6 @@ public class FavoritoViewModel extends AndroidViewModel {
     public void insert(Favorito favorito) { favoritoDao.insert(favorito);}
 
     public void deleteOneFavorito(int favoritoID) { favoritoDao.deleteOneFavorito(favoritoID);}
+
+    public Tema getOne(int favoritoID) { return favoritoDao.getOne(favoritoID);}
 }
