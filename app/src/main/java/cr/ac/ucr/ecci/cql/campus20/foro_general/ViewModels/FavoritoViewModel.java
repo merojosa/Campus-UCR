@@ -9,6 +9,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 
 // ESTA CLASE NO USA NINGUN REPOSITORY PORQUE ESTE NO EXISTE
@@ -28,7 +29,7 @@ public class FavoritoViewModel extends AndroidViewModel {
         mAllFavoritos = favoritoDao.getAllFavoritos();
     }
 
-    LiveData<List<Favorito>> getAllFavoritos() { return mAllFavoritos; }
+    public LiveData<List<Favorito>> getAllFavoritos() { return mAllFavoritos; }
 
     public void insert(Favorito favorito) { favoritoDao.insert(favorito);}
 

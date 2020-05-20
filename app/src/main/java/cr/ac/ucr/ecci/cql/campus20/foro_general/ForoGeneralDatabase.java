@@ -19,7 +19,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class}, version = 3, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 3, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
     private static ForoGeneralDatabase INSTANCE;
@@ -70,8 +70,8 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
             temaDao.borrarTodo();
 
             Tema temaUno = new Tema(0, "General", 10);
-            Tema temaDos = new Tema(1, "Info", 3);
-            Tema temaTres = new Tema(2, "Becas", 5);
+            Tema temaDos = new Tema(0, "Info", 3);
+            Tema temaTres = new Tema(0, "Becas", 5);
 
             temaDao.insert(temaUno);
             temaDao.insert(temaDos);

@@ -23,7 +23,7 @@ public interface FavoritoDao {
 
     // Extrae todos los temas que están en la tabla
     // En un LIVEDATA
-    @Query("SELECT * from Favoritos_table ORDER BY IdTema ASC")
+    @Query("SELECT * from Favoritos_table")
     LiveData<List<Favorito>> getAllFavoritos();
 
     // Elimina un tema de la tabla de favoritos
