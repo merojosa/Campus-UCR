@@ -43,7 +43,7 @@ public class MainEmptyActivity extends AppCompatActivity
         Redireccionador redireccionador = new Redireccionador();
 
         // TESTING
-        loginBD.cerrarSesion();
+//        loginBD.cerrarSesion();
 
         if(OMITIR_LOGIN == true)
         {
