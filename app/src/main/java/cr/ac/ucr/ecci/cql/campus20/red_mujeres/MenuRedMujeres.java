@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -37,7 +39,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        enviarSolicitud();
+                        enviarConfirmacion();
                     }
                 });
 
@@ -58,6 +60,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     private void enviarSolicitud() {
+        enviarConfirmacion();
         // recibe correo del usuario ya logeado a la aplicacion
         // mandar solicitud a ese correo
     }
@@ -73,5 +76,18 @@ public class MenuRedMujeres extends AppCompatActivity {
         // si no
             // enviarla
         return validado;
+    }
+
+    private void enviarConfirmacion() {
+        List<String> toEmailList = Arrays.asList("correo@ucr.ac.cr"); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
+        try {
+            new SendMailTask(MenuRedMujeres.this).execute("correo@gmail.com", //remitente
+                    "password", //contraseña remitente
+                     toEmailList, //lista de destinatarios
+                    "Confirmacion Red Mujeres", //asunto
+                    "Su solicitud para unirse a la red de mujeres ha sido aceptada. Ahora puede acceder a grupos de confianza desde la aplicacion CampusUCR."); //mensaje en el cuerpo
+        } catch (Exception e) {
+            Log.i("Excepcion", e.getMessage());
+        }
     }
 }

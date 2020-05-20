@@ -70,4 +70,7 @@ dependencies {
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.8.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v9:0.4.0'
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile files('libs/mail.jar')
 }
