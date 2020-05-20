@@ -75,7 +75,7 @@ public class AdaptadorTemas extends BaseAdapter {
         }
 
         ImageView img = rowView.findViewById(R.id.img);
-        TextView name = rowView.findViewById(R.id.name);
+        TextView name = rowView.findViewById(R.id.nameTema);
         TextView description = rowView.findViewById(R.id.description);
 
         img.setImageResource(Item.getImg());

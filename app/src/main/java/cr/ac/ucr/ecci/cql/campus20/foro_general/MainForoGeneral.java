@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -20,10 +22,30 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStore;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.TemasFavoritosAdapter;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class MainForoGeneral extends AppCompatActivity {
+
+    // Se define una futura instancia del FavoritoViewModel
+    private FavoritoViewModel mFavoritoViewModel;
+
+    private TemaViewModel mTemaViewModel;
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
@@ -40,6 +62,44 @@ public class MainForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_foro_general);
 
+        RecyclerView recyclerView = findViewById(R.id.listaTemasFavoritos);
+        final TemasFavoritosAdapter adapter = new TemasFavoritosAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
+
+        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                adapter.setTemas(temas);
+            }
+        });
+
+        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
+            @Override
+            public void onChanged(@Nullable final List<Favorito> favoritos) {
+
+                // Update the cached copy of the words in the adapter.
+                adapter.setFavoritos(favoritos);
+            }
+        });
+
+
+        // MÉTODO O FORMA DE OBTENER EL CLIC DE LA LISTA DE RECYCLEWVIEW
+        adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(View view, int position) {
+                // Aquí va el intent hacia la actividad que muestra las preguntas
+                String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
         // Boton flotante de Agregar Preguntas
         FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
 
@@ -51,8 +111,9 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
+
         // Llenado de la lista de temas sugeridos
-        rellenarTemasSugeridos();
+        //rellenarTemasSugeridos();
 
         // Este código debería ser una llamado y no el código en sí
 
@@ -105,7 +166,7 @@ public class MainForoGeneral extends AppCompatActivity {
      */
     private void rellenarTemasSugeridos(){
         // Codigo que realiza el llenado de la lista de temas recomendados
-        ListView listaTemasRecomendados = findViewById(R.id.listaTemasSugeridos);
+        ListView listaTemasRecomendados = findViewById(R.id.listaTemasFavoritos);
         ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
         AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.getTemasSugeridos());
         listaTemasRecomendados.setAdapter(adaptadorTemas);

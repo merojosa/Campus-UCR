@@ -1,4 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.models;
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -13,21 +14,25 @@ public class Tema {
     private String name;
     @Ignore
     private int img;
-    @Ignore
-    private String description;
 
-    @PrimaryKey(autoGenerate = true)
-    public int id = 0;
+    @PrimaryKey
+    @NonNull
+    public int id;
 
     @ColumnInfo(name = "titulo")
     public String titulo = "";
 
+    @ColumnInfo(name= "descripcion")
+    private String description;
+
     @ColumnInfo(name = "contadorUsuarios")
     public int contadorUsuarios = 0;
 
-    public Tema(int id, String titulo, int contadorUsuarios) {
+
+    public Tema(int id, String titulo, String description, int contadorUsuarios) {
         this.id = id;
         this.titulo = titulo;
+        this.description = description;
         this.contadorUsuarios = contadorUsuarios;
     }
 
@@ -65,8 +70,15 @@ public class Tema {
      * @return description
      */
     public String getDescription() {
-        return description;
+        if(this.description != null)
+            return description;
+        else
+            return "description";
     }
+
+    public int getId() {return id;}
+
+    public String getTitulo() {return titulo;}
 
     // Para el ListView
     //@Override
