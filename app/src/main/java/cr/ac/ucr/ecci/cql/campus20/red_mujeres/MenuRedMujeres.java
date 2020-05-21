@@ -1,26 +1,19 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
-
-import java.util.Arrays;
-import java.util.List;
-
+import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
+    private LoginBD usuario;
+    //private String correo = usuario.obtenerCorreoActual();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +61,6 @@ public class MenuRedMujeres extends AppCompatActivity {
     private boolean validarUsuario() {
         boolean validado;
 
-        // recuperar correo del usuario ya logeado a la aplicacion
         // revisar si solicitud fue aceptada
 
         // si si
