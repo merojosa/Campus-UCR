@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 @Dao
 public interface RestaurantDao
 {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Restaurant restaurant);
 
     @Update(onConflict = OnConflictStrategy.ABORT)
@@ -30,7 +31,7 @@ public interface RestaurantDao
     Restaurant searchRestaurantById(int id);
 
     @Query("SELECT * FROM Restaurant ORDER BY id")
-    List<Restaurant> getAllRestaurants();
+    LiveData<List<Restaurant>> getAllRestaurants();
 
     @Query("DELETE FROM Restaurant")
     void deleteAll();
