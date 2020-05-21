@@ -26,6 +26,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.CrearPreguntaForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 /**
@@ -96,7 +97,7 @@ public class NavigationBarFragment extends android.app.Fragment
             // Ícono del módulo de ucr eats
             navegacion.getMenu().getItem(0).setChecked(true);
         else
-            if (getActivity() instanceof MainRedMujeres)
+            if (getActivity() instanceof MenuRedMujeres)
                 // Ícono del módulo de mujeres ucr
                 navegacion.getMenu().getItem(1).setChecked(true);
             else
@@ -165,7 +166,7 @@ public class NavigationBarFragment extends android.app.Fragment
                 return true;
 
             case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
-                Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
+                Intent intentMujeres = new Intent(getActivity(), MenuRedMujeres.class);
                 startActivity(intentMujeres);
                 return true;
 

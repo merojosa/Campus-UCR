@@ -89,61 +89,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapView.getMapAsync(this);
     }
 
-//    @Override
-//    public void onMapReady(@NonNull final MapboxMap mapboxMap)
-//    {
-//        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-//
-//        MainRedMujeres.this.mapboxMap = mapboxMap;
-//
-//        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"),
-//            new Style.OnStyleLoaded()
-//            {
-//                @Override
-//                public void onStyleLoaded(@NonNull Style style)
-//                {
-//                    enableLocationComponent(style);
-//                }
-//            });
-//
-//        //Para que la brujula que centra la camara no desaparezca
-//        mapboxMap.getUiSettings().setCompassFadeFacingNorth(false);
-//
-//        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
-//            @Override
-//            public boolean onMapClick(@NonNull LatLng point) {
-//                symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(point.getLongitude(),point.getLatitude())));
-//                mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
-//
-//
-//                                .withImage(ICON_ID, BitmapFactory.decodeResource(
-//                                        MainRedMujeres.this.getResources(), R.drawable.mapbox_logo_icon))
-//
-//
-//                                .withSource(new GeoJsonSource(SOURCE_ID,
-//                                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
-//
-//
-//                                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
-//                                        .withProperties(
-//                                                iconImage(ICON_ID),
-//                                                iconAllowOverlap(true),
-//                                                iconIgnorePlacement(true),
-//                                                iconOffset(new Float[] {0f, -9f}))
-//                                ),
-//                        new Style.OnStyleLoaded()
-//                        {
-//                            @Override
-//                            public void onStyleLoaded(@NonNull Style style)
-//                            {
-//                                enableLocationComponent(style);
-//                            }
-//                        });
-//
-//                return true;
-//            }
-//        });
-//    }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {

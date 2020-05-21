@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 public class Redireccionador
@@ -77,7 +78,7 @@ public class Redireccionador
             }
             case 1:
             {
-                intent = new Intent(context, MainRedMujeres.class);
+                intent = new Intent(context, MenuRedMujeres.class);
                 break;
             }
 

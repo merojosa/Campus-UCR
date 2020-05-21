@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 public class MainEmptyActivity extends AppCompatActivity
@@ -57,7 +58,7 @@ public class MainEmptyActivity extends AppCompatActivity
                 }
                 else
                 {
-                    startActivity(new Intent(this, MainRedMujeres.class));
+                    startActivity(new Intent(this, MenuRedMujeres.class));
                 }
                 finish();
             });

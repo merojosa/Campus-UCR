@@ -1,4 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DatabaseContract;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -22,6 +23,8 @@ public class MenuRedMujeres extends AppCompatActivity {
 
         if (!validarUsuario()) {
             popupRegistro();
+        } else {
+            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
         }
 
     }
@@ -75,8 +78,8 @@ public class MenuRedMujeres extends AppCompatActivity {
             // guardar que el usuario fue aceptado
 
             // sino
-            // guardar que el usuario fue rechazado
-            validado = false;
+                // guardar que el usuario fue rechazado
+            validado = true;
 
         return validado;
     }
