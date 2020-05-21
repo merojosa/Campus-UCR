@@ -33,8 +33,7 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_TYPE = "Type";
             public static final String TABLE_COLUMN_RATING = "Rating";
             public static final String TABLE_COLUMN_FLOOR = "Floor";
-            public static final String TABLE_COLUMN_LATITUDE = "Latitude";
-            public static final String TABLE_COLUMN_LONGITUDE = "Longitude";
+            public static final String TABLE_COLUMN_IMAGE = "Image";
 
             /*SQL Statements*/
             public static final String SQL_CREATE_PLACE =
@@ -44,7 +43,9 @@ public class DatabaseContract {
                             PlaceTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE     + COMMA     +
                             PlaceTable.TABLE_COLUMN_TYPE        + TEXT_TYPE     + COMMA     +
                             PlaceTable.TABLE_COLUMN_RATING      + INTEGER_TYPE  + NULLABLE  + COMMA +
-                            PlaceTable.TABLE_COLUMN_FLOOR       + INTEGER_TYPE  + NULLABLE  + " )";
+                            PlaceTable.TABLE_COLUMN_FLOOR       + INTEGER_TYPE  + NULLABLE  + COMMA +
+                            PlaceTable.TABLE_COLUMN_IMAGE       + INTEGER_TYPE  + NULLABLE  +
+                            " )";
 
             public static final String SQL_DELETE_PLACE =
                     "DROP TABLE IF EXISTS " + PlaceTable.TABLE_NAME;
@@ -109,12 +110,15 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_ID = "Id";
             public static final String TABLE_COLUMN_NAME = "Name";
             public static final String TABLE_COLUMN_DESCRIPTION = "Description";
+            public static final String TABLE_COLUMN_IMAGE = "Image";
             /*Statements*/
             public static final String SQL_CREATE_FACULTY =
                     "CREATE TABLE " + FacultyTable.TABLE_NAME + " (" +
                             FacultyTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
                             FacultyTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
-                            FacultyTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + " )";
+                            FacultyTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
+                            FacultyTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  +
+                            " )";
 
             public static final String SQL_DELETE_FACULTY =
                     "DROP TABLE IF EXISTS " + FacultyTable.TABLE_NAME;
@@ -131,6 +135,7 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_ID_PLACE_FK = "Id_place_FK";
             public static final String TABLE_COLUMN_NAME = "Name";
             public static final String TABLE_COLUMN_DESCRIPTION = "Description";
+            public static final String TABLE_COLUMN_IMAGE = "Image";
 
             /*Statements*/
             public static final String SQL_CREATE_SCHOOL =
@@ -140,6 +145,7 @@ public class DatabaseContract {
                             SchoolTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
+                            SchoolTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  + COMMA +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + ")" + REF + FacultyTable.TABLE_NAME + " (" + FacultyTable.TABLE_COLUMN_ID + ") " + COMMA +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
                             " )";

@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 /**
  * @class DeploymentScript
@@ -171,7 +172,7 @@ public class DeploymentScript {
         ingenieria4.insert(context);
         School ingenieria5 = new School(35, 8, 0, "Arquitectura", "");
         ingenieria5.insert(context);
-        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "");
+        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.ecci);
         ingenieria6.insert(context);
         School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "");
         ingenieria7.insert(context);

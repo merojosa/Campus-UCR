@@ -14,6 +14,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
     int id;
     String facultyName;
     String description;
+    int image;
 
     public Faculty(){}
 
@@ -26,6 +27,13 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         this.id = id;
         this.facultyName = facultyName;
         this.description = description;
+    }
+
+    public Faculty(int id, String facultyName, String description, int image) {
+        this.id = id;
+        this.facultyName = facultyName;
+        this.description = description;
+        this.image = image;
     }
 
     // Hay que implementar getter y setters de los atributos que tenga Faculty en la BD
@@ -67,6 +75,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID, getId());
         values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_NAME, getFacultyName());
         values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION, getDescription());
+        values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_IMAGE, getImage());
 
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
@@ -89,12 +98,49 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
             list.add(new Faculty(
                     cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION))
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_IMAGE))
             ));
             cursor.moveToNext();
         }
         cursor.close();
         dataAccess.close();
         return list;
+    }
+
+    /**
+     * @param context Current app context.
+     * @return the selected faculty instance.
+     * */
+    public static Faculty getFaculty(Context context, int id) {
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+        Cursor cursor = dataAccess.select("*", "Faculty", DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID + " = " + Integer.toString(id));
+        if(cursor.isAfterLast()){
+            return null;
+        }
+        cursor.moveToFirst();
+
+        Faculty returned = new Faculty(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_IMAGE))
+        );
+        cursor.close();
+        dataAccess.close();
+        return returned;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }
