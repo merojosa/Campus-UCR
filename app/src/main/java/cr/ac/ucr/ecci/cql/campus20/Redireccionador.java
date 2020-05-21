@@ -52,6 +52,8 @@ public class Redireccionador
                     context.startActivity(intentConfiguracion);
                 }
 
+                // Termino la actividad que ejecuto el redireccionamiento
+                ((Activity) context).finish();
             }
 
             @Override
@@ -92,6 +94,5 @@ public class Redireccionador
         }
 
         context.startActivity(intent);
-        ((Activity) context).finish();
     }
 }
