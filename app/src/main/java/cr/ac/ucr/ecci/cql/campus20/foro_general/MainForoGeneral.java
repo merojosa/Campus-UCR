@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.MainActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.TemasFavoritosAdapter;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
