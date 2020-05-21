@@ -12,9 +12,14 @@ import android.widget.ListView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
@@ -25,6 +30,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
+    private TemaViewModel mTemaViewModel;
 
     /**
      * Método que se invoca al iniciar la actividad temas en el foro general,
@@ -38,7 +45,16 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         //se establece la vista de la lista de temas
         lvItems = findViewById(R.id.lvItems);
-        adaptadorTemas = new AdaptadorTemas(this, getArrayItems());
+        adaptadorTemas = new AdaptadorTemas(this);
+
+        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                adaptadorTemas.setTemas(temas);
+            }
+        });
         lvItems.setAdapter(adaptadorTemas);
 
         /*

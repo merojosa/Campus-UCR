@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imagenTema"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:padding="5dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.1">
+
+            <TextView
+                android:id="@+id/nombreTema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="2dp"
+                android:textColor="#040404"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/descripcionTema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_marginLeft="10dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
+
+            <!--Codigo exitoso y terror para el toggle (bloquea el clic a los otros elementos)-->
+            <!--Se tiene que usar el android:descendantFocusability="blocksDescendants">
+            ya que sino el toggleButton bloquea que se pueda tocar cualquier otra cosa-->
+            <ToggleButton
+                android:id="@+id/botonFollow"
+                android:layout_width="28dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_favorite_states"
+                android:button="@null"
+                android:checked="false"
+                android:padding="2dp"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

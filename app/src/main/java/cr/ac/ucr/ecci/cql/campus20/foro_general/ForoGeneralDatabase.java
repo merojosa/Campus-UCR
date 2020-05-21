@@ -65,10 +65,18 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 Tema temaUno = new Tema(1, "General", "Lo más nuevo", 10);
                 Tema temaDos = new Tema(2, "Escuelas", "Información sobre distintas escuelas", 3);
                 Tema temaTres = new Tema(3, "Becas", "Desde como aplicar hasta como gastar", 5);
+                Tema temaCuatro = new Tema(4, "Profesores", "Información sobre distintos profesores", 6);
+                Tema temaCinco = new Tema(5, "Residencias", "Más barato que alquilar ...", 15);
+                Tema temaSeis = new Tema(6, "Buses", "Todo sobre el interno, algo sobre los externos", 11);
+                Tema temaSiete = new Tema(7, "Mejores calificadas", "Las preguntas más valoradas por la comunidad", 6);
 
                 temaDao.insert(temaUno);
                 temaDao.insert(temaDos);
                 temaDao.insert(temaTres);
+                temaDao.insert(temaCuatro);
+                temaDao.insert(temaCinco);
+                temaDao.insert(temaSeis);
+                temaDao.insert(temaSiete);
 
                 daoFavorito.deleteAll();
                 Favorito follow1 = new Favorito(1);

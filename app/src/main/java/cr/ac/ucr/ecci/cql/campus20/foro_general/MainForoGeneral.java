@@ -167,7 +167,7 @@ public class MainForoGeneral extends AppCompatActivity {
         // Codigo que realiza el llenado de la lista de temas recomendados
         ListView listaTemasRecomendados = findViewById(R.id.listaTemasFavoritos);
         ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
-        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.getTemasSugeridos());
+        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this);
         listaTemasRecomendados.setAdapter(adaptadorTemas);
     }
 

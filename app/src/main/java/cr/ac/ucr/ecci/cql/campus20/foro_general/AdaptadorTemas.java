@@ -9,23 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class AdaptadorTemas extends BaseAdapter {
     private Context context;
-    private ArrayList<Tema> listItems;
+    private List<Tema> listItems;
 
     /**
      * Constructor del adaptador personalizado de temas
      *
      * @param context   indica en que contexto se encuentra el objeto actual (la lista)
-     * @param listItems es donde se guardan los objetos de la lista
      */
-    public AdaptadorTemas(Context context, ArrayList<Tema> listItems) {
+    public AdaptadorTemas(Context context) {
         this.context = context;
-        this.listItems = listItems;
     }
 
     /**
@@ -35,7 +34,10 @@ public class AdaptadorTemas extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return listItems.size();
+        if (listItems != null)
+            return listItems.size();
+        else
+            return 0;
     }
 
     /**
@@ -69,18 +71,22 @@ public class AdaptadorTemas extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            rowView = inflater.inflate(R.layout.item_tema, null);
+            rowView = inflater.inflate(R.layout.item_follow_tema, null);
         } else {
             rowView = convertView;
         }
 
-        ImageView img = rowView.findViewById(R.id.img);
-        TextView name = rowView.findViewById(R.id.nameTema);
-        TextView description = rowView.findViewById(R.id.description);
+        ImageView img = rowView.findViewById(R.id.imagenTema);
+        TextView name = rowView.findViewById(R.id.nombreTema);
+        TextView description = rowView.findViewById(R.id.descripcionTema);
 
         img.setImageResource(Item.getImg());
-        name.setText(Item.getName());
+        name.setText(Item.getTitulo());
         description.setText(Item.getDescription());
         return rowView;
+    }
+
+    public void setTemas(List<Tema> temas) {
+        listItems = temas;
     }
 }
