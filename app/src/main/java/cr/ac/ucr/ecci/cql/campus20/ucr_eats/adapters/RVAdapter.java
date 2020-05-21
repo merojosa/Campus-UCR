@@ -128,7 +128,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
             for(SodaCard soda : sodaCards) {
                 if (soda.getHorario() == "Abierto")
-                    horarioSoda.setTextColor(context.getResources().getColor(R.color.verdeUCR));
+                    horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
                 if (soda.getHorario() == "Cerrado")
                     horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
             }
