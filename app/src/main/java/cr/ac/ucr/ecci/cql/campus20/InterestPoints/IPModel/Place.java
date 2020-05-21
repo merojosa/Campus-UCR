@@ -23,6 +23,7 @@ public class Place implements Parcelable {
     private String type;
     private int rating;
     private int floor;
+    private int image;
 
     public Place() {
     }
@@ -56,6 +57,16 @@ public class Place implements Parcelable {
             return new Place[size];
         }
     };
+
+    public Place(int id, String name, String description, String type, int rating, int floor, int image) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.rating = rating;
+        this.floor = floor;
+        this.image = image;
+    }
 
     public int getId() {
         return id;
@@ -137,7 +148,8 @@ public class Place implements Parcelable {
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_DESCRIPTION)),
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE)),
                     cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR))
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE))
             ));
             cursor.moveToNext();
         }
@@ -159,6 +171,7 @@ public class Place implements Parcelable {
         values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE, getType());
         values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING, getRating());
         values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR, getFloor());
+        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE, getImage());
 
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
@@ -191,10 +204,19 @@ public class Place implements Parcelable {
             place.setType(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE)));
             place.setRating(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING)));
             place.setFloor(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR)));
+            place.setImage(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE)));
         }
         cursor.close();
         dataAccess.close();
         Log.d("placeRead", "The place with id: " + Integer.toString(id) + " had been read from database.");
         return place;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }

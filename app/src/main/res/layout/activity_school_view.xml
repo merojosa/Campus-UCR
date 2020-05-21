@@ -67,4 +67,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <ImageView
+        android:id="@+id/schoolImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/color_cursor"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="463dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

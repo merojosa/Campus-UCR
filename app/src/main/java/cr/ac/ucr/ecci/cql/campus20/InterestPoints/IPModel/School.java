@@ -21,8 +21,18 @@ public class School extends GeneralData {
     private int id_place_fk;
     private String name;
     private String description;
+    private int image;
 
     public School() { }
+
+    public School(int id, int id_faculty_fk, int id_place_fk, String name, String description, int image) {
+        this.id = id;
+        this.id_faculty_fk = id_faculty_fk;
+        this.id_place_fk = id_place_fk;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+    }
 
     /**
      * Constructor.
@@ -92,6 +102,7 @@ public class School extends GeneralData {
         values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK, getId_place_fk());
         values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME, getName());
         values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION, getDescription());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE, getImage());
 
         DataAccess dataAccess = DataAccess.getInstance(context);
         dataAccess.open();
@@ -130,7 +141,8 @@ public class School extends GeneralData {
                 cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION))
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE))
             ));
             cursor.moveToNext();
         }
@@ -138,5 +150,45 @@ public class School extends GeneralData {
         dataAccess.close();
         Log.d("schoolRead", "The schools from faculty id: " + Integer.toString(id_faculty_fk) + " had been read from database.");
         return schools;
+    }
+
+    /**
+     * Retrieves all the Schools related to a given faculty.
+     * @param context Current app context.
+     * @param schoolName Name of the school to be selected.
+     * */
+    public static School select(Context context, String schoolName){
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+
+        Cursor cursor = dataAccess.select("*",
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'"+schoolName+ "'");
+        cursor.moveToFirst();
+
+        if (cursor.isAfterLast()) {
+            return null;
+        }
+        School school = new School(
+            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
+            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
+            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
+            cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
+            cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
+            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE))
+        );
+
+        cursor.close();
+        dataAccess.close();
+        Log.d("schoolRead", "A single school name " + schoolName + " has been read from database.");
+        return school;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }
