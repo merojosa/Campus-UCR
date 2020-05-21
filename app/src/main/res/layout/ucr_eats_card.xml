@@ -32,24 +32,24 @@
 
             <TextView
                 android:id="@+id/nombre_soda"
-                android:layout_width="215dp"
+                android:layout_width="151dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/horario-soda"
-                android:layout_width="100dp"
+                android:layout_width="97dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:textSize="20dp" />
 
             <ImageView
                 android:id="@+id/ubicacion_soda"
-                android:layout_width="28dp"
-                android:layout_height="match_parent"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_margin="10dp"
-                app:srcCompat="@drawable/ic_soda_place" />
+                android:src="@drawable/ic_soda_place" />
 
         </LinearLayout>
 

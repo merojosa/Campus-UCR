@@ -86,7 +86,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     public void onBindViewHolder(SodaViewHolder sodaViewHolder, int i)
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
-        sodaViewHolder.ubicacionSoda.setImageResource(R.drawable.ic_soda_place);
         //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
         loadCardImage(sodaViewHolder, i);
 
@@ -104,6 +103,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     {
         CardView cardView;
         TextView nombreSoda;
+        TextView horarioSoda;
         ImageView imagenSoda;
         ImageView ubicacionSoda;
 
@@ -115,10 +115,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             cardView = itemView.findViewById(R.id.cv);
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
+            horarioSoda = itemView.findViewById(R.id.horario_soda);
             ubicacionSoda = itemView.findViewById(R.id.ubicacion_soda);
 
             // Opens meals activity when card is clicked
-            cardView.setOnClickListener(view -> {
+            imagenSoda.setOnClickListener(view -> {
                 SodaCard card = sodaCards.get(getAdapterPosition());
 
                 Intent intent = new Intent(view.getContext(), MealsActivity.class);
@@ -128,7 +129,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
             ubicacionSoda.setOnClickListener(view -> {
                 SodaCard card = sodaCards.get(getAdapterPosition());
-
+                double latitud = card.getLatitud();
                 irUbicacionSoda(card);
             });
         }
