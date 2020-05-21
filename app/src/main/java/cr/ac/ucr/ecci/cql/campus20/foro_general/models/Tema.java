@@ -81,8 +81,8 @@ public class Tema {
     public String getTitulo() {return titulo;}
 
     // Para el ListView
-    //@Override
-    /*public String toString() {
-        return this.name;
-    }*/
+    @Override
+    public String toString() {
+        return this.titulo;
+    }
 }
