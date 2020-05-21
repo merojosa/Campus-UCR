@@ -12,6 +12,10 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,11 +30,13 @@ public class MenuRedMujeres extends AppCompatActivity {
         if (!validarUsuario()) {
             popupRegistro();
         }
+
     }
 
     private void popupRegistro() {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
+
         builder.setTitle("Oh-uh!");
         builder.setMessage("Parece que no has enviado la solicitud de registro para unirte a la Red de Mujeres.");
 
@@ -59,24 +65,30 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    private void enviarSolicitud() {
-        enviarConfirmacion();
-        // recibe correo del usuario ya logeado a la aplicacion
-        // mandar solicitud a ese correo
-    }
-
     private boolean validarUsuario() {
         boolean validado;
 
         // recuperar correo del usuario ya logeado a la aplicacion
-        // revisar si la solicitud ya habia sido enviada
+        // revisar si solicitud fue aceptada
+
         // si si
-            // revisar si fue aprobada o rechazada
-            validado = false;
+            // validado = true;
+
         // si no
-            // enviarla
+            // proceso de validacion...
+
+            // si fue aceptado
+            // enviarConfirmacion();
+            // validado = true;
+            // guardar que el usuario fue aceptado
+
+            // sino
+            // guardar que el usuario fue rechazado
+            validado = false;
+
         return validado;
     }
+
 
     private void enviarConfirmacion() {
         List<String> toEmailList = Arrays.asList("correo@ucr.ac.cr"); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos

@@ -24,9 +24,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.RedMujeres" parent="Theme.MaterialComponents.Dialog" id="rm">
-        <!-- Customize your theme here. -->
-
+    <style name="AppTheme.RedMujeres" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/celeste_UCR</item>
+        <item name="colorPrimaryVariant">@color/azul_UCR</item>
+        <item name="colorOnPrimary">@color/blanco_UCR</item>
+        <item name="colorSecondary">@color/verde_UCR</item>
+        <item name="colorSecondaryVariant">@color/amarillo_UCR</item>
+        <item name="colorOnSecondary">@color/gris_oscuro_UCR</item>
     </style>
 
 </resources>
