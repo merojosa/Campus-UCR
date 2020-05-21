@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,10 +35,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mTitle, mDescription;
 
+        public ImageView mImage;
+
         public MyViewHolder(View view) {
             super(view);
             mTitle = (TextView) view.findViewById(R.id.tv_item_title);
+            mImage = (ImageView) view.findViewById(R.id.imageFactSchool);
             // mDescription = (TextView) view.findViewById(R.id.tv_item_description);
+            mImage.setImageResource(R.drawable.faculties96px);
+
             view.setOnClickListener(this);
         }
 
