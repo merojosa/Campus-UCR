@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -67,8 +70,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     private boolean validarUsuario() {
-        boolean validado;
-
+        boolean validado = usuario.autenticadoRM();
         // revisar si solicitud fue aceptada
 
         // si si
@@ -84,7 +86,7 @@ public class MenuRedMujeres extends AppCompatActivity {
 
             // sino
                 // guardar que el usuario fue rechazado
-            validado = false;
+                // validado = false;
 
         return validado;
     }
