@@ -28,12 +28,16 @@ public class Tema {
     @ColumnInfo(name = "contadorUsuarios")
     public int contadorUsuarios = 0;
 
+    @ColumnInfo(name = "imagenId")
+    private int imagen;
 
-    public Tema(int id, String titulo, String description, int contadorUsuarios) {
+
+    public Tema(int id, String titulo, String description, int contadorUsuarios, int imagen) {
         this.id = id;
         this.titulo = titulo;
         this.description = description;
         this.contadorUsuarios = contadorUsuarios;
+        this.imagen = imagen;
     }
 
     /**
@@ -79,6 +83,8 @@ public class Tema {
     public int getId() {return id;}
 
     public String getTitulo() {return titulo;}
+
+    public int getImagen() {return imagen;}
 
     // Para el ListView
     @Override

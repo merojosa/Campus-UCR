@@ -41,9 +41,8 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class MainForoGeneral extends AppCompatActivity {
 
-    // Se define una futura instancia del FavoritoViewModel
+    // Se define una futura instancia de los ViewModel
     private FavoritoViewModel mFavoritoViewModel;
-
     private TemaViewModel mTemaViewModel;
 
     private DrawerLayout dl;
@@ -61,15 +60,16 @@ public class MainForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_foro_general);
 
+        // Se instancia el RecyclerView
         RecyclerView recyclerView = findViewById(R.id.listaTemasFavoritos);
         final TemasFavoritosAdapter adapter = new TemasFavoritosAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
-
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
+        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
@@ -77,6 +77,7 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
+        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
             @Override
             public void onChanged(@Nullable final List<Favorito> favoritos) {
@@ -87,14 +88,14 @@ public class MainForoGeneral extends AppCompatActivity {
         });
 
 
-        // MÉTODO O FORMA DE OBTENER EL CLIC DE LA LISTA DE RECYCLEWVIEW
+        // Recepción de los clicks del adapter
         adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
 
             @Override
             public void onItemClick(View view, int position) {
                 // Aquí va el intent hacia la actividad que muestra las preguntas
-                String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
-                Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
+                //String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                //Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -109,10 +110,6 @@ public class MainForoGeneral extends AppCompatActivity {
                 crearPregunta();
             }
         });
-
-
-        // Llenado de la lista de temas sugeridos
-        //rellenarTemasSugeridos();
 
         // Este código debería ser una llamado y no el código en sí
 
@@ -157,18 +154,6 @@ public class MainForoGeneral extends AppCompatActivity {
         Intent intent = new Intent(this, CrearPreguntaForoGeneral.class);
         // Llamada a la actividad de crear pregunta
         startActivity(intent);
-    }
-
-
-    /**
-     * Método que realiza un llenado de la lista de temas sugeridos
-     */
-    private void rellenarTemasSugeridos(){
-        // Codigo que realiza el llenado de la lista de temas recomendados
-        ListView listaTemasRecomendados = findViewById(R.id.listaTemasFavoritos);
-        ForoGeneralVerTemas temas = new ForoGeneralVerTemas();
-        AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this, temas.getTemasSugeridos());
-        listaTemasRecomendados.setAdapter(adaptadorTemas);
     }
 
     /**
