@@ -19,6 +19,11 @@ public class FirebaseBD implements LoginBD
     private FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
 
+    private DatabaseReference appInicial;
+    private ValueEventListener firebaseListener;
+
+
+
     public FirebaseBD()
     {
         auth = FirebaseAuth.getInstance();
@@ -49,9 +54,8 @@ public class FirebaseBD implements LoginBD
     @Override
     public void tareaAppDefaultAsync(String idUsuario, FirebaseListener listener)
     {
-        DatabaseReference appInicial = mDatabase.getReference("config_usuarios").child(idUsuario).child("app_inicial");
-
-        appInicial.addValueEventListener(new ValueEventListener()
+        appInicial = mDatabase.getReference("config_usuarios").child(idUsuario).child("app_inicial");
+        firebaseListener = new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -63,7 +67,14 @@ public class FirebaseBD implements LoginBD
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.fallo(databaseError);
             }
-        });
+        };
+        appInicial.addValueEventListener(firebaseListener);
+    }
+
+    @Override
+    public void detenerAppDefaultAsync()
+    {
+        appInicial.removeEventListener(firebaseListener);
     }
 
     @Override
