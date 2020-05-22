@@ -100,6 +100,9 @@ public class Redireccionador
         else
         {
             Toast.makeText(context,"No hay conexión a internet",Toast.LENGTH_LONG).show();
+
+            // Cuando se esta loggeado pero no hay internet, ir a UCR Eats (porque es la primera)
+            irAppPredeterminada(0, context);
         }
     }
 
