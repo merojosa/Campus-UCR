@@ -1,6 +1,8 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,13 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
 
 // Referencias para crear lista de cards:
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
+    private RestaurantViewModel restaurantViewModel;
+
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;
@@ -38,14 +44,20 @@ public class MainUcrEats extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
+
         this.repository = new RestaurantRepository(getApplication());
 
         fillRestaurants();
         setupInputSearch();
         setupRecyclerView();
-
-        createSodaCards();
         inicializarAdapter();
+
+
+        this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
+        this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
+            sodaCards = sodasAdapter.convertToSodaCards(restaurants);
+            sodasAdapter.setSodaCards(restaurants);
+        });
     }
 
     private void setupInputSearch() {
@@ -85,16 +97,6 @@ public class MainUcrEats extends AppCompatActivity
 
         sodasAdapter.filter(filtrarLista);
     }
-
-    private void createSodaCards()
-    {
-        sodaCards = new ArrayList<>();
-        List<Restaurant> restaurantList = this.repository.getAllRestaurants();
-
-        for (int index = 0; index < restaurantList.size(); ++index)
-            sodaCards.add(new SodaCard(restaurantList.get(index).id, restaurantList.get(index).name, restaurantList.get(index).photo));
-    }
-
 
     private void inicializarAdapter(){
         this.sodasAdapter = new RVAdapter(this, sodaCards);

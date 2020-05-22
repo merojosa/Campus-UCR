@@ -1,9 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,11 +33,9 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
  * Use the {@link NavigationBarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NavigationBarFragment extends android.app.Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class NavigationBarFragment extends android.app.Fragment
+{
 
-    int mMenuId;
 
     /**
      * Construtor del fragmento
@@ -88,7 +89,7 @@ public class NavigationBarFragment extends android.app.Fragment {
 
         // Chequea cuál de las actividades principales es la que está llamando al módulo para
         // marcar ese ícono como seleccionado
-        if (getActivity() instanceof MainActivity)
+        if (getActivity() instanceof LoginActivity)
             navegacion.getMenu().getItem(0).setChecked(false);
 
         if (getActivity() instanceof MainUcrEats)
@@ -117,31 +118,62 @@ public class NavigationBarFragment extends android.app.Fragment {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-            switch (item.getItemId()) {
-
-                case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
-                    Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
-                    startActivity(intentUCREats);
-                    return true;
-
-                case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
-                    Intent intentForo = new Intent(getActivity(), MainForoGeneral.class);
-                    startActivity(intentForo);
-                    return true;
-
-                case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
-                    Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
-                    startActivity(intentMujeres);
-                    return true;
-
-                case R.id.lugares:  // En caso de que se haya seleccionado el ícono de localización
-                    Intent intentLocalizacion = new Intent(getActivity(), InterestPointsActivity.class);
-                    startActivity(intentLocalizacion);
-                    return true;
+        public boolean onNavigationItemSelected(@NonNull MenuItem item)
+        {
+            if(getActivity() instanceof ConfiguracionActivity)
+            {
+                irActividadElegidaConfirmacion(item.getItemId());
+                return true;
             }
-            return false;
+
+            return irActividadElegida(item.getItemId());
         }
     };
+
+    private void irActividadElegidaConfirmacion(int actividadId)
+    {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Title")
+                .setMessage("¿Quiere guardar esta app como la predeterminada? " +
+                        "La siguiente vez que vuelva iniciará con esta app.")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Guardar App", (dialog, whichButton) ->
+                {
+                    LoginBD loginBD = new FirebaseBD();
+                    loginBD.escribirDatos("algo", actividadId);
+                    irActividadElegida(actividadId);
+                })
+                .setNegativeButton("Cancelar", (dialog, which) ->
+                {
+                    irActividadElegida(actividadId);
+                }).show();
+    }
+
+    private boolean  irActividadElegida(int actividadId)
+    {
+        switch (actividadId)
+        {
+
+            case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
+                Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
+                startActivity(intentUCREats);
+                return true;
+
+            case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
+                Intent intentForo = new Intent(getActivity(), MainForoGeneral.class);
+                startActivity(intentForo);
+                return true;
+
+            case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
+                Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
+                startActivity(intentMujeres);
+                return true;
+
+            case R.id.lugares:  // En caso de que se haya seleccionado el ícono de localización
+                Intent intentLocalizacion = new Intent(getActivity(), InterestPointsActivity.class);
+                startActivity(intentLocalizacion);
+                return true;
+        }
+        return false;
+    }
 }

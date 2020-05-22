@@ -2,6 +2,8 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -13,10 +15,12 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 public class RestaurantRepository
 {
     private RestaurantDao restaurantDao;
+    private LiveData<List<Restaurant>> restaurants;
 
     public RestaurantRepository(Application application) {
         UcrEatsDatabase db = UcrEatsDatabase.getDatabase(application);
         this.restaurantDao = db.restaurantDao();
+        this.restaurants = this.restaurantDao.getAllRestaurants();
     }
 
     public void deleteAll()
@@ -25,31 +29,15 @@ public class RestaurantRepository
                 this.restaurantDao.deleteAll());
     }
 
-    public boolean insert(Restaurant restaurant)
+    public void insert(Restaurant restaurant)
     {
-        if(searchRestaurantById(restaurant.id) != null)
-            return false;
-
         UcrEatsDatabase.databaseWriteExecutor.execute( () ->
                 this.restaurantDao.insert(restaurant));
-
-        return true;
     }
 
-    public List<Restaurant> getAllRestaurants()
+    public LiveData<List<Restaurant>> getAllRestaurants()
     {
-        List<Restaurant> restaurants = null;
-
-        Future<List<Restaurant>> data = UcrEatsDatabase.databaseWriteExecutor.submit( () ->
-                this.restaurantDao.getAllRestaurants());
-
-        try {
-            restaurants = data.get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return restaurants;
+        return this.restaurants;
     }
 
     public List<Restaurant> searchRestaurantByName(String name)

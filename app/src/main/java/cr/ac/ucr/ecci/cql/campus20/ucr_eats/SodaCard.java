@@ -1,6 +1,9 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-public class SodaCard
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SodaCard implements Parcelable
 {
     int id;
     private String nombre;
@@ -12,6 +15,36 @@ public class SodaCard
         this.nombre = nombre;
         this.foto = foto;
     }
+
+    protected SodaCard(Parcel in) {
+        id = in.readInt();
+        nombre = in.readString();
+        foto = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(nombre);
+        dest.writeString(foto);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SodaCard> CREATOR = new Creator<SodaCard>() {
+        @Override
+        public SodaCard createFromParcel(Parcel in) {
+            return new SodaCard(in);
+        }
+
+        @Override
+        public SodaCard[] newArray(int size) {
+            return new SodaCard[size];
+        }
+    };
 
     public int getId() { return id; }
 
