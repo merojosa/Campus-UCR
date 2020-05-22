@@ -1,7 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,20 +23,14 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
@@ -47,15 +39,12 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
-    private TemaDao temaDao;
-    private LiveData<List<Tema>> temas;
     private List<Tema> temasLista;
-    private List<String> titulosTemas;
     private EditText mEditText;
     private Button btnCrearPregunta;
     private Spinner dropdown;
     private int idTemaSeleccionado;
-    private PreguntaDao preguntaDao;
+    private PreguntaViewModel mPreguntaViewModel;
 
     /**
      * Método que se invoca al entrar a la actividad de Crear una pregunta
@@ -63,11 +52,11 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Instancias necesarias
+        mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_pregunta_foro_general);
         this.temasLista = new ArrayList<Tema>();
-        this.titulosTemas = new ArrayList<String>();
-        //temas = new MutableLiveData<>();
         // Llamado a base de datos
         TemaViewModel mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
@@ -175,9 +164,12 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
-        preguntaDao = ForoGeneralDatabase.getDatabase(getApplicationContext()).preguntaDao();
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, 0, 0);
-        preguntaDao.insert(pregunta);
+        mPreguntaViewModel.insert(pregunta);
+        Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);
+        // Llamada a la actividad de crear pregunta
+        intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+        startActivity(intent);
     }
 }
