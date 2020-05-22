@@ -94,10 +94,13 @@ public class MainForoGeneral extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 // Aquí va el intent hacia la actividad que muestra las preguntas
-                //String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                int idTemaSeleccionado = (mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
                 //Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
+                // Llamada a la actividad de crear pregunta
+                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+                startActivity(intent);
             }
-
         });
 
         // Boton flotante de Agregar Preguntas

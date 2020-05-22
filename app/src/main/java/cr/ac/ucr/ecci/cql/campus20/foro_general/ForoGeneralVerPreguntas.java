@@ -18,6 +18,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 public class ForoGeneralVerPreguntas extends AppCompatActivity {
     private LiveData<List<Pregunta>> preguntas;
     private PreguntaViewModel mPreguntaViewModel;
+    private TextView tema;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,15 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity {
         int idTemaSeleccionado = mIntent.getIntExtra("idTemaSeleccionado", 0);
         mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
         preguntas = mPreguntaViewModel.getPreguntasTema(idTemaSeleccionado);
+        tema = (TextView) findViewById(R.id.pruebaPreguntas);
         preguntas.observe(this, new Observer<List<Pregunta>>() {
             @Override
             public void onChanged(List<Pregunta> preguntas) {
-                TextView textView = (TextView) findViewById(R.id.pruebaPreguntas);
-                textView.setText(preguntas.get(0).texto);
+                if(preguntas.size() > 0){
+                    tema.setText(preguntas.get(0).texto);
+                }else{
+                    tema.setText("Este Tema NO tiene preguntas");
+                }
             }
         });
 

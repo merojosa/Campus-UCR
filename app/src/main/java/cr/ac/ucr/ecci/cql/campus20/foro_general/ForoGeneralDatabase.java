@@ -49,16 +49,10 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
     }
 
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+
         @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-
-            // Esto se comenta en el caso de que se quieran conservar los datos a lo largo
-            // del tiempo
+        public void onCreate(@NonNull SupportSQLiteDatabase db){
             databaseWriteExecutor.execute(() -> {
-
-                FavoritoDao daoFavorito = INSTANCE.favoritoDao();
-
                 TemaDao temaDao = INSTANCE.temaDao();
                 temaDao.borrarTodo();
 
@@ -78,16 +72,13 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 temaDao.insert(temaCinco);
                 temaDao.insert(temaSeis);
                 temaDao.insert(temaSiete);
-
-                // Borrado e inserción de temas favoritos, a manera de ejemplo
-                daoFavorito.deleteAll();
-                Favorito follow1 = new Favorito(1);
-                daoFavorito.insert(follow1);
-                Favorito follow2 = new Favorito(2);
-                daoFavorito.insert(follow2);
-                Favorito follow3 = new Favorito(3);
-                daoFavorito.insert(follow3);
             });
+
+        }
+
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
         }
     };
 
