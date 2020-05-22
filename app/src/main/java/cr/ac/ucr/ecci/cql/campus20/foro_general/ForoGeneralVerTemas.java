@@ -1,13 +1,17 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterViewAnimator;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -17,9 +21,13 @@ import java.util.List;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
@@ -32,6 +40,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private NavigationView nv;
 
     private TemaViewModel mTemaViewModel;
+    private FavoritoViewModel mFavoritoViewModel;
 
     /**
      * Método que se invoca al iniciar la actividad temas en el foro general,
@@ -43,37 +52,60 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_temas);
 
-        //se establece la vista de la lista de temas
-        lvItems = findViewById(R.id.lvItems);
-        adaptadorTemas = new AdaptadorTemas(this);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final AdaptadorTemas adapter = new AdaptadorTemas(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
 
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                adaptadorTemas.setTemas(temas);
+                if (temas != null)
+                    adapter.setTemas(temas);
             }
         });
-        lvItems.setAdapter(adaptadorTemas);
 
-        /*
-        // ListView Item Click Listener para las llamadas a las opciones de los items
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // PURO BATEO
+        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
+            @Override
+            public void onChanged( @Nullable final List<Favorito> favoritos) {
+                adapter.setFavoritos(favoritos);
+            }
+        });
+
+        // MÉTODO O FORMA DE OBTENER EL CLIC DE LA VARA!!
+        adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                String name = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                Toast.makeText(ForoGeneralVerTemas.this, name + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onHeartClick(boolean check, int position) {
 
-                // ListView Clicked item index
-                int itemPosition = position;
-                // ListView Clicked item value
-                Temas item = (Temas)lvItems.getItemAtPosition(position);
-                // Show Alert
-                Toast.makeText(getApplicationContext(), "Position: " + itemPosition +
-                        "  ListItem: " + item.toString(), Toast.LENGTH_LONG).show();
+                String name = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                if (check) {
+                    // Make a toast to display toggle button status
+                    Toast.makeText(ForoGeneralVerTemas.this, name +
+                            "'s heart was activated", Toast.LENGTH_SHORT).show();
+
+                    // Aquí se inserta al wey
+                    añadirFavorito(idTema);
+                } else {
+                    // Make a toast to display toggle button status
+                    Toast.makeText(ForoGeneralVerTemas.this, name +
+                            "'s heart was DEactivated", Toast.LENGTH_SHORT).show();
+
+                    // Elimino al wey
+                    eliminarFavorito(idTema);
+                }
             }
         });
-        */
 
 
         //Codigo que maneja la navegacion de izquierda a derecha
@@ -109,6 +141,17 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void añadirFavorito(int identificadorTema)
+    {
+        Favorito fav = new Favorito(identificadorTema);
+        mFavoritoViewModel.insert(fav);
+    }
+
+    public void eliminarFavorito(int identificadorTema)
+    {
+        mFavoritoViewModel.deleteOneFavorito(identificadorTema);
     }
 
     /**

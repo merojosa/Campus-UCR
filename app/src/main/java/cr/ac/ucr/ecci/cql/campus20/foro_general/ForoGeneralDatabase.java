@@ -28,7 +28,7 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
 
     private static ForoGeneralDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
 
