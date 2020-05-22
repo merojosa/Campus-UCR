@@ -88,12 +88,12 @@ public abstract class UcrEatsDatabase extends RoomDatabase
 
         Rating[] rating = {
                 new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 2),
+                new Rating(R.drawable.la_u, 3),
+                new Rating(R.drawable.la_u, 4),
                 new Rating(R.drawable.plaza_chou, 4),
-                new Rating(R.drawable.plaza_chou, 4),
-                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.plaza_chou, 5),
+                new Rating(R.drawable.plaza_chou, 3),
                 new Rating(R.drawable.plaza_chou, 4),
         };
 

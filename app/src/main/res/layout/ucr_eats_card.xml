@@ -43,8 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:srcCompat="@android:drawable/btn_star_big_on"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
 
             <TextView
                 android:id="@+id/rating_soda"

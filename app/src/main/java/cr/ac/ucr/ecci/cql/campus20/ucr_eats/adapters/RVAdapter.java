@@ -23,11 +23,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
 import timber.log.Timber;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
@@ -99,7 +102,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
         sodaViewHolder.horarioSoda.setText(sodaCards.get(i).getHorario());
 
-        String rating = getRating(sodaCards.get(i).getNombre());
+
+        //////////////////////////////////////////////////////////////////////////
+        // acá ocupo obtener el rating de la soda
+        String rating = getRating(sodaCards.get(i).getId());
         sodaViewHolder.ratingSoda.setText(rating);
 
 
@@ -113,9 +119,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
     }
 
-    private String getRating(String nombre) {
-        return "4,5";
+    private String getRating(int id)
+    {
+        //////////////////// acá es donde debería de leer esos datos de la tabla rating
+
+        int random = new Random().nextInt((500 - 100) + 1) + 100;
+        return Integer.toString(random/50%5);
     }
+
+
 
     @Override
     public int getItemCount()
