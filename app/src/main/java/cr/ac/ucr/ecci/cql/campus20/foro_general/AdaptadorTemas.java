@@ -159,7 +159,10 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         return false;
     }
 
-
+    /**
+     * Metodo para ver la cantidad de elementos en la lista
+     * @return numero de elementos de la lista
+     */
     @Override
     public int getItemCount() {
         if (mTemas != null)
