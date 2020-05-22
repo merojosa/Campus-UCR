@@ -90,7 +90,7 @@ public class Redireccionador
                         //  Timeout
                         loginBD.detenerAppDefaultAsync();
 
-                        Toast.makeText(context,"Error de conexion a la base de datos",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
                 }
             };
@@ -99,7 +99,7 @@ public class Redireccionador
         }
         else
         {
-            Toast.makeText(context,"No hay conexión a internet",Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"No hay conexión a internet, la aplicación tendrá funciones limitadas", Toast.LENGTH_LONG).show();
 
             // Cuando se esta loggeado pero no hay internet, ir a UCR Eats (porque es la primera)
             irAppPredeterminada(0, context);

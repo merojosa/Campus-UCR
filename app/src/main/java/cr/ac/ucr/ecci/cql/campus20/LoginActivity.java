@@ -81,11 +81,11 @@ public class LoginActivity extends AppCompatActivity
                 {
                     if(VerificadorInternet.conexionInternet(this) == false)
                     {
-                        mostrarMensajeError("No hay conexión a internet");
+                        mostrarMensajeError("Por favor revise su conexión a internet");
                     }
                     else
                     {
-                        mostrarMensajeError("Correo o contraseña inválidos");
+                        mostrarMensajeError("El correo o contraseña son inválidos");
                     }
                 }
             });
