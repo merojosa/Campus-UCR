@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "143317830994",
-    "firebase_url": "https://campus-ucr-2934e.firebaseio.com",
-    "project_id": "campus-ucr-2934e",
-    "storage_bucket": "campus-ucr-2934e.appspot.com"
+    "project_number": "541299610041",
+    "firebase_url": "https://campus-virtual-ucr.firebaseio.com",
+    "project_id": "campus-virtual-ucr",
+    "storage_bucket": "campus-virtual-ucr.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:143317830994:android:67f54d0acd08fdfe52be8b",
+        "mobilesdk_app_id": "1:541299610041:android:b662193d3081265fe66668",
         "android_client_info": {
           "package_name": "cr.ac.ucr.ecci.cql.campus20"
         }
       },
       "oauth_client": [
         {
-          "client_id": "143317830994-2f7tkposvi3seu8b6b373tau5dv1tl9k.apps.googleusercontent.com",
+          "client_id": "541299610041-0pfka0mte8scc95qktnd2hstmfe1e6k5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBFKUU2KcuNfa5ukpyhJJqaX_43oeAZYf4"
+          "current_key": "AIzaSyDnrnKNTO9HuCNJlsWIvd-rV7EHed1JU-Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "143317830994-2f7tkposvi3seu8b6b373tau5dv1tl9k.apps.googleusercontent.com",
+              "client_id": "541299610041-0pfka0mte8scc95qktnd2hstmfe1e6k5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

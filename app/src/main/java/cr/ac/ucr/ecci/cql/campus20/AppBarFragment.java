@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -54,9 +55,18 @@ public class AppBarFragment extends Fragment
                 // Si se hizo click a preferencias, se va a la actividad de Configuracion
                 if (item.getItemId() == R.id.itemPreferencias)
                 {
-                    Intent intent = new Intent(getActivity(), ConfiguracionActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(getActivity(), ConfiguracionActivity.class));
                     return true;
+                }
+                else if(item.getItemId() == R.id.itemCerrarSesion)
+                {
+                    // Cerrar sesion
+                    LoginBD login = new FirebaseBD();
+                    login.cerrarSesion();
+
+                    // Matar todas las actividades anteriores y volver al login
+                    ActivityCompat.finishAffinity(getActivity());
+                    startActivity(new Intent(getContext(), LoginActivity.class));
                 }
                 return false;
             }
