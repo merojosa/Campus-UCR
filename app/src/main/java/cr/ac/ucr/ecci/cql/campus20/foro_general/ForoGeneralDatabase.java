@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
@@ -19,7 +20,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 5, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 6, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
 
@@ -51,24 +52,23 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
 
-            // ESTA MADRE SE COMENTA PARA QUE LOS DATOS INSERTADOS EN LA TABLA SE VAYAN GUARDANDO
-            // DUH
-            // If you want to keep data through app restarts,
-            // comment out the following block
+            // Esto se comenta en el caso de que se quieran conservar los datos a lo largo
+            // del tiempo
             databaseWriteExecutor.execute(() -> {
 
                 FavoritoDao daoFavorito = INSTANCE.favoritoDao();
-                // ESTO ES SOLO PARA EFECTO DE PRUEBA DE BORRAR LO QUE SEA QUE TENGA FOLLOW
 
                 TemaDao temaDao = INSTANCE.temaDao();
                 temaDao.borrarTodo();
-                Tema temaUno = new Tema(1, "General", "Lo más nuevo", 10);
-                Tema temaDos = new Tema(2, "Escuelas", "Información sobre distintas escuelas", 3);
-                Tema temaTres = new Tema(3, "Becas", "Desde como aplicar hasta como gastar", 5);
-                Tema temaCuatro = new Tema(4, "Profesores", "Información sobre distintos profesores", 6);
-                Tema temaCinco = new Tema(5, "Residencias", "Más barato que alquilar ...", 15);
-                Tema temaSeis = new Tema(6, "Buses", "Todo sobre el interno, algo sobre los externos", 11);
-                Tema temaSiete = new Tema(7, "Mejores calificadas", "Las preguntas más valoradas por la comunidad", 6);
+
+                // Creación de temas para insertarlos en la base de datos
+                Tema temaUno = new Tema(1, "General", "Lo más nuevo", 10, R.drawable.foro1);
+                Tema temaDos = new Tema(2, "Escuelas", "Información sobre distintas escuelas", 3, R.drawable.foro_escuelas);
+                Tema temaTres = new Tema(3, "Becas", "Desde como aplicar hasta como gastar", 5, R.drawable.foro_becas);
+                Tema temaCuatro = new Tema(4, "Profesores", "Información sobre distintos profesores", 6, R.drawable.foro_profesores);
+                Tema temaCinco = new Tema(5, "Residencias", "Más barato que alquilar ...", 15, R.drawable.foro_residencias);
+                Tema temaSeis = new Tema(6, "Buses", "Todo sobre el interno, algo sobre los externos", 11, R.drawable.foro_buses);
+                Tema temaSiete = new Tema(7, "Mejores calificadas", "Las preguntas más valoradas por la comunidad", 6, R.drawable.foro_calificado);
 
                 temaDao.insert(temaUno);
                 temaDao.insert(temaDos);
@@ -78,6 +78,7 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 temaDao.insert(temaSeis);
                 temaDao.insert(temaSiete);
 
+                // Borrado e inserción de temas favoritos, a manera de ejemplo
                 daoFavorito.deleteAll();
                 Favorito follow1 = new Favorito(1);
                 daoFavorito.insert(follow1);

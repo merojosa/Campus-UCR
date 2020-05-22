@@ -14,7 +14,6 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories.FavoritoRepository;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-// ESTA CLASE NO USA NINGUN REPOSITORY PORQUE ESTE NO EXISTE
 
 public class FavoritoViewModel extends AndroidViewModel {
 

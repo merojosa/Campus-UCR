@@ -31,10 +31,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
-    // definimos la lista de datos
-    private ListView lvItems;
-    private AdaptadorTemas adaptadorTemas;
-    //private List<Temas> mTemas;
+
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -52,6 +49,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_temas);
 
+        // Instanciación del RecyclewView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final AdaptadorTemas adapter = new AdaptadorTemas(this);
         recyclerView.setAdapter(adapter);
@@ -60,49 +58,51 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
 
+        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
                 if (temas != null)
-                    adapter.setTemas(temas);
+                    adapter.setTemas(temas);        // Se llama al método del adapter
             }
         });
 
-        // PURO BATEO
+        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
             @Override
             public void onChanged( @Nullable final List<Favorito> favoritos) {
-                adapter.setFavoritos(favoritos);
+                adapter.setFavoritos(favoritos);    // Se llama al método del adapter
             }
         });
 
-        // MÉTODO O FORMA DE OBTENER EL CLIC DE LA VARA!!
+        // Recepción de los clicks del adapter
         adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                String name = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
-                Toast.makeText(ForoGeneralVerTemas.this, name + " was clicked!", Toast.LENGTH_SHORT).show();
+                //String name = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                //Toast.makeText(ForoGeneralVerTemas.this, name + " was clicked!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onHeartClick(boolean check, int position) {
 
-                String name = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
                 int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+
                 if (check) {
-                    // Make a toast to display toggle button status
-                    Toast.makeText(ForoGeneralVerTemas.this, name +
-                            "'s heart was activated", Toast.LENGTH_SHORT).show();
+                    // Se da un mensaje al usuario
+                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
+                            " añadido a Favoritos", Toast.LENGTH_SHORT).show();
 
-                    // Aquí se inserta al wey
-                    añadirFavorito(idTema);
+                    // Se inserta el tema como Favorito
+                    añadirTemaFavorito(idTema);
                 } else {
-                    // Make a toast to display toggle button status
-                    Toast.makeText(ForoGeneralVerTemas.this, name +
-                            "'s heart was DEactivated", Toast.LENGTH_SHORT).show();
+                    // Se da un mensaje al usuario
+                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
+                            " quitado de Favoritos", Toast.LENGTH_SHORT).show();
 
-                    // Elimino al wey
-                    eliminarFavorito(idTema);
+                    // Se elimina al tema de la lista de Favoritos
+                    eliminarTemaFavorito(idTema);
                 }
             }
         });
@@ -143,50 +143,26 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
     }
 
-    public void añadirFavorito(int identificadorTema)
+    /**
+     * Método que se encarga de invocar el método para inserción del ViewModel para
+     * la inserción de temas favoritos
+     * @param identificadorTema, que es el identificador del tema que se va a insertar
+     * como favorito
+     */
+    public void añadirTemaFavorito(int identificadorTema)
     {
         Favorito fav = new Favorito(identificadorTema);
         mFavoritoViewModel.insert(fav);
     }
 
-    public void eliminarFavorito(int identificadorTema)
+    /**
+     * Método que se encarga de invocar el método para borrado de un tema que está
+     * añadido como favorito
+     * @param identificadorTema, que es el identificador del tema que se va a eliminar
+     */
+    public void eliminarTemaFavorito(int identificadorTema)
     {
         mFavoritoViewModel.deleteOneFavorito(identificadorTema);
-    }
-
-    /**
-     * Método que retorna los Temas para mostrar en la actividad
-     * @return un Array con todos los Temas para mostrar en la actividad y visualizarlos todos en una lista
-     */
-    private ArrayList<Tema> getArrayItems(){
-        ArrayList<Tema> mTemas = new ArrayList<>();
-
-        // SELECT TEMAS DE BASE DE DATOS
-        // Repositorio.getTemas();
-
-        mTemas.add(new Tema("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
-        mTemas.add(new Tema("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
-        mTemas.add(new Tema("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
-        mTemas.add(new Tema("Becas", R.drawable.foro_becas, "Desde como aplicar hasta como gastar"));
-        mTemas.add(new Tema("Residencias", R.drawable.foro_residencias, "Más barato que alquilar ..."));
-        mTemas.add(new Tema("Buses", R.drawable.foro_buses, "Todo sobre el interno, algo sobre los externos"));
-        mTemas.add(new Tema("Mejores calificadas", R.drawable.foro_calificado, "Las preguntas más valoradas por la comunidad"));
-
-        return mTemas;
-    }
-
-    /**
-     * Método que retorna los Temas Sugeridos para mostrar en la actividad principal
-     * @return un array de Temas Sugeridos para mostrar en la actividad principal
-     */
-    public ArrayList<Tema> getTemasSugeridos(){
-        ArrayList<Tema> mTemas = new ArrayList<>();
-
-        mTemas.add(new Tema("General/Noticias", R.drawable.foro1, "Lo más nuevo"));
-        mTemas.add(new Tema("Escuelas", R.drawable.foro_escuelas, "Información sobre distintas escuelas"));
-        mTemas.add(new Tema("Profesores", R.drawable.foro_profesores, "Información sobre distintos profesores"));
-
-        return mTemas;
     }
 
     /**

@@ -10,7 +10,6 @@ import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -19,15 +18,15 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAdapter.FavoritoViewHolder> {
 
-    // Define listener member variable
+    // Define variable del listener
     private OnItemClickListener listener;
 
-    // Define the listener interface para ponerlo en cada item del RecyclewView
+    // Define el listener interface para ponerlo en cada item del RecyclewView
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
 
-    // Define the method that allows the parent activity or fragment to define the listener
+    // Define el método que permite a la actividad o fragmento llamar al listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -69,7 +68,7 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
     private final LayoutInflater mInflater;
     private List<Favorito> mFavoritos;
 
-    // PRUEBA PARA TRAER TODOS LOS TEMAS ALMACENADOS
+    // Traer todos los temas favoritos
     private List<Tema> mTemas;
 
     public TemasFavoritosAdapter(Context context) { mInflater = LayoutInflater.from(context); }
@@ -86,19 +85,13 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
         if (mFavoritos != null) {
             // Se instancia cada tema favorito
             Favorito current = mFavoritos.get(position);
+
+            // Se obtiene la posición del tema que se encuentra como favorito
             int posTema = posicionTema(current.getIdTema());
+
             holder.favoritoNombreView.setText(mTemas.get(posTema).getTitulo());
             holder.favoritoDescritionView.setText(mTemas.get(posTema).getDescription());
-
-            int id = holder.itemView.getContext().getResources().getIdentifier("foro_" +
-                    mTemas.get(posTema).getTitulo().toLowerCase(), "drawable",
-                    holder.itemView.getContext().getPackageName());
-
-            if (mTemas.get(posTema).getTitulo().equals("General"))
-                id = holder.itemView.getContext().getResources().getIdentifier("foro1", "drawable",
-                        holder.itemView.getContext().getPackageName());
-            holder.favoritoImagen.setImageResource(id);
-
+            holder.favoritoImagen.setImageResource(mTemas.get(posTema).getImagen());
         }
         else {
             // Covers the case of data not being ready yet.
@@ -107,17 +100,31 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
         }
     }
 
+    /**
+     * Método que en caso de que la lista de temas haya sufrido cambios, se vuelva
+     * a asignar a la lista local mTemas
+     * @param temas
+     */
     public void setTemas(List<Tema> temas)
     {
         mTemas = temas;
     }
 
+    /**
+     * Método que en caso de que la lista de favoritos haya sufrido cambios, se vuelva
+     * a asignar a la lista local mFavoritos
+     * @param favoritos, que es la lista actual de los temas marcados como favoritos
+     */
     public void setFavoritos(List<Favorito> favoritos){
         mFavoritos = favoritos;
         notifyDataSetChanged();
     }
 
-    // Método para devolver la posición del tema que se está por renderizar
+    /**
+     * Método usado para saber si el tema está dentro de la lista de temas marcados como favoritos
+     * @param idFavorito, que es el identificador del tema favorito
+     * @return true o false, dependiendo de si el tema está o no dentro de los favoritos
+     */
     int posicionTema(int idFavorito)
     {
         for(int i = 0; i < mTemas.size(); ++i)
@@ -128,8 +135,7 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
         return 0;
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mFavoritos has not been updated (means initially, it's null, and we can't return null).
+
     @Override
     public int getItemCount() {
         if (mFavoritos != null)

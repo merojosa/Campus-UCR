@@ -53,8 +53,8 @@
             ya que sino el toggleButton bloquea que se pueda tocar cualquier otra cosa-->
             <ToggleButton
                 android:id="@+id/botonFollow"
-                android:layout_width="28dp"
-                android:layout_height="30dp"
+                android:layout_width="33dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/button_favorite_states"

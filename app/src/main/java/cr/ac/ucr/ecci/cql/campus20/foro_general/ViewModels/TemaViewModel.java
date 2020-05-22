@@ -22,7 +22,7 @@ public class TemaViewModel extends AndroidViewModel {
     public TemaViewModel(Application application)
     {
         super(application);
-        // MODIFICAR PARA QUE USE SOLO 1 PUTA BASE DE DATOS
+        // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         temaDao = ForoGeneralDatabase.getDatabase(application).temaDao();
         mAllTemas = temaDao.getTemas();
     }
