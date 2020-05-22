@@ -114,9 +114,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     public void onClick(View view) {
                         if(locationComponent.isLocationComponentEnabled()){
                             locationComponent.setLocationComponentEnabled(false);
+                            fab.setImageResource(R.drawable.closed);
                         }
                         else {
                             locationComponent.setLocationComponentEnabled(true);
+                            fab.setImageResource(R.drawable.open);
                         }
                     }
                 });
