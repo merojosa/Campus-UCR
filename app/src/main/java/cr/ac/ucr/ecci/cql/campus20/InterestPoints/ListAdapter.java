@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/
@@ -39,10 +40,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
+
             mTitle = (TextView) view.findViewById(R.id.tv_item_title);
             mImage = (ImageView) view.findViewById(R.id.imageFactSchool);
             // mDescription = (TextView) view.findViewById(R.id.tv_item_description);
-            mImage.setImageResource(R.drawable.faculties96px);
+            //mImage.setImageResource(R.drawable.colegio32px);
 
             view.setOnClickListener(this);
         }
@@ -74,6 +76,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         // myViewHolder.mTitle.setTextColor(Util.getColor(position, context));
         myViewHolder.mTitle.setText(datoGeneral.getTitle());
         // myViewHolder.mDescription.setText(Util.recortarTexto(datoGeneral.getDescription(), Util.TAMANO_DESCRIPCION_LISTA));
+        myViewHolder.mImage.setImageResource(datoGeneral.getImage());
     }
 
     @Override

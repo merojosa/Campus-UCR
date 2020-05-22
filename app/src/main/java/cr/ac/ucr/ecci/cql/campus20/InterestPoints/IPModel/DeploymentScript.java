@@ -45,7 +45,7 @@ public class DeploymentScript {
                 "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
 
         for (int i = 0; i < Faculties.length; ++i) {
-            list.add(new Faculty(i, Faculties[i], ""));
+            list.add(new Faculty(i, Faculties[i], "", R.drawable.colegio32px));
         }
         for (Faculty f : list) {
             f.insert(context);
@@ -92,7 +92,7 @@ public class DeploymentScript {
 
         //Schools goes from 0 to n, in alph order
 
-        School artes = new School(0, 0, 0, "Artes Dramáticas", "");
+        School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.colegio32px);
         artes.insert(context);
         School artes1 = new School(1, 0, 0, "Artes Plásticas", "");
         artes1.insert(context);
