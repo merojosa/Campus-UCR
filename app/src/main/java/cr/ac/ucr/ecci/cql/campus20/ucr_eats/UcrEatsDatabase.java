@@ -66,11 +66,11 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         mealDao.deleteAll();
         rest.deleteAll();
 
-        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
+        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 9.934497, -84.051063,
                 "Mo", (short)0, (short)1000);
         rest.insert(restaurant1);
 
-        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
+        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 9.934748, -84.051578,
                 "Mo", (short)0, (short)1000);
         rest.insert(restaurant2);
 
