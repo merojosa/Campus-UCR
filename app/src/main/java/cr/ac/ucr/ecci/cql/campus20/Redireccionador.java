@@ -74,7 +74,7 @@ public class Redireccionador
         };
 
 
-        if(conexionInternet(context))
+        if(VerificadorInternet.conexionInternet(context))
         {
             loginBD.tareaAppDefaultAsync(idUsuario, listener);
 
@@ -133,12 +133,5 @@ public class Redireccionador
         }
 
         context.startActivity(intent);
-    }
-
-    private boolean conexionInternet(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
