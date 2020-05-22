@@ -26,8 +26,6 @@ public class GuardarAppService extends IntentService
     {
         int appId = intent.getIntExtra(APP_ID_KEY, -1);
 
-        appId = traducirAppId(appId);
-
         if(appId != -1)
         {
             LoginBD loginBD = new FirebaseBD();
@@ -37,20 +35,5 @@ public class GuardarAppService extends IntentService
             // Guardar datos
             loginBD.escribirDatos(PATH_CONFIG + usuario + DESTINO_APP, appId);
         }
-    }
-
-    private int traducirAppId(int id)
-    {
-        switch (id)
-        {
-            case R.id.ucreats: return 0;
-
-            case R.id.mujeres: return 1;
-
-            case R.id.foro: return 2;
-
-            case R.id.lugares: return 3;
-        }
-        return -1;
     }
 }
