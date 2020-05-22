@@ -48,7 +48,7 @@ public class MainUcrEats extends AppCompatActivity
 
         this.repository = new RestaurantRepository(getApplication());
 
-        fillRestaurants();
+        //fillRestaurants();
 
         setupInputSearch();
         setupRecyclerView();
@@ -111,7 +111,7 @@ public class MainUcrEats extends AppCompatActivity
     private void fillRestaurants() {
         repository.deleteAll();
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
-                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)19);
+                "Mon-Tue-Wed-Fri-Sat-Sun", (short)8, (short)19);
         repository.insert(restaurant1);
 
         Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,

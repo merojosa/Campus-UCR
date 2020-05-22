@@ -71,7 +71,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             }
 
             cards.add(
-                    new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario)
+                    new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, 5)
             );
         }
 
@@ -98,8 +98,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     {
         sodaViewHolder.nombreSoda.setText(sodaCards.get(i).getNombre());
         sodaViewHolder.horarioSoda.setText(sodaCards.get(i).getHorario());
+
+        String rating = getRating(sodaCards.get(i).getNombre());
+        sodaViewHolder.ratingSoda.setText(rating);
+
+
+        if (sodaCards.get(i).getHorario() == "Abierto")
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+        else
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
+
+
         loadCardImage(sodaViewHolder, i);
 
+    }
+
+    private String getRating(String nombre) {
+        return "4,5";
     }
 
     @Override
@@ -115,6 +130,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         TextView nombreSoda;
         TextView horarioSoda;
         ImageView imagenSoda;
+        TextView ratingSoda;
 
         public SodaViewHolder(View itemView)
         {
@@ -125,13 +141,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             nombreSoda = itemView.findViewById(R.id.nombre_soda);
             horarioSoda = itemView.findViewById(R.id.horario_soda);
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
-
-            for(SodaCard soda : sodaCards) {
-                if (soda.getHorario() == "Abierto")
-                    horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
-                if (soda.getHorario() == "Cerrado")
-                    horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
-            }
+            ratingSoda= itemView.findViewById(R.id.rating_soda);
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {

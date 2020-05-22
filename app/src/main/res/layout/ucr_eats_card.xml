@@ -32,17 +32,35 @@
 
             <TextView
                 android:id="@+id/nombre_soda"
-                android:layout_width="248dp"
+                android:layout_width="118dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:textSize="20dp"
+                android:scaleType="centerCrop"/>
+
+            <ImageView
+                android:id="@+id/imagen_estrella"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:srcCompat="@android:drawable/btn_star_big_on"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/rating_soda"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:scaleType="centerCrop"
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/horario-soda"
-                android:layout_width="120dp"
+                android:id="@+id/horario_soda"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:textSize="20dp" />
+                android:textSize="14sp"
+                android:scaleType="centerCrop"/>
 
         </LinearLayout>
 

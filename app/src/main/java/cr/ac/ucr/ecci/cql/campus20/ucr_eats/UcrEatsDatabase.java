@@ -13,15 +13,18 @@ import java.util.concurrent.Executors;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.MealDao;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RatingDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RestaurantDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
-@Database(entities = {Restaurant.class, Meal.class}, version = 4, exportSchema = false)
+@Database(entities = {Restaurant.class, Meal.class, Rating.class}, version = 5, exportSchema = false)
 public abstract class UcrEatsDatabase extends RoomDatabase
 {
     public abstract RestaurantDao restaurantDao();
     public abstract MealDao mealDao();
+    public abstract RatingDao ratingDao();
 
     private static UcrEatsDatabase INSTANCE = null;
 
@@ -62,12 +65,14 @@ public abstract class UcrEatsDatabase extends RoomDatabase
     {
         RestaurantDao rest = db.restaurantDao();
         MealDao mealDao = db.mealDao();
+        RatingDao ratingDao = db.ratingDao();
 
+        ratingDao.deleteAll();
         mealDao.deleteAll();
         rest.deleteAll();
 
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
-                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)19);
+                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21);
         rest.insert(restaurant1);
 
         Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
@@ -81,8 +86,21 @@ public abstract class UcrEatsDatabase extends RoomDatabase
                 new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
         };
 
+        Rating[] rating = {
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.plaza_chou, 4),
+        };
+
         for(Meal meal : meals)
             mealDao.insert(meal);
 
+        for(Rating points : rating)
+            ratingDao.insert(points);
     }
 }
