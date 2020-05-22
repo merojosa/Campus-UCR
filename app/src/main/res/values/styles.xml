@@ -22,6 +22,7 @@
         <item name="colorPrimary">@color/celeste_UCR</item>
         <item name="colorPrimaryDark">@color/azul_UCR</item>
         <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
+        <item name="android:fontFamily">@font/myriad_pro_semi</item>
     </style>
 
     <!-- Estilo para tener items de menú bajo el actionbar-->
