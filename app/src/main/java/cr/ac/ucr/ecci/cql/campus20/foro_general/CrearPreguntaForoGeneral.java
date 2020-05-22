@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +25,9 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +37,8 @@ import java.util.ListIterator;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class CrearPreguntaForoGeneral extends AppCompatActivity {
@@ -44,7 +49,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private LiveData<List<Tema>> temas;
     private List<Tema> temasLista;
     private List<String> titulosTemas;
-
+    private int size;
 
     /**
      * Método que se invoca al entrar a la actividad de Crear una pregunta
@@ -54,70 +59,60 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_pregunta_foro_general);
-        temasLista = new ArrayList<Tema>();
-        titulosTemas = new ArrayList<String>();
-
+        this.temasLista = new ArrayList<Tema>();
+        this.titulosTemas = new ArrayList<String>();
+        //temas = new MutableLiveData<>();
         // Llamado a base de datos
-        temaDao = ForoGeneralDatabase.getDatabase(getApplicationContext()).temaDao();
-        temaDao.getTemas().observe(this, new Observer<List<Tema>>() {
+        TemaViewModel mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                for(Tema tema : temas){
-                    temasLista.add(tema);
-                    titulosTemas.add(tema.getTitulo());
+                for(int i = 0; i < temas.size(); ++i){
+                    temasLista.add(temas.get(i));
                 }
+                Spinner dropdown = (Spinner)findViewById(R.id.listaTemasCrearPregunta);
+                ArrayAdapter<Tema> dataAdapter = new ArrayAdapter<Tema>(getApplicationContext(), android.R.layout.simple_spinner_item, temasLista);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dropdown.setAdapter(dataAdapter);
+                dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Tema tema = dataAdapter.getItem(position);
+
+                        Toast.makeText(CrearPreguntaForoGeneral.this, tema.getTitulo() + " id = " + String.valueOf(tema.getId()), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        ;
+                    }
+                });
+
+                // Codigo para agregar borde al espacio para rellenar la pregunta
+                EditText mEditText = (EditText) findViewById(R.id.textoCrearPregunta);
+                GradientDrawable gd = new GradientDrawable();
+                gd.setColor(Color.parseColor("#00ffffff"));
+                gd.setStroke(2, Color.parseColor("#00C0F3"));
+                mEditText.setBackground(gd);
+
+                // Codigo para manejar color del boton y evento de click
+                Button btnCrearPregunta = (Button) findViewById(R.id.btnCrearPregunta);
+                btnCrearPregunta.setBackgroundColor(Color.parseColor("#00C0F3"));
+                btnCrearPregunta.setTextColor(Color.BLACK);
+                btnCrearPregunta.setText("Crear Pregunta");
+                btnCrearPregunta.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(verificarPregunta()){
+                            Toast.makeText(CrearPreguntaForoGeneral.this, "Bien", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(CrearPreguntaForoGeneral.this, "Por favor ingrese de manera correcta los datos.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
-        String[] titulos;
-        if(titulosTemas.size() > 0){
-            titulos = titulosTemas.toArray(new String[0]);
-        }else{
-            titulos = new String[]{"a", "b"};
-        }
-
-
-
-        Spinner dropdown = (Spinner)findViewById(R.id.listaTemasCrearPregunta);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, titulos);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(dataAdapter);
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String titulo = parent.getItemAtPosition(position).toString();
-                Toast.makeText(CrearPreguntaForoGeneral.this, titulo, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                ;
-            }
-        });
-
-
-        // Codigo para agregar borde al espacio para rellenar la pregunta
-        EditText mEditText = (EditText) findViewById(R.id.textoCrearPregunta);
-        GradientDrawable gd = new GradientDrawable();
-        gd.setColor(Color.parseColor("#00ffffff"));
-        gd.setStroke(2, Color.parseColor("#00C0F3"));
-        mEditText.setBackground(gd);
-
-        // Codigo para manejar color del boton y evento de click
-        Button btnCrearPregunta = (Button) findViewById(R.id.btnCrearPregunta);
-        btnCrearPregunta.setBackgroundColor(Color.parseColor("#00C0F3"));
-        btnCrearPregunta.setTextColor(Color.BLACK);
-        btnCrearPregunta.setText("Crear Pregunta");
-        btnCrearPregunta.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(verificarPregunta()){
-                    Toast.makeText(CrearPreguntaForoGeneral.this, "Bien", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(CrearPreguntaForoGeneral.this, "Por favor ingrese de manera correcta los datos.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_crear_pregunta);
