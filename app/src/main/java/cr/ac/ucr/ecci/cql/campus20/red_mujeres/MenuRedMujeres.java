@@ -1,19 +1,24 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DatabaseContract;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
-    private LoginBD usuario;
-    //private String correo = usuario.obtenerCorreoActual();
+    private LoginBD usuario = new FirebaseBD();
+    private String correo = usuario.obtenerCorreoActual();
 
 
     @Override
@@ -79,17 +84,24 @@ public class MenuRedMujeres extends AppCompatActivity {
 
             // sino
                 // guardar que el usuario fue rechazado
-            validado = true;
+            validado = false;
 
         return validado;
     }
 
 
     private void enviarConfirmacion() {
-        List<String> toEmailList = Arrays.asList("correo@ucr.ac.cr"); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
+        Context context = getApplicationContext();
+        CharSequence text = correo;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        List<String> toEmailList = Arrays.asList(correo); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
         try {
-            new SendMailTask(MenuRedMujeres.this).execute("correo@gmail.com", //remitente
-                    "password", //contraseña remitente
+            new SendMailTask(MenuRedMujeres.this).execute("campus.virtual.ucr@gmail.com", //remitente
+                    "Campus2020", //contraseña remitente
                      toEmailList, //lista de destinatarios
                     "Confirmacion Red Mujeres", //asunto
                     "Su solicitud para unirse a la red de mujeres ha sido aceptada. Ahora puede acceder a grupos de confianza desde la aplicacion CampusUCR."); //mensaje en el cuerpo
