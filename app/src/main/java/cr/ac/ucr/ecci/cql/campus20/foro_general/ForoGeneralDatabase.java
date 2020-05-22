@@ -25,6 +25,7 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
 
     public abstract TemaDao temaDao();
     public abstract FavoritoDao favoritoDao();
+    public abstract PreguntaDao preguntaDao();
 
     private static ForoGeneralDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

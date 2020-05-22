@@ -36,9 +36,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class CrearPreguntaForoGeneral extends AppCompatActivity {
@@ -49,7 +51,11 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private LiveData<List<Tema>> temas;
     private List<Tema> temasLista;
     private List<String> titulosTemas;
-    private int size;
+    private EditText mEditText;
+    private Button btnCrearPregunta;
+    private Spinner dropdown;
+    private int idTemaSeleccionado;
+    private PreguntaDao preguntaDao;
 
     /**
      * Método que se invoca al entrar a la actividad de Crear una pregunta
@@ -70,7 +76,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                 for(int i = 0; i < temas.size(); ++i){
                     temasLista.add(temas.get(i));
                 }
-                Spinner dropdown = (Spinner)findViewById(R.id.listaTemasCrearPregunta);
+                dropdown = (Spinner)findViewById(R.id.listaTemasCrearPregunta);
                 ArrayAdapter<Tema> dataAdapter = new ArrayAdapter<Tema>(getApplicationContext(), android.R.layout.simple_spinner_item, temasLista);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dropdown.setAdapter(dataAdapter);
@@ -78,8 +84,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Tema tema = dataAdapter.getItem(position);
-
-                        Toast.makeText(CrearPreguntaForoGeneral.this, tema.getTitulo() + " id = " + String.valueOf(tema.getId()), Toast.LENGTH_SHORT).show();
+                        idTemaSeleccionado = tema.getId();
                     }
 
                     @Override
@@ -89,14 +94,14 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                 });
 
                 // Codigo para agregar borde al espacio para rellenar la pregunta
-                EditText mEditText = (EditText) findViewById(R.id.textoCrearPregunta);
+                mEditText = (EditText) findViewById(R.id.textoCrearPregunta);
                 GradientDrawable gd = new GradientDrawable();
                 gd.setColor(Color.parseColor("#00ffffff"));
                 gd.setStroke(2, Color.parseColor("#00C0F3"));
                 mEditText.setBackground(gd);
 
                 // Codigo para manejar color del boton y evento de click
-                Button btnCrearPregunta = (Button) findViewById(R.id.btnCrearPregunta);
+                btnCrearPregunta = (Button) findViewById(R.id.btnCrearPregunta);
                 btnCrearPregunta.setBackgroundColor(Color.parseColor("#00C0F3"));
                 btnCrearPregunta.setTextColor(Color.BLACK);
                 btnCrearPregunta.setText("Crear Pregunta");
@@ -104,9 +109,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(verificarPregunta()){
-                            Toast.makeText(CrearPreguntaForoGeneral.this, "Bien", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(CrearPreguntaForoGeneral.this, "Por favor ingrese de manera correcta los datos.", Toast.LENGTH_SHORT).show();
+                            agregarPregunta();
                         }
                     }
                 });
@@ -163,7 +166,18 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
 
-    private boolean verificarPregunta(){
-        return false;
+    private boolean verificarPregunta() {
+        if(mEditText.getText().toString().equals("")){
+            Toast.makeText(CrearPreguntaForoGeneral.this, "Por favor digite su pregunta", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void agregarPregunta() {
+        preguntaDao = ForoGeneralDatabase.getDatabase(getApplicationContext()).preguntaDao();
+        String texto = mEditText.getText().toString();
+        Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, 0, 0);
+        preguntaDao.insert(pregunta);
     }
 }

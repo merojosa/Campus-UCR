@@ -26,7 +26,7 @@
             android:layout_marginEnd="156dp"
             android:text="Tema"
             android:textAlignment="center"
-            android:textColor="#000000"
+            android:textColor="#00C0F3"
             android:textSize="23dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="parent" />
