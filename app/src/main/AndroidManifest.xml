@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service android:name=".GuardarAppService" />
+
+
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

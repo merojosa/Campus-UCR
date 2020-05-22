@@ -133,14 +133,15 @@ public class NavigationBarFragment extends android.app.Fragment
     private void irActividadElegidaConfirmacion(int actividadId)
     {
         new AlertDialog.Builder(getActivity())
-                .setTitle("Title")
+                .setTitle("Guardar App Predeterminada")
                 .setMessage("¿Quiere guardar esta app como la predeterminada? " +
                         "La siguiente vez que vuelva iniciará con esta app.")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Guardar App", (dialog, whichButton) ->
                 {
-                    LoginBD loginBD = new FirebaseBD();
-                    loginBD.escribirDatos("algo", actividadId);
+                    Intent intent = new Intent(getActivity(), GuardarAppService.class);
+                    intent.putExtra(GuardarAppService.APP_ID_KEY, actividadId);
+                    getActivity().startService(intent);
                     irActividadElegida(actividadId);
                 })
                 .setNegativeButton("Cancelar", (dialog, which) ->
