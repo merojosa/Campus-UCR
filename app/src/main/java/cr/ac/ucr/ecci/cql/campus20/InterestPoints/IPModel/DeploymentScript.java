@@ -223,6 +223,21 @@ public class DeploymentScript {
         Coffe noventaYCinco = new Coffe(1, "95 grados", "");
         noventaYCinco.insert(context);
 
+        Coffe krakovia = new Coffe(2,  "Café Krakovia", "");
+        krakovia.insert(context);
+
+        Coffe aroma = new Coffe(3, "Aroma y Sabor", "");
+        aroma.insert(context);
+
+        Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "");
+        musmanni.insert(context);
+
+        Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "");
+        rincon.insert(context);
+
+        Coffe cafe_cacao = new Coffe(5, "Café & Cacao", "");
+        cafe_cacao.insert(context);
+
 
         db.close();
         Log.d("coffeShops", "CoffeShops were inserted in database.");
