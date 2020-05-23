@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ConfiguracionActivity" />
         <activity android:name=".ucr_eats.activites.MealsActivity" />
         <activity
@@ -26,11 +24,10 @@
         <activity
             android:name=".foro_general.ForoGeneralVerTemas"
             android:theme="@style/AppTheme.ForoGeneral" />
-
-        <activity android:name=".foro_general.MainForoGeneral"
+        <activity
+            android:name=".foro_general.MainForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
-
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
@@ -40,18 +37,15 @@
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.FacultiesActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
-
         <activity android:name=".InterestPoints.Mapbox.Map" />
         <activity android:name=".InterestPoints.InterestPointsActivity" />
-
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
+        <activity android:name=".red_mujeres.ComunidadesRedMujeres"/>
 
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="locked">
-        </activity>
-        
+            android:screenOrientation="locked"></activity>
     </application>
 
 </manifest>
