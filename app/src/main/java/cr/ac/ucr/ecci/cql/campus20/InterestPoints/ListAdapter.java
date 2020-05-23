@@ -44,7 +44,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             mTitle = (TextView) view.findViewById(R.id.tv_item_title);
             mImage = (ImageView) view.findViewById(R.id.imageFactSchool);
             // mDescription = (TextView) view.findViewById(R.id.tv_item_description);
-            //mImage.setImageResource(R.drawable.colegio32px);
 
             view.setOnClickListener(this);
         }
@@ -73,8 +72,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
         GeneralData datoGeneral = temp.get(position);
-        // myViewHolder.mTitle.setTextColor(Util.getColor(position, context));
-        myViewHolder.mTitle.setText(datoGeneral.getTitle());
+
+        // Para que Strings largos no queden cortados en lista
+        if(datoGeneral.getTitle().length() > 22){
+            myViewHolder.mTitle.setText(datoGeneral.getTitle().substring(0, 19) + "...");
+        }else{
+            myViewHolder.mTitle.setText(datoGeneral.getTitle());
+        }
+
         // myViewHolder.mDescription.setText(Util.recortarTexto(datoGeneral.getDescription(), Util.TAMANO_DESCRIPCION_LISTA));
         myViewHolder.mImage.setImageResource(datoGeneral.getImage());
     }
