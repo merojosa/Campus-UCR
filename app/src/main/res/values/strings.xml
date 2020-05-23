@@ -17,6 +17,7 @@
 
     <string name="placeNumberKey">Teléfono:</string>
     <string name="placeNumberValue">2222 3333</string>
+    <string name="ucrMapDetails">Detalles</string>
     <!-- End of Maps required strings -->
     <string name="buscar">Buscar soda...</string>
 

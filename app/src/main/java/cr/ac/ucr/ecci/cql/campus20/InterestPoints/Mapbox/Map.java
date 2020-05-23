@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.mapbox.geojson.Feature;
@@ -21,6 +24,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.markerview.MarkerView;
+import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager;
 
 import java.security.interfaces.DSAKeyPairGenerator;
 import java.util.ArrayList;
@@ -49,56 +54,36 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
     TextView textViewTwitter;
     TextView textViewInstragram;
     TextView textViewWebPage;
-
     private double latitude;
     private double longitude;
     private String name;
     private int type;
     Map mapboxMap;
-
     School place;
     Coordinate coordinate;
-
     private Intent details;
 
 
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN));
-
-        setContentView(R.layout.activity_map);
-
-        Intent intentItemList = getIntent();
-        String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
-
-        // Getting the Coordinates and School objects
-        this.place = getIntent().getParcelableExtra("place");
-        this.coordinate = getIntent().getParcelableExtra("coordinate");
-        // -------------------------------------------
-
-        // Setting the exact location
+    // Setting the start location of the map view
+    private MapboxMapOptions setStartLocation(double latitude, double longitude) {
         MapboxMapOptions options = MapboxMapOptions.createFromAttributes(this, null)
                 .camera(new CameraPosition.Builder()
-                        .target(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()))
+                        .target(new LatLng(latitude, longitude))
                         .zoom(18)
                         .build());
-        // ---------------------------
+        return options;
+    }
 
+    // Basic mapbox configurations
+    private void settingConfigurations() {
+        // Setting mapbox access token - talking to API
+        Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN));
+        // Union with the view of map
+        setContentView(R.layout.activity_map);
+    }
 
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(itemTitle);
-            getSupportActionBar().show();
-        }
-
-        this.settingNames();
-
-        mapView = (MapView) findViewById(R.id.mapView);
-        // create map
+    // Creating the map
+    private void mapCreation(MapboxMapOptions options, Bundle savedInstanceState) {
         mapView = new MapView(this, options);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -116,8 +101,38 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
                 mapboxMap.addMarker(options);
             }
         });
-
         setContentView(mapView);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Configuration management
+        settingConfigurations();
+        // Relationship with the map view
+        Intent intentItemList = getIntent();
+        // Getting item title information
+        String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
+        // Getting the place that the map is showing
+        this.place = getIntent().getParcelableExtra("place");
+        // Getting the Coordinates of the place
+        this.coordinate = getIntent().getParcelableExtra("coordinate");
+        // Setting the start location of the map view
+        MapboxMapOptions options = setStartLocation(coordinate.getLatitude(), coordinate.getLongitude());
+
+        // --------------------
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(itemTitle);
+            getSupportActionBar().show();
+        }
+
+        // create map - FINAL STEP
+        mapCreation(options, savedInstanceState);
+    }
+
+    private void settingPlaceInfoOnMarker() {
+
     }
 
     private void settingNames() {
