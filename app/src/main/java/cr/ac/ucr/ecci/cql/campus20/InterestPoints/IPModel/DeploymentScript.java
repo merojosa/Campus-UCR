@@ -98,115 +98,115 @@ public class DeploymentScript {
 
         //Schools goes from 0 to n, in alph order
 
-        School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px);
+        School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px, "1111 9999", "7:00 AM - 8:00 PM");
         artes.insert(context);
-        School artes1 = new School(1, 0, 0, "Artes Plásticas", "", R.drawable.artesplasticas512px);
+        School artes1 = new School(1, 0, 0, "Artes Plásticas", "", R.drawable.artesplasticas512px, "1111 9999", "7:00 AM - 8:00 PM");
         artes1.insert(context);
-        School artes2 = new School(2, 0, 0, "Artes Musicales", "", R.drawable.musica512px);
+        School artes2 = new School(2, 0, 0, "Artes Musicales", "", R.drawable.musica512px, "1111 9999", "7:00 AM - 8:00 PM");
         artes2.insert(context);
 
-        School agro = new School(3, 1, 0, "Agronomía", "", R.drawable.agronomia512px);
+        School agro = new School(3, 1, 0, "Agronomía", "", R.drawable.agronomia512px, "1111 9999", "7:00 AM - 8:00 PM");
         agro.insert(context);
-        School agro1 = new School(4, 1, 0, "Zootecnia", "", R.drawable.zootecnia512px);
+        School agro1 = new School(4, 1, 0, "Zootecnia", "", R.drawable.zootecnia512px, "1111 9999", "7:00 AM - 8:00 PM");
         agro1.insert(context);
-        School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px);
+        School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px, "1111 9999", "7:00 AM - 8:00 PM");
         agro2.insert(context);
 
-        School ciencias = new School(6, 2, 0, "Física", "", R.drawable.fisica512px);
+        School ciencias = new School(6, 2, 0, "Física", "", R.drawable.fisica512px, "1111 9999", "7:00 AM - 8:00 PM");
         ciencias.insert(context);
-        School ciencias1 = new School(7, 2, 0, "Geología", "", R.drawable.geologia512px);
+        School ciencias1 = new School(7, 2, 0, "Geología", "", R.drawable.geologia512px, "1111 9999", "7:00 AM - 8:00 PM");
         ciencias1.insert(context);
-        School ciencias2 = new School(8, 2, 0, "Matemática", "", R.drawable.mate512px);
+        School ciencias2 = new School(8, 2, 0, "Matemática", "", R.drawable.mate512px, "1111 9999", "7:00 AM - 8:00 PM");
         ciencias2.insert(context);
-        School ciencias3 = new School(9, 2, 0, "Química", "", R.drawable.quimica512px);
+        School ciencias3 = new School(9, 2, 0, "Química", "", R.drawable.quimica512px, "1111 9999", "7:00 AM - 8:00 PM");
         ciencias3.insert(context);
-        School ciencias4 = new School(10, 2, 0, "Biología", "", R.drawable.biolo512px);
+        School ciencias4 = new School(10, 2, 0, "Biología", "", R.drawable.biolo512px, "1111 9999", "7:00 AM - 8:00 PM");
         ciencias4.insert(context);
 
-        School economicas = new School(11, 3, 0, "Administración de Negocios", "", R.drawable.admin512px);
+        School economicas = new School(11, 3, 0, "Administración de Negocios", "", R.drawable.admin512px, "1111 9999", "7:00 AM - 8:00 PM");
         economicas.insert(context);
-        School economicas1 = new School(12, 3, 0, "Administración Pública", "", R.drawable.administracion);
+        School economicas1 = new School(12, 3, 0, "Administración Pública", "", R.drawable.administracion, "1111 9999", "7:00 AM - 8:00 PM");
         economicas1.insert(context);
-        School economicas2 = new School(13, 3, 0, "Economía", "", R.drawable.economicas);
+        School economicas2 = new School(13, 3, 0, "Economía", "", R.drawable.economicas, "1111 9999", "7:00 AM - 8:00 PM");
         economicas2.insert(context);
-        School economicas3 = new School(14, 3, 0, "Estadística", "", R.drawable.estadisticas512px);
+        School economicas3 = new School(14, 3, 0, "Estadística", "", R.drawable.estadisticas512px, "1111 9999", "7:00 AM - 8:00 PM");
         economicas3.insert(context);
 
-        School sociales = new School(15, 4, 1, "Psicología", "", R.drawable.psico512px);
+        School sociales = new School(15, 4, 1, "Psicología", "", R.drawable.psico512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales.insert(context);
-        School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "", R.drawable.policitos512px);
+        School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "", R.drawable.policitos512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales1.insert(context);
-        School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "", R.drawable.comunicacion512px);
+        School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "", R.drawable.comunicacion512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales2.insert(context);
-        School sociales3 = new School(18, 4, 1, "Trabajo Social", "", R.drawable.ts512px);
+        School sociales3 = new School(18, 4, 1, "Trabajo Social", "", R.drawable.ts512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales3.insert(context);
-        School sociales4 = new School(19, 4, 1, "Historia", "", R.drawable.historia512px);
+        School sociales4 = new School(19, 4, 1, "Historia", "", R.drawable.historia512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales4.insert(context);
-        School sociales5 = new School(20, 4, 1, "Geografía", "", R.drawable.geografia512px);
+        School sociales5 = new School(20, 4, 1, "Geografía", "", R.drawable.geografia512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales5.insert(context);
-        School sociales6 = new School(21, 4, 1, "Antropología", "", R.drawable.antropologia512px);
+        School sociales6 = new School(21, 4, 1, "Antropología", "", R.drawable.antropologia512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales6.insert(context);
-        School sociales7 = new School(22, 4, 1, "Sociología", "", R.drawable.socio512px);
+        School sociales7 = new School(22, 4, 1, "Sociología", "", R.drawable.socio512px, "1111 9999", "7:00 AM - 8:00 PM");
         sociales7.insert(context);
 
-        School derecho = new School(23, 5, 0, "Derecho", "", R.drawable.derecho512px);
+        School derecho = new School(23, 5, 0, "Derecho", "", R.drawable.derecho512px, "1111 9999", "7:00 AM - 8:00 PM");
         derecho.insert(context);
 
-        School educacion = new School(24, 6, 0, "Formación Docente", "", R.drawable.docente512px);
+        School educacion = new School(24, 6, 0, "Formación Docente", "", R.drawable.docente512px, "1111 9999", "7:00 AM - 8:00 PM");
         educacion.insert(context);
-        School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "", R.drawable.orientacion512px);
+        School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "", R.drawable.orientacion512px, "1111 9999", "7:00 AM - 8:00 PM");
         educacion1.insert(context);
-        School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "", R.drawable.biblio512px);
+        School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "", R.drawable.biblio512px, "1111 9999", "7:00 AM - 8:00 PM");
         educacion2.insert(context);
-        School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "", R.drawable.edufi512px);
+        School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "", R.drawable.edufi512px, "1111 9999", "7:00 AM - 8:00 PM");
         educacion3.insert(context);
-        School educacion4 = new School(28, 6, 0, "Administración Educativa", "", R.drawable.admineduca512px);
+        School educacion4 = new School(28, 6, 0, "Administración Educativa", "", R.drawable.admineduca512px, "1111 9999", "7:00 AM - 8:00 PM");
         educacion4.insert(context);
 
-        School farmacia = new School(29, 7, 0, "Farmacia", "", R.drawable.farmacos512px);
+        School farmacia = new School(29, 7, 0, "Farmacia", "", R.drawable.farmacos512px, "1111 9999", "7:00 AM - 8:00 PM");
         farmacia.insert(context);
 
-        School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "", R.drawable.civil512px);
+        School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "", R.drawable.civil512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria.insert(context);
-        School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "", R.drawable.electrica512px);
+        School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "", R.drawable.electrica512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria1.insert(context);
-        School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "", R.drawable.industrial512px);
+        School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "", R.drawable.industrial512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria2.insert(context);
-        School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "", R.drawable.mecanica512px);
+        School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "", R.drawable.mecanica512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria3.insert(context);
-        School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "", R.drawable.ingquimica512px);
+        School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "", R.drawable.ingquimica512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria4.insert(context);
-        School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", R.drawable.arqui512px);
+        School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", R.drawable.arqui512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria5.insert(context);
-        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px);
+        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria6.insert(context);
-        School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", R.drawable.biosistemas512px);
+        School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", R.drawable.biosistemas512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria7.insert(context);
-        School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "", R.drawable.topo512px);
+        School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "", R.drawable.topo512px, "1111 9999", "7:00 AM - 8:00 PM");
         ingenieria8.insert(context);
 
-        School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "", R.drawable.filologia512px);
+        School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "", R.drawable.filologia512px, "1111 9999", "7:00 AM - 8:00 PM");
         letras.insert(context);
-        School letras2 = new School(40, 9, 0, "Filosofía", "", R.drawable.filo512px);
+        School letras2 = new School(40, 9, 0, "Filosofía", "", R.drawable.filo512px, "1111 9999", "7:00 AM - 8:00 PM");
         letras2.insert(context);
-        School letras3 = new School(41, 9, 0, "Lenguas Modernas", "", R.drawable.lenguas512px);
+        School letras3 = new School(41, 9, 0, "Lenguas Modernas", "", R.drawable.lenguas512px, "1111 9999", "7:00 AM - 8:00 PM");
         letras3.insert(context);
 
-        School medicina = new School(42, 10, 0, "Enfermería", "", R.drawable.enfermeria512px);
+        School medicina = new School(42, 10, 0, "Enfermería", "", R.drawable.enfermeria512px, "1111 9999", "7:00 AM - 8:00 PM");
         medicina.insert(context);
-        School medicina1 = new School(43, 10, 0, "Medicina", "", R.drawable.medicinas512px);
+        School medicina1 = new School(43, 10, 0, "Medicina", "", R.drawable.medicinas512px, "1111 9999", "7:00 AM - 8:00 PM");
         medicina1.insert(context);
-        School medicina2 = new School(44, 10, 0, "Nutrición", "", R.drawable.nutricion512px);
+        School medicina2 = new School(44, 10, 0, "Nutrición", "", R.drawable.nutricion512px, "1111 9999", "7:00 AM - 8:00 PM");
         medicina2.insert(context);
-        School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "", R.drawable.alimentos512px);
+        School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "", R.drawable.alimentos512px, "1111 9999", "7:00 AM - 8:00 PM");
         medicina3.insert(context);
-        School medicina4 = new School(46, 10, 0, "Salud Púbilca", "", R.drawable.saludpublica512px);
+        School medicina4 = new School(46, 10, 0, "Salud Púbilca", "", R.drawable.saludpublica512px, "1111 9999", "7:00 AM - 8:00 PM");
         medicina4.insert(context);
 
-        School micro = new School(47, 11, 0, "Microbiología", "", R.drawable.micro512px);
+        School micro = new School(47, 11, 0, "Microbiología", "", R.drawable.micro512px, "1111 9999", "7:00 AM - 8:00 PM");
         micro.insert(context);
 
-        School odonto = new School(48, 12, 0, "Odontología", "", R.drawable.odonto512px);
+        School odonto = new School(48, 12, 0, "Odontología", "", R.drawable.odonto512px, "1111 9999", "7:00 AM - 8:00 PM");
         odonto.insert(context);
 
 
