@@ -78,6 +78,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
         // Enviando la escuela al mapa
         Intent childActivity = new Intent(SchoolsActivity.this, Map.class);
+        childActivity.putExtra("typeActivity", 1);
+        childActivity.putExtra(Intent.EXTRA_TEXT, title);
+        childActivity.putExtra("attribute", schoolsList.get(index).getDescription());
         // *********** Enviando todo el objeto de Escuela a la actividad de mapa *******************
         childActivity.putExtra("place", school);
         childActivity.putExtra("coordinate", coordinate);

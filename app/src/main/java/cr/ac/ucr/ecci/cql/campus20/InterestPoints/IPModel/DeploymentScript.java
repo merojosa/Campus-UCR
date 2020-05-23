@@ -30,6 +30,7 @@ public class DeploymentScript {
         createSchools(context);
         createCoordinates(context);
         createComments(context);
+        createCoffeShops(context);
     }
 
     private static void clearDatabase(Context context) {
@@ -42,10 +43,15 @@ public class DeploymentScript {
         DataAccess db = new DataAccess(context);
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
-                "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
+                "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"}; //Espacio vacío
+        int[] Imagenes = {R.drawable.artes512px, R.drawable.agro512px, R.drawable.ciencias512,
+                R.drawable.economicas512px, R.drawable.sociales512p, R.drawable.derecho215px,
+                R.drawable.educa512px, R.drawable.farmacia512px, R.drawable.ingenieria512px,
+                R.drawable.letras512px, R.drawable.medicina512px, R.drawable.micro512px,
+                R.drawable.odonto512px};
 
         for (int i = 0; i < Faculties.length; ++i) {
-            list.add(new Faculty(i, Faculties[i], ""));
+            list.add(new Faculty(i, Faculties[i], "", Imagenes[i]));
         }
         for (Faculty f : list) {
             f.insert(context);
@@ -92,121 +98,149 @@ public class DeploymentScript {
 
         //Schools goes from 0 to n, in alph order
 
-        School artes = new School(0, 0, 0, "Artes Dramáticas", "", 0, "", "");
+        School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px);
         artes.insert(context);
-        School artes1 = new School(1, 0, 0, "Artes Plásticas", "", 0, "", "");
+        School artes1 = new School(1, 0, 0, "Artes Plásticas", "", R.drawable.artesplasticas512px);
         artes1.insert(context);
-        School artes2 = new School(2, 0, 0, "Artes Musicales", "", 0, "", "");
+        School artes2 = new School(2, 0, 0, "Artes Musicales", "", R.drawable.musica512px);
         artes2.insert(context);
 
-        School agro = new School(3, 1, 0, "Agronomía", "", 0, "", "");
+        School agro = new School(3, 1, 0, "Agronomía", "", R.drawable.agronomia512px);
         agro.insert(context);
-        School agro1 = new School(4, 1, 0, "Zootecnia", "", 0, "", "");
+        School agro1 = new School(4, 1, 0, "Zootecnia", "", R.drawable.zootecnia512px);
         agro1.insert(context);
-        School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "", 0, "", "");
+        School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px);
         agro2.insert(context);
 
-        School ciencias = new School(6, 2, 0, "Física", "", 0, "", "");
+        School ciencias = new School(6, 2, 0, "Física", "", R.drawable.fisica512px);
         ciencias.insert(context);
-        School ciencias1 = new School(7, 2, 0, "Geología", "", 0, "", "");
+        School ciencias1 = new School(7, 2, 0, "Geología", "", R.drawable.geologia512px);
         ciencias1.insert(context);
-        School ciencias2 = new School(8, 2, 0, "Matemática", "", 0, "", "");
+        School ciencias2 = new School(8, 2, 0, "Matemática", "", R.drawable.mate512px);
         ciencias2.insert(context);
-        School ciencias3 = new School(9, 2, 0, "Química", "", 0, "", "");
+        School ciencias3 = new School(9, 2, 0, "Química", "", R.drawable.quimica512px);
         ciencias3.insert(context);
-        School ciencias4 = new School(10, 2, 0, "Biología", "", 0, "", "");
+        School ciencias4 = new School(10, 2, 0, "Biología", "", R.drawable.biolo512px);
         ciencias4.insert(context);
 
-        School economicas = new School(11, 3, 0, "Administración de Negocios", "", 0, "", "");
+        School economicas = new School(11, 3, 0, "Administración de Negocios", "", R.drawable.admin512px);
         economicas.insert(context);
-        School economicas1 = new School(12, 3, 0, "Administración Pública", "", 0, "", "");
+        School economicas1 = new School(12, 3, 0, "Administración Pública", "", R.drawable.administracion);
         economicas1.insert(context);
-        School economicas2 = new School(13, 3, 0, "Economía", "", 0, "", "");
+        School economicas2 = new School(13, 3, 0, "Economía", "", R.drawable.economicas);
         economicas2.insert(context);
-        School economicas3 = new School(14, 3, 0, "Estadística", "" , 0, "", "");
+        School economicas3 = new School(14, 3, 0, "Estadística", "", R.drawable.estadisticas512px);
         economicas3.insert(context);
 
-        School sociales = new School(15, 4, 1, "Psicología", "", 0, "", "");
+        School sociales = new School(15, 4, 1, "Psicología", "", R.drawable.psico512px);
         sociales.insert(context);
-        School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "", 0, "", "");
+        School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "", R.drawable.policitos512px);
         sociales1.insert(context);
-        School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "", 0, "", "");
+        School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "", R.drawable.comunicacion512px);
         sociales2.insert(context);
-        School sociales3 = new School(18, 4, 1, "Trabajo Social", "", 0, "", "");
+        School sociales3 = new School(18, 4, 1, "Trabajo Social", "", R.drawable.ts512px);
         sociales3.insert(context);
-        School sociales4 = new School(19, 4, 1, "Historia", "", 0, "", "");
+        School sociales4 = new School(19, 4, 1, "Historia", "", R.drawable.historia512px);
         sociales4.insert(context);
-        School sociales5 = new School(20, 4, 1, "Geografía", "", 0, "", "");
+        School sociales5 = new School(20, 4, 1, "Geografía", "", R.drawable.geografia512px);
         sociales5.insert(context);
-        School sociales6 = new School(21, 4, 1, "Antropología", "", 0, "", "");
+        School sociales6 = new School(21, 4, 1, "Antropología", "", R.drawable.antropologia512px);
         sociales6.insert(context);
-        School sociales7 = new School(22, 4, 1, "Sociología", "", 0, "", "");
+        School sociales7 = new School(22, 4, 1, "Sociología", "", R.drawable.socio512px);
         sociales7.insert(context);
 
-        School derecho = new School(23, 5, 0, "Derecho", "", 0, "", "");
+        School derecho = new School(23, 5, 0, "Derecho", "", R.drawable.derecho512px);
         derecho.insert(context);
 
-        School educacion = new School(24, 6, 0, "Formación Docente", "", 0, "", "");
+        School educacion = new School(24, 6, 0, "Formación Docente", "", R.drawable.docente512px);
         educacion.insert(context);
-        School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "", 0, "", "");
+        School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "", R.drawable.orientacion512px);
         educacion1.insert(context);
-        School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "", 0, "", "");
+        School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "", R.drawable.biblio512px);
         educacion2.insert(context);
-        School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "", 0, "", "");
+        School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "", R.drawable.edufi512px);
         educacion3.insert(context);
-        School educacion4 = new School(28, 6, 0, "Administración Educativa", "", 0, "", "");
+        School educacion4 = new School(28, 6, 0, "Administración Educativa", "", R.drawable.admineduca512px);
         educacion4.insert(context);
 
-        School farmacia = new School(29, 7, 0, "Farmacia", "", 0, "", "");
+        School farmacia = new School(29, 7, 0, "Farmacia", "", R.drawable.farmacos512px);
         farmacia.insert(context);
 
-        School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "", 0, "", "");
+        School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "", R.drawable.civil512px);
         ingenieria.insert(context);
-        School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "", 0, "", "");
+        School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "", R.drawable.electrica512px);
         ingenieria1.insert(context);
-        School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "", 0, "", "");
+        School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "", R.drawable.industrial512px);
         ingenieria2.insert(context);
-        School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "", 0, "", "");
+        School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "", R.drawable.mecanica512px);
         ingenieria3.insert(context);
-        School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "", 0, "", "");
+        School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "", R.drawable.ingquimica512px);
         ingenieria4.insert(context);
-
-        School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", 0, "", "");
+        School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", R.drawable.arqui512px);
         ingenieria5.insert(context);
-        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", 0, "", "");
+        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px);
         ingenieria6.insert(context);
-        School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", 0, "", "");
+        School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", R.drawable.biosistemas512px);
         ingenieria7.insert(context);
-        School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "", 0, "", "");
+        School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "", R.drawable.topo512px);
         ingenieria8.insert(context);
 
-        School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "", 0, "", "");
+        School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "", R.drawable.filologia512px);
         letras.insert(context);
-        School letras2 = new School(40, 9, 0, "Filosofía", "", 0, "", "");
+        School letras2 = new School(40, 9, 0, "Filosofía", "", R.drawable.filo512px);
         letras2.insert(context);
-        School letras3 = new School(41, 9, 0, "Lenguas Modernas", "", 0, "", "");
+        School letras3 = new School(41, 9, 0, "Lenguas Modernas", "", R.drawable.lenguas512px);
         letras3.insert(context);
 
-        School medicina = new School(42, 10, 0, "Enfermería", "", 0, "", "");
+        School medicina = new School(42, 10, 0, "Enfermería", "", R.drawable.enfermeria512px);
         medicina.insert(context);
-        School medicina1 = new School(43, 10, 0, "Medicina", "", 0, "", "");
+        School medicina1 = new School(43, 10, 0, "Medicina", "", R.drawable.medicinas512px);
         medicina1.insert(context);
-        School medicina2 = new School(44, 10, 0, "Nutrición", "", 0, "", "");
+        School medicina2 = new School(44, 10, 0, "Nutrición", "", R.drawable.nutricion512px);
         medicina2.insert(context);
-        School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "", 0, "", "");
+        School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "", R.drawable.alimentos512px);
         medicina3.insert(context);
-        School medicina4 = new School(46, 10, 0, "Salud Púbilca", "", 0, "", "");
+        School medicina4 = new School(46, 10, 0, "Salud Púbilca", "", R.drawable.saludpublica512px);
         medicina4.insert(context);
 
-        School micro = new School(47, 11, 0, "Microbiología", "", 0, "", "");
+        School micro = new School(47, 11, 0, "Microbiología", "", R.drawable.micro512px);
         micro.insert(context);
 
-        School odonto = new School(48, 12, 0, "Odontología", "", 0, "", "");
+        School odonto = new School(48, 12, 0, "Odontología", "", R.drawable.odonto512px);
         odonto.insert(context);
 
 
         db.close();
         Log.d("places", "Schools were inserted in database.");
+    }
+
+    private static void createCoffeShops(Context context) {
+        DataAccess db = new DataAccess(context);
+
+        Coffe angar = new Coffe(0,  "Café Angar", "");
+        angar.insert(context);
+
+        Coffe noventaYCinco = new Coffe(1, "95 grados", "");
+        noventaYCinco.insert(context);
+
+        Coffe krakovia = new Coffe(2,  "Café Krakovia", "");
+        krakovia.insert(context);
+
+        Coffe aroma = new Coffe(3, "Aroma y Sabor", "");
+        aroma.insert(context);
+
+        Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "");
+        musmanni.insert(context);
+
+        Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "");
+        rincon.insert(context);
+
+        Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "");
+        cafe_cacao.insert(context);
+
+
+        db.close();
+        Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
 
     private static void createCoordinates(Context context) {

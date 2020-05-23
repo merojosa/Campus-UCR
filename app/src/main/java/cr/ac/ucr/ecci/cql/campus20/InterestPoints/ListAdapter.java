@@ -4,12 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/
@@ -32,10 +34,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mTitle, mDescription;
 
+        public ImageView mImage;
+
         public MyViewHolder(View view) {
             super(view);
+
             mTitle = (TextView) view.findViewById(R.id.tv_item_title);
+            mImage = (ImageView) view.findViewById(R.id.imageFactSchool);
             // mDescription = (TextView) view.findViewById(R.id.tv_item_description);
+
             view.setOnClickListener(this);
         }
 
@@ -60,9 +67,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
         GeneralData datoGeneral = temp.get(position);
-        // myViewHolder.mTitle.setTextColor(Util.getColor(position, context));
-        myViewHolder.mTitle.setText(datoGeneral.getTitle());
+
+        // Para que Strings largos no queden cortados en lista
+        if(datoGeneral.getTitle().length() > 22){
+            myViewHolder.mTitle.setText(datoGeneral.getTitle().substring(0, 19) + "...");
+        }else{
+            myViewHolder.mTitle.setText(datoGeneral.getTitle());
+        }
+
         // myViewHolder.mDescription.setText(Util.recortarTexto(datoGeneral.getDescription(), Util.TAMANO_DESCRIPCION_LISTA));
+        myViewHolder.mImage.setImageResource(datoGeneral.getImage());
     }
 
     @Override
