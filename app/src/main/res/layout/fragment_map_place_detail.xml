@@ -17,7 +17,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,7 +38,6 @@
 
 
             <TextView
-                android:id="@+id/placeDescriptionKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +47,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/placeDescriptionValue"
+                android:id="@+id/placeDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -61,7 +59,6 @@
 
 
             <TextView
-                android:id="@+id/scheduleKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -71,7 +68,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/scheduleValue"
+                android:id="@+id/publisher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -83,22 +80,21 @@
 
 
             <TextView
-                android:id="@+id/phoneKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/phoneKey"
+                android:text="@string/placeNumberKey"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/phoneValue"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="@string/phoneValue"
+                android:text="@string/placeNumberValue"
                 android:textAlignment="gravity"
                 android:textSize="20dp"
                 android:layout_marginBottom="10dp"/>

@@ -23,9 +23,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     private final ListAdapterOnClickHandler mClickHandler;
 
+
     public interface ListAdapterOnClickHandler{
         void onClick(String title);
     }
+
 
     public ListAdapter(ListAdapterOnClickHandler clickHandler){
         mClickHandler = clickHandler;
@@ -54,6 +56,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         }
     }
 
+
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
@@ -63,6 +67,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         //View view = inflater.inflate(R.layout.list_item, viewGroup, false);
         return new MyViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {

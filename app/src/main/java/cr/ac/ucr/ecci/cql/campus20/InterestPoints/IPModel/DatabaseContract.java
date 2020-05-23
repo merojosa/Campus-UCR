@@ -136,8 +136,6 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_NAME = "Name";
             public static final String TABLE_COLUMN_DESCRIPTION = "Description";
             public static final String TABLE_COLUMN_IMAGE = "Image";
-            public static final String TABLE_COLUMN_PHONE = "Phone";
-            public static final String TABLE_COLUMN_SCHEDULE = "Schedule";
 
             /*Statements*/
             public static final String SQL_CREATE_SCHOOL =
@@ -148,8 +146,6 @@ public class DatabaseContract {
                             SchoolTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
                             SchoolTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  + COMMA +
-                            SchoolTable.TABLE_COLUMN_PHONE + TEXT_TYPE + NULLABLE + COMMA +
-                            SchoolTable.TABLE_COLUMN_SCHEDULE + TEXT_TYPE + NULLABLE + COMMA +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + ")" + REF + FacultyTable.TABLE_NAME + " (" + FacultyTable.TABLE_COLUMN_ID + ") " + COMMA +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
                             " )";

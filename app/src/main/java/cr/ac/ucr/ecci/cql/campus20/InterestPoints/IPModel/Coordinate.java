@@ -3,14 +3,12 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 /**
  * Class that represents a Coordinate database entity.
  * */
-public class Coordinate implements Parcelable {
+public class Coordinate {
 
     private int id;
     private int id_place_fk;
@@ -28,25 +26,6 @@ public class Coordinate implements Parcelable {
     }
 
     public Coordinate() { }
-
-    protected Coordinate(Parcel in) {
-        id = in.readInt();
-        id_place_fk = in.readInt();
-        latitude = in.readDouble();
-        longitude = in.readDouble();
-    }
-
-    public static final Creator<Coordinate> CREATOR = new Creator<Coordinate>() {
-        @Override
-        public Coordinate createFromParcel(Parcel in) {
-            return new Coordinate(in);
-        }
-
-        @Override
-        public Coordinate[] newArray(int size) {
-            return new Coordinate[size];
-        }
-    };
 
     public int getId() {
         return id;
@@ -126,18 +105,5 @@ public class Coordinate implements Parcelable {
         dataAccess.close();
         Log.d("coordinateRead", "The coordinate from place id: " + Integer.toString(id_place_fk) + " had been read from database.");
         return coordinate;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(id_place_fk);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
     }
 }
