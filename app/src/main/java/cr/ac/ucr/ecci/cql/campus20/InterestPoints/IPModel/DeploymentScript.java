@@ -42,7 +42,8 @@ public class DeploymentScript {
         DataAccess db = new DataAccess(context);
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
-                "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"};
+                "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"}; //Espacio vacío
+        int[] Imagenes = {};
 
         for (int i = 0; i < Faculties.length; ++i) {
             list.add(new Faculty(i, Faculties[i], "", R.drawable.colegio32px));

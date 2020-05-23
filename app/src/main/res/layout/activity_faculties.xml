@@ -8,8 +8,9 @@
     tools:context=".InterestPoints.FacultiesAndSchools.FacultiesActivity">
 
     <LinearLayout
+        android:id="@+id/Arriba"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +20,9 @@
             android:id="@+id/rv_list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
-    <!-- Inclusión de la barra de navegación general-->
+
     <fragment
         android:id="@+id/NavigationBar"
         class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
@@ -29,4 +31,5 @@
         android:layout_gravity="bottom"
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
