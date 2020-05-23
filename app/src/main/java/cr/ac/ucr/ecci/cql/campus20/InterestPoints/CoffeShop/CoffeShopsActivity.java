@@ -63,6 +63,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
             }
         }
         Intent childActivity = new Intent(CoffeShopsActivity.this, Map.class);
+        childActivity.putExtra("tipoDeActividad", 0);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", coffeList.get(index).getDescription());
         startActivity(childActivity);

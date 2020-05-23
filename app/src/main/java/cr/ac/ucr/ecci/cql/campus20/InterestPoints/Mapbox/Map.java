@@ -16,6 +16,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -25,7 +26,11 @@ public class Map extends AppCompatActivity {
     private double latitude;
     private double longitude;
     private String name;
+    private int type;
     Map mapboxMap;
+
+
+    private Intent details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +110,28 @@ public class Map extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+
+        Intent intent = getIntent();
+        int tipo = intent.getExtras().getInt("tipoDeActividad");
+
+
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
 
         MenuItem menuItem = menu.findItem(R.id.go_IP_Details);
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent schoolDetails = new Intent(Map.this, SchoolViewActivity.class);
-                schoolDetails.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
-                startActivity(schoolDetails);
-                return true;
+                if (tipo == 0) {
+                        details = new Intent(Map.this, CoffeViewActivity.class);
+                        details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                        startActivity(details);
+                        return true;
+                }else {
+                    Intent schoolDetails = new Intent(Map.this, SchoolViewActivity.class);
+                    schoolDetails.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                    startActivity(schoolDetails);
+                    return true;
+                }
             }
         });
 
