@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
@@ -26,6 +27,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
     private List<School> schoolsList;
 
     private School school;
+    private Coordinate coordinate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,14 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         childActivity.putExtra("typeActivity", 1);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", schoolsList.get(index).getDescription());
+
+        // Setting school and coordinate objects
+        this.school = schoolsList.get(index);
+        this.coordinate = this.coordinate.read(getApplicationContext(), this.school.getId());
+
+        childActivity.putExtra("place", school);
+        childActivity.putExtra("coordinate", coordinate);
+
         startActivity(childActivity);
     }
 

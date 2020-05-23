@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -18,10 +19,25 @@ import com.mapbox.mapboxsdk.maps.Style;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class Map extends AppCompatActivity {
     private MapView mapView;
+
+    TextView textViewName;
+    TextView textViewNameBody;
+    TextView textViewDescriptionKey;
+    TextView textViewDescriptionValue;
+    TextView textViewScheduleKey;
+    TextView textViewScheduleValue;
+    TextView textViewPhoneKey;
+    TextView textViewPhoneValue;
+    TextView textViewFacebook;
+    TextView textViewTwitter;
+    TextView textViewInstragram;
+    TextView textViewWebPage;
 
     private double latitude;
     private double longitude;
@@ -29,6 +45,8 @@ public class Map extends AppCompatActivity {
     private int type;
     Map mapboxMap;
 
+    School place;
+    Coordinate coordinate;
 
     private Intent details;
 
@@ -43,10 +61,17 @@ public class Map extends AppCompatActivity {
         Intent intentItemList = getIntent();
         String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
 
+        // Getting the Coordinates and School objects
+        this.place = getIntent().getParcelableExtra("place");
+        this.coordinate = getIntent().getParcelableExtra("coordinate");
+        // -------------------------------------------
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(itemTitle);
             getSupportActionBar().show();
         }
+
+        this.settingNames();
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -63,6 +88,34 @@ public class Map extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void settingNames() {
+
+        textViewName =          (TextView)findViewById(R.id.nameKey);
+        textViewNameBody =      (TextView)findViewById(R.id.nameValue);
+
+        textViewDescriptionKey =    (TextView)findViewById(R.id.descriptionKey);
+        textViewDescriptionValue =  (TextView)findViewById(R.id.descriptionValue);
+        textViewScheduleKey =       (TextView)findViewById(R.id.scheduleKey);
+        textViewScheduleValue =     (TextView)findViewById(R.id.scheduleValue);
+        textViewPhoneKey =          (TextView)findViewById(R.id.phoneKey);
+        textViewPhoneValue =        (TextView)findViewById(R.id.phoneValue);
+
+        /*textViewFacebook =          (TextView)findViewById(R.id.facebook);
+        textViewTwitter =           (TextView)findViewById(R.id.twitter);
+        textViewInstragram =        (TextView)findViewById(R.id.instagram);
+        textViewWebPage =           (TextView)findViewById(R.id.website);*/
+
+
+        textViewName.setText(R.string.placeNameKey);
+        textViewNameBody.setText(place.getName());
+        textViewDescriptionKey.setText(R.string.placeDescriptionKey);
+        textViewDescriptionValue.setText(place.getDescription());
+        textViewScheduleKey.setText(R.string.placeScheduleKey);
+        textViewScheduleValue.setText("7:00 am -- 7:00 pm");
+        textViewPhoneKey.setText("Teléfono");
+        textViewPhoneValue.setText("2511 4000");
     }
 
     @Override
