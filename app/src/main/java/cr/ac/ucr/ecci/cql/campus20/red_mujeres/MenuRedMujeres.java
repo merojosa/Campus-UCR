@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +24,9 @@ public class MenuRedMujeres extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_red_mujeres);
+
+        FireBaseRedMujeres db = new FireBaseRedMujeres();
+        db.obtenerGrupoAsync("GrupoEj");
 
         if (!validarUsuario()) {
             popupRegistro();

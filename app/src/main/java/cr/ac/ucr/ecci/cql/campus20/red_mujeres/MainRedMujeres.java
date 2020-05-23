@@ -78,6 +78,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
     }
 
 
