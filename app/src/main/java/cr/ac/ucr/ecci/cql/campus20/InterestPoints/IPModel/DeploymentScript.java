@@ -30,6 +30,7 @@ public class DeploymentScript {
         createSchools(context);
         createCoordinates(context);
         createComments(context);
+        createCoffeShops(context);
     }
 
     private static void clearDatabase(Context context) {
@@ -206,6 +207,20 @@ public class DeploymentScript {
 
         db.close();
         Log.d("places", "Schools were inserted in database.");
+    }
+
+    private static void createCoffeShops(Context context) {
+        DataAccess db = new DataAccess(context);
+
+        Coffe angar = new Coffe(0,  "Café Angar", "");
+        angar.insert(context);
+
+        Coffe noventaYCinco = new Coffe(1, "95 grados", "");
+        noventaYCinco.insert(context);
+
+
+        db.close();
+        Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
 
     private static void createCoordinates(Context context) {

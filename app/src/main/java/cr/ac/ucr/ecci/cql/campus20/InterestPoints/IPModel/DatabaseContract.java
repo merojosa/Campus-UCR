@@ -153,18 +153,45 @@ public class DatabaseContract {
             public static final String SQL_DELETE_SCHOOL =
                     "DROP TABLE IF EXISTS " + SchoolTable.TABLE_NAME;
         }
+
+
+        /*Faculty table.*/
+        public static final class CoffeShopTable implements BaseColumns{
+            /*Table name*/
+            public static final String TABLE_NAME = "Coffe";
+            /*Columns*/
+            public static final String TABLE_COLUMN_ID = "Id";
+            public static final String TABLE_COLUMN_NAME = "Name";
+            public static final String TABLE_COLUMN_DESCRIPTION = "Description";
+            public static final String TABLE_COLUMN_IMAGE = "Image";
+            /*Statements*/
+            public static final String SQL_CREATE_COFFE =
+                    "CREATE TABLE " + InterestPoints.CoffeShopTable.TABLE_NAME + " (" +
+                            InterestPoints.CoffeShopTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
+                            InterestPoints.CoffeShopTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
+                            InterestPoints.CoffeShopTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
+                            InterestPoints.CoffeShopTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  +
+                            " )";
+
+            public static final String SQL_DELETE_COFFE =
+                    "DROP TABLE IF EXISTS " + InterestPoints.CoffeShopTable.TABLE_NAME;
+        }
+
     }
+
 
     /*All statements here are executed whenever the database is created or updated.*/
     public static String[] DeploymentScript = {
             InterestPoints.PlaceTable.SQL_DELETE_PLACE,
             InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
             InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
+            InterestPoints.CoffeShopTable.SQL_DELETE_COFFE,
             InterestPoints.CoordinateTable.SQL_DELETE_COORDINATE,
             InterestPoints.CommentTable.SQL_DELETE_COMMENT,
             InterestPoints.PlaceTable.SQL_CREATE_PLACE,
             InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
             InterestPoints.SchoolTable.SQL_CREATE_SCHOOL,
+            InterestPoints.CoffeShopTable.SQL_CREATE_COFFE,
             InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE,
             InterestPoints.CommentTable.SQL_CREATE_COMMENT
     };
