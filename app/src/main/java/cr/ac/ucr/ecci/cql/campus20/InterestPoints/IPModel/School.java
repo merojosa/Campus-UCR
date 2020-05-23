@@ -3,6 +3,8 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,9 +14,20 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 /**
  * Class that represents a School database entity.
- * */
-public class School extends GeneralData {
+ */
+public class School extends GeneralData implements Parcelable {
 
+    public static final Creator<School> CREATOR = new Creator<School>() {
+        @Override
+        public School createFromParcel(Parcel in) {
+            return new School(in);
+        }
+
+        @Override
+        public School[] newArray(int size) {
+            return new School[size];
+        }
+    };
     /*Columns*/
     private int id;
     private int id_faculty_fk;
@@ -22,29 +35,129 @@ public class School extends GeneralData {
     private String name;
     private String description;
     private int image;
+    private String phone;
+    private String schedule;
 
-    public School() { }
-
-    public School(int id, int id_faculty_fk, int id_place_fk, String name, String description, int image) {
+    public School(int id, int id_faculty_fk, int id_place_fk, String name, String description, int image, String phone, String schedule) {
         this.id = id;
         this.id_faculty_fk = id_faculty_fk;
         this.id_place_fk = id_place_fk;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.phone = phone;
+        this.schedule = schedule;
+    }
+
+    protected School(Parcel in) {
+        id = in.readInt();
+        id_faculty_fk = in.readInt();
+        id_place_fk = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        image = in.readInt();
+        phone = in.readString();
+        schedule = in.readString();
+    }
+
+    public long insert(Context context){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID, getId());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK, getId_faculty_fk());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK, getId_place_fk());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME, getName());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION, getDescription());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE, getImage());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_PHONE, getPhone());
+        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_SCHEDULE, getSchedule());
+
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+        long result = dataAccess.insert(DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME, values);
+        dataAccess.close();
+        return result;
     }
 
     /**
-     * Constructor.
-     * */
-    public School(int id, int id_faculty_fk, int id_place_fk, String name, String description) {
-        this.id = id;
-        this.id_faculty_fk = id_faculty_fk;
-        this.id_place_fk = id_place_fk;
-        this.name = name;
-        this.description = description;
+     * Retrieves all the Schools related to a given faculty.
+     *
+     * @param context Current app context.
+     * @param faculty Foreign key to the faculty where the schools belong.
+     */
+    public static List<School> read(Context context, String faculty) {
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+
+        Cursor fCursor = dataAccess.select("Id",
+                DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'" + faculty + "'");
+        fCursor.moveToFirst();
+        int id_faculty_fk = fCursor.getInt(fCursor.getColumnIndexOrThrow(
+                DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID));
+        fCursor.close();
+
+        Cursor cursor = dataAccess.select(
+                null,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + " = " + Integer.toString(id_faculty_fk)
+        );
+        cursor.moveToFirst();
+        List<School> schools = new ArrayList<>();
+        while (!cursor.isAfterLast()) {
+            schools.add(new School(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_PHONE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_SCHEDULE))
+            ));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        dataAccess.close();
+        Log.d("schoolRead", "The schools from faculty id: " + Integer.toString(id_faculty_fk) + " had been read from database.");
+        return schools;
     }
 
+    /**
+     * Retrieves all the Schools related to a given faculty.
+     *
+     * @param context    Current app context.
+     * @param schoolName Name of the school to be selected.
+     */
+    public static School select(Context context, String schoolName) {
+        DataAccess dataAccess = DataAccess.getInstance(context);
+        dataAccess.open();
+
+        Cursor cursor = dataAccess.select("*",
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME,
+                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'" + schoolName + "'");
+        cursor.moveToFirst();
+
+        if (cursor.isAfterLast()) {
+            return null;
+        }
+        School school = new School(
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_PHONE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_SCHEDULE))
+        );
+
+        cursor.close();
+        dataAccess.close();
+        Log.d("schoolRead", "A single school name " + schoolName + " has been read from database.");
+        return school;
+    }
+
+    @Override
     public int getId() {
         return id;
     }
@@ -79,9 +192,10 @@ public class School extends GeneralData {
 
     @Override
     public String getTitle() {
-        return name;
+        return null;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -90,105 +204,44 @@ public class School extends GeneralData {
         this.description = description;
     }
 
-    /**
-     * Inserts a new row in School table.
-     * @param context Current app context.
-     * @return The row ID of the newly inserted row, or -1 if an error occurred.
-     * */
-    public long insert(Context context){
-        ContentValues values = new ContentValues();
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID, getId());
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK, getId_faculty_fk());
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK, getId_place_fk());
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME, getName());
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION, getDescription());
-        values.put(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE, getImage());
-
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-        long result = dataAccess.insert(DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME, values);
-        dataAccess.close();
-        return result;
-    }
-
-    /**
-     * Retrieves all the Schools related to a given faculty.
-     * @param context Current app context.
-     * @param faculty Foreign key to the faculty where the schools belong.
-     * */
-    public static List<School> read(Context context, String faculty){
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-
-        Cursor fCursor = dataAccess.select("Id",
-                DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME,
-                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'"+faculty+ "'");
-        fCursor.moveToFirst();
-        int  id_faculty_fk = fCursor.getInt(fCursor.getColumnIndexOrThrow(
-                DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID));
-        fCursor.close();
-
-        Cursor cursor = dataAccess.select(
-                null,
-                DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME,
-                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + " = " + Integer.toString(id_faculty_fk)
-        );
-        cursor.moveToFirst();
-        List<School> schools = new ArrayList<>();
-        while (!cursor.isAfterLast()) {
-            schools.add( new School(
-                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE))
-            ));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        dataAccess.close();
-        Log.d("schoolRead", "The schools from faculty id: " + Integer.toString(id_faculty_fk) + " had been read from database.");
-        return schools;
-    }
-
-    /**
-     * Retrieves all the Schools related to a given faculty.
-     * @param context Current app context.
-     * @param schoolName Name of the school to be selected.
-     * */
-    public static School select(Context context, String schoolName){
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-
-        Cursor cursor = dataAccess.select("*",
-                DatabaseContract.InterestPoints.SchoolTable.TABLE_NAME,
-                DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME + " = " + "'"+schoolName+ "'");
-        cursor.moveToFirst();
-
-        if (cursor.isAfterLast()) {
-            return null;
-        }
-        School school = new School(
-            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID)),
-            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_FACULTY_FK)),
-            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_ID_PLACE_FK)),
-            cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_NAME)),
-            cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_DESCRIPTION)),
-            cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.SchoolTable.TABLE_COLUMN_IMAGE))
-        );
-
-        cursor.close();
-        dataAccess.close();
-        Log.d("schoolRead", "A single school name " + schoolName + " has been read from database.");
-        return school;
-    }
-
     public int getImage() {
         return image;
     }
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(id_faculty_fk);
+        dest.writeInt(id_place_fk);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeInt(image);
+        dest.writeString(phone);
+        dest.writeString(schedule);
     }
 }

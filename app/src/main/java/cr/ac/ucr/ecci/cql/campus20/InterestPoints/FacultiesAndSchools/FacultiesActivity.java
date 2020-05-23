@@ -73,7 +73,6 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
         Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-
         startActivity(childActivity);
     }
 

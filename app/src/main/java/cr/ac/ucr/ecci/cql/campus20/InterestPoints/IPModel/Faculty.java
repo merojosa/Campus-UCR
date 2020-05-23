@@ -3,13 +3,15 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Faculty extends GeneralData {// implements Comparable<Faculty>{
+public class Faculty extends GeneralData implements Parcelable {// implements Comparable<Faculty>{
 
     int id;
     String facultyName;
@@ -38,6 +40,25 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
 
     // Hay que implementar getter y setters de los atributos que tenga Faculty en la BD
 
+
+    protected Faculty(Parcel in) {
+        id = in.readInt();
+        facultyName = in.readString();
+        description = in.readString();
+        image = in.readInt();
+    }
+
+    public static final Creator<Faculty> CREATOR = new Creator<Faculty>() {
+        @Override
+        public Faculty createFromParcel(Parcel in) {
+            return new Faculty(in);
+        }
+
+        @Override
+        public Faculty[] newArray(int size) {
+            return new Faculty[size];
+        }
+    };
 
     public String getFacultyName() {
         return facultyName;
@@ -142,5 +163,18 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(facultyName);
+        dest.writeString(description);
+        dest.writeInt(image);
     }
 }

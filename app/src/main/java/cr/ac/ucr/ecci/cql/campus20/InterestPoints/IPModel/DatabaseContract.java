@@ -2,13 +2,12 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.provider.BaseColumns;
 
-/** @class DatabaseContract
-*  This class defines the string constants and statements to define the database model in local storage
-*  through SQLite, following the inner-class hierarchy Module > Tables > Columns and Statements.
-* */
+/**
+ * @class DatabaseContract
+ * This class defines the string constants and statements to define the database model in local storage
+ * through SQLite, following the inner-class hierarchy Module > Tables > Columns and Statements.
+ */
 public class DatabaseContract {
-
-    private DatabaseContract () {}
 
     private static final String COMMA = ", ";
     private static final String TEXT_TYPE = " TEXT ";
@@ -18,11 +17,27 @@ public class DatabaseContract {
     private static final String FK = " FOREIGN KEY ";
     private static final String REF = " REFERENCES ";
     private static final String NULLABLE = " null ";
+    /*All statements here are executed whenever the database is created or updated.*/
+    public static String[] DeploymentScript = {
+            InterestPoints.PlaceTable.SQL_DELETE_PLACE,
+            InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
+            InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
+            InterestPoints.CoordinateTable.SQL_DELETE_COORDINATE,
+            InterestPoints.CommentTable.SQL_DELETE_COMMENT,
+            InterestPoints.PlaceTable.SQL_CREATE_PLACE,
+            InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
+            InterestPoints.SchoolTable.SQL_CREATE_SCHOOL,
+            InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE,
+            InterestPoints.CommentTable.SQL_CREATE_COMMENT
+    };
+
+    private DatabaseContract() {
+    }
 
     /*Database model for Interest Points module. Repeat with other modules.*/
     public static class InterestPoints {
         /*Place table.*/
-        public static final class PlaceTable implements BaseColumns{
+        public static final class PlaceTable implements BaseColumns {
             /*Table name*/
             public static final String TABLE_NAME = "Place";
 
@@ -38,13 +53,13 @@ public class DatabaseContract {
             /*SQL Statements*/
             public static final String SQL_CREATE_PLACE =
                     "CREATE TABLE " + PlaceTable.TABLE_NAME + " (" +
-                            PlaceTable.TABLE_COLUMN_ID          + INTEGER_TYPE  + PK        + COMMA +
-                            PlaceTable.TABLE_COLUMN_NAME        + TEXT_TYPE     + COMMA     +
-                            PlaceTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE     + COMMA     +
-                            PlaceTable.TABLE_COLUMN_TYPE        + TEXT_TYPE     + COMMA     +
-                            PlaceTable.TABLE_COLUMN_RATING      + INTEGER_TYPE  + NULLABLE  + COMMA +
-                            PlaceTable.TABLE_COLUMN_FLOOR       + INTEGER_TYPE  + NULLABLE  + COMMA +
-                            PlaceTable.TABLE_COLUMN_IMAGE       + INTEGER_TYPE  + NULLABLE  +
+                            PlaceTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
+                            PlaceTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
+                            PlaceTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + COMMA +
+                            PlaceTable.TABLE_COLUMN_TYPE + TEXT_TYPE + COMMA +
+                            PlaceTable.TABLE_COLUMN_RATING + INTEGER_TYPE + NULLABLE + COMMA +
+                            PlaceTable.TABLE_COLUMN_FLOOR + INTEGER_TYPE + NULLABLE + COMMA +
+                            PlaceTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE + NULLABLE +
                             " )";
 
             public static final String SQL_DELETE_PLACE =
@@ -53,7 +68,7 @@ public class DatabaseContract {
 
         /*TODO: Fill table attributes and statements.*/
         /*Comment table.*/
-        public static final class CommentTable implements BaseColumns{
+        public static final class CommentTable implements BaseColumns {
             /*Table name*/
             public static final String TABLE_NAME = "Comment";
 
@@ -67,7 +82,7 @@ public class DatabaseContract {
             public static final String SQL_CREATE_COMMENT =
                     "CREATE TABLE " + CommentTable.TABLE_NAME + " (" +
                             CommentTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
-                            CommentTable.TABLE_COLUMN_ID_PLACE_FK+ INTEGER_TYPE + COMMA +
+                            CommentTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + COMMA +
                             CommentTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + COMMA +
                             CommentTable.TABLE_COLUMN_DATE + TEXT_TYPE + COMMA +
                             FK + "(" + CommentTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
@@ -78,7 +93,7 @@ public class DatabaseContract {
         }
 
         /*Coordinate table.*/
-        public static final class CoordinateTable implements BaseColumns{
+        public static final class CoordinateTable implements BaseColumns {
             /*Table name*/
             public static final String TABLE_NAME = "Coordinate";
 
@@ -103,7 +118,7 @@ public class DatabaseContract {
         }
 
         /*Faculty table.*/
-        public static final class FacultyTable implements BaseColumns{
+        public static final class FacultyTable implements BaseColumns {
             /*Table name*/
             public static final String TABLE_NAME = "Faculty";
             /*Columns*/
@@ -117,7 +132,7 @@ public class DatabaseContract {
                             FacultyTable.TABLE_COLUMN_ID + INTEGER_TYPE + PK + COMMA +
                             FacultyTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
                             FacultyTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
-                            FacultyTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  +
+                            FacultyTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE + NULLABLE +
                             " )";
 
             public static final String SQL_DELETE_FACULTY =
@@ -136,6 +151,8 @@ public class DatabaseContract {
             public static final String TABLE_COLUMN_NAME = "Name";
             public static final String TABLE_COLUMN_DESCRIPTION = "Description";
             public static final String TABLE_COLUMN_IMAGE = "Image";
+            public static final String TABLE_COLUMN_PHONE = "Phone";
+            public static final String TABLE_COLUMN_SCHEDULE = "Schedule";
 
             /*Statements*/
             public static final String SQL_CREATE_SCHOOL =
@@ -145,7 +162,9 @@ public class DatabaseContract {
                             SchoolTable.TABLE_COLUMN_ID_PLACE_FK + INTEGER_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_NAME + TEXT_TYPE + COMMA +
                             SchoolTable.TABLE_COLUMN_DESCRIPTION + TEXT_TYPE + NULLABLE + COMMA +
-                            SchoolTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE  + NULLABLE  + COMMA +
+                            SchoolTable.TABLE_COLUMN_IMAGE + INTEGER_TYPE + NULLABLE + COMMA +
+                            SchoolTable.TABLE_COLUMN_PHONE + TEXT_TYPE + NULLABLE +
+                            SchoolTable.TABLE_COLUMN_SCHEDULE + TEXT_TYPE + NULLABLE +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_FACULTY_FK + ")" + REF + FacultyTable.TABLE_NAME + " (" + FacultyTable.TABLE_COLUMN_ID + ") " + COMMA +
                             FK + "(" + SchoolTable.TABLE_COLUMN_ID_PLACE_FK + ")" + REF + PlaceTable.TABLE_NAME + " (" + PlaceTable.TABLE_COLUMN_ID + ") " +
                             " )";
@@ -154,18 +173,4 @@ public class DatabaseContract {
                     "DROP TABLE IF EXISTS " + SchoolTable.TABLE_NAME;
         }
     }
-
-    /*All statements here are executed whenever the database is created or updated.*/
-    public static String[] DeploymentScript = {
-            InterestPoints.PlaceTable.SQL_DELETE_PLACE,
-            InterestPoints.FacultyTable.SQL_DELETE_FACULTY,
-            InterestPoints.SchoolTable.SQL_DELETE_SCHOOL,
-            InterestPoints.CoordinateTable.SQL_DELETE_COORDINATE,
-            InterestPoints.CommentTable.SQL_DELETE_COMMENT,
-            InterestPoints.PlaceTable.SQL_CREATE_PLACE,
-            InterestPoints.FacultyTable.SQL_CREATE_FACULTY,
-            InterestPoints.SchoolTable.SQL_CREATE_SCHOOL,
-            InterestPoints.CoordinateTable.SQL_CREATE_COORDINATE,
-            InterestPoints.CommentTable.SQL_CREATE_COMMENT
-    };
 }
