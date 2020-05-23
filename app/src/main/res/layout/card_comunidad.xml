@@ -43,7 +43,7 @@
                 android:textStyle="normal" />
 
             <ImageView
-                android:id="@+id/image_Comunity"
+                android:id="@+id/image_Community"
                 android:layout_width="match_parent"
                 android:layout_height="165dp"
                 android:scaleType="fitXY"
@@ -74,7 +74,7 @@
                 android:textStyle="normal" />
 
             <Button
-                android:id="@+id/buttonJoinCommunity"
+                android:id="@+id/button_Join_Community_CD"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

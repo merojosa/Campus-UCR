@@ -1,6 +1,9 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-public class Comunidad
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Comunidad implements Parcelable
 {
     private int communityImgRes;
     private String communityName;
@@ -13,6 +16,25 @@ public class Comunidad
         this.communityNoMemebers = communityNoMemebers;
         this.communityDescription = communityDescription;
     }
+
+    protected Comunidad(Parcel in) {
+        communityImgRes = in.readInt();
+        communityName = in.readString();
+        communityNoMemebers = in.readString();
+        communityDescription = in.readString();
+    }
+
+    public static final Creator<Comunidad> CREATOR = new Creator<Comunidad>() {
+        @Override
+        public Comunidad createFromParcel(Parcel in) {
+            return new Comunidad(in);
+        }
+
+        @Override
+        public Comunidad[] newArray(int size) {
+            return new Comunidad[size];
+        }
+    };
 
     public int getCommunityImgRes() {
         return communityImgRes;
@@ -44,5 +66,18 @@ public class Comunidad
 
     public void setCommunityDescription(String communityDescription) {
         this.communityDescription = communityDescription;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.communityImgRes);
+        dest.writeString(this.communityName);
+        dest.writeString(this.communityNoMemebers);
+        dest.writeString(this.communityDescription);
     }
 }

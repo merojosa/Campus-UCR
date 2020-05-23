@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".red_mujeres.ComunidadDetalle"></activity>
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,11 +42,10 @@
         <activity android:name=".InterestPoints.InterestPointsActivity" />
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
-        <activity android:name=".red_mujeres.ComunidadesRedMujeres"/>
-
+        <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
     </application>
 
 </manifest>

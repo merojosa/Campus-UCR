@@ -16,6 +16,17 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.ComunidadViewHolder>
 {
     private ArrayList<Comunidad> mComunidadList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener
+    {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mListener = listener;
+    }
 
     public static class ComunidadViewHolder extends RecyclerView.ViewHolder
     {
@@ -24,13 +35,28 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
         public TextView mTextViewNoMembers;
         public TextView mTextViewDescription;
 
-        public ComunidadViewHolder(View itemView)
+        public ComunidadViewHolder(View itemView, OnItemClickListener listener)
         {
             super(itemView);
             mTextViewCommunityName = itemView.findViewById(R.id.text_Community_Name);
-            mImageView = itemView.findViewById(R.id.image_Comunity);
+            mImageView = itemView.findViewById(R.id.image_Community);
             mTextViewNoMembers = itemView.findViewById(R.id.text_No_Members);
             mTextViewDescription = itemView.findViewById(R.id.text_Description_Content);
+
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                    {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION)
+                        {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
@@ -44,7 +70,7 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
     @Override
     public ComunidadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_comunidad, parent, false );
-        ComunidadViewHolder evh = new ComunidadViewHolder(v);
+        ComunidadViewHolder evh = new ComunidadViewHolder(v, mListener);
         return evh;
     }
 
