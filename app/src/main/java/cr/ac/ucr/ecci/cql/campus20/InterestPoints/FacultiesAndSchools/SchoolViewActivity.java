@@ -40,10 +40,10 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
         TextView tittle = findViewById(R.id.schoolName);
         School school = School.select(getApplicationContext(), schoolName);
-        if(school != null) {
-            ImageView image = findViewById(R.id.schoolImage);
-            image.setImageResource(school.getImage());
-        }
+//        if(school != null) {
+//            ImageView image = findViewById(R.id.schoolImage);
+//            image.setImageResource(school.getImage());
+//        }
         tittle.setText(schoolName);
 
     }

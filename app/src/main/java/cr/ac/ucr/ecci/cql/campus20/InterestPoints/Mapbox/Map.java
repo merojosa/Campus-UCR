@@ -112,7 +112,7 @@ public class Map extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
 
         Intent intent = getIntent();
-        int tipo = intent.getExtras().getInt("tipoDeActividad");
+        int tipo = intent.getExtras().getInt("typeActivity");
 
 
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
@@ -121,17 +121,16 @@ public class Map extends AppCompatActivity {
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                // Según tipo de actividad se selecciona el activity correcto
                 if (tipo == 0) {
-                        details = new Intent(Map.this, CoffeViewActivity.class);
-                        details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
-                        startActivity(details);
-                        return true;
-                }else {
-                    Intent schoolDetails = new Intent(Map.this, SchoolViewActivity.class);
-                    schoolDetails.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
-                    startActivity(schoolDetails);
-                    return true;
+                    details = new Intent(Map.this, CoffeViewActivity.class);
+                }else if(tipo == 1){
+                    details = new Intent(Map.this, SchoolViewActivity.class);
                 }
+
+                details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                startActivity(details);
+                return true;
             }
         });
 

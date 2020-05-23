@@ -69,6 +69,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
             }
         }
         Intent childActivity = new Intent(SchoolsActivity.this, Map.class);
+        childActivity.putExtra("typeActivity", 1);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", schoolsList.get(index).getDescription());
         startActivity(childActivity);
