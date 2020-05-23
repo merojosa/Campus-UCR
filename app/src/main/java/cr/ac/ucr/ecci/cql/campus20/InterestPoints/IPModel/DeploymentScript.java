@@ -217,25 +217,25 @@ public class DeploymentScript {
     private static void createCoffeShops(Context context) {
         DataAccess db = new DataAccess(context);
 
-        Coffe angar = new Coffe(0,  "Café Angar", "");
+        Coffe angar = new Coffe(0,  "Café Angar", "", R.drawable.coffeshop512px);
         angar.insert(context);
 
-        Coffe noventaYCinco = new Coffe(1, "95 grados", "");
+        Coffe noventaYCinco = new Coffe(1, "95 grados", "", R.drawable.coffeshop512px);
         noventaYCinco.insert(context);
 
-        Coffe krakovia = new Coffe(2,  "Café Krakovia", "");
+        Coffe krakovia = new Coffe(2,  "Café Krakovia", "", R.drawable.coffeshop512px);
         krakovia.insert(context);
 
-        Coffe aroma = new Coffe(3, "Aroma y Sabor", "");
+        Coffe aroma = new Coffe(3, "Aroma y Sabor", "", R.drawable.coffeshop512px);
         aroma.insert(context);
 
-        Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "");
+        Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "", R.drawable.pan512px);
         musmanni.insert(context);
 
-        Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "");
+        Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px);
         rincon.insert(context);
 
-        Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "");
+        Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "", R.drawable.coffeshop512px);
         cafe_cacao.insert(context);
 
 
