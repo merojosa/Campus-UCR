@@ -43,10 +43,14 @@ public class DeploymentScript {
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
                 "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"}; //Espacio vacío
-        int[] Imagenes = {};
+        int[] Imagenes = {R.drawable.artes512px, R.drawable.agro512px, R.drawable.ciencias512,
+                R.drawable.economicas512px, R.drawable.sociales512p, R.drawable.derecho215px,
+                R.drawable.educa512px, R.drawable.farmacia512px, R.drawable.ingenieria512px,
+                R.drawable.letras512px, R.drawable.medicina512px, R.drawable.micro512px,
+                R.drawable.odonto512px};
 
         for (int i = 0; i < Faculties.length; ++i) {
-            list.add(new Faculty(i, Faculties[i], "", R.drawable.colegio32px));
+            list.add(new Faculty(i, Faculties[i], "", Imagenes[i]));
         }
         for (Faculty f : list) {
             f.insert(context);
@@ -93,7 +97,7 @@ public class DeploymentScript {
 
         //Schools goes from 0 to n, in alph order
 
-        School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.colegio32px);
+        School artes = new School(0, 0, 0, "Artes Dramáticas", "");
         artes.insert(context);
         School artes1 = new School(1, 0, 0, "Artes Plásticas", "");
         artes1.insert(context);
