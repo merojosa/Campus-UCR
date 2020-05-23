@@ -44,6 +44,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private Button btnCrearPregunta;
     private Spinner dropdown;
     private int idTemaSeleccionado;
+    private String temaSeleccionado;
     private PreguntaViewModel mPreguntaViewModel;
 
     /**
@@ -62,8 +63,8 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                for(int i = 0; i < temas.size(); ++i){
-                    temasLista.add(temas.get(i));
+                for(Tema tema : temas){
+                    temasLista.add(tema);
                 }
                 dropdown = (Spinner)findViewById(R.id.listaTemasCrearPregunta);
                 ArrayAdapter<Tema> dataAdapter = new ArrayAdapter<Tema>(getApplicationContext(), android.R.layout.simple_spinner_item, temasLista);
@@ -74,6 +75,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Tema tema = dataAdapter.getItem(position);
                         idTemaSeleccionado = tema.getId();
+                        temaSeleccionado = tema.getTitulo();
                     }
 
                     @Override
@@ -170,6 +172,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);
         // Llamada a la actividad de crear pregunta
         intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+        intent.putExtra("temaSeleccionado", temaSeleccionado);
         startActivity(intent);
     }
 }
