@@ -33,6 +33,9 @@ public interface RestaurantDao
     @Query("SELECT * FROM Restaurant ORDER BY id")
     LiveData<List<Restaurant>> getAllRestaurants();
 
+    @Query("SELECT AVG(x.point) FROM Restaurant r JOIN Rating x WHERE x.restaurant_id == :id")
+    double getRating(int id);
+
     @Query("DELETE FROM Restaurant")
     void deleteAll();
 }

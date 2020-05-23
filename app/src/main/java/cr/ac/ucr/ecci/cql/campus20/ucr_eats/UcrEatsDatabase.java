@@ -19,7 +19,7 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
-@Database(entities = {Restaurant.class, Meal.class, Rating.class}, version = 5, exportSchema = false)
+@Database(entities = {Restaurant.class, Meal.class, Rating.class}, version = 6, exportSchema = false)
 public abstract class UcrEatsDatabase extends RoomDatabase
 {
     public abstract RestaurantDao restaurantDao();
@@ -87,14 +87,16 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         };
 
         Rating[] rating = {
-                new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 2),
-                new Rating(R.drawable.la_u, 3),
-                new Rating(R.drawable.la_u, 4),
+                new Rating(R.drawable.plaza_chou, 2),
+                new Rating(R.drawable.plaza_chou, 3),
+                new Rating(R.drawable.plaza_chou, 5),
                 new Rating(R.drawable.plaza_chou, 4),
                 new Rating(R.drawable.plaza_chou, 5),
-                new Rating(R.drawable.plaza_chou, 3),
-                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 4),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 5),
         };
 
         for(Meal meal : meals)

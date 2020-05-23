@@ -10,7 +10,6 @@ import java.util.concurrent.Future;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RatingDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsDatabase;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 
 public class RatingRepository
@@ -41,11 +40,11 @@ public class RatingRepository
                 this.ratingDao.insert(meal));
     }
 
-    public LiveData<List<Rating>> getRatingByRestaurant(int value)
+    public Double getRatingByRestaurant(int value)
     {
         try {
             // Submit data gathering
-            Future<LiveData<List<Rating>>> futureData = UcrEatsDatabase.databaseWriteExecutor.submit( () ->
+            Future<Double> futureData = UcrEatsDatabase.databaseWriteExecutor.submit( () ->
                  this.ratingDao.getRatingByRestaurant(value));
 
             // Wait until thread finishes to return the data
