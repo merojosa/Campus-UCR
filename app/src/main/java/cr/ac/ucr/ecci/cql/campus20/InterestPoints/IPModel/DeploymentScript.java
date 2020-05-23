@@ -235,7 +235,7 @@ public class DeploymentScript {
         Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "");
         rincon.insert(context);
 
-        Coffe cafe_cacao = new Coffe(5, "Café & Cacao", "");
+        Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "");
         cafe_cacao.insert(context);
 
 
