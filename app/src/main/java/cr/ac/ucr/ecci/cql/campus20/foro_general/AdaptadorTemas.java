@@ -204,6 +204,31 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
 
 
 
+    public void filterFavoritos(List<Favorito> favoritos) {
+        int count1 = 0;
+        if (favoritos != null){
+            count1 = favoritos.size();
+        }
+        int count2 = 0;
+        if (mTemas != null){
+            count2 = mTemas.size();
+        }
+        if (mFavoritos2 != null){
+            mFavoritos2.clear();
+        }else{
+            mFavoritos2 = new ArrayList<Favorito>();
+        }
+        for (int i = 0; i < count1; i++){
+            for(int x = 0; x < count2; x++){
+                if(favoritos.get(i).idTema == mTemas.get(x).id){
+                    mFavoritos2.add(favoritos.get(i));
+                }
+            }
+        }
+        this.mFavoritos = mFavoritos2;
+        notifyDataSetChanged();
+    }
+
 
 
 

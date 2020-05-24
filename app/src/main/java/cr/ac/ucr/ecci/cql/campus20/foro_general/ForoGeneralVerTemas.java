@@ -197,6 +197,15 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });
 
+
+        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
+        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
+            @Override
+            public void onChanged( @Nullable final List<Favorito> favoritos) {
+                adapter.filterFavoritos(favoritos);    // Se llama al método del adapter
+            }
+        });
+
 /*
         ArrayList<SodaCard> filtrarLista = new ArrayList<>();
 
