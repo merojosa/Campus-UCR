@@ -14,11 +14,7 @@
             android:name=".InterestPoints.CoffeShop.CoffeShopsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity android:name=".MainEmptyActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
         <activity android:name=".ConfiguracionActivity" />
         <activity android:name=".ucr_eats.activites.MealsActivity" />
@@ -42,7 +38,13 @@
         <activity
             android:name=".InterestPoints.Mapbox.Map"
             android:theme="@style/AppTheme.InterestsTheme" />
-        <activity android:name=".InterestPoints.InterestPointsActivity" />
+        <activity android:name=".InterestPoints.InterestPointsActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity
             android:name=".LoginActivity"

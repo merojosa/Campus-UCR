@@ -9,12 +9,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 //TODO: Implement CRUD operations using DataAccess helper class.
 /**
  * @brief Class that represents a Place database entity.
  * */
 
-public class Place implements Parcelable {
+public class Place extends GeneralData implements Parcelable {
 
     /*Columns*/
     private int id;
@@ -68,6 +70,12 @@ public class Place implements Parcelable {
         this.image = image;
     }
 
+    @Override
+    public String getTitle(){
+        return getName();
+    }
+
+    @Override
     public int getId() {
         return id;
     }

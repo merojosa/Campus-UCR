@@ -8,7 +8,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Comment {
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+
+public class Comment extends GeneralData {
 
     private int id;
     private int id_place_fk;
@@ -25,6 +27,7 @@ public class Comment {
         this.date = date;
     }
 
+    @Override
     public int getId() {
         return id;
     }

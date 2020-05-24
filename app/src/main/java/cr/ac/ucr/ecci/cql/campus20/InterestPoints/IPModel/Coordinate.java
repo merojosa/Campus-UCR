@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+
 /**
  * Class that represents a Coordinate database entity.
  * */
-public class Coordinate {
+public class Coordinate extends GeneralData {
 
     private int id;
     private int id_place_fk;
@@ -27,6 +29,7 @@ public class Coordinate {
 
     public Coordinate() { }
 
+    @Override
     public int getId() {
         return id;
     }

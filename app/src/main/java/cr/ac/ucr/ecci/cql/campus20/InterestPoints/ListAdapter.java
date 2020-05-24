@@ -86,7 +86,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
+    if(temp != null)
         return temp.size();
+    else
+        return 0;
     }
 
     public void setListData(List<GeneralData> data){

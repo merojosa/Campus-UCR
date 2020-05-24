@@ -33,7 +33,6 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        DeploymentScript.RunScript(getApplicationContext());
         setContentView(R.layout.activity_coffe_shops);
 
         if(getSupportActionBar() != null){

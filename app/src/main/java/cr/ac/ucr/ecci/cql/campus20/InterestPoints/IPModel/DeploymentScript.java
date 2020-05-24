@@ -3,10 +3,13 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -17,30 +20,30 @@ import cr.ac.ucr.ecci.cql.campus20.R;
  */
 public class DeploymentScript {
 
+    private FirebaseDB db;
     /**
      * Executes all the statements that create and populate the database.
      * Should be called once on application create in MainActivity.
      *
      * @param context Current application context.
      */
-    public static void RunScript(Context context) {
-        clearDatabase(context);
-        createFaculties(context);
-        createPlaces(context);
-        createSchools(context);
-        createCoordinates(context);
-        createComments(context);
-        createCoffeShops(context);
+    public void RunScript(Context context, FirebaseDB db) {
+        this.db = db;
+        createFaculties();
+        createPlaces();
+        createSchools();
+        createCoordinates();
+        createComments();
+        createCoffeShops();
     }
-
+/*
     private static void clearDatabase(Context context) {
         DataAccess db = new DataAccess(context);
         db.resetDatabase();
         Log.d("reset", "Database was reset");
-    }
+    }*/
 
-    private static void createFaculties(Context context) {
-        DataAccess db = new DataAccess(context);
+    private void createFaculties() {
         List<Faculty> list = new ArrayList<>();
         String[] Faculties = {"Artes", "Ciencias Agroalimentarias", "Ciencias Básicas", "Ciencias Económicas", "Ciencias Sociales", "Derecho",
                 "Educación", "Farmacia", "Ingeniería", "Letras", "Medicina", "Microbiología", "Odontología"}; //Espacio vacío
@@ -54,14 +57,12 @@ public class DeploymentScript {
             list.add(new Faculty(i, Faculties[i], "", Imagenes[i]));
         }
         for (Faculty f : list) {
-            f.insert(context);
+            db.insert("Faculty", f);
         }
-        db.close();
         Log.d("faculties", "Faculties were inserted in database.");
     }
 
-    private static void createPlaces(Context context) {
-        DataAccess db = new DataAccess(context);
+    private void createPlaces() {
         List<Place> placesList = new ArrayList<>();
         String[] PlaceNames = {"Finca 1", "Finca 2", "Finca 3"};
         String[] PlaceDescriptions = {"Finca principal.", "Ciudad de la Investigación", "Deportivas"};
@@ -72,179 +73,155 @@ public class DeploymentScript {
             placesList.add(new Place(i, PlaceNames[i], PlaceDescriptions[i], PlaceType, rating[i], floor));
         }
         for (Place p : placesList) {
-            p.insert(context);
+            db.insert("Place", p);
         }
-        db.close();
         Log.d("places", "Places were inserted in database.");
     }
 
-    private static void createSchools(Context context) {
-        DataAccess db = new DataAccess(context);
-        /*
-        List<School> schoolList = new ArrayList<>();
-        String[] SchoolNames = {"Escuela de Ciencias de la Computación e Informática", "Escuela de Ingeniería Eléctrica"};
-        String[] SchoolDescriptions = {"", ""};
-        /*Both belong to Engineering Faculty, in position 8 of Faculties array above.*/
-        int[] FacultiesFK = {8, 8};
-        /*ECCI is in finca 1, and EIE is in finca 2.
-        int[] PlacesFK = {1, 2};
-        for(int i = 0; i < SchoolNames.length; ++i){
-            schoolList.add(new School(i, FacultiesFK[i], PlacesFK[i], SchoolNames[i], SchoolDescriptions[i]));
-        }
-        for(School s : schoolList){
-            s.insert(context);
-        }
-*/
+    private void createSchools() {
 
-        //Schools goes from 0 to n, in alph order
+        int[] FacultiesFK = {8, 8};
 
         School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px);
-        artes.insert(context);
+        db.insert("School", artes);
         School artes1 = new School(1, 0, 0, "Artes Plásticas", "", R.drawable.artesplasticas512px);
-        artes1.insert(context);
+        db.insert("School", artes1);
         School artes2 = new School(2, 0, 0, "Artes Musicales", "", R.drawable.musica512px);
-        artes2.insert(context);
+        db.insert("School", artes2);
 
         School agro = new School(3, 1, 0, "Agronomía", "", R.drawable.agronomia512px);
-        agro.insert(context);
+        db.insert("School", agro);
         School agro1 = new School(4, 1, 0, "Zootecnia", "", R.drawable.zootecnia512px);
-        agro1.insert(context);
+        db.insert("School", agro1);
         School agro2 = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px);
-        agro2.insert(context);
+        db.insert("School", agro2);
 
         School ciencias = new School(6, 2, 0, "Física", "", R.drawable.fisica512px);
-        ciencias.insert(context);
+        db.insert("School", ciencias);
         School ciencias1 = new School(7, 2, 0, "Geología", "", R.drawable.geologia512px);
-        ciencias1.insert(context);
+        db.insert("School", ciencias1);
         School ciencias2 = new School(8, 2, 0, "Matemática", "", R.drawable.mate512px);
-        ciencias2.insert(context);
+        db.insert("School", ciencias2);
         School ciencias3 = new School(9, 2, 0, "Química", "", R.drawable.quimica512px);
-        ciencias3.insert(context);
+        db.insert("School", ciencias3);
         School ciencias4 = new School(10, 2, 0, "Biología", "", R.drawable.biolo512px);
-        ciencias4.insert(context);
+        db.insert("School", ciencias4);
 
         School economicas = new School(11, 3, 0, "Administración de Negocios", "", R.drawable.admin512px);
-        economicas.insert(context);
+        db.insert("School", economicas);
         School economicas1 = new School(12, 3, 0, "Administración Pública", "", R.drawable.administracion);
-        economicas1.insert(context);
+        db.insert("School", economicas1);
         School economicas2 = new School(13, 3, 0, "Economía", "", R.drawable.economicas);
-        economicas2.insert(context);
+        db.insert("School", economicas2);
         School economicas3 = new School(14, 3, 0, "Estadística", "", R.drawable.estadisticas512px);
-        economicas3.insert(context);
+        db.insert("School", economicas3);
 
         School sociales = new School(15, 4, 1, "Psicología", "", R.drawable.psico512px);
-        sociales.insert(context);
+        db.insert("School", sociales);
         School sociales1 = new School(16, 4, 1, "Ciencias Políticas", "", R.drawable.policitos512px);
-        sociales1.insert(context);
+        db.insert("School", sociales1);
         School sociales2 = new School(17, 4, 1, "Comunicación Colectiva", "", R.drawable.comunicacion512px);
-        sociales2.insert(context);
+        db.insert("School", sociales2);
         School sociales3 = new School(18, 4, 1, "Trabajo Social", "", R.drawable.ts512px);
-        sociales3.insert(context);
+        db.insert("School", sociales3);
         School sociales4 = new School(19, 4, 1, "Historia", "", R.drawable.historia512px);
-        sociales4.insert(context);
+        db.insert("School", sociales4);
         School sociales5 = new School(20, 4, 1, "Geografía", "", R.drawable.geografia512px);
-        sociales5.insert(context);
+        db.insert("School", sociales5);
         School sociales6 = new School(21, 4, 1, "Antropología", "", R.drawable.antropologia512px);
-        sociales6.insert(context);
+        db.insert("School", sociales6);
         School sociales7 = new School(22, 4, 1, "Sociología", "", R.drawable.socio512px);
-        sociales7.insert(context);
+        db.insert("School", sociales7);
 
         School derecho = new School(23, 5, 0, "Derecho", "", R.drawable.derecho512px);
-        derecho.insert(context);
+        db.insert("School", derecho);
 
         School educacion = new School(24, 6, 0, "Formación Docente", "", R.drawable.docente512px);
-        educacion.insert(context);
+        db.insert("School", educacion);
         School educacion1 = new School(25, 6, 0, "Orientación y Educación Especial", "", R.drawable.orientacion512px);
-        educacion1.insert(context);
+        db.insert("School", educacion1);
         School educacion2 = new School(26, 6, 0, "Bibliotecología y Ciencias de la Información", "", R.drawable.biblio512px);
-        educacion2.insert(context);
+        db.insert("School", educacion2);
         School educacion3 = new School(27, 6, 3, "Educación Física y Deportes", "", R.drawable.edufi512px);
-        educacion3.insert(context);
+        db.insert("School", educacion3);
         School educacion4 = new School(28, 6, 0, "Administración Educativa", "", R.drawable.admineduca512px);
-        educacion4.insert(context);
+        db.insert("School", educacion4);
 
         School farmacia = new School(29, 7, 0, "Farmacia", "", R.drawable.farmacos512px);
-        farmacia.insert(context);
+        db.insert("School", farmacia);
 
         School ingenieria = new School(30, 8, 1, "Ingeniería Civil", "", R.drawable.civil512px);
-        ingenieria.insert(context);
+        db.insert("School", ingenieria);
         School ingenieria1 = new School(31, 8, 1, "Ingeniería Eléctrica", "", R.drawable.electrica512px);
-        ingenieria1.insert(context);
+        db.insert("School", ingenieria1);
         School ingenieria2 = new School(32, 8, 1, "Ingeniería Industrial", "", R.drawable.industrial512px);
-        ingenieria2.insert(context);
+        db.insert("School", ingenieria2);
         School ingenieria3 = new School(33, 8, 1, "Ingeniería Mecánica", "", R.drawable.mecanica512px);
-        ingenieria3.insert(context);
+        db.insert("School", ingenieria3);
         School ingenieria4 = new School(34, 8, 1, "Ingeniería Química", "", R.drawable.ingquimica512px);
-        ingenieria4.insert(context);
+        db.insert("School", ingenieria4);
         School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", R.drawable.arqui512px);
-        ingenieria5.insert(context);
+        db.insert("School", ingenieria5);
         School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px);
-        ingenieria6.insert(context);
+        db.insert("School", ingenieria6);
         School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", R.drawable.biosistemas512px);
-        ingenieria7.insert(context);
+        db.insert("School", ingenieria7);
         School ingenieria8 = new School(38, 8, 1, "Ingeniería Topográfica", "", R.drawable.topo512px);
-        ingenieria8.insert(context);
+        db.insert("School", ingenieria8);
 
         School letras = new School(39, 9, 0, "Filología, Lingüistica y Literatura", "", R.drawable.filologia512px);
-        letras.insert(context);
+        db.insert("School", letras);
         School letras2 = new School(40, 9, 0, "Filosofía", "", R.drawable.filo512px);
-        letras2.insert(context);
+        db.insert("School", letras2);
         School letras3 = new School(41, 9, 0, "Lenguas Modernas", "", R.drawable.lenguas512px);
-        letras3.insert(context);
+        db.insert("School", letras3);
 
         School medicina = new School(42, 10, 0, "Enfermería", "", R.drawable.enfermeria512px);
-        medicina.insert(context);
+        db.insert("School", medicina);
         School medicina1 = new School(43, 10, 0, "Medicina", "", R.drawable.medicinas512px);
-        medicina1.insert(context);
+        db.insert("School", medicina1);
         School medicina2 = new School(44, 10, 0, "Nutrición", "", R.drawable.nutricion512px);
-        medicina2.insert(context);
+        db.insert("School", medicina2);
         School medicina3 = new School(45, 10, 0, "Tecnologías de la Salud", "", R.drawable.alimentos512px);
-        medicina3.insert(context);
+        db.insert("School", medicina3);
         School medicina4 = new School(46, 10, 0, "Salud Púbilca", "", R.drawable.saludpublica512px);
-        medicina4.insert(context);
+        db.insert("School", medicina4);
 
         School micro = new School(47, 11, 0, "Microbiología", "", R.drawable.micro512px);
-        micro.insert(context);
+        db.insert("School", micro);
 
         School odonto = new School(48, 12, 0, "Odontología", "", R.drawable.odonto512px);
-        odonto.insert(context);
+        db.insert("School", odonto);
 
-
-        db.close();
         Log.d("places", "Schools were inserted in database.");
     }
 
-    private static void createCoffeShops(Context context) {
-        DataAccess db = new DataAccess(context);
-
+    private void createCoffeShops() {
         Coffe angar = new Coffe(0,  "Café Angar", "", R.drawable.coffeshop512px);
-        angar.insert(context);
+        db.insert("Coffe", angar);
 
         Coffe noventaYCinco = new Coffe(1, "95 grados", "", R.drawable.coffeshop512px);
-        noventaYCinco.insert(context);
+        db.insert("Coffe", noventaYCinco);
 
         Coffe krakovia = new Coffe(2,  "Café Krakovia", "", R.drawable.coffeshop512px);
-        krakovia.insert(context);
+        db.insert("Coffe", krakovia);
 
         Coffe aroma = new Coffe(3, "Aroma y Sabor", "", R.drawable.coffeshop512px);
-        aroma.insert(context);
+        db.insert("Coffe", aroma);
 
         Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "", R.drawable.pan512px);
-        musmanni.insert(context);
+        db.insert("Coffe", musmanni);
 
         Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px);
-        rincon.insert(context);
+        db.insert("Coffe", rincon);
 
         Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "", R.drawable.coffeshop512px);
-        cafe_cacao.insert(context);
+        db.insert("Coffe", cafe_cacao);
 
-
-        db.close();
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
 
-    private static void createCoordinates(Context context) {
-        DataAccess db = new DataAccess(context);
+    private void createCoordinates() {
         List<Coordinate> coordinateList = new ArrayList<>();
         int size = 49;
         int[] placesFK = new int[size];
@@ -310,14 +287,12 @@ public class DeploymentScript {
             coordinateList.add(new Coordinate(index, placesFK[index], pairCoodinates[i], pairCoodinates[i + 1]));
         }
         for (Coordinate c : coordinateList) {
-            c.insert(context);
+            db.insert("Coordinate", c);
         }
-        db.close();
         Log.d("coordinates", "Coordinates were inserted in database.");
     }
 
-    private static void createComments(Context context) {
-        DataAccess db = new DataAccess(context);
+    private void createComments() {
         List<Comment> commentList = new ArrayList<>();
         int[] placesFK = {0, 1};
         String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
@@ -325,9 +300,8 @@ public class DeploymentScript {
             commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime())));
         }
         for (Comment c : commentList) {
-            c.insert(context);
+            db.insert("Comment", c);
         }
-        db.close();
         Log.d("comments", "Comments were inserted in database.");
     }
 }

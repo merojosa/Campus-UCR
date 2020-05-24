@@ -56,7 +56,7 @@ public class Coffe extends GeneralData {
     public String getDescription() {
         return description;
     }
-
+    @Override
     public int getId() {
         return id;
     }
