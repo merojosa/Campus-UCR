@@ -23,9 +23,9 @@ public interface RatingDao
     @Delete
     void delete(Rating point);
 
-    @Query("SELECT * FROM Rating m " +
+    @Query("SELECT AVG(m.point) FROM Rating m " +
             "WHERE m.restaurant_id = :restaurant_id")
-    LiveData<List<Rating>> getRatingByRestaurant(int restaurant_id);
+    Double getRatingByRestaurant(int restaurant_id);
 
     @Query("DELETE FROM Rating")
     void deleteAll();
