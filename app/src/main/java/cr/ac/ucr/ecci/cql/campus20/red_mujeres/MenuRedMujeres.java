@@ -26,6 +26,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         } else {
             startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
         }
+//        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
 
     }
 

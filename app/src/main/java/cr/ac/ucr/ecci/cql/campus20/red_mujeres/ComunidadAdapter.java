@@ -3,8 +3,10 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,7 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
     public void setOnItemClickListener(OnItemClickListener listener)
     {
         mListener = listener;
+
     }
 
     public static class ComunidadViewHolder extends RecyclerView.ViewHolder
@@ -42,6 +45,22 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
             mImageView = itemView.findViewById(R.id.image_Community);
             mTextViewNoMembers = itemView.findViewById(R.id.text_No_Members);
             mTextViewDescription = itemView.findViewById(R.id.text_Description_Content);
+
+//            Button buttonJoinCommunity = itemView.findViewById(R.id.button_Join_Community);
+//            buttonJoinCommunity.setOnClickListener(new View.OnClickListener()
+//            {
+//                @Override
+//                public void onClick(View v) {
+//                    if(mlistenerClick != null)
+//                    {
+//                        int position = getAdapterPosition();
+//                        if(position != RecyclerView.NO_POSITION)
+//                        {
+//                            mlistenerClick.onItemClick(position);
+//                        }
+//                    }
+//                }
+//            });
 
             itemView.setOnClickListener(new View.OnClickListener()
             {
@@ -80,7 +99,7 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
         Comunidad currentCommunity = mComunidadList.get(position);
 
         holder.mTextViewCommunityName.setText(currentCommunity.getCommunityName());
-        holder.mTextViewNoMembers.setText(currentCommunity.getCommunityNoMemebers());
+        holder.mTextViewNoMembers.setText(currentCommunity.getCommunityNoMembers());
         holder.mImageView.setImageResource(currentCommunity.getCommunityImgRes());
         holder.mTextViewDescription.setText(currentCommunity.getCommunityDescription());
     }
