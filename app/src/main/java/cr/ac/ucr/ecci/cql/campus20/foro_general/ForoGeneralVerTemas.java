@@ -79,7 +79,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                int idTemaSeleccionado = (mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                int idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
                 String temaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
                 // Llamada a la actividad de ver preguntas
                 Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);

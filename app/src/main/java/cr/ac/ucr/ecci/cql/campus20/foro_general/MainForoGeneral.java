@@ -106,7 +106,6 @@ public class MainForoGeneral extends AppCompatActivity {
 
         // Boton flotante de Agregar Preguntas
         FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
-        buttonAgregarPreguntas.setBackgroundColor(Color.parseColor("#005DA4"));
 
         // Asocia evento clic al boton
         buttonAgregarPreguntas.setOnClickListener(new View.OnClickListener() {

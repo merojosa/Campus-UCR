@@ -8,8 +8,9 @@
 
     <TextView
         android:id="@+id/temaSeleccionado"
-        android:layout_width="285dp"
-        android:layout_height="50dp"
+        android:layout_width="307dp"
+        android:layout_height="88dp"
+        android:textAlignment="center"
         android:textColor="#005DA4"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -18,8 +19,7 @@
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044"
-        android:textAlignment="center" />
+        app:layout_constraintVertical_bias="0.044" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/verPreguntasRV"
