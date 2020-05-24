@@ -22,6 +22,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FireBaseRedMujeres usuario = new FireBaseRedMujeres();
     private String correo = usuario.obtenerCorreoActual();
+    List<String> list = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,14 @@ public class MenuRedMujeres extends AppCompatActivity {
             public void exito(DataSnapshot dataSnapshot) {
                 if ((boolean) dataSnapshot.child("Validado").getValue()) {
                     // si si continue
-                    startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+                    //startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+
+                    //recupera grupos del usuario
+                    for (DataSnapshot snapshot : dataSnapshot.child("Grupos").getChildren()) {
+                        list.add( (String) snapshot.getValue());
+                    }
+                    metodoDeAndres(list);
+
                 } else {
                     // si no muestre popup
                     String nombre = (String) dataSnapshot.child("Nombre").getValue();
@@ -88,7 +96,7 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    public void procesarValidacion() {
+    private void procesarValidacion() {
 
         // proceso de validacion temporal
         // pregunta al admin si quiere validar al usuario
@@ -154,6 +162,12 @@ public class MenuRedMujeres extends AppCompatActivity {
                     cuerpo); //mensaje en el cuerpo
         } catch (Exception e) {
             Log.i("Excepcion", e.getMessage());
+        }
+    }
+
+    public void metodoDeAndres (List<String> list) {
+        for(String s:list){
+            System.out.println(s);
         }
     }
 
