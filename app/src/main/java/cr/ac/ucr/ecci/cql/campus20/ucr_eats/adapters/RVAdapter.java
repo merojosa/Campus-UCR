@@ -2,8 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,17 +50,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     }
 
 
-    public void setSodaCards(List<Restaurant> restaurants)
+    public void setSodaCards(List<Restaurant> restaurants, List<Double> i)
     {
-        this.sodaCards = convertToSodaCards(restaurants);
+        this.sodaCards = convertToSodaCards(restaurants, i);
 
         notifyDataSetChanged();
     }
 
-    public List<SodaCard> convertToSodaCards(List<Restaurant> restaurants)
+    public List<SodaCard> convertToSodaCards(List<Restaurant> restaurants, List<Double> i)
     {
         List<SodaCard> cards = new ArrayList<SodaCard>();
 
+        int index = 0;
         for(Restaurant restaurant : restaurants)
         {
             int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -76,7 +75,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             }
 
             cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, 5, restaurant.latitude, restaurant.longitude)
+                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, i.get(index++), restaurant.latitude, restaurant.longitude)
             );
         }
 
@@ -108,8 +107,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         //////////////////////////////////////////////////////////////////////////
         // acá ocupo obtener el rating de la soda
         String rating = getRating(sodaCards.get(i).getId());
-        sodaViewHolder.ratingSoda.setText(rating);
-
+        sodaViewHolder.ratingSoda.setText(Double.toString(sodaCards.get(i).getRating()));
 
         if (sodaCards.get(i).getHorario() == "Abierto")
             sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
@@ -118,7 +116,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
 
         loadCardImage(sodaViewHolder, i);
-
 
     }
 

@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +20,9 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
 
@@ -35,6 +38,7 @@ public class MainUcrEats extends AppCompatActivity
     private TextView noResults;
 
     private RestaurantRepository repository;
+    private RatingRepository repo;
     private List<Restaurant> restaurantsList = null;
     private List<SodaCard> sodaCards = null;
 
@@ -50,7 +54,7 @@ public class MainUcrEats extends AppCompatActivity
 
 
         this.repository = new RestaurantRepository(getApplication());
-
+        repo = new RatingRepository(getApplication());
         //fillRestaurants();
 
         setupInputSearch();
@@ -61,8 +65,21 @@ public class MainUcrEats extends AppCompatActivity
 
         this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
         this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
-            sodaCards = sodasAdapter.convertToSodaCards(restaurants);
-            sodasAdapter.setSodaCards(restaurants);
+
+            List<Double> i = new ArrayList<Double>();
+            List<Double> e = new ArrayList<Double>();
+            for (Restaurant x : restaurants)
+            {
+                if (x.name == "Soda La U")
+                    i.add(repo.getRatingByRestaurant(x.id));
+                else
+                    e.add(repo.getRatingByRestaurant(x.id));
+
+            }
+
+
+            sodaCards = sodasAdapter.convertToSodaCards(restaurants, e);
+            sodasAdapter.setSodaCards(restaurants, e);
         });
     }
 
