@@ -44,7 +44,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         setContentView(R.layout.menu_red_mujeres);
 
         mDatabase = FirebaseDatabase.getInstance();
-        obtenerGrupoAsync("GrupoEj");
+        fetchGroupAsync("GrupoEj");
         startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
 
 
@@ -126,16 +126,16 @@ public class MenuRedMujeres extends AppCompatActivity {
         }
     }
 
-    public void  obtenerUsuarioGrupoAsync(String id) {
+    public void  fetchGroupUsersAsync(String id) {
         usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
-        readUserspData(new FireBaseRedMujeres.FirebaseCallBack() {
+        readGroupUsersData(new FireBaseRedMujeres.FirebaseCallBack() {
             @Override
             public void onCallBack(ArrayList<Map<String, Object>> list) {
                 System.out.println(list);
             }
         });
     }
-    public void  obtenerGrupoAsync(String nombreGrupo) {
+    public void  fetchGroupAsync(String nombreGrupo) {
         grupo = mDatabase.getReference("GrupoEj");
         readGroupData(new FireBaseRedMujeres.FirebaseCallBack() {
             @Override
@@ -144,7 +144,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
 
                 for(int i = 0 ; i< users.size();++i){
-                    obtenerUsuarioGrupoAsync(""+users.get(i));
+                    fetchGroupUsersAsync(""+users.get(i));
                 }
             }
         });
@@ -169,7 +169,8 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    public  void readUserspData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
+    public  void readGroupUsersData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
