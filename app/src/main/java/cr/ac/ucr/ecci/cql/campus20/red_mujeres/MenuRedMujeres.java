@@ -14,14 +14,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
 
+    private static final String currentUser = "3";
+
     private FirebaseDatabase mDatabase;
-    private FireBaseRedMujeres usuario = new FireBaseRedMujeres();
-    private String correo = usuario.obtenerCorreoActual();
+    private FireBaseRedMujeres bd = new FireBaseRedMujeres();
+    private String correo = bd.obtenerCorreoActual();
     List<String> list = new ArrayList<String>();
 
     @Override
@@ -30,7 +31,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         setContentView(R.layout.menu_red_mujeres);
 
         mDatabase = FirebaseDatabase.getInstance();
-        validarUsuario("1");
+        recuperarDatos(currentUser);
 
     }
 
@@ -67,22 +68,24 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    private void validarUsuario(String id) {
+    private void recuperarDatos(String currentUserID) {
 
-        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(id);
-        usuario.autCallback(user, new FirebaseListener() {
+        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(currentUserID);
+
+
+        bd.autCallback(user, new FirebaseListener() {
             @Override
             // revisa si el usuario ya ha sido validado
             public void exito(DataSnapshot dataSnapshot) {
                 if ((boolean) dataSnapshot.child("Validado").getValue()) {
                     // si si continue
-                    //startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+                    startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
 
                     //recupera grupos del usuario
-                    for (DataSnapshot snapshot : dataSnapshot.child("Grupos").getChildren()) {
-                        list.add( (String) snapshot.getValue());
-                    }
-                    metodoDeAndres(list);
+//                    for (DataSnapshot snapshot : dataSnapshot.child("Grupos").getChildren()) {
+//                        list.add( (String) snapshot.getValue());
+//                    }
+//                    metodoDeAndres(list);
 
                 } else {
                     // si no muestre popup
@@ -115,7 +118,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                         // write 1 en la bd
 
                         //continua a actividad
-                        startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+                        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
                     }
                 });
 

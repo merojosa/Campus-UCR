@@ -30,7 +30,6 @@ public class FireBaseRedMujeres {
 
     }
 
-
     public String obtenerCorreoActual()
     {
         if(auth.getCurrentUser() != null)
