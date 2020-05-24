@@ -47,6 +47,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private FavoritoViewModel mFavoritoViewModel;
 
     private RecyclerView recyclerView;
+    private List<Integer> idList;
+
 
     /**
      * Método que se invoca al iniciar la actividad temas en el foro general,
@@ -57,7 +59,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_temas);
-
+        idList = new ArrayList<>();
 
         busquedaFiltrada();
         iniciarRecycler();
@@ -109,7 +111,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     }
 
     private void llenar(){
-
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
 
@@ -131,8 +132,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
 
     }
-    private void iniciarRecycler() {
 
+    private void iniciarRecycler() {
         // Instanciación del RecyclewView
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -143,8 +144,29 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                int idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
-                String temaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+
+                //conseguir id del tema seleccionado
+                int idTemaSeleccionado;
+                String temaSeleccionado;
+                if(idList.size() != 0){
+                    idTemaSeleccionado = idList.get(position);
+                }
+                else{
+                    idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                }
+                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int i = 0 ;
+                int fin = 0;
+                Tema result = new Tema(0 , "", "", 0,0); //tema comodin
+                while (i < counter && fin ==0) {
+                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTemaSeleccionado) {
+                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                        fin = 1;
+                    }
+                    i++;
+                }
+                temaSeleccionado = result.getTitulo();
+
                 // Llamada a la actividad de ver preguntas
                 Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
                 intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
@@ -204,7 +226,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             @Override
             public void onChanged(List<Tema> temas) {
                 if (temas != null)
-                    adapter.filterTemas(temas, texto.toLowerCase());        // Se llama al método del adapter
+                    adapter.filterTemas(temas, texto.toLowerCase(), idList);        // Se llama al método del adapter
             }
         });
 
@@ -218,12 +240,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
 
     }
-
-
-
-
-
-
 
 
 

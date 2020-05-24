@@ -177,8 +177,9 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     }
 
 
-    public void filterTemas(List<Tema> temas, String s) {
+    public void filterTemas(List<Tema> temas, String s, List<Integer> ids) {
         int count = 0;
+        ids.clear();
         if (temas != null){
             count = temas.size();
         }
@@ -191,6 +192,7 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         }
         for (int i = 0; i < count; i++){
             if (temas.get(i).titulo.toLowerCase().contains(s)){
+                ids.add(temas.get(i).id);
                 mTemas2.add(temas.get(i));
                 /*if (isFollowed(temas.get(i).id)){
                     mFavoritos2.add(mFavoritos.get(i));
