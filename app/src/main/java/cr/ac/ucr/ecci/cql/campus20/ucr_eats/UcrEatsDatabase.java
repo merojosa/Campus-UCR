@@ -71,13 +71,12 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         mealDao.deleteAll();
         rest.deleteAll();
 
-        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
-                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21);
-        rest.insert(restaurant1);
-
-        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
-                "Mon-Wed-Thu-Fri", (short)10, (short)20);
-        rest.insert(restaurant2);
+        Restaurant[] restaurants = {
+                new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 0.0,0.0,
+                        "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21),
+                new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 0.0,0.0,
+                        "Mon-Wed-Thu-Fri", (short)10, (short)20)
+        };
 
         Meal[] meals = {
                 // Soda la U
@@ -104,6 +103,9 @@ public abstract class UcrEatsDatabase extends RoomDatabase
                 new Rating(R.drawable.plaza_chou, 3),
                 new Rating(R.drawable.plaza_chou, 4),
         };
+
+        for(Restaurant restaurant : restaurants)
+            rest.insert(restaurant);
 
         for(Meal meal : meals)
             mealDao.insert(meal);

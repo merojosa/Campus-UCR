@@ -16,4 +16,5 @@
     <string name="meal">Meal</string>
     <string name="price_placeholder">1000</string>
     <string name="image">image</string>
+    <string name="restaurant_placeholder">Restaurant</string>
 </resources>
