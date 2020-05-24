@@ -11,13 +11,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
     private LoginBD usuario = new FirebaseBD();
     private String correo = usuario.obtenerCorreoActual();
+    public final ArrayList<Map<String,Object>> arr;
+    public final ArrayList<Map<String,Object>> userArr;
+    public DatabaseReference grupo;
+    public DatabaseReference usuarios;
+    private FirebaseDatabase mDatabase;
+
+    public MenuRedMujeres() {
+        this.arr = new ArrayList<>();
+        this.userArr = new ArrayList<>();
+    }
 
 
     @Override
@@ -25,18 +43,10 @@ public class MenuRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_red_mujeres);
 
-        FireBaseRedMujeres db = new FireBaseRedMujeres();
-        db.obtenerGrupoAsync("GrupoEj");
+        mDatabase = FirebaseDatabase.getInstance();
+        obtenerGrupoAsync("GrupoEj");
+        startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
 
-         if(db.arr.isEmpty() == false) {
-             System.out.println(db.arr.get(0).get("IDusuarios"));
-         }
-
-        if (!validarUsuario()) {
-            popupRegistro();
-        } else {
-            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
-        }
 
     }
 
@@ -115,4 +125,64 @@ public class MenuRedMujeres extends AppCompatActivity {
             Log.i("Excepcion", e.getMessage());
         }
     }
+
+    public void  obtenerUsuarioGrupoAsync(String id) {
+        usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
+        readUserspData(new FireBaseRedMujeres.FirebaseCallBack() {
+            @Override
+            public void onCallBack(ArrayList<Map<String, Object>> list) {
+                System.out.println(list);
+            }
+        });
+    }
+    public void  obtenerGrupoAsync(String nombreGrupo) {
+        grupo = mDatabase.getReference("GrupoEj");
+        readGroupData(new FireBaseRedMujeres.FirebaseCallBack() {
+            @Override
+            public void onCallBack(ArrayList<Map<String, Object>> list) {
+                Map<String, Object> map = list.get(0);
+                ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
+
+                for(int i = 0 ; i< users.size();++i){
+                    obtenerUsuarioGrupoAsync(""+users.get(i));
+                }
+            }
+        });
+    }
+
+    public  void readGroupData(FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
+                arr.add(list);
+                firebaseCallBack.onCallBack(arr);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        grupo.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+    public  void readUserspData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
+                userArr.add(list);
+                firebaseCallBack.onCallBack(userArr);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        usuarios.addListenerForSingleValueEvent(valueEventListener);
+    }
+
 }
