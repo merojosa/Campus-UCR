@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class MainUcrEats extends AppCompatActivity
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;
+    private TextView noResults;
 
     private RestaurantRepository repository;
     private List<Restaurant> restaurantsList = null;
@@ -52,6 +55,7 @@ public class MainUcrEats extends AppCompatActivity
         setupRecyclerView();
         inicializarAdapter();
 
+        this.noResults = this.findViewById(R.id.noResultsText);
 
         this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
         this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
@@ -94,6 +98,12 @@ public class MainUcrEats extends AppCompatActivity
                 filtrarLista.add(usuario);
             }
         }
+
+        if(filtrarLista.isEmpty())
+            this.noResults.setVisibility(View.VISIBLE);
+        else
+            this.noResults.setVisibility(View.GONE);
+
 
         sodasAdapter.filter(filtrarLista);
     }

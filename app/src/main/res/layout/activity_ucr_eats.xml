@@ -38,6 +38,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/noResultsText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Sin resultados"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ucr_eats_rv"
             android:layout_width="match_parent"
