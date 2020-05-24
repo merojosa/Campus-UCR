@@ -15,4 +15,5 @@
     <string name="Close">Close</string>
     <string name="meal">Meal</string>
     <string name="price_placeholder">1000</string>
+    <string name="image">image</string>
 </resources>

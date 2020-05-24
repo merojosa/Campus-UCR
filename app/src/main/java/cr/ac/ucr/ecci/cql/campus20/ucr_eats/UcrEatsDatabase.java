@@ -80,10 +80,18 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         rest.insert(restaurant2);
 
         Meal[] meals = {
-                new Meal(R.drawable.la_u, "Desayuno 1", "la_u", Meal.BREAKFAST, 1000),
-                new Meal(R.drawable.la_u, "Almuerzo 1", "la_u", Meal.LUNCH, 1500),
-                new Meal(R.drawable.la_u, "Cena 1", "la_u", Meal.DINNER, 1500),
-                new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
+                // Soda la U
+                new Meal(R.drawable.la_u, "Gallo pinto", "https://www.kukercr.com/disuva/wp-content/uploads/2017/08/sf-gallopinto.jpg",
+                        Meal.BREAKFAST, 1000),
+                new Meal(R.drawable.la_u, "Casado", "https://static.rutasdeescape.com/wp-content/uploads/2018/06/comida-costarica.jpg",
+                        Meal.LUNCH, 1500),
+                new Meal(R.drawable.la_u, "Huevos rancheros", "https://images.pexels.com/photos/691114/pexels-photo-691114.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+                        Meal.DINNER, 1500),
+                // Plaza Chou
+                new Meal(R.drawable.plaza_chou, "Pizza", "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR5RGwebFefGiftuSc-6vjaIaO3WMeI-OvU41RK68zdEw-DItkS&usqp=CAU",
+                        Meal.LUNCH, 1500),
+                new Meal(R.drawable.plaza_chou, "Vegetariano", "https://images.pexels.com/photos/1095550/pexels-photo-1095550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+                        Meal.LUNCH, 2000)
         };
 
         Rating[] rating = {
