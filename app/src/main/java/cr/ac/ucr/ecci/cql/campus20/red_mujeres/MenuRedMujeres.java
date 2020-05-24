@@ -28,6 +28,10 @@ public class MenuRedMujeres extends AppCompatActivity {
         FireBaseRedMujeres db = new FireBaseRedMujeres();
         db.obtenerGrupoAsync("GrupoEj");
 
+         if(db.arr.isEmpty() == false) {
+             System.out.println(db.arr.get(0).get("IDusuarios"));
+         }
+
         if (!validarUsuario()) {
             popupRegistro();
         } else {
