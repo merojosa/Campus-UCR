@@ -177,8 +177,29 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             @Override
             public void onHeartClick(boolean check, int position) {
 
-                String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
-                int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                int idTema;
+                String nombreTema;
+                if(idList.size() != 0){
+                    idTema = idList.get(position);
+                }
+                else{
+                    idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                }
+                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int i = 0 ;
+                int fin = 0;
+                Tema result = new Tema(0 , "", "", 0,0); //tema comodin
+                while (i < counter && fin ==0) {
+                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTema) {
+                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                        fin = 1;
+                    }
+                    i++;
+                }
+                nombreTema = result.getTitulo();
+
+                //String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                //int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
 
                 if (check) {
                     // Se da un mensaje al usuario
