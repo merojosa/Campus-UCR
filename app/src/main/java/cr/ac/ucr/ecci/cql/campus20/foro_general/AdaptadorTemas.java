@@ -85,6 +85,13 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     private List<Tema> mTemas; // Cached copy of Temas
     private List<Favorito> mFavoritos;  // Cached copy of Favoritos
 
+
+    private List<Tema> mTemas2; // Cached copy of Temas
+    private List<Favorito> mFavoritos2;  // Cached copy of Favoritos
+
+
+
+
     AdaptadorTemas(Context context) { mInflater = LayoutInflater.from(context); }
 
     @Override
@@ -168,4 +175,41 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
             return mTemas.size();
         else return 0;
     }
+
+
+    public void filterTemas(List<Tema> temas, String s) {
+        int count = 0;
+        if (temas != null){
+            count = temas.size();
+        }
+        if (mTemas2 != null){
+            mTemas2.clear();
+            mFavoritos2.clear();
+        }else{
+            mTemas2 = new ArrayList<Tema>();
+            mFavoritos2 = new ArrayList<Favorito>();
+        }
+        for (int i = 0; i < count; i++){
+            if (temas.get(i).titulo.toLowerCase().contains(s)){
+                mTemas2.add(temas.get(i));
+                /*if (isFollowed(temas.get(i).id)){
+                    mFavoritos2.add(mFavoritos.get(i));
+                }*/
+            }
+        }
+        this.mTemas = mTemas2;
+        //this.mFavoritos = mFavoritos2;
+        notifyDataSetChanged();
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

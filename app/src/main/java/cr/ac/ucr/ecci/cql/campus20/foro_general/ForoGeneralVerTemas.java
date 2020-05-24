@@ -170,6 +170,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 filtrar(s.toString());
+
             }
         });
     }
@@ -177,6 +178,25 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
 
     private void filtrar(String texto) {
+        // Instanciación del RecyclewView
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final AdaptadorTemas adapter = new AdaptadorTemas(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
+
+
+        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                if (temas != null)
+                    adapter.filterTemas(temas, texto.toLowerCase());        // Se llama al método del adapter
+            }
+        });
+
 /*
         ArrayList<SodaCard> filtrarLista = new ArrayList<>();
 
