@@ -26,14 +26,14 @@ import java.util.*;
 public class MenuRedMujeres extends AppCompatActivity {
     private LoginBD usuario = new FirebaseBD();
     private String correo = usuario.obtenerCorreoActual();
-    public final ArrayList<Map<String,Object>> arr;
+    public final ArrayList<Map<String,Object>> groupArr;
     public final ArrayList<Map<String,Object>> userArr;
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase;
 
     public MenuRedMujeres() {
-        this.arr = new ArrayList<>();
+        this.groupArr = new ArrayList<>();
         this.userArr = new ArrayList<>();
     }
 
@@ -135,29 +135,34 @@ public class MenuRedMujeres extends AppCompatActivity {
             }
         });
     }
+    //recupera toda la informacion relacionada a los grupos
     public void  fetchGroupAsync(String nombreGrupo) {
         grupo = mDatabase.getReference(nombreGrupo);
         readGroupData(new FireBaseRedMujeres.FirebaseCallBack() {
             @Override
             public void onCallBack(ArrayList<Map<String, Object>> list) {
                 Map<String, Object> map = list.get(0);
+                //Sacamamos del mapa los usarios pertenecientes al grupo
                 ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
 
                 for(int i = 0 ; i< users.size();++i){
+                    //Recuperamos la informacion de los integrantes del grupo
                     fetchGroupUsersAsync(""+users.get(i));
                 }
             }
         });
     }
 
+    //Obtiene el json especifico para la referencia a la base de datos en el nodo del grupo especifcado
     public  void readGroupData(FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
                 Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
-                arr.add(list);
-                firebaseCallBack.onCallBack(arr);
+                groupArr.add(list);
+                firebaseCallBack.onCallBack(groupArr);
             }
 
             @Override
@@ -168,12 +173,13 @@ public class MenuRedMujeres extends AppCompatActivity {
         grupo.addListenerForSingleValueEvent(valueEventListener);
 
     }
-
+    //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
     public  void readGroupUsersData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
                 Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
                 userArr.add(list);
                 firebaseCallBack.onCallBack(userArr);
