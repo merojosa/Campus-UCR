@@ -18,7 +18,7 @@
         android:layout_marginBottom="?attr/actionBarSize">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/facultyProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/

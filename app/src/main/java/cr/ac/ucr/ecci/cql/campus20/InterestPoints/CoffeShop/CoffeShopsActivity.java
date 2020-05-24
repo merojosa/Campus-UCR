@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,13 +10,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -28,6 +37,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private List<GeneralData> temp = new ArrayList<>();
     private List<Coffe> coffeList;
 
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +50,19 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
             getSupportActionBar().show();
         }
 
+        spinner = findViewById(R.id.coffeeProgressBar);
+        spinner.setVisibility(View.VISIBLE);
+
         setupRecyclerView();
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
-
+        temp = new ArrayList<>();
+        coffeList = new ArrayList<>();
+        getCoffeeList();
+        /*
         coffeList = Coffe.getCoffeShopList(getApplicationContext());
-
         setDataList();
-        mListAdapter.setListData(temp);
+        mListAdapter.setListData(temp);*/
     }
 
     @Override
@@ -99,6 +114,28 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         mRecyclerView = findViewById(R.id.rv_list_item);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
+    }
+
+    private void getCoffeeList(){
+        FirebaseDB db = new FirebaseDB(getApplicationContext());
+        DatabaseReference ref = db.getReference("Coffe");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot coffee : dataSnapshot.getChildren()){
+                    coffeList.add(coffee.getValue(Coffe.class));
+                }
+                setDataList();
+                mListAdapter.setListData(temp);
+                mListAdapter.notifyDataSetChanged();
+                spinner.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void setDataList(){

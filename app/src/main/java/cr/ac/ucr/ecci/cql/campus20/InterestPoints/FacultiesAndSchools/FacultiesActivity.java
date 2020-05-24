@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
@@ -57,15 +54,15 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
             getSupportActionBar().show();
         }
 
-        spinner = findViewById(R.id.progressBar);
+        spinner = findViewById(R.id.facultyProgressBar);
         spinner.setVisibility(View.VISIBLE);
         setupRecyclerView();
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         facultiesList = new ArrayList<>();
         temp = new ArrayList<>();
-        //facultiesList = Faculty.getFacultiesList(getApplicationContext());
         getFacultiesList();
+        //facultiesList = Faculty.getFacultiesList(getApplicationContext());
         //setDataList();
         //mListAdapter.setListData(temp);
     }
@@ -86,6 +83,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
         Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
+        childActivity.putExtra(Intent.EXTRA_INDEX, facultiesList.get(index).getId());
 
         startActivity(childActivity);
     }
@@ -115,7 +113,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     }
 
     private void setupRecyclerView() {
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_list_item);
+        mRecyclerView = findViewById(R.id.rv_list_item);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
     }
@@ -136,7 +134,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
         });
     }
