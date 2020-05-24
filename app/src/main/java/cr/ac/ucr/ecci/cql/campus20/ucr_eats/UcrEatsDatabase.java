@@ -13,15 +13,18 @@ import java.util.concurrent.Executors;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.MealDao;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RatingDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.Daos.RestaurantDao;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
-@Database(entities = {Restaurant.class, Meal.class}, version = 4, exportSchema = false)
+@Database(entities = {Restaurant.class, Meal.class, Rating.class}, version = 5, exportSchema = false)
 public abstract class UcrEatsDatabase extends RoomDatabase
 {
     public abstract RestaurantDao restaurantDao();
     public abstract MealDao mealDao();
+    public abstract RatingDao ratingDao();
 
     private static UcrEatsDatabase INSTANCE = null;
 
@@ -62,27 +65,42 @@ public abstract class UcrEatsDatabase extends RoomDatabase
     {
         RestaurantDao rest = db.restaurantDao();
         MealDao mealDao = db.mealDao();
+        RatingDao ratingDao = db.ratingDao();
 
+        ratingDao.deleteAll();
         mealDao.deleteAll();
         rest.deleteAll();
 
         Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 9.934497, -84.051063,
-                "Mo", (short)0, (short)1000);
+                "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21);
         rest.insert(restaurant1);
 
         Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 9.934748, -84.051578,
-                "Mo", (short)0, (short)1000);
+                "Mon-Wed-Thu-Fri", (short)10, (short)20);
         rest.insert(restaurant2);
 
         Meal[] meals = {
-            new Meal(R.drawable.la_u, "Desayuno 1", "la_u", Meal.BREAKFAST, 1000),
-            new Meal(R.drawable.la_u, "Almuerzo 1", "la_u", Meal.LUNCH, 1500),
-            new Meal(R.drawable.la_u, "Cena 1", "la_u", Meal.DINNER, 1500),
-            new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
+                new Meal(R.drawable.la_u, "Desayuno 1", "la_u", Meal.BREAKFAST, 1000),
+                new Meal(R.drawable.la_u, "Almuerzo 1", "la_u", Meal.LUNCH, 1500),
+                new Meal(R.drawable.la_u, "Cena 1", "la_u", Meal.DINNER, 1500),
+                new Meal(R.drawable.plaza_chou, "Económico 1", "plaza_chou", Meal.LUNCH, 1500)
+        };
+
+        Rating[] rating = {
+                new Rating(R.drawable.la_u, 5),
+                new Rating(R.drawable.la_u, 2),
+                new Rating(R.drawable.la_u, 3),
+                new Rating(R.drawable.la_u, 4),
+                new Rating(R.drawable.plaza_chou, 4),
+                new Rating(R.drawable.plaza_chou, 5),
+                new Rating(R.drawable.plaza_chou, 3),
+                new Rating(R.drawable.plaza_chou, 4),
         };
 
         for(Meal meal : meals)
             mealDao.insert(meal);
 
+        for(Rating points : rating)
+            ratingDao.insert(points);
     }
 }

@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,11 +25,10 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/nombre_soda"
@@ -38,7 +36,8 @@
                     android:layout_weight="5"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/horario-soda"
@@ -56,7 +55,7 @@
                     android:layout_margin="10dp"
                     android:src="@drawable/ic_soda_place" />
 
-            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

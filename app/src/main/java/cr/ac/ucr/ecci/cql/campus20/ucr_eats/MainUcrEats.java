@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -50,7 +51,8 @@ public class MainUcrEats extends AppCompatActivity
 
         this.repository = new RestaurantRepository(getApplication());
 
-        fillRestaurants();
+        //fillRestaurants();
+
         setupInputSearch();
         setupRecyclerView();
         inicializarAdapter();

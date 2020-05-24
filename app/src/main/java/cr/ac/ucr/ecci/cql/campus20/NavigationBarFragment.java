@@ -1,22 +1,26 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
-// Se importan las actividades principales que estarán disponibles desde el fragmento
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
@@ -27,16 +31,16 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
+// Se importan las actividades principales que estarán disponibles desde el fragmento
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NavigationBarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NavigationBarFragment extends android.app.Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class NavigationBarFragment extends android.app.Fragment
+{
 
-    int mMenuId;
 
     /**
      * Construtor del fragmento
@@ -119,45 +123,144 @@ public class NavigationBarFragment extends android.app.Fragment {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-            switch (item.getItemId()) {
-
-                case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
-                    Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
-                    startActivity(intentUCREats);
-                    return true;
-
-                case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
-                    Intent intentForo = new Intent(getActivity(), MainForoGeneral.class);
-                    startActivity(intentForo);
-                    return true;
-
-                case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
-                    Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
-                    startActivity(intentMujeres);
-                    return true;
-
-                case R.id.lugares:  // En caso de que se haya seleccionado el ícono de localización
-                    Intent intentLocalizacion = new Intent(getActivity(), InterestPointsActivity.class);
-                    startActivity(intentLocalizacion);
-                    return true;
+        public boolean onNavigationItemSelected(@NonNull MenuItem item)
+        {
+            if(getActivity() instanceof ConfiguracionActivity)
+            {
+                irActividadElegidaConfirmacion(item.getItemId());
+                return true;
             }
-            return false;
+
+            return irActividadElegida(item.getItemId());
         }
     };
 
-    public void confirmacionGuardarAppPredeterminada()
+    private void irActividadElegidaConfirmacion(int actividadId)
     {
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Title")
-                .setMessage("Do you really want to whatever?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        LoginBD loginBD = new FirebaseBD();
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(getActivity(), "Yaay", Toast.LENGTH_SHORT).show();
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
+        String correo = loginBD.obtenerCorreoActual();
+        String idUsuario = correo.substring(0, correo.indexOf('@'));
+
+        AtomicBoolean resultado = new AtomicBoolean(false);
+
+
+        FirebaseListener listener = new FirebaseListener()
+        {
+            @Override
+            public void exito(DataSnapshot dataSnapshot)
+            {
+                resultado.set(true);
+                Long appUsuario = (Long) dataSnapshot.getValue();
+
+                // Mostrar el mensajes solo si no hay app guardada.
+                if (appUsuario == null)
+                {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Guardar app predeterminada")
+                            .setMessage("¿Quiere guardar esta app como la predeterminada? " +
+                                    "La siguiente vez que vuelva iniciará en " + traducirAppIdString(actividadId))
+                            .setIcon(R.drawable.info_personalizado)
+                            .setPositiveButton("Guardar App", (dialog, whichButton) ->
+                            {
+                                Intent intent = new Intent(getActivity(), GuardarAppService.class);
+                                intent.putExtra(GuardarAppService.APP_ID_KEY, traducirAppIdInt(actividadId));
+                                getActivity().startService(intent);
+                                irActividadElegida(actividadId);
+                            })
+                            .setNegativeButton("Cancelar", (dialog, which) ->
+                            {
+                                irActividadElegida(actividadId);
+                            }).show();
+                }
+                else
+                {
+                    irActividadElegida(actividadId);
+                }
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {}
+        };
+
+        if(VerificadorInternet.conexionInternet(getActivity()))
+        {
+            loginBD.tareaAppDefaultAsync(idUsuario, listener);
+
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    timer.cancel();
+                    if (resultado.get() == false)
+                    {
+                        //  Timeout
+                        loginBD.detenerAppDefaultAsync();
+                    }
+                }
+            };
+            // Timeout de 10 segundos
+            timer.schedule(timerTask, 10000L);
+        }
+    }
+
+    private String traducirAppIdString(int id)
+    {
+        switch (id)
+        {
+            case R.id.ucreats: return "UCR Eats";
+
+            case R.id.mujeres: return "Red de mujeres";
+
+            case R.id.foro: return "Foros";
+
+            case R.id.lugares: return "Lugares de interés";
+        }
+        return null;
+    }
+
+    private int traducirAppIdInt(int id)
+    {
+        switch (id)
+        {
+            case R.id.ucreats: return 0;
+
+            case R.id.mujeres: return 1;
+
+            case R.id.foro: return 2;
+
+            case R.id.lugares: return 3;
+        }
+        return -1;
+    }
+
+    private boolean  irActividadElegida(int actividadId)
+    {
+        switch (actividadId)
+        {
+
+            case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
+                Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
+                startActivity(intentUCREats);
+                return true;
+
+            case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
+                Intent intentForo = new Intent(getActivity(), MainForoGeneral.class);
+                startActivity(intentForo);
+                return true;
+
+            case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
+                Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
+                startActivity(intentMujeres);
+                return true;
+
+            case R.id.lugares:  // En caso de que se haya seleccionado el ícono de localización
+                Intent intentLocalizacion = new Intent(getActivity(), InterestPointsActivity.class);
+                startActivity(intentLocalizacion);
+                return true;
+        }
+        return false;
     }
 }
