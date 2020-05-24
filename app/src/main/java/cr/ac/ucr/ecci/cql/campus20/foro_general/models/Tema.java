@@ -87,8 +87,8 @@ public class Tema {
     public int getImagen() {return imagen;}
 
     // Para el ListView
-    //@Override
-    /*public String toString() {
-        return this.name;
-    }*/
+    @Override
+    public String toString() {
+        return this.titulo;
+    }
 }

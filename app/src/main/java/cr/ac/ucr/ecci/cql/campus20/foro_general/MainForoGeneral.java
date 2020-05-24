@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,15 +94,19 @@ public class MainForoGeneral extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                // Aquí va el intent hacia la actividad que muestra las preguntas
-                //String name = Integer.toString(mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
-                //Toast.makeText(MainForoGeneral.this, "Tema favorito con id " + name + " fue seleccionado!", Toast.LENGTH_SHORT).show();
+                int idTemaSeleccionado = (mFavoritoViewModel.getAllFavoritos().getValue().get(position).getIdTema());
+                String temaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                // Llamada a la actividad de ver preguntas
+                Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
+                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+                intent.putExtra("temaSeleccionado", temaSeleccionado);
+                startActivity(intent);
             }
-
         });
 
         // Boton flotante de Agregar Preguntas
         FloatingActionButton buttonAgregarPreguntas = findViewById(R.id.buttonAgregarPreguntas);
+        buttonAgregarPreguntas.setBackgroundColor(Color.parseColor("#005DA4"));
 
         // Asocia evento clic al boton
         buttonAgregarPreguntas.setOnClickListener(new View.OnClickListener() {

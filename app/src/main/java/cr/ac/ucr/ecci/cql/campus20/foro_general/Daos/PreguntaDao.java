@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.Daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -27,7 +28,7 @@ public interface PreguntaDao
     Pregunta getPreguntaPorID(int id);
 
     @Query("SELECT * FROM Pregunta WHERE temaID = :temaID ORDER BY id")
-    List<Pregunta> getPreguntasTema(int temaID);
+    LiveData<List<Pregunta>> getPreguntasTema(int temaID);
 
     @Query("DELETE FROM Pregunta")
     void borrarTodo();
