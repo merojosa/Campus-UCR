@@ -47,7 +47,6 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new FirebaseDB(getApplicationContext());
-        //new DeploymentScript().RunScript(getApplicationContext(), db);
         setContentView(R.layout.activity_faculties);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Facultades");
@@ -62,9 +61,6 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         facultiesList = new ArrayList<>();
         temp = new ArrayList<>();
         getFacultiesList();
-        //facultiesList = Faculty.getFacultiesList(getApplicationContext());
-        //setDataList();
-        //mListAdapter.setListData(temp);
     }
 
     // el clic en una facultad debe llevarme a la lista de escuelas
@@ -118,6 +114,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mRecyclerView.setHasFixedSize(true);
     }
 
+    /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getFacultiesList(){
         DatabaseReference ref = db.getReference("Faculty");
         ref.addValueEventListener(new ValueEventListener() {

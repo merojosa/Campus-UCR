@@ -1,24 +1,19 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.Context;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
+/**
+ * Abstraction over Firebase database, so that the instance is initialized only once in app.
+ * */
 public class FirebaseDB {
 
     private Context context;
@@ -28,6 +23,8 @@ public class FirebaseDB {
 
     public FirebaseDB(Context context){
         this.context = context;
+        /*Configured manually because there is another Firebase project used in this app.
+        * Later both projects will be joined in the same database.*/
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setApplicationId("1:57372885444:android:2672635af5d431ff9ea491") // Required for Analytics.
                 .setApiKey("AIzaSyDj_D5ifZYRIt7Al6XO8MZzBOS7z417UnM") // Required for Auth.
@@ -49,11 +46,20 @@ public class FirebaseDB {
         this.database = FirebaseDatabase.getInstance(app);
     }
 
+    /**
+     * Inserts entities as GeneralData objects in Firebase Realtime Database.
+     * @param table Entity name, or table name like SQL database.
+     * @param data POJO entity containing the data to be inserted.
+     * */
     public void insert(String table, GeneralData data){
         reference = database.getReference(table);
         reference.child(Integer.toString(data.getId())).setValue(data);
     }
 
+    /**
+     * @param path Database path to be referenced, or table like SQL database.
+     * @return A reference to the Firebase file indicated in path parameter.
+     * */
     public DatabaseReference getReference(String path) {
         return database.getReference(path);
     }

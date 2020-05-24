@@ -66,11 +66,6 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         temp = new ArrayList<>();
         schoolsList = new ArrayList<>();
         getSchoolsList(facultyId);
-        /*schoolsList = school.read(getApplicationContext(), facultyName); //revisar la intancia facultyName
-
-        setDataList();
-        mListAdapter.setListData(temp);*/
-
     }
 
     @Override
@@ -92,6 +87,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         startActivity(childActivity);
     }
 
+    /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getSchoolsList(int facultyId){
         DatabaseReference ref = db.getReference("School");
         ref.orderByChild("id_faculty_fk").equalTo(facultyId).addValueEventListener(new ValueEventListener() {
