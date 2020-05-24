@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
@@ -120,7 +121,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot faculty : dataSnapshot.getChildren()){
+                for (DataSnapshot faculty : dataSnapshot.getChildren()) {
                     facultiesList.add(faculty.getValue(Faculty.class));
                 }
                 setDataList();

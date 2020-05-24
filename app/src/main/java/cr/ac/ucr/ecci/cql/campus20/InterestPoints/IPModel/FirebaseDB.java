@@ -32,6 +32,7 @@ public class FirebaseDB {
                 .build();
         boolean hasBeenInitialized = false;
         List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
+        FirebaseApp myApp = null;
         for(FirebaseApp app : firebaseApps){
             if(app.getName().equals(INSTANCE_NAME)){
                 hasBeenInitialized = true;
@@ -40,10 +41,13 @@ public class FirebaseDB {
 
         if(!hasBeenInitialized) {
             FirebaseApp.initializeApp(this.context, options, INSTANCE_NAME);
+            myApp = FirebaseApp.getInstance(INSTANCE_NAME);
+            FirebaseDatabase.getInstance(myApp).setPersistenceEnabled(true);
+        }else{
+            myApp = FirebaseApp.getInstance(INSTANCE_NAME);
         }
 
-        FirebaseApp app = FirebaseApp.getInstance("secondary");
-        this.database = FirebaseDatabase.getInstance(app);
+        this.database = FirebaseDatabase.getInstance(myApp);
     }
 
     /**
