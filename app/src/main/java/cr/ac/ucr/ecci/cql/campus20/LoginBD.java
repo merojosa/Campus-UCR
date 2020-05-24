@@ -17,6 +17,4 @@ public interface LoginBD
     public void cerrarSesion();
 
     public void escribirDatos(String path, Object datos);
-
-    public boolean autenticadoRM();
 }

@@ -79,28 +79,4 @@ public class FirebaseBD implements LoginBD
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
 
-    @Override
-    public boolean autenticadoRM() {
-        //Se encarga de recuperar atributo RM_Flag
-
-//        final boolean[]aut = new boolean[1];
-//        String user = auth.getCurrentUser().toString();
-//
-//        DatabaseReference usuario = mDatabase.getReference("config_usuarios").child("pruebacampusucr").child("RM_Flag");
-//
-//        usuario.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                aut[0] = dataSnapshot.getValue(Boolean.TYPE);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return aut[0];
-        return true;
-    }
-
 }

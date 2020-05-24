@@ -1,39 +1,38 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
-    private LoginBD usuario = new FirebaseBD();
-    private String correo = usuario.obtenerCorreoActual();
 
+    private FirebaseDatabase mDatabase;
+
+    private FireBaseRedMujeres usuario = new FireBaseRedMujeres();
+    private String correo = usuario.obtenerCorreoActual();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_red_mujeres);
 
-        if (!validarUsuario()) {
-            popupRegistro();
-        } else {
-            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
-        }
+        mDatabase = FirebaseDatabase.getInstance();
+        validarUsuario("2");
 
     }
 
@@ -49,6 +48,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        
                         enviarConfirmacion();
                     }
                 });
@@ -69,8 +69,26 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    private boolean validarUsuario() {
-        boolean validado = usuario.autenticadoRM();
+    private void validarUsuario(String id) {
+
+        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(id).child("Validado");
+        usuario.autCallback(user, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                if ((boolean) dataSnapshot.getValue()) {
+                    startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+                } else {
+                    popupRegistro();
+                }
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {
+
+            }
+        });
+
+
         // revisar si solicitud fue aceptada
 
         // si si
@@ -88,7 +106,6 @@ public class MenuRedMujeres extends AppCompatActivity {
                 // guardar que el usuario fue rechazado
                 // validado = false;
 
-        return validado;
     }
 
 
@@ -111,4 +128,6 @@ public class MenuRedMujeres extends AppCompatActivity {
             Log.i("Excepcion", e.getMessage());
         }
     }
+
+
 }
