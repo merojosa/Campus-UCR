@@ -137,7 +137,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
     //recupera toda la informacion relacionada a los grupos
     public void  fetchGroupAsync(String nombreGrupo) {
-        grupo = mDatabase.getReference(nombreGrupo);
+        grupo = mDatabase.getReference("Comunidades").child(nombreGrupo);
         readGroupData(new FireBaseRedMujeres.FirebaseCallBack() {
             @Override
             public void onCallBack(ArrayList<Map<String, Object>> list) {
