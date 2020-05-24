@@ -26,12 +26,12 @@ public class MenuRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_red_mujeres);
 
-        if (!validarUsuario()) {
-            popupRegistro();
-        } else {
-            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
-        }
-//        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
+//        if (!validarUsuario()) {
+//            popupRegistro();
+//        } else {
+//            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+//        }
+        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
 
     }
 
