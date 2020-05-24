@@ -1,5 +1,4 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-<<<<<<< HEAD
 
 import androidx.annotation.NonNull;
 
@@ -15,16 +14,6 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
-
-public class FireBaseRedMujeres {
-
-    public  interface FirebaseCallBack{
-
-        void onCallBack(ArrayList<Map<String,Object>> list);
-
-=======
 import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,11 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 
+
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
+
 public class FireBaseRedMujeres {
 
     private FirebaseAuth auth;
 
-    public FireBaseRedMujeres(){
+    public FireBaseRedMujeres() {
         auth = FirebaseAuth.getInstance();
     }
 
@@ -56,17 +48,16 @@ public class FireBaseRedMujeres {
 
     }
 
-    public String obtenerCorreoActual()
-    {
-        if(auth.getCurrentUser() != null)
+    public String obtenerCorreoActual() {
+        if (auth.getCurrentUser() != null)
             return auth.getCurrentUser().getEmail();
         else
             return null;
->>>>>>> origin/CodeBakers_ME
     }
-    public  interface FirebaseCallBack{
 
-        void onCallBack(ArrayList<Map<String,Object>> list);
+    public interface FirebaseCallBack {
+
+        void onCallBack(ArrayList<Map<String, Object>> list);
 
     }
 

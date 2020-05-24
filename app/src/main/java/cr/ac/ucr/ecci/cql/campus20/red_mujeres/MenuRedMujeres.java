@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -222,6 +226,20 @@ public class MenuRedMujeres extends AppCompatActivity {
             System.out.println(s);
         }
     }
+    //recupera toda la informacion relacionada a los grupos
+
+    public void  fetchGroupUsersAsync(String id) {
+        usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
+
+        readGroupUsersData(new FireBaseRedMujeres.FirebaseCallBack() {
+            @Override
+            public void onCallBack(ArrayList<Map<String, Object>> list) {
+                System.out.println(list);
+            }
+        });
+    }
+
+
 
     public void  fetchGroupAsync(String nombreGrupo) {
         grupo = mDatabase.getReference("Comunidades").child(nombreGrupo);
