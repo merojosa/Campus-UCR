@@ -23,6 +23,7 @@ public class MainEmptyActivity extends AppCompatActivity
     public static final boolean OMITIR_LOGIN = false;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {

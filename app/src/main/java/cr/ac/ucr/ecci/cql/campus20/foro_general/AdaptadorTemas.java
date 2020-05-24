@@ -85,6 +85,13 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     private List<Tema> mTemas; // Cached copy of Temas
     private List<Favorito> mFavoritos;  // Cached copy of Favoritos
 
+
+    private List<Tema> mTemas2; // Cached copy of Temas
+    private List<Favorito> mFavoritos2;  // Cached copy of Favoritos
+
+
+
+
     AdaptadorTemas(Context context) { mInflater = LayoutInflater.from(context); }
 
     @Override
@@ -158,11 +165,78 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         return false;
     }
 
-
+    /**
+     * Metodo para ver la cantidad de elementos en la lista
+     * @return numero de elementos de la lista
+     */
     @Override
     public int getItemCount() {
         if (mTemas != null)
             return mTemas.size();
         else return 0;
     }
+
+
+    public void filterTemas(List<Tema> temas, String s, List<Integer> ids) {
+        int count = 0;
+        ids.clear();
+        if (temas != null){
+            count = temas.size();
+        }
+        if (mTemas2 != null){
+            mTemas2.clear();
+            mFavoritos2.clear();
+        }else{
+            mTemas2 = new ArrayList<Tema>();
+            mFavoritos2 = new ArrayList<Favorito>();
+        }
+        for (int i = 0; i < count; i++){
+            if (temas.get(i).titulo.toLowerCase().contains(s)){
+                ids.add(temas.get(i).id);
+                mTemas2.add(temas.get(i));
+                /*if (isFollowed(temas.get(i).id)){
+                    mFavoritos2.add(mFavoritos.get(i));
+                }*/
+            }
+        }
+        this.mTemas = mTemas2;
+        //this.mFavoritos = mFavoritos2;
+        notifyDataSetChanged();
+    }
+
+
+
+    public void filterFavoritos(List<Favorito> favoritos) {
+        int count1 = 0;
+        if (favoritos != null){
+            count1 = favoritos.size();
+        }
+        int count2 = 0;
+        if (mTemas != null){
+            count2 = mTemas.size();
+        }
+        if (mFavoritos2 != null){
+            mFavoritos2.clear();
+        }else{
+            mFavoritos2 = new ArrayList<Favorito>();
+        }
+        for (int i = 0; i < count1; i++){
+            for(int x = 0; x < count2; x++){
+                if(favoritos.get(i).idTema == mTemas.get(x).id){
+                    mFavoritos2.add(favoritos.get(i));
+                }
+            }
+        }
+        this.mFavoritos = mFavoritos2;
+        notifyDataSetChanged();
+    }
+
+
+
+
+
+
+
+
+
 }
