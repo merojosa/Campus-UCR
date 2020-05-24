@@ -76,7 +76,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             }
 
             cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, restaurant.latitude, restaurant.longitude)
+                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, 5, restaurant.latitude, restaurant.longitude)
             );
         }
 

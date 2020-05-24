@@ -28,32 +28,72 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/nombre_soda"
                     android:layout_width="0dp"
-                    android:layout_weight="5"
+                    android:layout_weight="6"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:textSize="20sp"
                     android:scaleType="centerCrop"/>
 
                 <TextView
-                    android:id="@+id/horario-soda"
+                    android:id="@+id/horario_soda"
                     android:layout_width="0dp"
                     android:layout_weight="4"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical|end"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imagen_estrella"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_star" />
+
+                <TextView
+                    android:id="@+id/rating_soda"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_marginStart="-5dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
                     android:textSize="20sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="match_parent" />
 
                 <ImageView
                     android:id="@+id/ubicacion_soda"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:src="@drawable/ic_soda_place" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
