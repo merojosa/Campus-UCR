@@ -18,12 +18,19 @@ import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
 
+    // 1 Diana validada
+    // 2 Denisse validada
+    // 3 Berta no validada
     private static final String currentUser = "3";
+    //para pruebas a futuro se debe ligar con el usuario actual de la pplicacion
 
     private FirebaseDatabase mDatabase;
     private FireBaseRedMujeres bd = new FireBaseRedMujeres();
     private String correo = bd.obtenerCorreoActual();
-    List<String> list = new ArrayList<String>();
+
+    //Estructuras de datos necesarias
+    List<String> comunidadesUsuario = new ArrayList<String>();
+    List<String> comunidadesTotales = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,62 +42,54 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    private void popupRegistro(String nombre) {
-        // create a dialog with AlertDialog builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
-
-        builder.setTitle("Oh-uh " + nombre + "!");
-        builder.setMessage("Parece que no has enviado la solicitud de registro para unirte a la Red de Mujeres.");
-
-        String positiveText = "Enviar Solicitud";
-        builder.setPositiveButton(positiveText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // proceso de validacion
-                        procesarValidacion();
-                    }
-                });
-
-        String negativeText = "Cancelar";
-        builder.setNegativeButton(negativeText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // En este momento al cancelar el popup se "devuelve" a la pagina principal de Puntos de Interes
-                        // porque no hay pagina principal, no pude volver al login, y es la mas bonita.
-                        startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-    }
-
     private void recuperarDatos(String currentUserID) {
 
-        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(currentUserID);
+        DatabaseReference root = mDatabase.getReference();
 
-
-        bd.autCallback(user, new FirebaseListener() {
+        bd.autCallback(root, new FirebaseListener() {
             @Override
-            // revisa si el usuario ya ha sido validado
             public void exito(DataSnapshot dataSnapshot) {
-                if ((boolean) dataSnapshot.child("Validado").getValue()) {
+
+                // recupera atributo de validacion del usuario actual.
+                boolean val = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
+
+                // revisa si el usuario ya ha sido validado
+                if (val) {
                     // si si continue
+
+                    //recupera grupos a los que pertenece el usuario actual.
+                    for (DataSnapshot snapshot : dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Grupos").getChildren()) {
+                        comunidadesUsuario.add( (String) snapshot.getValue());
+                    }
+                    comunidadesUsuario(comunidadesUsuario);
+
+
+                    //recupera todas las comunidades
+                    for (DataSnapshot snapshot : dataSnapshot.child("Comunidades").getChildren()) {
+                        comunidadesTotales.add( (String) snapshot.child("Nombre").getValue());
+                    }
+                    comunidadesTotales(comunidadesTotales);
+
+
+                    //Manipulacion de datos del snapshot y llamados a metodos.
+                    // ...
+
+
+
+
+
+
+
+                    // Despues de recuperar todos los datos necesarios, se llama a la actividad de comunidades
                     startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
 
-                    //recupera grupos del usuario
-//                    for (DataSnapshot snapshot : dataSnapshot.child("Grupos").getChildren()) {
-//                        list.add( (String) snapshot.getValue());
-//                    }
-//                    metodoDeAndres(list);
 
+                    // usuario no ha sido validado
                 } else {
                     // si no muestre popup
-                    String nombre = (String) dataSnapshot.child("Nombre").getValue();
+                    String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
                     popupRegistro(nombre);
+
                 }
             }
             @Override
@@ -136,6 +135,39 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
+    private void popupRegistro(String nombre) {
+        // create a dialog with AlertDialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
+
+        builder.setTitle("Oh-uh " + nombre + "!");
+        builder.setMessage("Parece que no has enviado la solicitud de registro para unirte a la Red de Mujeres.");
+
+        String positiveText = "Enviar Solicitud";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // proceso de validacion
+                        procesarValidacion();
+                    }
+                });
+
+        String negativeText = "Cancelar";
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // En este momento al cancelar el popup se "devuelve" a la pagina principal de Puntos de Interes
+                        // porque no hay pagina principal, no pude volver al login, y es la mas bonita.
+                        startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
     private void enviarConfirmacion(boolean aceptado) {
         Context context = getApplicationContext();
         CharSequence text = correo;
@@ -168,7 +200,13 @@ public class MenuRedMujeres extends AppCompatActivity {
         }
     }
 
-    public void metodoDeAndres (List<String> list) {
+    public void comunidadesUsuario (List<String> list) {
+        for(String s:list){
+            System.out.println(s);
+        }
+    }
+
+    public void comunidadesTotales (List<String> list) {
         for(String s:list){
             System.out.println(s);
         }
