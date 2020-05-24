@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterViewAnimator;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
 
+    private EditText search;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -57,6 +61,10 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
+
+
+        busquedaFiltrada();
+
 
         // Obtiene el cambio en la lista de temas, directo desde el ViewModel
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
@@ -146,6 +154,39 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void busquedaFiltrada() {
+        this.search = findViewById(R.id.search);
+        this.search.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_black_24dp, 0, 0, 0);
+        this.search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filtrar(s.toString());
+            }
+        });
+    }
+
+
+
+    private void filtrar(String texto) {
+/*
+        ArrayList<SodaCard> filtrarLista = new ArrayList<>();
+
+        for(SodaCard usuario : sodaCards) {
+            if(usuario.getNombre().toLowerCase().contains(texto.toLowerCase())) {
+                filtrarLista.add(usuario);
+            }
+        }
+
+        sodasAdapter.filter(filtrarLista);*/
     }
 
     /**
