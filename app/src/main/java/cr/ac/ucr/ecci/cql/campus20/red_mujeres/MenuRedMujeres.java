@@ -33,11 +33,11 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
-    private void popupRegistro() {
+    private void popupRegistro(String nombre) {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
 
-        builder.setTitle("Oh-uh!");
+        builder.setTitle("Oh-uh " + nombre + "!");
         builder.setMessage("Parece que no has enviado la solicitud de registro para unirte a la Red de Mujeres.");
 
         String positiveText = "Enviar Solicitud";
@@ -68,17 +68,18 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     private void validarUsuario(String id) {
 
-        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(id).child("Validado");
+        DatabaseReference user = mDatabase.getReference("usuarios_red_mujeres").child(id);
         usuario.autCallback(user, new FirebaseListener() {
             @Override
             // revisa si el usuario ya ha sido validado
             public void exito(DataSnapshot dataSnapshot) {
-                if ((boolean) dataSnapshot.getValue()) {
+                if ((boolean) dataSnapshot.child("Validado").getValue()) {
                     // si si continue
                     startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
                 } else {
                     // si no muestre popup
-                    popupRegistro();
+                    String nombre = (String) dataSnapshot.child("Nombre").getValue();
+                    popupRegistro(nombre);
                 }
             }
             @Override
@@ -104,6 +105,9 @@ public class MenuRedMujeres extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         enviarConfirmacion(true);
                         // write 1 en la bd
+
+                        //continua a actividad
+                        startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
                     }
                 });
 
