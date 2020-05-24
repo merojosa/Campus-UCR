@@ -72,13 +72,12 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         }
         @Override
         public void onClick(View v) {
-            // Triggers click upwards to the adapter on click
-//            if (listener != null) {
-//                int position = getAdapterPosition();
-//                if (position != RecyclerView.NO_POSITION) {
-//                    listener.onItemClick(itemView, position);
-//                }
-//            }
+            if (listener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(v, position);
+                }
+            }
         }
     }
 

@@ -20,7 +20,7 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 public class MainEmptyActivity extends AppCompatActivity
 {
     // Unicamente para testing
-    public static final boolean OMITIR_LOGIN = false;
+    public static final boolean OMITIR_LOGIN = true;
 
 
 
