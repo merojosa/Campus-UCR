@@ -96,6 +96,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments.
                     }
                 });
+
                 MarkerOptions options = new MarkerOptions();
                 options.position(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()));
                 mapboxMap.addMarker(options);
