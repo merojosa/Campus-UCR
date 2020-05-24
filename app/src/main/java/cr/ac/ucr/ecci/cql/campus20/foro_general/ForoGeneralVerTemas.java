@@ -176,7 +176,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
             @Override
             public void onHeartClick(boolean check, int position) {
-
+                //conseguir id del tema seleccionado
                 int idTema;
                 String nombreTema;
                 if(idList.size() != 0){
