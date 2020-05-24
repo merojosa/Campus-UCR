@@ -2,6 +2,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
