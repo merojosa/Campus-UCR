@@ -29,9 +29,9 @@ public class MenuRedMujeres extends AppCompatActivity {
 //        if (!validarUsuario()) {
 //            popupRegistro();
 //        } else {
-//            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
-//        }
-        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
+            startActivity(new Intent(MenuRedMujeres.this, MainRedMujeres.class));
+        //}
+        //startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
 
     }
 

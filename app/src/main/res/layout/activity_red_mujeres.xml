@@ -31,7 +31,7 @@
             android:elevation="24dp"
             android:enabled="true"
             android:paddingLeft="24dp"
-            android:text="Ir al punto seleccionado en el mapa."
+            android:text="Comenzar ruta al destino elegido"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
             android:textColor="@color/gris_medio_UCR"
