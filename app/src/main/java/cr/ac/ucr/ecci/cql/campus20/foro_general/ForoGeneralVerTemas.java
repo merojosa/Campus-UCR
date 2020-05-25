@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterViewAnimator;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,12 +35,20 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerTemas extends AppCompatActivity {
 
+    private EditText search;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    private AdaptadorTemas adapter;
+
     private TemaViewModel mTemaViewModel;
     private FavoritoViewModel mFavoritoViewModel;
+
+    private RecyclerView recyclerView;
+    private List<Integer> idList;
+
 
     /**
      * Método que se invoca al iniciar la actividad temas en el foro general,
@@ -48,69 +59,14 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_temas);
+        idList = new ArrayList<>();
 
-        // Instanciación del RecyclewView
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final AdaptadorTemas adapter = new AdaptadorTemas(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        busquedaFiltrada();
+        iniciarRecycler();
+        iniciarAdapter();
+        llenar();
+        escuchar();
 
-        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
-        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
-
-        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
-        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-            @Override
-            public void onChanged(List<Tema> temas) {
-                if (temas != null)
-                    adapter.setTemas(temas);        // Se llama al método del adapter
-            }
-        });
-
-        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
-        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
-            @Override
-            public void onChanged( @Nullable final List<Favorito> favoritos) {
-                adapter.setFavoritos(favoritos);    // Se llama al método del adapter
-            }
-        });
-
-        // Recepción de los clicks del adapter
-        adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                int idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
-                String temaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
-                // Llamada a la actividad de ver preguntas
-                Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
-                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
-                intent.putExtra("temaSeleccionado", temaSeleccionado);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onHeartClick(boolean check, int position) {
-
-                String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
-                int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
-
-                if (check) {
-                    // Se da un mensaje al usuario
-                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
-                            " añadido a Favoritos", Toast.LENGTH_SHORT).show();
-
-                    // Se inserta el tema como Favorito
-                    añadirTemaFavorito(idTema);
-                } else {
-                    // Se da un mensaje al usuario
-                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
-                            " quitado de Favoritos", Toast.LENGTH_SHORT).show();
-
-                    // Se elimina al tema de la lista de Favoritos
-                    eliminarTemaFavorito(idTema);
-                }
-            }
-        });
 
 
         //Codigo que maneja la navegacion de izquierda a derecha
@@ -147,6 +103,167 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
 
     }
+
+    private void iniciarAdapter(){
+        //instanciando el adapter
+        this.adapter = new AdaptadorTemas(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void llenar(){
+        mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
+        mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
+
+        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                if (temas != null)
+                    adapter.setTemas(temas);        // Se llama al método del adapter
+            }
+        });
+
+        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
+        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
+            @Override
+            public void onChanged( @Nullable final List<Favorito> favoritos) {
+                adapter.setFavoritos(favoritos);    // Se llama al método del adapter
+            }
+        });
+
+    }
+
+    private void iniciarRecycler() {
+        // Instanciación del RecyclewView
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void escuchar(){
+        // Recepción de los clicks del adapter
+        adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+
+                //conseguir id del tema seleccionado
+                int idTemaSeleccionado;
+                String temaSeleccionado;
+                if(idList.size() != 0){
+                    idTemaSeleccionado = idList.get(position);
+                }
+                else{
+                    idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                }
+                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int i = 0 ;
+                int fin = 0;
+                Tema result = new Tema(0 , "", "", 0,0); //tema comodin
+                while (i < counter && fin ==0) {
+                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTemaSeleccionado) {
+                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                        fin = 1;
+                    }
+                    i++;
+                }
+                temaSeleccionado = result.getTitulo();
+
+                // Llamada a la actividad de ver preguntas
+                Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
+                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+                intent.putExtra("temaSeleccionado", temaSeleccionado);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onHeartClick(boolean check, int position) {
+                //conseguir id del tema seleccionado
+                int idTema;
+                String nombreTema;
+                if(idList.size() != 0){
+                    idTema = idList.get(position);
+                }
+                else{
+                    idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                }
+                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int i = 0 ;
+                int fin = 0;
+                Tema result = new Tema(0 , "", "", 0,0); //tema comodin
+                while (i < counter && fin ==0) {
+                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTema) {
+                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                        fin = 1;
+                    }
+                    i++;
+                }
+                nombreTema = result.getTitulo();
+
+                //String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
+                //int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+
+                if (check) {
+                    // Se da un mensaje al usuario
+                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
+                            " añadido a Favoritos", Toast.LENGTH_SHORT).show();
+
+                    // Se inserta el tema como Favorito
+                    añadirTemaFavorito(idTema);
+                } else {
+                    // Se da un mensaje al usuario
+                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
+                            " quitado de Favoritos", Toast.LENGTH_SHORT).show();
+
+                    // Se elimina al tema de la lista de Favoritos
+                    eliminarTemaFavorito(idTema);
+                }
+            }
+        });
+    }
+
+
+    private void busquedaFiltrada() {
+        this.search = findViewById(R.id.search);
+        this.search.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_black_24dp, 0, 0, 0);
+        this.search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filtrar(s.toString());
+
+            }
+        });
+    }
+
+
+
+    private void filtrar(String texto) {
+        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                if (temas != null)
+                    adapter.filterTemas(temas, texto.toLowerCase(), idList);        // Se llama al método del adapter
+            }
+        });
+
+
+        // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
+        mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
+            @Override
+            public void onChanged( @Nullable final List<Favorito> favoritos) {
+                adapter.filterFavoritos(favoritos);    // Se llama al método del adapter
+            }
+        });
+
+    }
+
+
+
 
     /**
      * Método que se encarga de invocar el método para inserción del ViewModel para
