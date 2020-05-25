@@ -26,7 +26,7 @@ public class InterestPointsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interest_points);
 
         db = new FirebaseDB(getApplicationContext());
-        //new DeploymentScript().RunScript(getApplicationContext(), db);
+        new DeploymentScript().RunScript(getApplicationContext(), db);
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
 
         //Set Event
