@@ -16,6 +16,7 @@
         <service android:name=".GuardarAppService" />
 
 
+        <activity android:name=".foro_general.ForoGeneralVerPreguntas"></activity>
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ConfiguracionActivity" />
         <activity android:name=".ucr_eats.activites.MealsActivity" />
         <activity
@@ -50,8 +50,7 @@
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="locked">
-        </activity>
+            android:screenOrientation="locked"></activity>
     </application>
 
 </manifest>
