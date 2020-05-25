@@ -6,6 +6,19 @@
     <!-- Maps required strings -->
     <string name="MAPBOX_ACCESS_TOKEN">pk.eyJ1IjoiYXBsaWNhY2lvbmVzbW92aWxlcyIsImEiOiJjazlvZnAybjEwMDRxM3ZxcXNyd29ueXQzIn0.LvWHKVTUqzPXriPY_NY0sQ</string>
     <string name="goTo">Go to in maps</string>
+    <string name="placeNameKey">Lugar:</string>
+    <string name="placeNameValue">Escuela Default</string>
+
+    <string name="placeDescriptionKey">Descripción:</string>
+    <string name="placeDescriptionValue"> Descripció de la Escuela Default</string>
+
+    <string name="placeScheduleKey">Horario:</string>
+    <string name="placeScheduleValue">7:00 am - 7:00 pm</string>
+
+    <string name="placeNumberKey">Teléfono:</string>
+    <string name="placeNumberValue">2222 3333</string>
+    <string name="ucrMapDetails">Detalles</string>
+    <string name="directions_activity_toast_message"> Something something</string>
     <!-- End of Maps required strings -->
     <string name="buscar">Buscar soda...</string>
 

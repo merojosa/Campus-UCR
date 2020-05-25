@@ -8,19 +8,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeShopsActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class InterestPointsActivity extends AppCompatActivity {
 
     GridLayout mainGrid;
 
+    private FirebaseDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interest_points);
 
+        db = new FirebaseDB(getApplicationContext());
+        new DeploymentScript().RunScript(getApplicationContext(), db);
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
 
         //Set Event
@@ -39,7 +45,8 @@ public class InterestPointsActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     if (finalI == 0) {
-
+                        Intent intent = new Intent(InterestPointsActivity.this, CoffeShopsActivity.class);
+                        startActivity(intent);
                     }
                     else if ( finalI == 1) {
 
