@@ -78,7 +78,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
     School school;
     Coffe coffe;
-    private String nameTemporal = "a la Escuela";
+    private String nameTemporal = "";
     Coordinate coordinate;
     private Intent details;
     Double originLatitude = 0.00;
