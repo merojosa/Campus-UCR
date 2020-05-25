@@ -15,18 +15,21 @@ import java.util.concurrent.Executors;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.RespuestaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class, Favorito.class}, version = 6, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class, Respuesta.class}, version = 6, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
 
     public abstract TemaDao temaDao();
     public abstract FavoritoDao favoritoDao();
     public abstract PreguntaDao preguntaDao();
+    public abstract RespuestaDao respuestaDao();
 
     private static ForoGeneralDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
