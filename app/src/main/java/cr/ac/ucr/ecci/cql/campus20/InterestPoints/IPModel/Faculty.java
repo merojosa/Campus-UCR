@@ -69,6 +69,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         this.description = description;
     }
 
+    @Override
     public int getImage() {
         return image;
     }

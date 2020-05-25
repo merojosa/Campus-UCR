@@ -113,6 +113,7 @@ public class School extends GeneralData implements Parcelable {
         this.description = description;
     }
 
+    @Override
     public int getImage() {
         return image;
     }

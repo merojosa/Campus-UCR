@@ -2,13 +2,11 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,9 +24,8 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
-import timber.log.Timber;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
+public class RVAdapter extends RecyclerView.Adapter<cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter.SodaViewHolder>
 {
     private final Activity context;
     List<SodaCard> sodaCards;

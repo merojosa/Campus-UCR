@@ -90,6 +90,7 @@ public class Coffe extends GeneralData  implements Parcelable {
     public String getDescription() {
         return description;
     }
+
     @Override
     public int getId() {
         return id;
