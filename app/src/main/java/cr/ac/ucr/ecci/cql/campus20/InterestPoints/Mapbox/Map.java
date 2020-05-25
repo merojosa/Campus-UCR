@@ -43,6 +43,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -71,10 +72,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private NavigationMapRoute navigationMapRoute;
     private TextView TextButtton;
 
+
     //variables para inicializar navegación
     private Button button;
 
-    School place;
+    School school;
+    Coffe coffe;
+    private String nameTemporal = "Nombre generico";
     Coordinate coordinate;
     private Intent details;
     Double originLatitude = 0.00;
@@ -92,7 +96,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         // Getting item title information
         String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
         // Getting the place that the map is showing
-        this.place = getIntent().getParcelableExtra("place");
+
         // Getting the Coordinates of the place
         this.coordinate = getIntent().getParcelableExtra("coordinate");
         destinationLatitude = coordinate.getLatitude();
@@ -126,7 +130,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
                 //Texto de boton de comienzo de ruteo
                 TextButtton = (TextView)findViewById(R.id.startButton);
-                TextButtton.setText("Ir a " + place.getName());
+                TextButtton.setText("Ir a " + nameTemporal);
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

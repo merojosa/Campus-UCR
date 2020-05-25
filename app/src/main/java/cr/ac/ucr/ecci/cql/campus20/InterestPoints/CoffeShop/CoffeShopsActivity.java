@@ -24,6 +24,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
@@ -38,6 +39,8 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private List<Coffe> coffeList;
 
     private ProgressBar spinner;
+    private Coffe coffe;
+    private Coordinate coordinate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,20 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         childActivity.putExtra("typeActivity", 0);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", coffeList.get(index).getDescription());
+
+
+        // Setting school and coordinate objects
+        this.coffe = coffeList.get(index);
+        this.coordinate = new Coordinate();
+        // Estas son coordenadas temporales
+        coordinate.setLatitude(9.911820721309361);
+        coordinate.setLongitude(-84.08615402814974);
+        //getSpecificCoordenates(school.getId());
+
+        childActivity.putExtra("place", coffe);
+        childActivity.putExtra("index", 2);
+        childActivity.putExtra("coordinate", coordinate);
+
         startActivity(childActivity);
 
     }

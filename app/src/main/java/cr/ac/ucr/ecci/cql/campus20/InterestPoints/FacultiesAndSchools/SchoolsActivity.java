@@ -97,6 +97,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         //getSpecificCoordenates(school.getId());
 
         childActivity.putExtra("place", school);
+        childActivity.putExtra("index", 1);
         childActivity.putExtra("coordinate", coordinate);
 
         startActivity(childActivity);
