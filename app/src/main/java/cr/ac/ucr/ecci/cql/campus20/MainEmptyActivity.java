@@ -19,10 +19,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 public class MainEmptyActivity extends AppCompatActivity
 {
-    // Unicamente para testing
-    public static final boolean OMITIR_LOGIN = false;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -41,38 +37,16 @@ public class MainEmptyActivity extends AppCompatActivity
     {
         LoginBD loginBD = new FirebaseBD();
         Redireccionador redireccionador = new Redireccionador();
-
-        // TESTING
-//        loginBD.cerrarSesion();
-
-        if(OMITIR_LOGIN == true)
+        
+        if(loginBD.autenticado())
         {
-            Task tareaValidador = loginBD.iniciarSesion("test@ucr.ac.cr", "123456");
-
-            tareaValidador.addOnCompleteListener(this, task ->
-            {
-                if(task.isSuccessful())
-                {
-                    redireccionador.irActividadGuardada(this);
-                }
-                else
-                {
-                    startActivity(new Intent(this, MainRedMujeres.class));
-                }
-                finish();
-            });
+            redireccionador.irActividadGuardada(this);
         }
         else
         {
-            if(loginBD.autenticado())
-            {
-                redireccionador.irActividadGuardada(this);
-            }
-            else
-            {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-            }
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
+
     }
 }
