@@ -9,12 +9,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 //TODO: Implement CRUD operations using DataAccess helper class.
 /**
  * @brief Class that represents a Place database entity.
  * */
 
-public class Place implements Parcelable {
+public class Place extends GeneralData implements Parcelable {
 
     /*Columns*/
     private int id;
@@ -68,6 +70,12 @@ public class Place implements Parcelable {
         this.image = image;
     }
 
+    @Override
+    public String getTitle(){
+        return getName();
+    }
+
+    @Override
     public int getId() {
         return id;
     }
@@ -129,87 +137,6 @@ public class Place implements Parcelable {
         dest.writeString(type);
         dest.writeInt(rating);
         dest.writeInt(floor);
-    }
-
-    /**
-     * @param context Current app context.
-     * @return List containing all the rows in the table.
-     * */
-    public static List<Place> getPlacesList(Context context) {
-        List<Place> list = new ArrayList<>();
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-        Cursor cursor = dataAccess.selectAll(DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(new Place(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_DESCRIPTION)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE))
-            ));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        dataAccess.close();
-        return list;
-    }
-
-    /**
-     * Inserts a new row in Place table.
-     * @param context Current app context.
-     * @return The row ID of the newly inserted row, or -1 if an error occurred.
-     * */
-    public long insert(Context context){
-        ContentValues values = new ContentValues();
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID, getId());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_NAME, getName());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_DESCRIPTION, getDescription());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE, getType());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING, getRating());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR, getFloor());
-        values.put(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE, getImage());
-
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-        long result = dataAccess.insert(DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME, values);
-        dataAccess.close();
-        return result;
-    }
-
-    /**
-     * Retrieves the Place object identified by its id.
-     * @param context Current app context.
-     * @param id Foreign key to the place where the coordinate belongs.
-     * */
-    public static Place read(Context context, int id){
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-
-        Cursor cursor = dataAccess.select(
-                null,
-                DatabaseContract.InterestPoints.PlaceTable.TABLE_NAME,
-                DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID + " = " + Integer.toString(id)
-        );
-        cursor.moveToFirst();
-        Place place = new Place();
-
-        if (!cursor.isAfterLast()) {
-            place.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_ID)));
-            place.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_NAME)));
-            place.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_DESCRIPTION)));
-            place.setType(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_TYPE)));
-            place.setRating(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_RATING)));
-            place.setFloor(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_FLOOR)));
-            place.setImage(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.PlaceTable.TABLE_COLUMN_IMAGE)));
-        }
-        cursor.close();
-        dataAccess.close();
-        Log.d("placeRead", "The place with id: " + Integer.toString(id) + " had been read from database.");
-        return place;
     }
 
     public int getImage() {

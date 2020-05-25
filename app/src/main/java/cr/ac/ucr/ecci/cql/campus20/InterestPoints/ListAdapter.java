@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DataAccess;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/
@@ -86,7 +85,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
+    if(temp != null)
         return temp.size();
+    else
+        return 0;
     }
 
     public void setListData(List<GeneralData> data){

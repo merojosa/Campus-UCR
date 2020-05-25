@@ -17,7 +17,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/nameKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -27,7 +26,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/nameValue"
+                android:id="@+id/nameBody"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -38,8 +37,7 @@
                 android:layout_marginBottom="10dp"/>
 
 
-            <!-- <TextView
-                android:id="@+id/descriptionKey"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +47,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/descriptionValue"
+                android:id="@+id/placeDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -57,11 +55,10 @@
                 android:text="@string/placeDescriptionValue"
                 android:textAlignment="gravity"
                 android:textSize="20dp"
-                android:layout_marginBottom="10dp"/> -->
+                android:layout_marginBottom="10dp"/>
 
 
             <TextView
-                android:id="@+id/scheduleKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -71,7 +68,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/scheduleValue"
+                android:id="@+id/publisher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -83,7 +80,6 @@
 
 
             <TextView
-                android:id="@+id/phoneKey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -93,7 +89,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/phoneValue"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
