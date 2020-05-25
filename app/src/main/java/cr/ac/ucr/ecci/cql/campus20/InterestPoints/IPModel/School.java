@@ -3,6 +3,8 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 /**
  * Class that represents a School database entity.
  * */
-public class School extends GeneralData {
+public class School extends GeneralData implements Parcelable {
 
     /*Columns*/
     private int id;
@@ -44,6 +46,27 @@ public class School extends GeneralData {
         this.name = name;
         this.description = description;
     }
+
+    protected School(Parcel in) {
+        id = in.readInt();
+        id_faculty_fk = in.readInt();
+        id_place_fk = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        image = in.readInt();
+    }
+
+    public static final Creator<School> CREATOR = new Creator<School>() {
+        @Override
+        public School createFromParcel(Parcel in) {
+            return new School(in);
+        }
+
+        @Override
+        public School[] newArray(int size) {
+            return new School[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -96,5 +119,20 @@ public class School extends GeneralData {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(id_faculty_fk);
+        dest.writeInt(id_place_fk);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeInt(image);
     }
 }

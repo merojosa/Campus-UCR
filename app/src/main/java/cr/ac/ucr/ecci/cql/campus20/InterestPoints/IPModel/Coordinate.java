@@ -3,14 +3,15 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
-
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 /**
  * Class that represents a Coordinate database entity.
  * */
-public class Coordinate extends GeneralData {
+public class Coordinate extends GeneralData implements Parcelable {
 
     private int id;
     private int id_place_fk;
@@ -29,7 +30,25 @@ public class Coordinate extends GeneralData {
 
     public Coordinate() { }
 
-    @Override
+    protected Coordinate(Parcel in) {
+        id = in.readInt();
+        id_place_fk = in.readInt();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+    }
+
+    public static final Creator<Coordinate> CREATOR = new Creator<Coordinate>() {
+        @Override
+        public Coordinate createFromParcel(Parcel in) {
+            return new Coordinate(in);
+        }
+
+        @Override
+        public Coordinate[] newArray(int size) {
+            return new Coordinate[size];
+        }
+    };
+
     public int getId() {
         return id;
     }
@@ -62,4 +81,16 @@ public class Coordinate extends GeneralData {
         this.longitude = longitude;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(id_place_fk);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+    }
 }
