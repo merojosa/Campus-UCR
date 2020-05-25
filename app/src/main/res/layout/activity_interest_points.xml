@@ -20,9 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:fontFamily="@font/myriad_pro_bold"
+            android:includeFontPadding="false"
             android:text="Puntos de Interés"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/white"
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            android:textStyle="normal" />
 
     </RelativeLayout>
 
@@ -69,11 +73,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text="Cafeterías"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -106,13 +111,14 @@
                     android:src="@drawable/sandwich" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text="   Sodas"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -146,13 +152,14 @@
                     android:src="@drawable/impresora" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text="Fotocopias"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -185,13 +192,14 @@
                     android:src="@drawable/empresa" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text="Facultades"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -223,13 +231,14 @@
                     android:src="@drawable/libros" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text="Bibliotecas"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -260,13 +269,14 @@
                     android:src="@drawable/administracion" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/myriad_pro_regular"
                     android:text=" Oficinas"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
