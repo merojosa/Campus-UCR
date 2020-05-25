@@ -78,7 +78,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
     School school;
     Coffe coffe;
-    private String nameTemporal = "Nombre generico";
+    private String nameTemporal = "";
     Coordinate coordinate;
     private Intent details;
     Double originLatitude = 0.00;
@@ -130,7 +130,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
                 //Texto de boton de comienzo de ruteo
                 TextButtton = (TextView)findViewById(R.id.startButton);
-                TextButtton.setText("Ir a " + nameTemporal);
+                TextButtton.setText("Ir " + nameTemporal);
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -23,6 +23,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
@@ -40,7 +41,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
     private FirebaseDB db;
     private School school;
-    private Coordinate coordinate;
+    private Coordinate coordinateGlobal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,16 +92,12 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
         // Setting school and coordinate objects
         this.school = schoolsList.get(index);
-        this.coordinate = new Coordinate();
-        coordinate.setLatitude(9.911820721309361);
-        coordinate.setLongitude(-84.08615402814974);
-        //getSpecificCoordenates(school.getId());
+        this.coordinateGlobal = new Coordinate();
+        //coordinate.setLatitude(9.911820721309361);
+        //coordinate.setLongitude(-84.08615402814974);
+        getSpecificCoordenates(school, childActivity);
 
-        childActivity.putExtra("place", school);
-        childActivity.putExtra("index", 1);
-        childActivity.putExtra("coordinate", coordinate);
 
-        startActivity(childActivity);
     }
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
@@ -117,6 +114,56 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void getSpecificCoordenates(School school, Intent childActivity){
+        DatabaseReference ref = db.getReference("Place");
+        ref.orderByChild("id").equalTo(school.getId_place_fk()).addValueEventListener(new ValueEventListener() {
+            private Place place;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot tempPlace : dataSnapshot.getChildren()){
+                    place = tempPlace.getValue(Place.class);
+                }
+
+                // ------------------ Tomando las cooredenadas del lugar ---------------------------
+
+                DatabaseReference ref2 = db.getReference("Coordinate");
+                ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(new ValueEventListener() {
+                    private Coordinate coordinate;
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot tempCoordinate : dataSnapshot.getChildren()){
+                            coordinate = tempCoordinate.getValue(Coordinate.class);
+                        }
+                        // Enviando los datos correctos al mapa
+
+                        childActivity.putExtra("place", school);
+                        childActivity.putExtra("index", 1);
+                        childActivity.putExtra("coordinate", coordinate);
+
+                        startActivity(childActivity);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                // ---------------------------------------------------------------------------------
+
+            }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
