@@ -30,7 +30,9 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     List<PreguntaCard> preguntaCards;
     Picasso picasso;
 
-    public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards)
+    private OnPreguntaListener mOnPreguntaListener;
+
+    public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards, OnPreguntaListener onPreguntaListener)
     {
         this.context = context;
         this.preguntaCards = preguntaCards;
@@ -38,6 +40,8 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                 .indicatorsEnabled(true)
                 .loggingEnabled(true) //add other settings as needed
                 .build();
+
+        this.mOnPreguntaListener = onPreguntaListener;
     }
 
 
@@ -73,7 +77,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.foro_general_pregunta_card, viewGroup, false);
 
-        return new PreguntaViewHolder(v);
+        return new PreguntaViewHolder(v, mOnPreguntaListener);
     }
 
     @Override
@@ -89,19 +93,33 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     }
 
     // El holder del adapter. Aqui va el contenido del card.
-    public class PreguntaViewHolder extends RecyclerView.ViewHolder
+    public class PreguntaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         CardView cardView;
         TextView textoPregunta;
 
-        public PreguntaViewHolder(View itemView)
+        OnPreguntaListener onPreguntaListener;
+
+        public PreguntaViewHolder(View itemView, OnPreguntaListener onPreguntaListener)
         {
             super(itemView);
 
             // Elementos del layout
             cardView = itemView.findViewById(R.id.preguntaCardView);
             textoPregunta = itemView.findViewById(R.id.textoPregunta);
+
+            this.onPreguntaListener = onPreguntaListener;
+
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            onPreguntaListener.onPreguntaClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnPreguntaListener {
+        void onPreguntaClick(int position);
     }
 }
