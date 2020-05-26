@@ -229,73 +229,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     // Recupera toda la informacion relacionada a los grupos
-    public void  fetchGroupUsersAsync(String id) {
-        usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
 
-        readGroupUsersData(new FireBaseRedMujeres.FirebaseCallBack() {
-            @Override
-            public void onCallBack(ArrayList<Map<String, Object>> list) {
-                System.out.println(list);
-            }
-        });
-    }
-
-    public void  fetchGroupAsync(String nombreGrupo) {
-        grupo = mDatabase.getReference("Comunidades").child(nombreGrupo);
-        readGroupData(new FireBaseRedMujeres.FirebaseCallBack() {
-            @Override
-            public void onCallBack(ArrayList<Map<String, Object>> list) {
-                Map<String, Object> map = list.get(0);
-                //Sacamamos del mapa los usarios pertenecientes al grupo
-                ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
-
-                for(int i = 0 ; i< users.size();++i){
-                    //Recuperamos la informacion de los integrantes del grupo
-                    fetchGroupUsersAsync(""+users.get(i));
-                }
-            }
-        });
-    }
-
-    //Obtiene el json especifico para la referencia a la base de datos en el nodo del grupo especifcado
-    public  void readGroupData(FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
-                Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
-                groupArr.add(list);
-                firebaseCallBack.onCallBack(groupArr);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        grupo.addListenerForSingleValueEvent(valueEventListener);
-
-    }
-
-    //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
-    public  void readGroupUsersData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
-                Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
-                userArr.add(list);
-                firebaseCallBack.onCallBack(userArr);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        usuarios.addListenerForSingleValueEvent(valueEventListener);
-    }
 
 
 }
