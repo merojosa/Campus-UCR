@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity
         }
         else
         {
-            mostrarMensajeError();
+            mostrarMensajeError("Por favor ingrese el correo y la contraseña");
         }
     }
 
@@ -79,14 +79,23 @@ public class LoginActivity extends AppCompatActivity
                 }
                 else
                 {
-                    mostrarMensajeError();
+                    if(VerificadorInternet.conexionInternet(this) == false)
+                    {
+                        mostrarMensajeError("Por favor revise su conexión a internet");
+                    }
+                    else
+                    {
+                        mostrarMensajeError("El correo o contraseña son inválidos");
+                    }
                 }
             });
         }
     }
 
-    public void mostrarMensajeError()
+
+
+    public void mostrarMensajeError(String mensaje)
     {
-        Toast.makeText(this, "Correo o contraseña inválidos", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 }

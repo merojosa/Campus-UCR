@@ -40,6 +40,11 @@ public class RestaurantRepository
         return this.restaurants;
     }
 
+    public double getRating(int id)
+    {
+        return this.restaurantDao.getRating(id);
+    }
+
     public List<Restaurant> searchRestaurantByName(String name)
     {
         List<Restaurant> restaurants = null;
