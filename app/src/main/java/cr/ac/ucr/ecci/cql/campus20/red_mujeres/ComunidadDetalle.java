@@ -26,10 +26,16 @@ public class ComunidadDetalle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunidad_detalle);
 
+        //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         //Se recibe objeto Comunidad
         Intent intent = getIntent();
         comunidad = intent.getParcelableExtra("comunidad");
         int vis = intent.getIntExtra("vis", 1);
+        String usuarioID = intent.getStringExtra("userID");
+        String usuarioNombre = intent.getStringExtra("userName");
 
         //Instanciación de los elementos del Layout
         ImageView imageView = findViewById(R.id.image_Comunity_CD);
@@ -57,7 +63,9 @@ public class ComunidadDetalle extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //Llamado a la actividad que despliega el mapa
-                    startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class));
+                    startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class)
+                            .putExtra("usuarioID", usuarioID)
+                            .putExtra("usuarioName", usuarioNombre));
                 }
             });
         }

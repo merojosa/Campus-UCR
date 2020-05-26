@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".red_mujeres.MisComunidades">
 
+
     <TextView
         android:id="@+id/text_Activity_Title"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="55dp"
         android:background="@color/blanco_UCR"
         android:elevation="10dp"
         android:fontFamily="sans-serif-black"
@@ -19,17 +20,9 @@
         android:textColor="@color/azul_UCR"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <fragment
-        android:id="@+id/NavigationBar"
-        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMyCommunities"
@@ -46,15 +39,35 @@
         app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title"
         app:layout_constraintVertical_bias="1.0" />
 
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabJoinCommunity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/gris_medio_UCR"
+        android:backgroundTint="@color/azul_UCR"
         android:src="@drawable/add_icon_foreground"
         android:textSize="20dp"
+        app:backgroundTint="@color/azul_UCR"
         app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
         app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
 

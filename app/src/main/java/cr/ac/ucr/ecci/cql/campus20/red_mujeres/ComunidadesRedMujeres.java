@@ -35,6 +35,10 @@ public class ComunidadesRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunidades_red_mujeres);
 
+        //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         //Se recibe objeto Comunidad
         Intent intent = getIntent();
         ArrayList<String> comunidades = intent.getStringArrayListExtra("comunidadesTotales");

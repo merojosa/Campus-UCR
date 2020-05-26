@@ -80,6 +80,7 @@ public class MenuRedMujeres extends AppCompatActivity {
 
                 // recupera atributo de validacion del usuario actual.
                 boolean val = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
+                String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
                 // revisa si el usuario ya ha sido validado
                 if (val) {
                     //recupera grupos a los que pertenece el usuario actual.
@@ -91,14 +92,13 @@ public class MenuRedMujeres extends AppCompatActivity {
 
 
                     // Despues de recuperar todos los datos necesarios, se llama a la actividad de comunidades
-                    continuarActividad(false);
+                    continuarActividad(false, nombre);
 
 
 
             // Manipulacion de datos del snapshot y llamados a metodos si el no esta validado.
                 } else {
                     // si no muestre popup
-                    String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
                     popupRegistro(nombre);
                 }
             }
@@ -109,9 +109,13 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     // Continua con la actividad de comunidades dependiendo si el usuario es nuevo o no.
-    private void continuarActividad(boolean usuarioNuevo) {
+    private void continuarActividad(boolean usuarioNuevo, String nombre) {
         if (!usuarioNuevo) {
-            startActivity(new Intent(MenuRedMujeres.this, MisComunidades.class).putStringArrayListExtra("misComunidades", comunidadesUsuario).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+            startActivity(new Intent(MenuRedMujeres.this, MisComunidades.class)
+                    .putStringArrayListExtra("misComunidades", comunidadesUsuario)          //Envío de las comunidades a las que pertenece el usuario actual
+                    .putStringArrayListExtra("comunidadesTotales", comunidadesTotales)      //Envío de todos las comunidades
+                    .putExtra("userID", currentUser)                                        //Envío del ID del usuario actual
+                    .putExtra("userName", nombre));                                         //Envío del nombre del usuario actual
         } else {
             startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
         }
@@ -136,7 +140,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                         // write 1 en la bd
 
                         //continua a actividad
-                        continuarActividad(true);
+                        continuarActividad(true, null);
                     }
                 });
 

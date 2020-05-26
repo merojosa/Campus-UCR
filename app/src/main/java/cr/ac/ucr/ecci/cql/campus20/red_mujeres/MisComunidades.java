@@ -27,16 +27,24 @@ public class MisComunidades extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ComunidadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private String usuarioID;
+    private String usuarioNombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_comunidades);  //Se asocia la actvidad con su correspondiente layout
 
+        //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         //Se reciben las listas de comunidades a las que pertenece un usuario y a las que puede unirse, a través de Intent
         Intent intent = getIntent();
         ArrayList<String> misComunidades = intent.getStringArrayListExtra("misComunidades");
         ArrayList<String> comunidadesTotales = intent.getStringArrayListExtra("comunidadesTotales");
+        usuarioID = intent.getStringExtra("userID");
+        usuarioNombre = intent.getStringExtra("userName");
 
         //Se pregunta si la persona pertenece a alguna comunidad
         if(misComunidades.size()==0)
@@ -102,7 +110,10 @@ public class MisComunidades extends AppCompatActivity {
             public void onItemClick(int position)
             {
                 //Se llama a la actividad para mostrar el detalle de una comunidad. Se envía la lista de comuidades y una bandera para no mostrar el botón de unión y así reutilizar el adapatdor
-                startActivity(new Intent(MisComunidades.this, ComunidadDetalle.class).putExtra("comunidad", comunidadList.get(position)).putExtra("vis", 0));
+                startActivity(new Intent(MisComunidades.this, ComunidadDetalle.class)
+                        .putExtra("comunidad", comunidadList.get(position)).putExtra("vis", 0)
+                        .putExtra("usuarioID", usuarioID)
+                        .putExtra("usuarioName", usuarioNombre));
             }
         });
     }
