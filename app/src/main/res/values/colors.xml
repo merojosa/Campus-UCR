@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    // Apegarse a estos colores
+
+    // Paleta de Colores
+
+    <color name="azul_UCR">#005DA4</color>
+    <color name="celeste_UCR">#00C0F3</color>
+    <color name="verde_UCR">#6DC067</color>
+    <color name="amarillo_UCR">#FFE06A</color>
+
+    // Paleta de Grises
+
+    <color name="gris_oscuro_UCR">#545454</color>
+    <color name="gris_medio_UCR">#9FA1A4</color>
+    <color name="gris_claro_UCR">#EDEDED</color>
+    <color name="blanco_UCR">#FFFFFF</color>
+
+
+    // Si se utilizan estos colores actuamente dentro de los módulos,
+    // intentar sustituirlos eventualmente por los colores oficiales.
+
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="white">#FFFFFF</color>
+    <color name="mapboxWhite">#ffffff</color>
+    <color name="mapboxBlue">#4264fb</color>
+    <color name="mapboxGrayLight">#c6d2e1</color>
+    <color name="mapboxPink">#ee4e8b</color>
+    <color name="mapboxYellow">#d9d838</color>
+    <color name="mapboxRed">#b43b71</color>
+    <color name="colorSecundary">#424242</color>
+    <color name="colorAccent2">#efb810</color>
+    <color name="black">#000000</color>
+
 </resources>

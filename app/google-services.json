@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "541299610041",
+    "firebase_url": "https://campus-virtual-ucr.firebaseio.com",
+    "project_id": "campus-virtual-ucr",
+    "storage_bucket": "campus-virtual-ucr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541299610041:android:23c869416ce94d25e66668",
+        "android_client_info": {
+          "package_name": "cr.ac.ucr.ecci.cql.campus20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541299610041-0pfka0mte8scc95qktnd2hstmfe1e6k5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnrnKNTO9HuCNJlsWIvd-rV7EHed1JU-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541299610041-0pfka0mte8scc95qktnd2hstmfe1e6k5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
