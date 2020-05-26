@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -26,12 +29,17 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private RecyclerView recyclerViewRespuestas;
     private RVAdapterRespuesta adapterRespuesta;
     private List<Respuesta> listaRespuestas;
+    FloatingActionButton buttonAgregarRespuestas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_respuestas);
         Intent mIntent = getIntent();
+
+        // Boton flotante de Agregar Respuestas
+        buttonAgregarRespuestas = findViewById(R.id.buttonAgregarRespuestas);
 
         PreguntaCard preguntaSeleccionada = mIntent.getParcelableExtra("preguntaSeleccionada");
 
@@ -59,9 +67,32 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 if (respuestas.size() > 0) {
                     adapterRespuesta.setRespuestas(respuestas);
                 } else {
-                    tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": "+  "No hay respuestas aun.");
+                    tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
                 }
             }
         });
+
+        // Asocia evento clic al boton
+        buttonAgregarRespuestas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearRespuesta(preguntaSeleccionada);
+            }
+        });
     }
+
+    /**
+     * Este metodo dirige a la actividad de crear respuesta
+     *
+     * @param pregunta indica la pregunta que será enviada mediante el intent para poder usarla
+     * para crear la respuesta asociada a esta pregunta
+     */
+    private void crearRespuesta(PreguntaCard pregunta) {
+        Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
+        intent.putExtra("preguntaSeleccionada", pregunta);
+
+        startActivity(intent);
+    }
+
+
 }

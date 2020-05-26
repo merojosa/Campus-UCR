@@ -31,4 +31,17 @@
         app:layout_constraintTop_toBottomOf="@+id/preguntaSeleccionada"
         app:layout_constraintVertical_bias="0.0"></androidx.recyclerview.widget.RecyclerView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonAgregarRespuestas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="#005DA4"
+        android:clickable="true"
+        android:src="@drawable/icono_agregar_preguntas_foro_general"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
