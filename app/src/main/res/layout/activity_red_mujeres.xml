@@ -31,8 +31,7 @@
             android:elevation="24dp"
             android:enabled="true"
             android:paddingLeft="24dp"
-            android:text="Ir al punto seleccionado en el mapa."
-            android:textAlignment="viewStart"
+            android:text="Comenzar ruta al destino elegido"
             android:textAllCaps="false"
             android:textColor="@color/gris_medio_UCR"
             android:textSize="14sp" />
@@ -63,5 +62,6 @@
         mapbox:maxImageSize="26dp"
         mapbox:rippleColor="@color/blanco_UCR"
         mapbox:useCompatPadding="true" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
