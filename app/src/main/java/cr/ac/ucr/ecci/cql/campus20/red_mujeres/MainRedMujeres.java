@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +32,7 @@ import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import android.graphics.Color;
 import timber.log.Timber;
 
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -46,7 +49,10 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 // Clases para calcular una ruta
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
+import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
+import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigationOptions;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
@@ -59,6 +65,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener;
+import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
+import com.mapbox.services.android.navigation.v5.utils.LocaleUtils;
 
 import java.util.List;
 
@@ -75,21 +84,26 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener  {
+public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
     // Variables para agregar la capa de localizacion
     private MapView mapView;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
-    private static final String SOURCE_ID = "SOURCE_ID";
-    private static final String ICON_ID = "ICON_ID";
-    private static final String LAYER_ID = "LAYER_ID";
+//    private static final String SOURCE_ID = "SOURCE_ID";
+//    private static final String ICON_ID = "ICON_ID";
+//    private static final String LAYER_ID = "LAYER_ID";
     private MapboxMap mapboxMap;
 
     // Variables para calcular y dibujar una ruta
     private DirectionsRoute currentRoute;
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
+
+
+//    // Builder para cambiar perfil de navegacion
+//    private MapboxDirections mapboxDirections;
+//    private MapboxDirections.Builder directionsBuilder;
 
     // Variables para inicializar navegación
     private Button button;
@@ -98,11 +112,13 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token)); //Tomar el token público
+        Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN)); //Tomar el token
         setContentView(R.layout.activity_red_mujeres);
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
     }
 
     // Determinar estilo de mapa y como reacciona a interacciones con el usuario
@@ -125,12 +141,13 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(View v) {
 
-                        // Pregunta a usuario si desea compartir ruta con personas de confianza
-                        FragmentManager fm = getSupportFragmentManager();
-                        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
-                        alertDialog.show(fm, "fragment_compartir_ruta");
+//                        // Pregunta a usuario si desea compartir ruta con personas de confianza
+//                        FragmentManager fm = getSupportFragmentManager();
+//                        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
+//                        alertDialog.show(fm, "fragment_compartir_ruta");
 
-                        //**********************dialogo debe manejar respuesta afirmativa/negativa y LUEGO llamar a navegacion
+                        //*PENDIENTE*dialogo debe manejar respuesta afirmativa/negativa y LUEGO llamar a navegacion
+                        // manejar con interfaz del fragmento mas adelante, o desplegar navegacion desde fragmento
 
                         boolean simulateRoute = false; //Simulación de ruta para testing
                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
@@ -210,6 +227,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(this)
                 .accessToken(Mapbox.getAccessToken())
+                .profile(DirectionsCriteria.PROFILE_WALKING)
                 .origin(origin)
                 .destination(destination)
                 .build()
@@ -237,6 +255,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                             navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap, R.style.NavigationMapRoute);
                         }
                         navigationMapRoute.addRoute(currentRoute);
+
                     }
 
                     @Override
@@ -300,6 +319,24 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    @Override
+    public void onCancelNavigation() {
+        Toast.makeText(this, "So you gonna cancel this whole thing?", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNavigationFinished() {
+        Toast.makeText(this, "And we're done!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNavigationRunning() {
+        // Pregunta a usuario si desea compartir ruta con personas de confianza
+        FragmentManager fm = getSupportFragmentManager();
+        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
+        alertDialog.show(fm, "fragment_compartir_ruta");
+    }
+
 
     @Override
     @SuppressWarnings( {"MissingPermission"})
@@ -343,6 +380,30 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
+//    public static final class Builder {
+//        private final MapboxDirections.Builder directionsBuilder;
+//
+//        private Builder() {
+//            directionsBuilder = MapboxDirections.builder();
+//        }
+//
+//        public Builder Profile(@NonNull @DirectionsCriteria.ProfileCriteria String profile) {
+//            directionsBuilder.profile(profile);
+//            return this;
+//        }
+//
+//        public static Builder builder(Context context) {
+//            return builder(context, new LocaleUtils());
+//        }
+//
+//        static Builder builder(Context context, LocaleUtils localeUtils) {
+//            return new Builder()
+//                    .Profile(DirectionsCriteria.PROFILE_WALKING);
+//        }
+//
+//    }
+
 }
 
 

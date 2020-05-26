@@ -64,4 +64,5 @@
         mapbox:rippleColor="@color/blanco_UCR"
         mapbox:useCompatPadding="true" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
