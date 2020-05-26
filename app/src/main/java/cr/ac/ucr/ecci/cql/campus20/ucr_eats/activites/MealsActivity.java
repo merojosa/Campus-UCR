@@ -8,8 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,10 +30,8 @@ public class MealsActivity extends AppCompatActivity
     private static final int COLUMNS = 2;
     private RecyclerView recyclerView;
     private MealsAdapter adapter;
-    private MealRepository repo;
-    private List<Meal> meals;
     private MealViewModel viewModel;
-
+    private List<Meal> meals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,11 +42,14 @@ public class MealsActivity extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
-        this.repo = new MealRepository(getApplication());
-
         // Get restaurant id from intent
         SodaCard card = Objects.requireNonNull(getIntent().getExtras()).getParcelable("SODACARD");
-        ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
+        if(card != null)
+        {
+            ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
+            this.setRestaurantImage(card);
+        }
+
 
         // Create adapter with empty dataset
         this.adapter = new MealsAdapter(this, meals);
@@ -57,6 +62,17 @@ public class MealsActivity extends AppCompatActivity
         // Add an observer to the available meals
         this.viewModel = ViewModelProviders.of(this).get(MealViewModel.class);
         this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
-
     }
+
+    private void setRestaurantImage(SodaCard card)
+    {
+        Picasso picasso = new Picasso.Builder(this).indicatorsEnabled(true)
+                .loggingEnabled(true).build();
+
+        // Image should have been saved in cache when loaded in previous activity
+        picasso.load(card.getId())
+                .placeholder(R.drawable.soda_placeholder)
+                .into((ImageView) findViewById(R.id.meals_rest_img));
+    }
+
 }

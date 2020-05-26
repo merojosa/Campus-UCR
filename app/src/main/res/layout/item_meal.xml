@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="185dp"
     android:layout_height="wrap_content"
     android:background="@android:drawable/dialog_holo_light_frame"
+    android:clickable="true"
+    android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -16,7 +19,9 @@
             android:id="@+id/meal_picture"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/soda_placeholder" />
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/soda_placeholder"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,14 +38,17 @@
                 android:gravity="center|left"
                 android:paddingLeft="5dp"
                 android:text="@string/meal"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <ImageView
                 android:id="@+id/meal_currency_img"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/foro_becas" />
+                app:srcCompat="@drawable/foro_becas"
+                android:contentDescription="@string/image"
+                android:scaleType="centerInside"/>
 
             <TextView
                 android:id="@+id/meal_price"
