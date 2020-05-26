@@ -4,10 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,17 +19,9 @@ import com.mapbox.mapboxsdk.maps.Style;
 
 // Imports especificos de Directions API
 import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.style.layers.LineLayer;
-import com.mapbox.mapboxsdk.style.layers.Property;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
-import android.graphics.Color;
-import timber.log.Timber;
 
-import android.widget.ProgressBar;
+import android.os.Handler;
 import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -51,8 +40,6 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
-import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigationOptions;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
@@ -65,16 +52,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener;
-import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
-import com.mapbox.services.android.navigation.v5.utils.LocaleUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
 
 // Imports especificos de Directions API
-import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
@@ -96,6 +82,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private DirectionsRoute currentRoute;
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
+
+    private Handler handler;
+    private Runnable runnable;
+
+    private static final String SOURCE_ID = "SOURCE_ID";
+    private static final String ICON_ID = "ICON_ID";
+    private static final String LAYER_ID = "LAYER_ID";
+
+    private List<Map<String,Object>>   map = new ArrayList<>();
 
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
@@ -130,6 +125,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 enableLocationComponent(style);
 
                 addDestinationIconSymbolLayer(style);
+                getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
                 button = findViewById(R.id.startButton);
@@ -372,6 +368,69 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
+    private void getGroupMembersPositions() {
+
+        //Solicidtamos a la base de datos informacion del grupo
+        FireBaseRedMujeres db = new FireBaseRedMujeres();
+        db.fetchGroupAsync("GrupoEj");
+// Un handler para preguntar a la BD cad cierta cantidad de tiempo.
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                //si he recuperado datos, los marco en el mapa
+                if(db.userArr.size() > 0){
+                    map = db.userArr;
+                    addMarkers(map);
+                    //volvemos a consultar por cambios
+                   db.fetchGroupAsync("GroupEj");
+                }
+                //pregunto cada medio segundo
+                handler.postDelayed(this, 200);
+            }
+        };
+
+// The first time this runs we don't need a delay so we immediately post.
+        handler.post(runnable);
+    }
+
+    //Recibe mapa que devuelve la base de datos con las posiciones de cada miembro del equipo
+    // Marca en el mapa las posiciones de estos
+    private void addMarkers(List<Map<String,Object>> map){
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+
+        for(int i = 0 ; i < map.size() ; ++i){
+            symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                    Point.fromLngLat( (Double)map.get(i).get("Longitud"), (Double)map.get(i).get("Latitud"))));
+        }
+
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
+
+                .withImage(ICON_ID, BitmapFactory.decodeResource(
+                        MainRedMujeres.this.getResources(), R.drawable.mapbox_marker_icon_default))
+
+                .withSource(new GeoJsonSource(SOURCE_ID,
+                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+
+
+                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                        .withProperties(
+                                iconImage(ICON_ID),
+                                iconAllowOverlap(true),
+                                iconIgnorePlacement(true),
+                                iconOffset(new Float[] {0f, -9f}))
+                ), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+
+// Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
+
+
+            }
+        });
+    }
+
 
 //    public static final class Builder {
 //        private final MapboxDirections.Builder directionsBuilder;
