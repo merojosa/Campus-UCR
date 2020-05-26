@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +16,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.*;
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -26,20 +23,20 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 1 Diana validada
     // 2 Denisse validada
     // 3 Berta no validada
-    private static final String currentUser = "2";
-    //para pruebas a futuro se debe ligar con el usuario actual de la pplicacion
+    private static final String currentUser = "3";
+    //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
     private FireBaseRedMujeres bd = new FireBaseRedMujeres();
     private String correo = bd.obtenerCorreoActual();
 
     //Estructuras de datos necesarias
-    ArrayList<String> comunidadesUsuario = new ArrayList<String>();
-
-    ArrayList<String> comunidadesTotales = new ArrayList<String>();
-
+    public final ArrayList<String> comunidadesUsuario;
+    public final ArrayList<String> comunidadesTotales;
     public final ArrayList<Map<String,Object>> groupArr;
     public final ArrayList<Map<String,Object>> userArr;
+
+    //Referencias a bd
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
 
@@ -47,11 +44,10 @@ public class MenuRedMujeres extends AppCompatActivity {
     public MenuRedMujeres() {
         this.groupArr = new ArrayList<>();
         this.userArr = new ArrayList<>();
+        this.comunidadesUsuario = new ArrayList<String>();
+        this.comunidadesTotales = new ArrayList<String>();
     }
 
-    public ArrayList<String> getComunidadesTotales() {
-        return comunidadesTotales;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +67,23 @@ public class MenuRedMujeres extends AppCompatActivity {
             @Override
             public void exito(DataSnapshot dataSnapshot) {
 
+
+            // Manipulacion de datos del snapshot y llamados a metodos sin importar si el usuario no esta validado.
+
+                //recupera todas las comunidades
+                for (DataSnapshot snapshot : dataSnapshot.child("Comunidades").getChildren()) {
+                    comunidadesTotales.add( (String) snapshot.child("Nombre").getValue());
+                }
+                comunidadesTotales(comunidadesTotales);
+
+
+
+            //Manipulacion de datos del snapshot y llamados a metodos si el usuario esta validado.
+
                 // recupera atributo de validacion del usuario actual.
                 boolean val = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
-
                 // revisa si el usuario ya ha sido validado
                 if (val) {
-                    // si si continue
-
                     //recupera grupos a los que pertenece el usuario actual.
                     for (DataSnapshot snapshot : dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Grupos").getChildren()) {
                         comunidadesUsuario.add( (String) snapshot.getValue());
@@ -85,37 +91,32 @@ public class MenuRedMujeres extends AppCompatActivity {
                     comunidadesUsuario(comunidadesUsuario);
 
 
-                    //recupera todas las comunidades
-                    for (DataSnapshot snapshot : dataSnapshot.child("Comunidades").getChildren()) {
-                        comunidadesTotales.add( (String) snapshot.child("Nombre").getValue());
-                    }
-                    comunidadesTotales(comunidadesTotales);
-
-
-                    //Manipulacion de datos del snapshot y llamados a metodos.
-                    // ...
-
-
-
 
                     // Despues de recuperar todos los datos necesarios, se llama a la actividad de comunidades
-//                    startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
-                    startActivity(new Intent(MenuRedMujeres.this, MisComunidades.class).putStringArrayListExtra("misComunidades", comunidadesUsuario).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+                    continuarActividad(false);
 
 
-                    // usuario no ha sido validado
+
+            // Manipulacion de datos del snapshot y llamados a metodos si el no esta validado.
                 } else {
                     // si no muestre popup
                     String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
                     popupRegistro(nombre);
-                    Toast.makeText(getApplicationContext(), "No entra", Toast.LENGTH_SHORT).show();
-
                 }
             }
             @Override
             public void fallo(DatabaseError databaseError) {}
         });
 
+    }
+
+    // Continua con la actividad de comunidades dependiendo si el usuario es nuevo o no.
+    private void continuarActividad(boolean usuarioNuevo) {
+        if (!usuarioNuevo) {
+            startActivity(new Intent(MenuRedMujeres.this, MisComunidades.class).putStringArrayListExtra("misComunidades", comunidadesUsuario).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+        } else {
+            startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+        }
     }
 
     private void procesarValidacion() {
@@ -126,9 +127,9 @@ public class MenuRedMujeres extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
 
         builder.setTitle("Psss Admin");
-        builder.setMessage("Quiere validar a este mae?");
+        builder.setMessage("Validar usuario?");
 
-        String positiveText = "Sure why not";
+        String positiveText = "Aceptar";
         builder.setPositiveButton(positiveText,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -137,16 +138,18 @@ public class MenuRedMujeres extends AppCompatActivity {
                         // write 1 en la bd
 
                         //continua a actividad
-                        startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
+                        continuarActividad(true);
                     }
                 });
 
-        String negativeText = "Safo safo";
+        String negativeText = "Denegar";
         builder.setNegativeButton(negativeText,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         enviarConfirmacion(false);
+
+                        startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
                     }
                 });
 
@@ -188,14 +191,8 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     }
 
+    // Envía respuesta de solicitud a ingreso a la comunidad
     private void enviarConfirmacion(boolean aceptado) {
-        Context context = getApplicationContext();
-        CharSequence text = correo;
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-
         List<String> toEmailList = Arrays.asList(correo); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
 
         String asunto = "";
@@ -220,6 +217,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         }
     }
 
+    // Metodos para sacar informacion de la bd de contexto y poder utilizarla
     public void comunidadesUsuario (List<String> list) {
         for(String s:list){
             System.out.println(s);
@@ -231,8 +229,8 @@ public class MenuRedMujeres extends AppCompatActivity {
             System.out.println(s);
         }
     }
-    //recupera toda la informacion relacionada a los grupos
 
+    // Recupera toda la informacion relacionada a los grupos
     public void  fetchGroupUsersAsync(String id) {
         usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
 
@@ -243,8 +241,6 @@ public class MenuRedMujeres extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void  fetchGroupAsync(String nombreGrupo) {
         grupo = mDatabase.getReference("Comunidades").child(nombreGrupo);
@@ -283,6 +279,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         grupo.addListenerForSingleValueEvent(valueEventListener);
 
     }
+
     //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
     public  void readGroupUsersData( FireBaseRedMujeres.FirebaseCallBack firebaseCallBack){
 
