@@ -38,19 +38,21 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         this.preguntaCards = preguntaCards;
         this.picasso = new Picasso.Builder(this.context)
                 .indicatorsEnabled(true)
-                .loggingEnabled(true) //add other settings as needed
+                .loggingEnabled(true)
                 .build();
 
         this.mOnPreguntaListener = onPreguntaListener;
     }
 
 
+    // Setea el set de preguntas
     public void setPreguntaCards(List<Pregunta> preguntas)
     {
         this.preguntaCards = convertToPreguntaCards(preguntas);
         notifyDataSetChanged();
     }
 
+    // Convierte una lista de preguntas en una lista de cartas de preguntas
     public List<PreguntaCard> convertToPreguntaCards(List<Pregunta> preguntas)
     {
         List<PreguntaCard> cards = new ArrayList<PreguntaCard>();
@@ -71,6 +73,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    // Infla la vista de la carta
     @NotNull
     @Override
     public PreguntaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
@@ -80,6 +83,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         return new PreguntaViewHolder(v, mOnPreguntaListener);
     }
 
+    // Setea el texto de la carta con el texto de la pregunta
     @Override
     public void onBindViewHolder(PreguntaViewHolder preguntaViewHolder, int i)
     {
@@ -92,7 +96,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         return preguntaCards == null ? 0 : preguntaCards.size();
     }
 
-    // El holder del adapter. Aqui va el contenido del card.
+    // El holder del adapter, aqui va el contenido del card
     public class PreguntaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         CardView cardView;
@@ -119,6 +123,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         }
     }
 
+    // Para agregar el listener de onClick de la pregunta
     public interface OnPreguntaListener {
         void onPreguntaClick(int position);
     }

@@ -15,8 +15,6 @@ public class RespuestaViewModel extends AndroidViewModel {
 
     public RespuestaViewModel(Application application) {
         super(application);
-
-        // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         mRepository = new RespuestaRepository(application);
     }
 
