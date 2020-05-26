@@ -110,6 +110,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Metodo para obtener la lista de temas y de favoritos desde los viewmodel
+     */
     private void llenar(){
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
@@ -139,6 +142,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * Metodo para escuchar los clicks sobre los items de la lista temas y los favoritos
+     */
     private void escuchar(){
         // Recepción de los clicks del adapter
         adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
@@ -220,7 +226,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * inicia un cruadro de texto y espera los cambios, en caso de haber cambios, llama al metodo filtrar
+     */
     private void busquedaFiltrada() {
         this.search = findViewById(R.id.search);
         this.search.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_black_24dp, 0, 0, 0);
@@ -240,7 +248,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Metodo que obtine el texto recibido del cuadro de texto, la lista de temas del viewmodel y
+     * lo envia al adapter para realizar el filtrado tanto de temas como de favoritos
+     * @param texto string recibido del cuadro de texto
+     */
     private void filtrar(String texto) {
         // Obtiene el cambio en la lista de temas, directo desde el ViewModel
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
