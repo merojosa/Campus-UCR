@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 1 Diana validada
     // 2 Denisse validada
     // 3 Berta no validada
-    private static final String currentUser = "3";
+    private static final String currentUser = "2";
     //para pruebas a futuro se debe ligar con el usuario actual de la pplicacion
 
     private FirebaseDatabase mDatabase;
@@ -33,8 +34,9 @@ public class MenuRedMujeres extends AppCompatActivity {
     private String correo = bd.obtenerCorreoActual();
 
     //Estructuras de datos necesarias
-    List<String> comunidadesUsuario = new ArrayList<String>();
-    List<String> comunidadesTotales = new ArrayList<String>();
+    ArrayList<String> comunidadesUsuario = new ArrayList<String>();
+
+    ArrayList<String> comunidadesTotales = new ArrayList<String>();
 
     public final ArrayList<Map<String,Object>> groupArr;
     public final ArrayList<Map<String,Object>> userArr;
@@ -45,6 +47,10 @@ public class MenuRedMujeres extends AppCompatActivity {
     public MenuRedMujeres() {
         this.groupArr = new ArrayList<>();
         this.userArr = new ArrayList<>();
+    }
+
+    public ArrayList<String> getComunidadesTotales() {
+        return comunidadesTotales;
     }
 
     @Override
@@ -92,11 +98,9 @@ public class MenuRedMujeres extends AppCompatActivity {
 
 
 
-
-
-
                     // Despues de recuperar todos los datos necesarios, se llama a la actividad de comunidades
-                    startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class));
+//                    startActivity(new Intent(MenuRedMujeres.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+                    startActivity(new Intent(MenuRedMujeres.this, MisComunidades.class).putStringArrayListExtra("misComunidades", comunidadesUsuario).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
 
 
                     // usuario no ha sido validado
@@ -104,6 +108,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                     // si no muestre popup
                     String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
                     popupRegistro(nombre);
+                    Toast.makeText(getApplicationContext(), "No entra", Toast.LENGTH_SHORT).show();
 
                 }
             }

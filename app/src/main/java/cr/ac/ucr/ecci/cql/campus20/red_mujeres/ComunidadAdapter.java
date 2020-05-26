@@ -1,10 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
         public ImageView mImageView;
         public TextView mTextViewNoMembers;
         public TextView mTextViewDescription;
+        public Button buttonJoinCommunity;
 
         public ComunidadViewHolder(View itemView, OnItemClickListener listener)
         {
@@ -45,22 +48,6 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
             mImageView = itemView.findViewById(R.id.image_Community);
             mTextViewNoMembers = itemView.findViewById(R.id.text_No_Members);
             mTextViewDescription = itemView.findViewById(R.id.text_Description_Content);
-
-//            Button buttonJoinCommunity = itemView.findViewById(R.id.button_Join_Community);
-//            buttonJoinCommunity.setOnClickListener(new View.OnClickListener()
-//            {
-//                @Override
-//                public void onClick(View v) {
-//                    if(mlistenerClick != null)
-//                    {
-//                        int position = getAdapterPosition();
-//                        if(position != RecyclerView.NO_POSITION)
-//                        {
-//                            mlistenerClick.onItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
 
             itemView.setOnClickListener(new View.OnClickListener()
             {

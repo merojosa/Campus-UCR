@@ -73,21 +73,6 @@
                 android:textSize="12dp"
                 android:textStyle="normal" />
 
-            <Button
-                android:id="@+id/button_Join_Community"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:background="@color/azul_UCR"
-                android:elevation="8dp"
-                android:text="Unirse"
-                android:textAppearance="@style/AppTheme.RedMujeres"
-                android:textColor="@color/gris_claro_UCR"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:typeface="normal" />
-
         </LinearLayout>
     </RelativeLayout>
 

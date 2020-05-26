@@ -13,7 +13,7 @@
         android:background="@color/blanco_UCR"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="Comunidades"
+        android:text="Detalle de comunidad"
         android:textAlignment="center"
         android:textColor="@color/azul_UCR"
         android:textSize="24sp"

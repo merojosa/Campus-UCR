@@ -25,6 +25,7 @@ public class ComunidadDetalle extends AppCompatActivity {
         //Se recibe objeto Comunidad
         Intent intent = getIntent();
         comunidad = intent.getParcelableExtra("comunidad");
+        int vis = intent.getIntExtra("vis", 1);
 
         //Instanciación de los elementos del Layout
         ImageView imageView = findViewById(R.id.image_Comunity_CD);
@@ -40,6 +41,9 @@ public class ComunidadDetalle extends AppCompatActivity {
         textViewCommunityDescription.setText(comunidad.getCommunityDescription());
         textViewNoMembers.setText(comunidad.getCommunityNoMembers());
         //textViewMemberList.setText(); //Llenar con los miembros de la BD
+
+        if(vis == 0)
+            buttonJoinCommunity.setVisibility(View.GONE);
 
         buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
