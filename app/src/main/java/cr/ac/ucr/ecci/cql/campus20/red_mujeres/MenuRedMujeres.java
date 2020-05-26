@@ -2,12 +2,10 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +21,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 1 Diana validada
     // 2 Denisse validada
     // 3 Berta no validada
-    private static final String currentUser = "3";
+    private static final String currentUser = "1";
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;

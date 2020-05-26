@@ -1,20 +1,14 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.ComunidadViewHolder>

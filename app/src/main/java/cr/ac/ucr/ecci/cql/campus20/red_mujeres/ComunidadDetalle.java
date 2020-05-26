@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ComunidadDetalle extends AppCompatActivity {
@@ -43,12 +44,12 @@ public class ComunidadDetalle extends AppCompatActivity {
         //textViewMemberList.setText(); //Llenar con los miembros de la BD
 
         if(vis == 0)
-            buttonJoinCommunity.setVisibility(View.GONE);
+            buttonJoinCommunity.setText("Ir al mapa de la Comunidad");
 
         buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpUnirse(getApplicationContext());
+                startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class));
             }
         });
     }
