@@ -86,26 +86,22 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
-    // Variables para agregar la capa de localizacion
+    // Variables para agregar el mapa y la capa de localizacion
+    private MapboxMap mapboxMap;
     private MapView mapView;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
-//    private static final String SOURCE_ID = "SOURCE_ID";
-//    private static final String ICON_ID = "ICON_ID";
-//    private static final String LAYER_ID = "LAYER_ID";
-    private MapboxMap mapboxMap;
 
     // Variables para calcular y dibujar una ruta
     private DirectionsRoute currentRoute;
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
 
-
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
 //    private MapboxDirections.Builder directionsBuilder;
 
-    // Variables para inicializar navegación
+    // Botón para inicializar navegación
     private Button button;
 
     // Despliegue mapa al llamar a la actividad
@@ -147,14 +143,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 //                        alertDialog.show(fm, "fragment_compartir_ruta");
 
                         //*PENDIENTE*dialogo debe manejar respuesta afirmativa/negativa y LUEGO llamar a navegacion
-                        // manejar con interfaz del fragmento mas adelante, o desplegar navegacion desde fragmento
+                        // posiblemente se deba colocar en el metodo de despliegue de navegacion del listener
+                        // al implementar la navegación con navigationView
 
                         boolean simulateRoute = false; //Simulación de ruta para testing
                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                                 .directionsRoute(currentRoute)
                                 .shouldSimulateRoute(simulateRoute)
                                 .build();
-                        // Call this method with Context from within an Activity
+
                         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
                     }
                 });
@@ -179,11 +176,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         });
     }
-
-
-    //*************************************************
-    //FUNCIONES DE NAVEGACION:
-    //*************************************************
 
     // Iconos de navegacion
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
