@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,65 +21,87 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class MisComunidades extends AppCompatActivity {
 
-    ArrayList<Comunidad> comunidadList;
+    ArrayList<Comunidad> comunidadList;     //Arreglo para almacenar las comunidades a las que peretenece el usuario actual del sistema
 
+    //Objetos para el manejo del layout personalizado usando Cards en un RecyclerView con Adapter para la actualización de los diferente elementos de la interfaz
     private RecyclerView mRecyclerView;
     private ComunidadAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mis_comunidades);
+        setContentView(R.layout.activity_mis_comunidades);  //Se asocia la actvidad con su correspondiente layout
 
+        //Se reciben las listas de comunidades a las que pertenece un usuario y a las que puede unirse, a través de Intent
         Intent intent = getIntent();
         ArrayList<String> misComunidades = intent.getStringArrayListExtra("misComunidades");
         ArrayList<String> comunidadesTotales = intent.getStringArrayListExtra("comunidadesTotales");
-        createComunidadList(misComunidades);
-        buildRecyclerView();
 
-        //Instanciación del botón flotante
+        //Se pregunta si la persona pertenece a alguna comunidad
+        if(misComunidades.size()==0)
+        {
+            TextView textNotJoined = findViewById(R.id.text_Not_Joined);
+            textNotJoined.setText("No se ha unido a ningún grupo");
+        }
+        else
+        {
+            //Se construyen los objetos de tipo Comunidad con los datos obtenidos de la BD para desplega su información
+            createComunidadList(misComunidades);
+
+            //Se invoca al método para desplegar en el RecyclerView los Cards donde se despliegan las comunidades y sus detalles
+            buildRecyclerView();
+        }
+
+        //Instanciación del botón flotante para unirse a otra comunidad
         FloatingActionButton fabJoinCommunity = findViewById(R.id.fabJoinCommunity);
 
+        // Acción al pulsar el botón flotante
         fabJoinCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
+                //Llamado a la actividad para desplegar todas las comunidades existentes a las cuales el usuario actual puede unirse
                 startActivity(new Intent(MisComunidades.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
             }
         });
 
     }
 
+    //Método que toma los datos de la BD provenientes del Intent y construye la lista de comunidades
     public void createComunidadList(List<String> comunidades)
     {
         comunidadList = new ArrayList<>();
 
+        //Ciclo que toma del arreglo con los datos de la BD para crear cada objeto Comunidad y las almacena en el arreglo de la clase
         for(int i =0; i< comunidades.size(); ++i)
         {
-            //Toast.makeText(getApplicationContext(), "Comunidades[" + i +"]"+ comunidades.get(i), Toast.LENGTH_SHORT).show();
             comunidadList.add(new Comunidad(R.drawable.community,
                     comunidades.get(i),
                     comunidades.size() + " miembros",
                     new ArrayList<String>(),
-                    "Descripción genérica de ejemplo creada para la Comunidad "+ comunidades.get(0) + " del sistema"));
+                    "Descripción genérica de ejemplo creada para la Comunidad "+ comunidades.get(0) + " del sistema."));
         }
     }
 
+    //Método para dibujar los cards de las comunidades a las que pertenece el usuario actual dentro del RecyclerViewer del layout
     public void buildRecyclerView()
     {
-        mRecyclerView = findViewById(R.id.recyclerViewMyCommunities);
+        mRecyclerView = findViewById(R.id.recyclerViewMyCommunities);  //Instanciación del RecyclerView del layout donde se colocarán los cards
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ComunidadAdapter(comunidadList);
+        mLayoutManager = new LinearLayoutManager(this);        //Instanciación del LayoutManager en el contexto actual
+        mAdapter = new ComunidadAdapter(comunidadList);                //Instancia del adaptador construído para el manejo de los cards y su contenido
 
+        //Asociación del LayoutManager y del adaptador para el RecyclerView
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        //Manejo de click sobre un card
         mAdapter.setOnItemClickListener(new ComunidadAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(int position)
+            {
+                //Se llama a la actividad para mostrar el detalle de una comunidad. Se envía la lista de comuidades y una bandera para no mostrar el botón de unión y así reutilizar el adapatdor
                 startActivity(new Intent(MisComunidades.this, ComunidadDetalle.class).putExtra("comunidad", comunidadList.get(position)).putExtra("vis", 0));
             }
         });

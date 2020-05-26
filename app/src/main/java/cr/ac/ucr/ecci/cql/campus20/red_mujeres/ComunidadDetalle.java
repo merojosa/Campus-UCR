@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-
+/**Actividad para el despliegue de los detalles de una comunidad
+ * */
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +18,9 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ComunidadDetalle extends AppCompatActivity {
-    private Comunidad comunidad;
+
+    private Comunidad comunidad;    //Almacena los datos por ser desplegados en la vista
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +46,36 @@ public class ComunidadDetalle extends AppCompatActivity {
         textViewNoMembers.setText(comunidad.getCommunityNoMembers());
         //textViewMemberList.setText(); //Llenar con los miembros de la BD
 
+        //Condición para definir qué se muestra en el botón y su acción
         if(vis == 0)
+        {
+            //Se cambia el texto al botón
             buttonJoinCommunity.setText("Ir al mapa de la Comunidad");
 
-        buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class));
-            }
-        });
+            //Se define la acción para redireccionar al mapa
+            buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Llamado a la actividad que despliega el mapa
+                    startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class));
+                }
+            });
+        }
+        else
+        {
+            buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popUpUnirse(getApplicationContext());   //Despliegue del mensaje de confirmación para unirse al grupo seleccionado
+                }
+            });
+        }
     }
 
+    //Método que despliega un popup para determinar si un usuario quiere unirse a una comunidad
     public void popUpUnirse(Context context)
     {
-        // create a dialog with AlertDialog builder
+        // Creación del diálogo con AlertDialog builder. Primero se hace el constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(ComunidadDetalle.this, R.style.AppTheme_RedMujeres);
 
         builder.setTitle("Unirse");
@@ -68,7 +87,7 @@ public class ComunidadDetalle extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Toast.makeText(context, "Afirmativo" , Toast.LENGTH_SHORT).show();
-                        comunidad.Unirse(context);
+                        comunidad.Unirse(context);  //Llamado al método que agrega un usuario a una comunidad
                     }
                 });
 
@@ -81,6 +100,7 @@ public class ComunidadDetalle extends AppCompatActivity {
                     }
                 });
 
+        //Creación y despliegue del diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
     }

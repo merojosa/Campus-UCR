@@ -1,5 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-
+/**
+ * Clase para representar una comunidad o grupo
+ * */
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Parcel;
@@ -14,13 +16,14 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class Comunidad implements Parcelable
 {
-    private int communityImgRes;
-    private String communityName;
-    private String communityNoMembers;
-    private ArrayList<String> communityMembers;
-    private String communityDescription;
+    //Atributos que conforman una comunidad
+    private int communityImgRes;                //Almacena la imagen asociada a una comunidad
+    private String communityName;               //Almacena el nombre una comunidad
+    private String communityNoMembers;          //Contiene el número de miembros de la comunidad
+    private ArrayList<String> communityMembers; //Contiene una lista con los usuarios que pertenecen a una comunidad
+    private String communityDescription;        //Almacena la descripción de una comunidad
 
-
+    //Método constructor
     public Comunidad(int communityImgRes, String communityName, String communityNoMembers, ArrayList<String> communityMembers, String communityDescription) {
         this.communityImgRes = communityImgRes;
         this.communityName = communityName;
@@ -29,6 +32,7 @@ public class Comunidad implements Parcelable
         this.communityDescription = communityDescription;
     }
 
+    //Constructor para la parcelización del objeto
     protected Comunidad(Parcel in) {
         communityImgRes = in.readInt();
         communityName = in.readString();
@@ -49,6 +53,7 @@ public class Comunidad implements Parcelable
         }
     };
 
+    //Getters y setters de la clase
     public int getCommunityImgRes() {
         return communityImgRes;
     }
@@ -103,6 +108,7 @@ public class Comunidad implements Parcelable
         dest.writeString(this.communityDescription);
     }
 
+    //Método para registrar la unión del usuario a una comunidad
     public void Unirse(Context context)
     {
         Toast.makeText(context, "Se ha unido a " + this.getCommunityName(), Toast.LENGTH_SHORT).show();

@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="69dp"
         android:background="@color/blanco_UCR"
+        android:elevation="10dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
         android:text="Mis Comunidades"
         android:textAlignment="center"
         android:textColor="@color/azul_UCR"
         android:textSize="24sp"
-        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,5 +57,17 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
         app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
+
+    <TextView
+        android:id="@+id/text_Not_Joined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textAlignment="center"
+        android:textColor="@color/gris_medio_UCR"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
