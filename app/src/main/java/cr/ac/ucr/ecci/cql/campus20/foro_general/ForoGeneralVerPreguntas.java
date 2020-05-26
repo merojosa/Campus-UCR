@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,7 +20,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
-public class ForoGeneralVerPreguntas extends AppCompatActivity {
+public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
     private LiveData<List<Pregunta>> preguntas;
     private PreguntaViewModel mPreguntaViewModel;
     private TextView tituloTema;
@@ -41,7 +43,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity {
         // Si no se cambia el tamanno, hacer esto mejora el performance
         recyclerViewPreguntas.setHasFixedSize(true);
 
-        this.preguntasAdapter = new RVAdapterPregunta(this, preguntaCards);
+        this.preguntasAdapter = new RVAdapterPregunta(this, preguntaCards, this);
         recyclerViewPreguntas.setAdapter(preguntasAdapter);
 
         mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
@@ -62,5 +64,15 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onPreguntaClick(int position) {
+        PreguntaCard preguntaSeleccionada = preguntaCards.get(position);
+
+        Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
+        intent.putExtra("preguntaSeleccionada", preguntaSeleccionada);
+
+        startActivity(intent);
     }
 }
