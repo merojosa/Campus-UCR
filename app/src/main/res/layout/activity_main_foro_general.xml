@@ -2,9 +2,9 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_foro_general"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main_foro_general"
     tools:context=".foro_general.MainForoGeneral"
     android:background="@android:color/white">
 
@@ -72,7 +72,6 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </RelativeLayout>
-
 
     <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
     <include

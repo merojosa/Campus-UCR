@@ -1,19 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterViewAnimator;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,12 +14,20 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
@@ -71,7 +72,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
@@ -87,12 +88,20 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home_foro:
-                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
-                        startActivity(intentForo);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class));
                         break;
                     case R.id.temas_foro:
-                        Intent intent2Foro = new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class);
-                        startActivity(intent2Foro);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class));
+                        break;
+                    case R.id.pref_foro:
+                        startActivity(new Intent(ForoGeneralVerTemas.this, ConfiguracionActivity.class));
+                        break;
+                    case R.id.logout_foro:
+                        LoginBD login = new FirebaseBD();
+                        login.cerrarSesion();
+
+                        ActivityCompat.finishAffinity(ForoGeneralVerTemas.this);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, LoginActivity.class));
                         break;
                     default:
                         return true;

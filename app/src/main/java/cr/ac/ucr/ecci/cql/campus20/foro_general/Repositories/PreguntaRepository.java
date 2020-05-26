@@ -39,4 +39,26 @@ public class PreguntaRepository {
     public LiveData<List<Pregunta>> getPreguntasTema(int id){
         return mPreguntaDao.getPreguntasTema(id);
     }
+
+    /**
+     * Update a la base de datos, para sumar al contador de likes
+     * @param id Identificacion de la pregunta
+     * @param num cantidad a sumar al contador de likes
+     */
+    public void updateLikes(int id, int num) {
+        ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
+            mPreguntaDao.updateLikes(id, num);
+        });
+    }
+
+    /**
+     * Update a la base de datos, para sumar al contador de dislikes
+     * @param id Identificacion de la pregunta
+     * @param num cantidad a sumar al contador de dislikes
+     */
+    public void updateDislikes(int id, int num) {
+        ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
+            mPreguntaDao.updateDislikes(id, num);
+        });
+    }
 }

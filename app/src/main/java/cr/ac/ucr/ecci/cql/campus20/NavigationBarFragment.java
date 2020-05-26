@@ -23,6 +23,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolView
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.CrearPreguntaForoGeneral;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerPreguntas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
@@ -35,8 +36,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
  */
 public class NavigationBarFragment extends android.app.Fragment
 {
-
-
     /**
      * Construtor del fragmento
      */
@@ -100,7 +99,8 @@ public class NavigationBarFragment extends android.app.Fragment
                 // Ícono del módulo de mujeres ucr
                 navegacion.getMenu().getItem(1).setChecked(true);
             else
-                if (getActivity() instanceof MainForoGeneral || getActivity() instanceof CrearPreguntaForoGeneral ||getActivity() instanceof ForoGeneralVerTemas)
+                if (getActivity() instanceof MainForoGeneral || getActivity() instanceof CrearPreguntaForoGeneral
+                        || getActivity() instanceof ForoGeneralVerTemas || getActivity() instanceof ForoGeneralVerPreguntas)
                     // Ícono del módulo de foro
                     navegacion.getMenu().getItem(2).setChecked(true);
                 else

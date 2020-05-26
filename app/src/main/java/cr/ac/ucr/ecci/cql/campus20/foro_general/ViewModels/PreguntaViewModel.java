@@ -27,4 +27,8 @@ public class PreguntaViewModel extends AndroidViewModel {
     public LiveData<List<Pregunta>> getPreguntasTema(int id) { return mRepository.getPreguntasTema(id); }
 
     public void insert(Pregunta pregunta) { mRepository.insert(pregunta);}
+
+    public void updateLikes(int id, int num) { mRepository.updateLikes(id, num);}
+
+    public void updateDislikes(int id, int num) { mRepository.updateDislikes(id, num);}
 }

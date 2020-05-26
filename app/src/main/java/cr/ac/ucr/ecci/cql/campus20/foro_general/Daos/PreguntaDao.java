@@ -32,5 +32,13 @@ public interface PreguntaDao
 
     @Query("DELETE FROM Pregunta")
     void borrarTodo();
+
+    // Aumenta los likes
+    @Query("UPDATE Pregunta SET contadorLikes = contadorLikes + :num WHERE id = :id")
+    void updateLikes(int id,int num);
+
+    // Disminuye los likes
+    @Query("UPDATE Pregunta SET contadorDisikes = contadorDisikes + :num WHERE id = :id")
+    void updateDislikes(int id,int num);
 }
 
