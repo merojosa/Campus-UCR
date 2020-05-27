@@ -7,12 +7,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories.FavoritoRepository;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 
 public class FavoritoViewModel extends AndroidViewModel {
@@ -24,8 +20,6 @@ public class FavoritoViewModel extends AndroidViewModel {
     public FavoritoViewModel(Application application)
     {
         super(application);
-
-        // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         mRepository = new FavoritoRepository(application);
         mAllFavoritos = mRepository.getAllFavoritos();
     }
