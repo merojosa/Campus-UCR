@@ -54,6 +54,9 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     private int selectedPosition = -1;
 
     public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards)
+    private OnPreguntaListener mOnPreguntaListener;
+
+    public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards, OnPreguntaListener onPreguntaListener)
     {
 
         this.context = context;
@@ -63,10 +66,13 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                 .loggingEnabled(true) //add other settings as needed
                 .build();
 
+        this.mOnPreguntaListener = onPreguntaListener;
+
         mRankPreguntaViewModel = new ViewModelProvider((FragmentActivity) context).get(RankPreguntaViewModel.class);
         mPreguntaViewModel = new ViewModelProvider((FragmentActivity) context).get(PreguntaViewModel.class);
     }
 
+    // Setea el set de preguntas
     public void setPreguntaCards(List<Pregunta> preguntas)
     {
         this.preguntaCards = convertToPreguntaCards(preguntas);
@@ -91,6 +97,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         }
     }
 
+    // Convierte una lista de preguntas en una lista de cartas de preguntas
     public List<PreguntaCard> convertToPreguntaCards(List<Pregunta> preguntas)
     {
         List<PreguntaCard> cards = new ArrayList<PreguntaCard>();
@@ -111,15 +118,17 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    // Infla la vista de la carta
     @NotNull
     @Override
     public PreguntaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.foro_general_pregunta_card, viewGroup, false);
 
-        return new PreguntaViewHolder(v);
+        return new PreguntaViewHolder(v, mOnPreguntaListener);
     }
 
+    // Setea el texto de la carta con el texto de la pregunta
     @Override
     public void onBindViewHolder(PreguntaViewHolder preguntaViewHolder, int i)
     {
@@ -159,8 +168,8 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         return preguntaCards == null ? 0 : preguntaCards.size();
     }
 
-    // El holder del adapter. Aqui va el contenido del card.
-    public class PreguntaViewHolder extends RecyclerView.ViewHolder
+    // El holder del adapter, aqui va el contenido del card
+    public class PreguntaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         CardView cardView;
         TextView textoPregunta;
@@ -168,7 +177,9 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         ImageView iconDislike;
         TextView contadorLikes;
 
-        public PreguntaViewHolder(View itemView)
+        OnPreguntaListener onPreguntaListener;
+
+        public PreguntaViewHolder(View itemView, OnPreguntaListener onPreguntaListener)
         {
             super(itemView);
 
@@ -263,7 +274,20 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     }
                 }
             });
+
+            this.onPreguntaListener = onPreguntaListener;
+
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            onPreguntaListener.onPreguntaClick(getAdapterPosition());
+        }
+    }
+
+    // Para agregar el listener de onClick de la pregunta
+    public interface OnPreguntaListener {
+        void onPreguntaClick(int position);
     }
 }

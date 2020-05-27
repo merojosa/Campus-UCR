@@ -6,18 +6,14 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.PreguntaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
 public class PreguntaRepository {
 
-    // Se define el Dao y la lista a usar
+    // Se define el Dao
     private PreguntaDao mPreguntaDao;
-    private PreguntaRepository mRepository;
 
     // Constructor de la clase
     public PreguntaRepository(Application application){
@@ -27,7 +23,7 @@ public class PreguntaRepository {
     }
 
     /**
-     * Insert a la base de datos, para insertar un tema Favorito dentro de la tabla
+     * Inserta a la base de datos, para insertar un tema Favorito dentro de la tabla en ejecucion de threads
      * @param pregunta
      */
     public void insert(Pregunta pregunta) {
@@ -36,6 +32,11 @@ public class PreguntaRepository {
         });
     }
 
+    /**
+     * Recupera un LiveData (lista que puede cambiar) de preguntas de un tema asociado
+     * @param id el id del tema a recuperar
+     * @return una lista con las preguntas pde un tema especifico
+     */
     public LiveData<List<Pregunta>> getPreguntasTema(int id){
         return mPreguntaDao.getPreguntasTema(id);
     }

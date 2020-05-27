@@ -30,6 +30,10 @@
         <activity
             android:name=".foro_general.ForoGeneralVerPreguntas"
             android:theme="@style/AppTheme.ForoGeneral" />
+        <activity android:name=".foro_general.CrearRespuestaForoGeneral"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity android:name=".foro_general.ForoGeneralVerRespuestas"
+            android:theme="@style/AppTheme.ForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
