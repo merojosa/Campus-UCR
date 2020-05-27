@@ -185,18 +185,13 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
 
     private void agregarPregunta() {
         String texto = mEditText.getText().toString();
-        Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, numeroRandom(), numeroRandom());
+        Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);
 
         Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);
-        // Llamada a la actividad de crear pregunta
+        // Llamada a la actividad de ver respuestas
         intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
         intent.putExtra("temaSeleccionado", temaSeleccionado);
         startActivity(intent);
-    }
-
-    private int numeroRandom(){
-        Random random = new Random();
-        return random.nextInt(999) + 1;
     }
 }
