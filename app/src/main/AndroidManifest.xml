@@ -17,7 +17,7 @@
 
         <service android:name=".GuardarAppService" />
 
-        
+
         <activity android:name=".InterestPoints.CoffeShop.CoffeViewActivity"></activity>
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeShopsActivity"
@@ -37,6 +37,9 @@
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
             android:name=".foro_general.ForoGeneralVerTemas"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
+            android:name=".foro_general.ForoGeneralVerRespuestas"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
             android:name=".foro_general.MainForoGeneral"
