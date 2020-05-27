@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -26,7 +24,8 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
         this.respuestas = respuestas;
     }
 
-    public void setRespuestas(List<Respuesta> respuestas){
+    //set de lista con respuestas
+    public void setRespuestas(List<Respuesta> respuestas) {
         this.respuestas = respuestas;
         notifyDataSetChanged();
     }
@@ -36,6 +35,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    //Contenido de respuesta
     public class RespuestaViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView textoRespuesta;
@@ -62,10 +62,9 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
 
     @Override
     public int getItemCount() {
-        if(respuestas == null){
+        if (respuestas == null) {
             return 0;
-        }
-        else{
+        } else {
             return respuestas.size();
         }
     }
