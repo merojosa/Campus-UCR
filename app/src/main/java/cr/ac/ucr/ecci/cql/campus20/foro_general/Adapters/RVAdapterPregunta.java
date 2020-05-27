@@ -53,7 +53,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     private int[] arrayStatusRank;
     private int selectedPosition = -1;
 
-    private OnPreguntaListener mOnPreguntaListener;
+    private OnPreguntaListener mOnPreguntaListener;//Listener de clicks para cada pregunta y poder ver sus respuestas
 
     public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards, OnPreguntaListener onPreguntaListener)
     {
