@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_main_crear_pregunta"
-    tools:context=".foro_general.CrearPreguntaForoGeneral"
-    android:background="@android:color/white">
-
-    <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
+    tools:context=".foro_general.CrearPreguntaForoGeneral">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -89,6 +86,7 @@
 
     </RelativeLayout>
 
+    <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
     <include
         android:id="@+id/nv_foro"
         layout="@layout/nav_izq_der_foro"/>

@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".foro_general.CrearRespuestaForoGeneral" />
-        <activity android:name=".foro_general.ForoGeneralVerRespuestas" />
-        <activity android:name=".foro_general.ForoGeneralVerPreguntas" />
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +26,15 @@
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
             android:name=".foro_general.MainForoGeneral"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
+            android:name=".foro_general.ForoGeneralVerPreguntas"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
+            android:name=".foro_general.CrearRespuestaForoGeneral"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
+            android:name=".foro_general.ForoGeneralVerRespuestas"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
         <activity
