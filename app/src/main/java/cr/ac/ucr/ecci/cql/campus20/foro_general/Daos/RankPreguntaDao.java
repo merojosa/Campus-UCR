@@ -13,7 +13,7 @@ import java.util.List;
 public interface RankPreguntaDao {
 
     // Insert de RankPregunta
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(RankPregunta rankPregunta);
 
     // Delete de los likes/dislikes en la tabla RankPregunta
@@ -39,6 +39,6 @@ public interface RankPreguntaDao {
     void deleteRank(int id);
 
     //Devuelve el estado de isliked de la pregunta con id
-    @Query("SELECT isLiked FROM Rank_preguntas where IdPreg = :id")
-    int getRank(int id);
+    @Query("SELECT IsLiked FROM Rank_preguntas where IdPreg = :id")
+    List<Integer> getRank(int id);
 }

@@ -19,7 +19,7 @@ public class RankPreguntaRepository {
     private RankPreguntaDao mRankPreguntaDao;
     private LiveData<List<RankPregunta>> mAllLikedRankedPreg;
     private LiveData<List<RankPregunta>> mAllDislikedRankedPreg;
-    private int mListRank;
+    List<Integer> mRankPregunta;
 
     /**
      * Método para obtener todos las preguntas con like
@@ -76,13 +76,13 @@ public class RankPreguntaRepository {
     }
 
     /**
-     * Método que devuelve el like de la pregunta
+     * Método que devuelve un RankPregunta de la pregunta
      * @param id, el identificador de la pregunta
      */
-    public int getRank(int id) {
+    public List<Integer> getRank(int id) {
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
-            mListRank = mRankPreguntaDao.getRank(id);
+            mRankPregunta = mRankPreguntaDao.getRank(id);
         });
-        return mListRank;
+        return mRankPregunta;
     }
 }

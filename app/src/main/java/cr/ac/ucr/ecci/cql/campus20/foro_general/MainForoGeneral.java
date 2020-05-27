@@ -56,7 +56,6 @@ public class MainForoGeneral extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-
     private List<Integer> idList;
 
     /**
@@ -161,11 +160,9 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-        // Este código debería ser una llamado y no el código en sí
-
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();

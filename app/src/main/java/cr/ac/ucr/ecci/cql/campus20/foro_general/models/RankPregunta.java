@@ -3,14 +3,9 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general.models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Rank_preguntas",
-        foreignKeys = @ForeignKey(entity = Pregunta.class,
-                parentColumns = "id",
-                childColumns = "IdPreg",
-                onDelete = ForeignKey.CASCADE))
+@Entity(tableName = "Rank_preguntas")
 public class RankPregunta {
 
     @PrimaryKey
@@ -42,5 +37,7 @@ public class RankPregunta {
         this.idPreg = idPreg;
     }
 
-    public void setIsLiked(int isLiked) { this.isLiked = isLiked; }
+    public void setIsLiked(int isLiked) {
+        this.isLiked = isLiked;
+    }
 }

@@ -43,5 +43,5 @@ public class RankPreguntaViewModel extends AndroidViewModel {
 
     public void deleteRank(int id) { mRepository.deleteRank(id);}
 
-    public int getRank(int id) { return mRepository.getRank(id);}
+    public List<Integer> getRank(int id) { return mRepository.getRank(id);}
 }

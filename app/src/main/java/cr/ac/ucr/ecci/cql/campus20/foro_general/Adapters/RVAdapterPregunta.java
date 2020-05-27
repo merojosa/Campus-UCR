@@ -14,7 +14,10 @@ import android.widget.ViewSwitcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.ViewModelStore;
@@ -67,7 +70,9 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     public void setPreguntaCards(List<Pregunta> preguntas)
     {
         this.preguntaCards = convertToPreguntaCards(preguntas);
-        llenarArrays();
+        if(selectedPosition == -1){
+            llenarArrays();
+        }
         notifyDataSetChanged();
     }
 
@@ -79,7 +84,10 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         for(int k = 0; k < tam; k++){
             arrayLikes[k] = preguntaCards.get(k).getContadorLikes();
             arrayDislikes[k] = preguntaCards.get(k).getContadorDislikes();
-            arrayStatusRank[k] = mRankPreguntaViewModel.getRank(preguntaCards.get(k).getId());
+            List<Integer> mRankPregList = mRankPreguntaViewModel.getRank(preguntaCards.get(k).getId());
+            if(mRankPregList != null){
+                arrayStatusRank[k] = mRankPregList.get(0);
+            }
         }
     }
 
@@ -115,7 +123,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     @Override
     public void onBindViewHolder(PreguntaViewHolder preguntaViewHolder, int i)
     {
-        if(selectedPosition == -1 || selectedPosition == i) {
+        if(selectedPosition == -1) {
             preguntaViewHolder.textoPregunta.setText(preguntaCards.get(i).getTexto());
 
             int difRanking = arrayLikes[i] - arrayDislikes[i];
@@ -171,6 +179,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
             iconDislike = itemView.findViewById(R.id.dislikeIcon);
             contadorLikes = itemView.findViewById(R.id.textoContador);
 
+            //Agarra el click del like en una pregunta y escoge que hacer
             iconLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -212,6 +221,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     }
                 }
             });
+            //Agarra el click del dislike en una pregunta y escoge que hacer
             iconDislike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
