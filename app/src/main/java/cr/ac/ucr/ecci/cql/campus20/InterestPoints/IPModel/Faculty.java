@@ -14,6 +14,7 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
     int id;
     String facultyName;
     String description;
+    int image;
 
     public Faculty(){}
 
@@ -26,6 +27,13 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         this.id = id;
         this.facultyName = facultyName;
         this.description = description;
+    }
+
+    public Faculty(int id, String facultyName, String description, int image) {
+        this.id = id;
+        this.facultyName = facultyName;
+        this.description = description;
+        this.image = image;
     }
 
     // Hay que implementar getter y setters de los atributos que tenga Faculty en la BD
@@ -57,44 +65,16 @@ public class Faculty extends GeneralData {// implements Comparable<Faculty>{
         this.id = id;
     }
 
-    /**
-     * Inserts a new row in Faculty table.
-     * @param context Current app context.
-     * @return The row ID of the newly inserted row, or -1 if an error occurred.
-     * */
-    public long insert(Context context){
-        ContentValues values = new ContentValues();
-        values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID, getId());
-        values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_NAME, getFacultyName());
-        values.put(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION, getDescription());
-
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-        long result = dataAccess.insert(DatabaseContract.InterestPoints.FacultyTable.TABLE_NAME, values);
-        dataAccess.close();
-        return result;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    /**
-     * @param context Current app context.
-     * @return List containing all the rows in the table.
-     * */
-    public static List<Faculty> getFacultiesList(Context context) {
-        List<Faculty> list = new ArrayList<>();
-        DataAccess dataAccess = DataAccess.getInstance(context);
-        dataAccess.open();
-        Cursor cursor = dataAccess.selectAll("Faculty");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(new Faculty(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.InterestPoints.FacultyTable.TABLE_COLUMN_DESCRIPTION))
-            ));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        dataAccess.close();
-        return list;
+    @Override
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }
