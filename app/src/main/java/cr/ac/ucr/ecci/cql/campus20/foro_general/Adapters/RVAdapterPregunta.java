@@ -30,6 +30,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     List<PreguntaCard> preguntaCards;
     Picasso picasso;
 
+    //Listener de clicks para cada pregunta y poder ver sus respuestas
     private OnPreguntaListener mOnPreguntaListener;
 
     public RVAdapterPregunta(Activity context, List<PreguntaCard> preguntaCards, OnPreguntaListener onPreguntaListener)

@@ -26,6 +26,7 @@ public interface RespuestaDao {
     @Query("SELECT * FROM Respuesta WHERE id = :id")
     Respuesta getRespuestaPorID(int id);
 
+    //Para recuperar las respuestas asociadas a pregunta
     @Query("SELECT * FROM Respuesta WHERE preguntaID = :preguntaID")
     LiveData<List<Respuesta>> getRespuestasDePregunta(int preguntaID);
 

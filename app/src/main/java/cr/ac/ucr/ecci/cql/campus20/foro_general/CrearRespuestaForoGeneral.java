@@ -31,6 +31,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_respuesta_foro_general);
 
+        //Recuperar pregunta a la que se le va a crear respuesta
         Intent mIntent = getIntent();
         pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
 
@@ -51,7 +52,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         btnCrearRespuesta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (verificarPregunta()) {
+                if (verificarRespuesta()) {
                     agregarPregunta();
                 }
             }
@@ -75,7 +76,11 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean verificarPregunta() {
+    /**
+     * Verifica si el contenido de respuesta no es vacio
+     * @return boolean
+     */
+    private boolean verificarRespuesta() {
         if (mEditText.getText().toString().equals("")) {
             Toast.makeText(CrearRespuestaForoGeneral.this, "Por favor digite su respuesta", Toast.LENGTH_SHORT).show();
             return false;
