@@ -1,18 +1,29 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
+import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
@@ -25,6 +36,10 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private Button btnCrearRespuesta;
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
+
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +73,47 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             }
         });
 
+        //Codigo que maneja la navegacion de izquierda a derecha
+        dl = (DrawerLayout)findViewById(R.id.activity_main_crear_respuesta);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Se lanza cada actividad, dependiendo de la selección del usuario
+        nv = (NavigationView)findViewById(R.id.nv_foro);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.home_foro:
+                        startActivity(new Intent(CrearRespuestaForoGeneral.this, MainForoGeneral.class));
+                        break;
+                    case R.id.temas_foro:
+                        startActivity(new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerTemas.class));
+                        break;
+                    case R.id.pref_foro:
+                        startActivity(new Intent(CrearRespuestaForoGeneral.this, ConfiguracionActivity.class));
+                        break;
+                    case R.id.logout_foro:
+                        LoginBD login = new FirebaseBD();
+                        login.cerrarSesion();
+
+                        ActivityCompat.finishAffinity(CrearRespuestaForoGeneral.this);
+                        startActivity(new Intent(CrearRespuestaForoGeneral.this, LoginActivity.class));
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+
+            }
+        });
+
     }
 
     /**
@@ -86,5 +142,19 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     * @param item funciona para indicar el objeto de la lista que se selecionó
+     * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
     }
 }
