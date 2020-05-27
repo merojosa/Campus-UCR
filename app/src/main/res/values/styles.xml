@@ -25,6 +25,14 @@
         <item name="android:fontFamily">@font/myriad_pro_semi</item>
     </style>
 
+    <!-- Faculties and schools theme without action bar. -->
+    <style name="AppTheme.InterestsThemeNoBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/azul_UCR</item>
+        <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
+        <item name="android:fontFamily">@font/myriad_pro_semi</item>
+    </style>
+
     <!-- Estilo para tener items de menú bajo el actionbar-->
     <style name="MyOverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow" >
         <item name="android:overlapAnchor">false</item>
