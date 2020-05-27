@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
@@ -24,6 +27,8 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private Place place;
     private Faculty faculty;
 
+    String schoolName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,27 +36,30 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         setContentView(R.layout.activity_school_view);
 
         Intent intentSchool = getIntent();
-        String schoolName = intentSchool.getStringExtra(Intent.EXTRA_TEXT);
-
-        getSupportActionBar().hide();
+        schoolName = intentSchool.getStringExtra(Intent.EXTRA_TEXT);
 
         TextView tittle = findViewById(R.id.schoolName);
+//        School school = School.select(getApplicationContext(), schoolName);
+//        if(school != null) {
+//            ImageView image = findViewById(R.id.schoolImage);
+//            image.setImageResource(school.getImage());
+//        }
         tittle.setText(schoolName);
 
     }
 
-    /**
-     * EFE: send the user to the location in maps
-     * REQ:
-     * view: send by the button that calls this method
-     * latitude : latitude of the point that the user wants to go.
-     * longitude: longitude of the point that the user wants to go.
-     * MOD: ---
-     * */
-    public void goTo(View view) {
-        Intent intent = new Intent(this, Map.class);
-        startActivity(intent);
-    }
+//    /**
+//     * EFE: send the user to the location in maps
+//     * REQ:
+//     * view: send by the button that calls this method
+//     * latitude : latitude of the point that the user wants to go.
+//     * longitude: longitude of the point that the user wants to go.
+//     * MOD: ---
+//     * */
+//    public void goTo(View view) {
+//        Intent intent = new Intent(this, Map.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public void onClick(String title) {
@@ -62,4 +70,5 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
 }

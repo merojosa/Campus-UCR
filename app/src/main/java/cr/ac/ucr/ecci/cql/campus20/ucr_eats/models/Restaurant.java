@@ -33,6 +33,8 @@ public class Restaurant
     @ColumnInfo(name = "closing_time")
     public short closingTime = 0;
 
+    public double rating = 0;
+
     public Restaurant(int id, String name, String photo, double latitude, double longitude,
                       String daysOpen, short openingTime, short closingTime)
     {
@@ -45,4 +47,12 @@ public class Restaurant
         this.openingTime = openingTime;
         this.closingTime = closingTime;
     }
+
+    public void setRating (double point){
+        this.rating = point;
+    }
+
+    public double getRating (){return this.rating;}
+
+    public int getId(){ return this.id; }
 }

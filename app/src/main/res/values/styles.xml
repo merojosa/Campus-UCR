@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -19,9 +19,34 @@
     <!-- Faculties and schools theme. -->
     <style name="AppTheme.InterestsTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/celeste_UCR</item>
+        <item name="colorPrimaryDark">@color/azul_UCR</item>
+        <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
+        <item name="android:fontFamily">@font/myriad_pro_semi</item>
     </style>
+
+    <!-- Estilo para tener items de menú bajo el actionbar-->
+    <style name="MyOverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow" >
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">4.0dip</item>
+    </style>
+
+    <style name="AppTheme.RedMujeres" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/celeste_UCR</item>
+        <item name="colorPrimaryVariant">@color/azul_UCR</item>
+        <item name="colorOnPrimary">@color/blanco_UCR</item>
+        <item name="colorSecondary">@color/verde_UCR</item>
+        <item name="colorSecondaryVariant">@color/amarillo_UCR</item>
+        <item name="colorOnSecondary">@color/gris_oscuro_UCR</item>
+    </style>
+
+    <style name="NavigationMapRoute">
+        <!-- Colors -->
+        <item name="routeColor">@color/verde_UCR</item>
+        <item name="routeModerateCongestionColor">@color/mapboxYellow</item>
+        <item name="routeSevereCongestionColor">@color/mapboxPink</item>
+        <item name="routeShieldColor">@color/mapboxWhite</item>
+    </style>
+
 
 </resources>

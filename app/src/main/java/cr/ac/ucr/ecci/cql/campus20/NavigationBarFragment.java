@@ -1,23 +1,26 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
-// Se importan las actividades principales que estarán disponibles desde el fragmento
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
@@ -29,7 +32,10 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerRespuestas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
+import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+
+// Se importan las actividades principales que estarán disponibles desde el fragmento
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,7 +103,7 @@ public class NavigationBarFragment extends android.app.Fragment
             // Ícono del módulo de ucr eats
             navegacion.getMenu().getItem(0).setChecked(true);
         else
-            if (getActivity() instanceof MainRedMujeres)
+            if (getActivity() instanceof MenuRedMujeres)
                 // Ícono del módulo de mujeres ucr
                 navegacion.getMenu().getItem(1).setChecked(true);
             else
@@ -135,21 +141,103 @@ public class NavigationBarFragment extends android.app.Fragment
 
     private void irActividadElegidaConfirmacion(int actividadId)
     {
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Title")
-                .setMessage("¿Quiere guardar esta app como la predeterminada? " +
-                        "La siguiente vez que vuelva iniciará con esta app.")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("Guardar App", (dialog, whichButton) ->
+        LoginBD loginBD = new FirebaseBD();
+
+        String correo = loginBD.obtenerCorreoActual();
+        String idUsuario = correo.substring(0, correo.indexOf('@'));
+
+        AtomicBoolean resultado = new AtomicBoolean(false);
+
+
+        FirebaseListener listener = new FirebaseListener()
+        {
+            @Override
+            public void exito(DataSnapshot dataSnapshot)
+            {
+                resultado.set(true);
+                Long appUsuario = (Long) dataSnapshot.getValue();
+
+                // Mostrar el mensajes solo si no hay app guardada.
+                if (appUsuario == null)
                 {
-                    LoginBD loginBD = new FirebaseBD();
-                    loginBD.escribirDatos("algo", actividadId);
-                    irActividadElegida(actividadId);
-                })
-                .setNegativeButton("Cancelar", (dialog, which) ->
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Guardar app predeterminada")
+                            .setMessage("¿Quiere guardar esta app como la predeterminada? " +
+                                    "La siguiente vez que vuelva iniciará en " + traducirAppIdString(actividadId))
+                            .setIcon(R.drawable.info_personalizado)
+                            .setPositiveButton("Guardar App", (dialog, whichButton) ->
+                            {
+                                Intent intent = new Intent(getActivity(), GuardarAppService.class);
+                                intent.putExtra(GuardarAppService.APP_ID_KEY, traducirAppIdInt(actividadId));
+                                getActivity().startService(intent);
+                                irActividadElegida(actividadId);
+                            })
+                            .setNegativeButton("Cancelar", (dialog, which) ->
+                            {
+                                irActividadElegida(actividadId);
+                            }).show();
+                }
+                else
                 {
                     irActividadElegida(actividadId);
-                }).show();
+                }
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {}
+        };
+
+        if(VerificadorInternet.conexionInternet(getActivity()))
+        {
+            loginBD.tareaAppDefaultAsync(idUsuario, listener);
+
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    timer.cancel();
+                    if (resultado.get() == false)
+                    {
+                        //  Timeout
+                        loginBD.detenerAppDefaultAsync();
+                    }
+                }
+            };
+            // Timeout de 10 segundos
+            timer.schedule(timerTask, 10000L);
+        }
+    }
+
+    private String traducirAppIdString(int id)
+    {
+        switch (id)
+        {
+            case R.id.ucreats: return "UCR Eats";
+
+            case R.id.mujeres: return "Red de mujeres";
+
+            case R.id.foro: return "Foros";
+
+            case R.id.lugares: return "Lugares de interés";
+        }
+        return null;
+    }
+
+    private int traducirAppIdInt(int id)
+    {
+        switch (id)
+        {
+            case R.id.ucreats: return 0;
+
+            case R.id.mujeres: return 1;
+
+            case R.id.foro: return 2;
+
+            case R.id.lugares: return 3;
+        }
+        return -1;
     }
 
     private boolean  irActividadElegida(int actividadId)
@@ -168,7 +256,7 @@ public class NavigationBarFragment extends android.app.Fragment
                 return true;
 
             case R.id.mujeres:  // En caso de que se haya seleccionado el ícono de Mujeres
-                Intent intentMujeres = new Intent(getActivity(), MainRedMujeres.class);
+                Intent intentMujeres = new Intent(getActivity(), MenuRedMujeres.class);
                 startActivity(intentMujeres);
                 return true;
 
