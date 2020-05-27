@@ -125,7 +125,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 enableLocationComponent(style);
 
                 addDestinationIconSymbolLayer(style);
-                getGroupMembersPositions();
+                //getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
                 button = findViewById(R.id.startButton);
@@ -374,7 +374,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         //Solicidtamos a la base de datos informacion del grupo
         FireBaseRedMujeres db = new FireBaseRedMujeres();
         db.fetchGroupAsync("GrupoEj");
-// Un handler para preguntar a la BD cad cierta cantidad de tiempo.
+        // Un handler para preguntar a la BD cad cierta cantidad de tiempo.
         handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -387,11 +387,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                    db.fetchGroupAsync("GroupEj");
                 }
                 //pregunto cada medio segundo
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 2000);
             }
         };
 
-// The first time this runs we don't need a delay so we immediately post.
+        // The first time this runs we don't need a delay so we immediately post.
         handler.post(runnable);
     }
 
@@ -424,7 +424,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onStyleLoaded(@NonNull Style style) {
 
-// Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
+                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
 
 
             }
