@@ -35,5 +35,6 @@
     <color name="black">#000000</color>
     <color name="red">#fa3242</color>
     <color name="white">#FFFFFF</color>
+    <color name="rojoForo">#DA2C38</color>
 
 </resources>

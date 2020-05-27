@@ -176,7 +176,12 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         else return 0;
     }
 
-
+    /**
+     * Metodo para filtrar los temas segun un string recibido
+     * @param temas lista actual de temas
+     * @param s string recibido donde se indica con lo que se está buscando
+     * @param ids lista para llevar siempre un registro de los temas que se estan observando
+     */
     public void filterTemas(List<Tema> temas, String s, List<Integer> ids) {
         int count = 0;
         ids.clear();
@@ -205,7 +210,10 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     }
 
 
-
+    /**
+     * Despues de filtrar los temas, asigna los favoritos correspondientes
+     * @param favoritos lista de favoritos actual
+     */
     public void filterFavoritos(List<Favorito> favoritos) {
         int count1 = 0;
         if (favoritos != null){
@@ -230,13 +238,5 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         this.mFavoritos = mFavoritos2;
         notifyDataSetChanged();
     }
-
-
-
-
-
-
-
-
 
 }

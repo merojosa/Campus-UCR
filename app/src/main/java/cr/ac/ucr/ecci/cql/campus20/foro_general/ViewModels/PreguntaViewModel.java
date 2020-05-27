@@ -19,12 +19,19 @@ public class PreguntaViewModel extends AndroidViewModel {
     public PreguntaViewModel(Application application)
     {
         super(application);
-
-        // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         mRepository = new PreguntaRepository(application);
     }
 
+    /**
+     * Metood que retorna las preguntas de un tema especifico
+     * @param id el id del tema para recuperar sus preguntas
+     * @return una lista de preguntas dentro de un LiveData
+     */
     public LiveData<List<Pregunta>> getPreguntasTema(int id) { return mRepository.getPreguntasTema(id); }
 
     public void insert(Pregunta pregunta) { mRepository.insert(pregunta);}
+
+    public void updateLikes(int id, int num) { mRepository.updateLikes(id, num);}
+
+    public void updateDislikes(int id, int num) { mRepository.updateDislikes(id, num);}
 }

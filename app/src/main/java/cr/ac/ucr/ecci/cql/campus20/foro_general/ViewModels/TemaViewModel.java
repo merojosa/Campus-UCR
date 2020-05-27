@@ -7,10 +7,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class TemaViewModel extends AndroidViewModel {
@@ -22,7 +20,6 @@ public class TemaViewModel extends AndroidViewModel {
     public TemaViewModel(Application application)
     {
         super(application);
-        // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         temaDao = ForoGeneralDatabase.getDatabase(application).temaDao();
         mAllTemas = temaDao.getTemas();
     }
