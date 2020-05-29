@@ -13,6 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,11 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.MealRepository;
@@ -90,11 +93,9 @@ public class MealsActivity extends AppCompatActivity
 
     private void getFirebaseMeals(int id)
     {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference(FIREBASE_PATH) // get ucr_eats root
-                                .child("restaurant")           // get restaurant root
-                                .child(Integer.toString(id))   // get restaurant by id
-                                .child("meals");               // get restaurant's meals
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        DatabaseReference ref = db.getMealsFromRestaurantRef("1");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -102,14 +103,14 @@ public class MealsActivity extends AppCompatActivity
             {
                 // Get all meals/children data from snapshot
                 Iterable<DataSnapshot> meals = dataSnapshot.getChildren();
-
+                ArrayList<Meal> m = new ArrayList<>();
                 // Iterate array
                 for(DataSnapshot meal : meals)
                 {
-                    // For each child, get the key 'name' and then its value as a string
-                    String value = meal.child("name").getValue(String.class);
-                    Log.d("FIREBASE", "Value is: " + value);
+                    if(meal.exists())
+                        m.add(new Meal(meal));
                 }
+
             }
 
             @Override
