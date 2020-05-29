@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +72,8 @@ public class MealsActivity extends AppCompatActivity
         recyclerView.setAdapter(this.adapter);
 
         // Add an observer to the available meals
-        this.viewModel = ViewModelProviders.of(this).get(MealViewModel.class);
+        ViewModelProvider provider = new ViewModelProvider(this);
+        this.viewModel = provider.get(MealViewModel.class);
         this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
     }
 
