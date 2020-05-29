@@ -1,18 +1,26 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,6 +41,8 @@ public class MealsActivity extends AppCompatActivity
     private MealViewModel viewModel;
     private List<Meal> meals;
 
+    private static String FIREBASE_PATH = "ucr_eats";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -50,6 +60,7 @@ public class MealsActivity extends AppCompatActivity
             this.setRestaurantImage(card);
         }
 
+        getFirebaseMeals(1);
 
         // Create adapter with empty dataset
         this.adapter = new MealsAdapter(this, meals);
@@ -75,4 +86,36 @@ public class MealsActivity extends AppCompatActivity
                 .into((ImageView) findViewById(R.id.meals_rest_img));
     }
 
+    private void getFirebaseMeals(int id)
+    {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference(FIREBASE_PATH) // get ucr_eats root
+                                .child("restaurant")           // get restaurant root
+                                .child(Integer.toString(id))   // get restaurant by id
+                                .child("meals");               // get restaurant's meals
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                // Get all meals/children data from snapshot
+                Iterable<DataSnapshot> meals = dataSnapshot.getChildren();
+
+                // Iterate array
+                for(DataSnapshot meal : meals)
+                {
+                    // For each child, get the key 'name' and then its value as a string
+                    String value = meal.child("name").getValue(String.class);
+                    Log.d("FIREBASE", "Value is: " + value);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", error.toException());
+            }
+        });
+
+    }
 }
