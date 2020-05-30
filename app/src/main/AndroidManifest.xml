@@ -24,7 +24,10 @@
             android:name=".InterestPoints.CoffeShop.CoffeShopsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity android:name=".foro_general.ForoGeneralVerPreguntas"></activity>
-        <activity android:name=".MainEmptyActivity">
+        <activity
+            android:name=".MainEmptyActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
