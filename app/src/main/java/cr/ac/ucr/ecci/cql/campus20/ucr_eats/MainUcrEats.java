@@ -3,6 +3,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.MealViewModel;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
 
 // Referencias para crear lista de cards:
@@ -63,7 +65,8 @@ public class MainUcrEats extends AppCompatActivity
 
         this.noResults = this.findViewById(R.id.noResultsText);
 
-        this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
+        ViewModelProvider provider = new ViewModelProvider(this);
+        this.restaurantViewModel = provider.get(RestaurantViewModel.class);
         this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
 
             List<Double> i = new ArrayList<Double>();

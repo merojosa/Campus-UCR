@@ -1,11 +1,19 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "Meal",
         foreignKeys = @ForeignKey(entity = Restaurant.class,
@@ -46,6 +54,15 @@ public class Meal
         this.setPhoto(photo);
         this.setType(type);
         this.setPrice(price);
+    }
+
+    // Firebase data constructor
+    public Meal(@NonNull DataSnapshot data)
+    {
+        this.setName(data.child("name").getValue(String.class));
+        this.setPhoto(data.child("photo").getValue(String.class));
+        this.setPrice(Objects.requireNonNull(data.child("price").getValue(Integer.class)));
+        this.setType(Objects.requireNonNull(data.child("type").getValue(Integer.class)));
     }
 
     public int getId() {
@@ -95,4 +112,5 @@ public class Meal
     public void setPrice(int price) {
         this.price = price;
     }
+
 }
