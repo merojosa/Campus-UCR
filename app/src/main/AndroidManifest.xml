@@ -31,7 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConfiguracionActivity" />
+        <activity
+            android:name=".ConfiguracionActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+
         <activity android:name=".ucr_eats.activites.MealsActivity" />
         <activity
             android:name=".foro_general.CrearPreguntaForoGeneral"
@@ -67,7 +70,8 @@
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="locked" />
+            android:screenOrientation="locked"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
     </application>
 
 </manifest>
