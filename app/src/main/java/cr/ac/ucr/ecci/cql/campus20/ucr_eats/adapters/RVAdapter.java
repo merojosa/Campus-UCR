@@ -75,9 +75,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 horario = "Abierto";
             }
 
-            cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, i.get(index++), restaurant.latitude, restaurant.longitude)
-            );
+            if(index < i.size())
+            {
+                cards.add(
+                    new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, i.get(index++), restaurant.latitude, restaurant.longitude)
+                );
+            }
         }
 
         return cards;

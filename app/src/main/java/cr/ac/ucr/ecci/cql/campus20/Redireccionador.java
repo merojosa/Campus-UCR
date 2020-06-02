@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -91,6 +92,8 @@ public class Redireccionador
                         //  Timeout
                         loginBD.detenerAppDefaultAsync();
 
+                        // Adding this so the app does not crash (java.lang.RuntimeException: Can't toast on a thread that has not called Looper.prepare())
+                        Looper.prepare();
                         Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
                 }
