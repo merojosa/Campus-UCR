@@ -31,11 +31,13 @@
 
             <TextView
                 android:id="@+id/meal_name"
-                android:layout_width="55dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="center|left"
+                android:maxLines="2"
                 android:paddingLeft="5dp"
                 android:text="@string/meal"
                 android:textColor="@color/black"
@@ -59,6 +61,14 @@
                 android:textAlignment="center"
                 android:textColor="@color/black" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/meals_left_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/meals_left_placeholder"
+            android:textAlignment="center"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
