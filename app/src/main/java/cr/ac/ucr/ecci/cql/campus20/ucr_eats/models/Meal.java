@@ -1,5 +1,8 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -9,10 +12,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity(tableName = "Meal",
@@ -22,7 +22,7 @@ import java.util.Objects;
                     onDelete = ForeignKey.CASCADE,
                     onUpdate = ForeignKey.CASCADE), // Foreign key to Restaurant ID
         indices = {@Index(value={"name"}, unique = true)}) // Unique Meal name
-public class Meal
+public class Meal implements Parcelable
 {
     // Enums workaround since Java's enums have a different nature
     @Ignore
@@ -63,6 +63,15 @@ public class Meal
         this.setPhoto(data.child("photo").getValue(String.class));
         this.setPrice(Objects.requireNonNull(data.child("price").getValue(Integer.class)));
         this.setType(Objects.requireNonNull(data.child("type").getValue(Integer.class)));
+    }
+
+    protected Meal(Parcel in) {
+        id = in.readInt();
+        restaurant_id = in.readInt();
+        name = in.readString();
+        photo = in.readString();
+        type = in.readInt();
+        price = in.readInt();
     }
 
     public int getId() {
@@ -113,4 +122,34 @@ public class Meal
         this.price = price;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(restaurant_id);
+        dest.writeString(name);
+        dest.writeString(photo);
+        dest.writeInt(type);
+        dest.writeInt(price);
+    }
+
+    public static final Creator<Meal> CREATOR = new Creator<Meal>()
+    {
+        @Override
+        public Meal createFromParcel(Parcel in)
+        {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size)
+        {
+            return new Meal[size];
+        }
+    };
 }

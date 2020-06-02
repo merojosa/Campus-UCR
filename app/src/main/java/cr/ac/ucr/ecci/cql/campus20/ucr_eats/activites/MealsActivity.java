@@ -2,18 +2,12 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
-import android.content.res.Resources;
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +15,6 @@ import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +27,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.MealRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.MealViewModel;
 
 public class MealsActivity extends AppCompatActivity
@@ -46,6 +38,7 @@ public class MealsActivity extends AppCompatActivity
     private List<Meal> meals;
 
     private static String FIREBASE_PATH = "ucr_eats";
+    public final static String MEAL_KEY = "Meals";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,6 +59,16 @@ public class MealsActivity extends AppCompatActivity
 
         getFirebaseMeals(1);
 
+        setupRecyclerView();
+
+        // Add an observer to the available meals
+        ViewModelProvider provider = new ViewModelProvider(this);
+        this.viewModel = provider.get(MealViewModel.class);
+        this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
+    }
+
+    public void setupRecyclerView()
+    {
         // Create adapter with empty dataset
         this.adapter = new MealsAdapter(this, meals);
 
@@ -74,10 +77,17 @@ public class MealsActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new GridLayoutManager(this, COLUMNS));
         recyclerView.setAdapter(this.adapter);
 
-        // Add an observer to the available meals
-        ViewModelProvider provider = new ViewModelProvider(this);
-        this.viewModel = provider.get(MealViewModel.class);
-        this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
+        // Performance
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView , (view, position) ->
+                {
+                    Intent intent = new Intent(this, CompraActivity.class);
+                    intent.putExtra(MEAL_KEY, adapter.getMeals().get(position));
+                    startActivity(intent);
+                })
+        );
     }
 
     private void setRestaurantImage(SodaCard card)

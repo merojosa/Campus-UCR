@@ -72,6 +72,11 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         notifyDataSetChanged();
     }
 
+    public List<Meal> getMeals()
+    {
+        return meals;
+    }
+
     // El holder del adapter. Aqui va el contenido del card.
     public static class MealsViewHolder extends RecyclerView.ViewHolder
     {
