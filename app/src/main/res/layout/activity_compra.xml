@@ -7,6 +7,16 @@
     tools:context=".ucr_eats.activites.CompraActivity">
 
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
+
     <TextView
         android:id="@+id/tituloCompra"
         android:layout_width="wrap_content"
@@ -48,16 +58,6 @@
         app:layout_constraintTop_toBottomOf="@+id/platilloCompra"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <fragment
-        android:id="@+id/appBar"
-        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_app_bar" />
 
     <Button
         android:id="@+id/buttonCompra"
