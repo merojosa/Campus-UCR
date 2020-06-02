@@ -37,8 +37,11 @@ public class MealsActivity extends AppCompatActivity
     private MealViewModel viewModel;
     private List<Meal> meals;
 
+    private String currentRestaurant;
+
     private static String FIREBASE_PATH = "ucr_eats";
     public final static String MEAL_KEY = "Meals";
+    public final static String NOMBRE_SODA_KEY = "Soda";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +58,7 @@ public class MealsActivity extends AppCompatActivity
         {
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
+            currentRestaurant = card.getNombre();
         }
 
         getFirebaseMeals(1);
@@ -83,7 +87,9 @@ public class MealsActivity extends AppCompatActivity
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, recyclerView , (view, position) ->
                 {
+                    // Go checkout
                     Intent intent = new Intent(this, CompraActivity.class);
+                    intent.putExtra(NOMBRE_SODA_KEY, currentRestaurant);
                     intent.putExtra(MEAL_KEY, adapter.getMeals().get(position));
                     startActivity(intent);
                 })
