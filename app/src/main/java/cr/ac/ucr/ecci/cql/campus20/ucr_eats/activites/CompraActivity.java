@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
@@ -54,13 +54,13 @@ public class CompraActivity extends AppCompatActivity
 
     public void realizarCompra()
     {
-        LoginBD loginBD = new FirebaseBD();
+        CampusBD campusBD = new FirebaseBD();
 
-        String email = loginBD.obtenerCorreoActual();
+        String email = campusBD.obtenerCorreoActual();
         String username = email.substring(0, email.indexOf('@'));
 
         Order order = new Order(username, meal);
-        loginBD.agregarDatos(PATH_PEDIDOS, order); // Agregar el pedido a la cola de pedidos.
+        campusBD.agregarDatos(PATH_PEDIDOS, order); // Agregar el pedido a la cola de pedidos.
 
         Toast.makeText(this, "Se realizó el pedido exitosamente", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainUcrEats.class);

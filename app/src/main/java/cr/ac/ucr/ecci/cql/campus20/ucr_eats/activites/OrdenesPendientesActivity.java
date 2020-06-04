@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class OrdenesPendientesActivity extends AppCompatActivity {
