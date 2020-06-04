@@ -19,4 +19,6 @@ public interface LoginBD
     public void cerrarSesion();
 
     public void escribirDatos(String path, Object datos);
+
+    public void agregarDatos(String path, Object datos);
 }

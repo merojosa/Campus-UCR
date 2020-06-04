@@ -90,4 +90,11 @@ public class FirebaseBD implements LoginBD
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
 
+    @Override
+    public void agregarDatos(String path, Object datos)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.push().setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
+    }
+    
 }

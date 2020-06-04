@@ -2,22 +2,26 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
 public class CompraActivity extends AppCompatActivity
 {
     private Meal meal;
+    public static final String PATH_PEDIDOS = "ucr_eats/pedidos";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,7 +60,12 @@ public class CompraActivity extends AppCompatActivity
         String username = email.substring(0, email.indexOf('@'));
 
         Order order = new Order(username, meal);
-        loginBD.escribirDatos("ucr_eats/pedidos", order);
+        loginBD.agregarDatos(PATH_PEDIDOS, order); // Agregar el pedido a la cola de pedidos.
+
+        Toast.makeText(this, "Se realizó el pedido exitosamente", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainUcrEats.class);
+        startActivity(intent);
+        finish();
 
     }
 
