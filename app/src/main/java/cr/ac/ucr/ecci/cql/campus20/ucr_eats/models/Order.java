@@ -5,6 +5,8 @@ public class Order
     private String username;
     private Meal meal;
 
+    public Order(){}
+
     public Order(String username, Meal meal)
     {
         this.username = username;
