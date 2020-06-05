@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ucr_eats.activites.CompraActivity"
+        <activity android:name=".ucr_eats.activites.OrdenesPendientesActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
 
+        <activity
+            android:name=".ucr_eats.activites.CompraActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.MisComunidades" />
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 

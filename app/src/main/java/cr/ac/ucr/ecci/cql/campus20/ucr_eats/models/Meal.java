@@ -47,6 +47,8 @@ public class Meal implements Parcelable
     @ColumnInfo(name = "price")
     private int price;
 
+    public Meal(){}
+
     public Meal(int restaurant_id, String name, String photo, int type, int price)
     {
         this.setRestaurant_id(restaurant_id);

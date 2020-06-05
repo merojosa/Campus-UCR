@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import timber.log.Timber;
 
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
-public class FirebaseBD implements LoginBD
+public class FirebaseBD implements CampusBD
 {
     private FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
@@ -90,4 +90,11 @@ public class FirebaseBD implements LoginBD
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
 
+    @Override
+    public void agregarDatos(String path, Object datos)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.push().setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
+    }
+    
 }
