@@ -47,6 +47,12 @@ public class Meal implements Parcelable
     @ColumnInfo(name = "price")
     private int price;
 
+    @Ignore
+    private int maxServings;
+
+    @Ignore
+    private int availableServings;
+
     public Meal(){}
 
     public Meal(int restaurant_id, String name, String photo, int type, int price)
@@ -56,6 +62,8 @@ public class Meal implements Parcelable
         this.setPhoto(photo);
         this.setType(type);
         this.setPrice(price);
+        this.setAvailableServings(0);
+        this.setMaxServings(0);
     }
 
     // Firebase data constructor
@@ -65,6 +73,8 @@ public class Meal implements Parcelable
         this.setPhoto(data.child("photo").getValue(String.class));
         this.setPrice(Objects.requireNonNull(data.child("price").getValue(Integer.class)));
         this.setType(Objects.requireNonNull(data.child("type").getValue(Integer.class)));
+        this.setAvailableServings(Objects.requireNonNull(data.child("available").getValue(Integer.class)));
+        this.setMaxServings(Objects.requireNonNull(data.child("max").getValue(Integer.class)));
     }
 
     protected Meal(Parcel in) {
@@ -154,4 +164,20 @@ public class Meal implements Parcelable
             return new Meal[size];
         }
     };
+
+    public int getMaxServings() {
+        return maxServings;
+    }
+
+    public void setMaxServings(int maxServings) {
+        this.maxServings = maxServings;
+    }
+
+    public int getAvailableServings() {
+        return availableServings;
+    }
+
+    public void setAvailableServings(int availableServings) {
+        this.availableServings = availableServings;
+    }
 }
