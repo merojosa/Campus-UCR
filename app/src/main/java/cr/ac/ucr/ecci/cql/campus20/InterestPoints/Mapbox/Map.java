@@ -233,8 +233,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
+        System.out.print("Holaaaaaaaaaa********************************************************");
         if (PermissionsManager.areLocationPermissionsGranted(this))
         {
+            System.out.print("entré********************************************************");
+
             // Get an instance of the component
             locationComponent = mapboxMap.getLocationComponent();
 
