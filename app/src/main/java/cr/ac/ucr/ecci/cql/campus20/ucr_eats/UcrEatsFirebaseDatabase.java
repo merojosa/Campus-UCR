@@ -30,4 +30,10 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
                                  .child(id)   // get restaurant by id
                                  .child(MEALS_PATH); // Get restaurant's meals
     }
+
+    public DatabaseReference getRestaurantRef(String id)
+    {
+        return this.rootReference.child(RESTAURANTS_PATH);
+    }
+
 }
