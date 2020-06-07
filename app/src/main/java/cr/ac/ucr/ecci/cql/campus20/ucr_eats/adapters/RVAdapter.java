@@ -28,6 +28,7 @@ import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaMapActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
@@ -173,7 +174,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             ubicacionSoda.setOnClickListener(view -> {
                 SodaCard card = sodaCards.get(getAdapterPosition());
                 double latitud = card.getLatitud();
-                irUbicacionSoda(card);
+                //irUbicacionSoda(card);
+                Intent intent = new Intent(view.getContext(), SodaMapActivity.class);
+                view.getContext().startActivity(intent);
             });
         }
 
