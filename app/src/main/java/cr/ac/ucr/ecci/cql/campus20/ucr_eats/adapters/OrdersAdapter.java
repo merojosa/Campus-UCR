@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Holder>
     public static class Holder extends RecyclerView.ViewHolder
     {
         // each data item is just a string in this case
-        public TextView name;
+        public TextView meal;
+        public TextView restaurant;
+        public TextView date;
 
-        public Holder(View view) {
+        public Holder(View view)
+        {
             super(view);
-            name = view.findViewById(R.id.orden_platillo);
+            meal = view.findViewById(R.id.orden_platillo);
+            restaurant = view.findViewById(R.id.orden_restaurante);
+            date = view.findViewById(R.id.orden_fecha);
         }
     }
 
@@ -51,10 +57,19 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Holder>
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(Holder holder, int position)
+    {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.name.setText(list.get(position).getMeal().getName());
+        holder.meal.setText(list.get(position).getMeal().getName());
+
+        holder.restaurant.setText(list.get(position).getRestaurant());
+
+        String formatDate = DateFormat.format("HH:mm dd/MM/yyyy",
+                list.get(position).getDate()).toString();
+        holder.date.setText(formatDate);
+
+        // DateFormat.format("HH:mm dd/MM/yyyy", Calendar.getInstance().getTime()).toString();
 
     }
 

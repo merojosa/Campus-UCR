@@ -1,20 +1,34 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 
+import java.util.Date;
+
 public class Order
 {
     private String username;
     private String restaurant;
     private String idOrder;
     private Meal meal;
+    private Date date;
 
     // Si se borra esto, se cae la compra jeje
     public Order(){}
 
-    public Order(String username, Meal meal, String restaurant)
+    public Order(String username, Meal meal, String restaurant, Date date)
     {
         this.username = username;
         this.meal = meal;
         this.restaurant = restaurant;
+        this.date = date;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
     }
 
     public String getRestaurant() {

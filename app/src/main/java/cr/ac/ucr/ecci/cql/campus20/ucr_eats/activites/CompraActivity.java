@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
@@ -60,7 +63,7 @@ public class CompraActivity extends AppCompatActivity
         String email = campusBD.obtenerCorreoActual();
         String username = email.substring(0, email.indexOf('@'));
 
-        Order order = new Order(username, meal, currentRestaurant);
+        Order order = new Order(username, meal, currentRestaurant, Calendar.getInstance().getTime());
         String orderId = campusBD.obtenerIdUnicoPath(PATH_PEDIDOS);
         order.setIdOrder(orderId);
 
