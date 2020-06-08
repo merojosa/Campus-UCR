@@ -58,6 +58,10 @@ public class MainForoGeneral extends AppCompatActivity {
 
     private List<Integer> idList;
 
+    // Instancia de Firebase para el foro general
+    ForoGeneralFirebaseDatabase databaseReference;
+    int onlyOnce = 0;
+
     /**
      * Método que se invoca al iniciar la actividad general del módulo Foro General,
      * muestra una pequeña lista de temas sugeridos y un botón flotante para agregar una pregunta (pantalla en blanco)
@@ -68,6 +72,9 @@ public class MainForoGeneral extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_foro_general);
+
+        // Se instancia el firebaseReference
+        databaseReference = new ForoGeneralFirebaseDatabase();
 
         idList = new ArrayList<>();
 
@@ -85,6 +92,7 @@ public class MainForoGeneral extends AppCompatActivity {
             @Override
             public void onChanged(List<Tema> temas) {
                 adapter.setTemas(temas);
+                llenarTemasFirebase(temas);
             }
         });
 
@@ -223,5 +231,20 @@ public class MainForoGeneral extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void llenarTemasFirebase(List<Tema> temas)
+    {
+        // FORMA INEFICIENTE DE INSERTAR EN FIREBASE
+//        if (onlyOnce == 0)
+//        {
+//            for (int index = 0; index < 4; ++index)
+//            {
+//                this.databaseReference.getTemasRef().child(Integer.toString(temas.get(index).getId() - 1)).setValue(temas.get(index));
+//            }
+//        }
+//
+//        if (temas.size() != 0)
+//            onlyOnce = 1;
     }
 }
