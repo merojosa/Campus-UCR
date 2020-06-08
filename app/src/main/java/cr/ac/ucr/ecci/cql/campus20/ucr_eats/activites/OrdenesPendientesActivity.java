@@ -47,14 +47,18 @@ public class OrdenesPendientesActivity extends AppCompatActivity
             {
                 // Para obtener el map con el formato especificado, sino, devuelve un HashMap
                 GenericTypeIndicator<HashMap<String, Order>> t = new GenericTypeIndicator<HashMap<String, Order>>() {};
-                Map<String, Order> td = dataSnapshot.getValue(t);
+                Map<String, Order> mapOrdenes = dataSnapshot.getValue(t);
 
                 List<Order> listaOrdenesPendientes = new ArrayList<>();
 
-                for (Map.Entry<String, Order> entrada : td.entrySet())
+                if(mapOrdenes != null)
                 {
-                    listaOrdenesPendientes.add(entrada.getValue());
+                    for (Map.Entry<String, Order> entrada : mapOrdenes.entrySet())
+                    {
+                        listaOrdenesPendientes.add(entrada.getValue());
+                    }
                 }
+
                 setupRecyclerView(listaOrdenesPendientes);
             }
 
