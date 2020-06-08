@@ -71,8 +71,7 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, recyclerView , (view, position) ->
                 {
-                    System.out.println("hOLA");
-                    System.out.println("hOLA");
+
                 })
         );
 
@@ -87,10 +86,4 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         adapterRV = new OrdersAdapter(listaOrdenes);
         recyclerView.setAdapter(adapterRV);
     }
-
-    private void imprimir(List<Order> lista)
-    {
-        System.out.println(lista.get(0).getMeal().getName());
-    }
-
 }

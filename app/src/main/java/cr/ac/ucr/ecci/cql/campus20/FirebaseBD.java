@@ -90,11 +90,19 @@ public class FirebaseBD implements CampusBD
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
 
+    // Inserta el dato con un id generico, asi, ninguno sera igual.
     @Override
     public void agregarDatos(String path, Object datos)
     {
         DatabaseReference referencia = mDatabase.getReference(path);
         referencia.push().setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
-    
+
+    // Id unico a los que haya en path
+    @Override
+    public String obtenerIdUnicoPath(String path)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        return referencia.push().getKey();
+    }
 }
