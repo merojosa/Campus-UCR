@@ -61,14 +61,15 @@ public class MealsActivity extends AppCompatActivity
             currentRestaurant = card.getNombre();
         }
 
-        getFirebaseMeals(1);
+        // Hardcoded restaurant id until the restaurant story gets done
+        this.getFirebaseMeals("1");
 
-        setupRecyclerView();
+        this.setupRecyclerView();
 
-        // Add an observer to the available meals
-        ViewModelProvider provider = new ViewModelProvider(this);
-        this.viewModel = provider.get(MealViewModel.class);
-        this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
+        // Add an observer to the available meals (commented, data is updated from firebase now)
+        //ViewModelProvider provider = new ViewModelProvider(this);
+        //this.viewModel = provider.get(MealViewModel.class);
+        //this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
     }
 
     public void setupRecyclerView()
@@ -107,25 +108,27 @@ public class MealsActivity extends AppCompatActivity
                 .into((ImageView) findViewById(R.id.meals_rest_img));
     }
 
-    private void getFirebaseMeals(int id)
+    private void getFirebaseMeals(String id)
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
-        DatabaseReference ref = db.getMealsFromRestaurantRef("1");
+        DatabaseReference ref = db.getMealsFromRestaurantRef(id);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 // Get all meals/children data from snapshot
-                Iterable<DataSnapshot> meals = dataSnapshot.getChildren();
-                ArrayList<Meal> m = new ArrayList<>();
+                Iterable<DataSnapshot> mealsData = dataSnapshot.getChildren();
+                ArrayList<Meal> meals = new ArrayList<>();
                 // Iterate array
-                for(DataSnapshot meal : meals)
+                for(DataSnapshot meal : mealsData)
                 {
                     if(meal.exists())
-                        m.add(new Meal(meal));
+                        meals.add(new Meal(meal));
                 }
+
+                adapter.setMeals(meals);
 
             }
 

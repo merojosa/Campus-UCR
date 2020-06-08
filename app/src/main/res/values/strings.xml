@@ -37,4 +37,6 @@
     <string name="price_placeholder">1000</string>
     <string name="image">image</string>
     <string name="restaurant_placeholder">Restaurant</string>
+    <string name="meals_left_placeholder">Restantes: %1$d de %2$d</string>
+    <string name="capacity_left_placeholder">Capacidad: %1$d de %2$d</string>
 </resources>

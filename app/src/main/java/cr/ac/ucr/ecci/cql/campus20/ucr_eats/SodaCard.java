@@ -3,6 +3,13 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Ignore;
+
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.Objects;
+
 public class SodaCard implements Parcelable
 {
     int id;
@@ -13,7 +20,10 @@ public class SodaCard implements Parcelable
     private double latitud;
     private double longitud;
 
-    public SodaCard(int id, String nombre, String foto, String horario, double rating, double latitud, double longitud)
+    private int maxCapacity;
+    private int availableCapacity;
+
+    public SodaCard(int id, String nombre, String foto, String horario, double rating, double latitud, double longitud, int capacity, int capacity_max)
     {
         this.id = id;
         this.nombre = nombre;
@@ -22,6 +32,8 @@ public class SodaCard implements Parcelable
         this.rating = rating;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.availableCapacity = capacity;
+        this.maxCapacity = capacity_max;
     }
 
     protected SodaCard(Parcel in) {
@@ -33,6 +45,7 @@ public class SodaCard implements Parcelable
         latitud = in.readDouble();
         longitud = in.readDouble();
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -103,4 +116,20 @@ public class SodaCard implements Parcelable
     public double getLongitud() { return longitud; }
 
     public void setLongitud(double longitud) { this.longitud = longitud; }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getAvailableCapacity() {
+        return availableCapacity;
+    }
+
+    public void setAvailableCapacity(int availableCapacity) {
+        this.availableCapacity = availableCapacity;
+    }
 }

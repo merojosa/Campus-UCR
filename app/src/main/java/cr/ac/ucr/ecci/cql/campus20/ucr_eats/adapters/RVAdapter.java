@@ -2,14 +2,13 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,9 +29,7 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import timber.log.Timber;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Soda;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 {
@@ -50,20 +47,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 .build();
     }
 
-
-    public void setSodaCards(List<Restaurant> restaurants, List<Double> i)
+    public void setSodaCard(List<Soda> sodas)
     {
-        this.sodaCards = convertToSodaCards(restaurants, i);
-
+        this.sodaCards = convertToSodaCard(sodas);
         notifyDataSetChanged();
     }
 
-    public List<SodaCard> convertToSodaCards(List<Restaurant> restaurants, List<Double> i)
+    public List<SodaCard> convertToSodaCard(List<Soda> restaurants)
     {
         List<SodaCard> cards = new ArrayList<SodaCard>();
 
-        int index = 0;
-        for(Restaurant restaurant : restaurants)
+        for(Soda soda : restaurants)
         {
             int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             String horario = "Cerrado";
@@ -71,16 +65,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             Date d = new Date();
             String nameDay = (String) android.text.format.DateFormat.format("EEE", d);
 
-            if (hour >= restaurant.openingTime && hour < restaurant.closingTime && restaurant.daysOpen.indexOf(nameDay) != -1) {
+            if (hour >= soda.opening_hour && hour < soda.closing_hour && soda.days_open.indexOf(nameDay) != -1) {
                 horario = "Abierto";
             }
 
-            if(index < i.size())
-            {
-                cards.add(
-                    new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, i.get(index++), restaurant.latitude, restaurant.longitude)
-                );
-            }
+            cards.add(
+                    new SodaCard(R.drawable.la_u, soda.name, soda.photo, horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max)
+            );
         }
 
         return cards;
@@ -108,30 +99,25 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         sodaViewHolder.horarioSoda.setText(sodaCards.get(i).getHorario());
 
 
-        //////////////////////////////////////////////////////////////////////////
-        // acá ocupo obtener el rating de la soda
-        String rating = getRating(sodaCards.get(i).getId());
+        Resources resources = this.context.getResources();
         sodaViewHolder.ratingSoda.setText(Double.toString(sodaCards.get(i).getRating()));
 
-        if (sodaCards.get(i).getHorario() == "Abierto")
-            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
-        else
-            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
+        sodaViewHolder.capacitySoda.setText(
+                String.format(resources.getString(R.string.capacity_left_placeholder),
+                        sodaCards.get(i).getAvailableCapacity(), sodaCards.get(i).getMaxCapacity()));
 
+        set_schedule(sodaViewHolder, i);
 
         loadCardImage(sodaViewHolder, i);
 
     }
 
-    private String getRating(int id)
-    {
-        //////////////////// acá es donde debería de leer esos datos de la tabla rating
-
-        int random = new Random().nextInt((500 - 100) + 1) + 100;
-        return Integer.toString(random/50%5);
+    private void set_schedule(SodaViewHolder sodaViewHolder, int i) {
+        if (sodaCards.get(i).getHorario() == "Abierto")
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+        else
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
     }
-
-
 
     @Override
     public int getItemCount()
@@ -149,6 +135,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         ImageView ubicacionSoda;
         TextView ratingSoda;
 
+        TextView capacitySoda;
+
         public SodaViewHolder(View itemView)
         {
             super(itemView);
@@ -160,6 +148,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
             ubicacionSoda = itemView.findViewById(R.id.ubicacion_soda);
             ratingSoda= itemView.findViewById(R.id.rating_soda);
+            capacitySoda= itemView.findViewById(R.id.capacidad_soda);
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {
@@ -214,5 +203,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url + q));
         intent.setPackage("com.google.android.apps.maps");
         this.context.startActivity(intent);
+    }
+
+    public List<SodaCard> getSodaCards() {
+        return sodaCards;
     }
 }
