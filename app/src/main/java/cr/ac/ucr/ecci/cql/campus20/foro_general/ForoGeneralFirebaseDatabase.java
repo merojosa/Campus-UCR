@@ -20,6 +20,13 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
         this.rootReference = FirebaseDatabase.getInstance().getReference(ROOT_PATH);
     }
 
+
+    public String obtenerUsuario()
+    {
+        String correo = super.obtenerCorreoActual();
+        return(correo.substring(0, correo.indexOf('@')));
+    }
+
     // Método que devuelve la referencia al child Temas
     public DatabaseReference getTemasRef()
     {

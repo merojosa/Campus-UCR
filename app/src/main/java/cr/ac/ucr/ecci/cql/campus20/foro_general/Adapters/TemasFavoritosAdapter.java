@@ -82,16 +82,22 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
     @Override
     public void onBindViewHolder(FavoritoViewHolder holder, int position) {
 
-        if (mFavoritos != null) {
+        if (mFavoritos != null && mFavoritos.size() > 0) {
             // Se instancia cada tema favorito
             Favorito current = mFavoritos.get(position);
 
             // Se obtiene la posición del tema que se encuentra como favorito
             int posTema = posicionTema(current.getIdTema());
 
-            holder.favoritoNombreView.setText(mTemas.get(posTema).getTitulo());
-            holder.favoritoDescritionView.setText(mTemas.get(posTema).getDescription());
-            holder.favoritoImagen.setImageResource(mTemas.get(posTema).getImagen());
+            // Evitar que se caiga la app porque en este punto los temas aún no están jalados de la
+            // BD (ver porqué)
+            if (mTemas != null && mTemas.size() > 0)
+            {
+                holder.favoritoNombreView.setText(mTemas.get(posTema).getTitulo());
+                holder.favoritoDescritionView.setText(mTemas.get(posTema).getDescription());
+                holder.favoritoImagen.setImageResource(mTemas.get(posTema).getImagen());
+            }
+
         }
         else {
             // Covers the case of data not being ready yet.
