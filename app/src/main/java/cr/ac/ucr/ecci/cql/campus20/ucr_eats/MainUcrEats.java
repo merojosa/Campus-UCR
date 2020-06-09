@@ -17,7 +17,6 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Soda;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
@@ -84,12 +83,12 @@ public class MainUcrEats extends AppCompatActivity
             {
                 // Get all meals/children data from snapshot
                 Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
-                ArrayList<Soda> soda = new ArrayList<>();
+                ArrayList<Restaurant> soda = new ArrayList<>();
                 // Iterate array
                 for(final DataSnapshot sodas : sodaData)
                 {
                     Log.e("Nombre:", ""+sodas.getValue());
-                    Soda so = sodas.getValue(Soda.class);
+                    Restaurant so = sodas.getValue(Restaurant.class);
 //                    String name = so.getName();
 
 

@@ -23,13 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Soda;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 {
@@ -47,17 +45,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 .build();
     }
 
-    public void setSodaCard(List<Soda> sodas)
+    public void setSodaCard(List<Restaurant> sodas)
     {
         this.sodaCards = convertToSodaCard(sodas);
         notifyDataSetChanged();
     }
 
-    public List<SodaCard> convertToSodaCard(List<Soda> restaurants)
+    public List<SodaCard> convertToSodaCard(List<Restaurant> restaurants)
     {
         List<SodaCard> cards = new ArrayList<SodaCard>();
 
-        for(Soda soda : restaurants)
+        for(Restaurant soda : restaurants)
         {
             int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             String horario = "Cerrado";
@@ -65,7 +63,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             Date d = new Date();
             String nameDay = (String) android.text.format.DateFormat.format("EEE", d);
 
-            if (hour >= soda.opening_hour && hour < soda.closing_hour && soda.days_open.indexOf(nameDay) != -1) {
+            if (hour >= soda.getOpening_hour() && hour < soda.getClosing_hour() && soda.daysOpen.indexOf(nameDay) != -1) {
                 horario = "Abierto";
             }
 
