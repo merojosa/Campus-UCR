@@ -140,7 +140,8 @@ public class MainForoGeneral extends AppCompatActivity {
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                adapter.setTemas(MainForoGeneral.this.temasLocales);
+                //adapter.setTemas(MainForoGeneral.this.temasLocales);
+                adapter.setTemas(temas);
                 //llenarTemasFirebase(temas);
             }
         });

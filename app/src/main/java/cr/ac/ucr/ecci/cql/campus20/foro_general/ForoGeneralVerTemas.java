@@ -274,14 +274,14 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                             " añadido a Favoritos", Toast.LENGTH_SHORT).show();
 
                     // Se inserta el tema como Favorito
-                    añadirTemaFavorito(idTema);
+                    añadirTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 } else {
                     // Se da un mensaje al usuario
                     Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
                             " quitado de Favoritos", Toast.LENGTH_SHORT).show();
 
                     // Se elimina al tema de la lista de Favoritos
-                    eliminarTemaFavorito(idTema);
+                    eliminarTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
         });
@@ -344,9 +344,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * @param identificadorTema, que es el identificador del tema que se va a insertar
      * como favorito
      */
-    public void añadirTemaFavorito(int identificadorTema)
+    public void añadirTemaFavorito(int identificadorTema, String nombreUsuario)
     {
-        Favorito fav = new Favorito(identificadorTema);
+        Favorito fav = new Favorito(identificadorTema, nombreUsuario);
         mFavoritoViewModel.insert(fav);
     }
 
@@ -355,9 +355,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * añadido como favorito
      * @param identificadorTema, que es el identificador del tema que se va a eliminar
      */
-    public void eliminarTemaFavorito(int identificadorTema)
+    public void eliminarTemaFavorito(int identificadorTema, String nombreUsuario)
     {
-        mFavoritoViewModel.deleteOneFavorito(identificadorTema);
+        mFavoritoViewModel.deleteOneFavorito(identificadorTema, nombreUsuario);
     }
 
     /**

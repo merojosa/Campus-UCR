@@ -20,7 +20,10 @@ public class FavoritoViewModel extends AndroidViewModel {
     public FavoritoViewModel(Application application)
     {
         super(application);
-        mRepository = new FavoritoRepository(application);
+
+        // Esto es a manera de prueba, hasta que se consiga una forma de pasar el nombre
+        // de usuario en el constructor
+        mRepository = new FavoritoRepository(application, "test");
         mAllFavoritos = mRepository.getAllFavoritos();
     }
 
@@ -28,7 +31,7 @@ public class FavoritoViewModel extends AndroidViewModel {
 
     public void insert(Favorito favorito) { mRepository.insert(favorito);}
 
-    public void deleteOneFavorito(int favoritoID) { mRepository.deleteOneFavorito(favoritoID);}
+    public void deleteOneFavorito(int favoritoID, String nombreUsuario) { mRepository.deleteOneFavorito(favoritoID, nombreUsuario);}
 
     //public Tema getOne(int favoritoID) { return favoritoDao.getOne(favoritoID);}
 }
