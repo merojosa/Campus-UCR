@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="150dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
@@ -16,11 +16,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="0dp"
         android:text="Restaurante"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
@@ -34,7 +34,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:text="Platillo"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/orden_fecha"
@@ -43,10 +44,13 @@
         android:layout_below="@+id/orden_platillo"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
+        android:layout_marginBottom="16dp"
         android:text="Fecha"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
 </RelativeLayout>
