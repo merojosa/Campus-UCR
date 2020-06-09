@@ -204,7 +204,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
             public void onItemClick(View itemView, int position) {
 
                 //conseguir id del tema seleccionado
-                /*int idTemaSeleccionado;
+                int idTemaSeleccionado;
                 String temaSeleccionado;
                 if(idList.size() != 0){
                     idTemaSeleccionado = idList.get(position);
@@ -224,13 +224,13 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     i++;
                 }
 
-                 */
+
                 String nombreTema = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
                 int idTemaSek = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
 
-                //temaSeleccionado = result.getTitulo();
-                int idTemaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
-                String temaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
+                temaSeleccionado = result.getTitulo();
+                //int idTemaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
+                //String temaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
 
                 // Llamada a la actividad de ver preguntas
                 Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
@@ -241,7 +241,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
             @Override
             public void onHeartClick(boolean check, int position) {
-                /*//conseguir id del tema seleccionado
+                //conseguir id del tema seleccionado
                 int idTema;
                 String nombreTema;
                 if(idList.size() != 0){
@@ -261,13 +261,13 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     }
                     i++;
                 }
-                nombreTema = result.getTitulo();*/
+                nombreTema = result.getTitulo();
 
                 //String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
                 //int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
 
-                String nombreTema = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
-                int idTema = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
+                //String nombreTema = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
+                //int idTema = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
 
                 if (check) {
                     // Se da un mensaje al usuario
