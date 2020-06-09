@@ -145,7 +145,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        LoginBD login = new FirebaseBD(getApplicationContext());
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(CrearPreguntaForoGeneral.this);

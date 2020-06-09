@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public interface LoginBD
@@ -19,4 +20,8 @@ public interface LoginBD
     public void cerrarSesion();
 
     public void escribirDatos(String path, Object datos);
+
+    public DatabaseReference getReference(String path);
+
+    public DatabaseReference getReference();
 }

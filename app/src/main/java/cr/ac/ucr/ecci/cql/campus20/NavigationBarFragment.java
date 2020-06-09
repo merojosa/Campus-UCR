@@ -141,7 +141,7 @@ public class NavigationBarFragment extends android.app.Fragment
 
     private void irActividadElegidaConfirmacion(int actividadId)
     {
-        LoginBD loginBD = new FirebaseBD();
+        LoginBD loginBD = new FirebaseBD(getContext());
 
         String correo = loginBD.obtenerCorreoActual();
         String idUsuario = correo.substring(0, correo.indexOf('@'));

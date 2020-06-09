@@ -61,7 +61,7 @@ public class AppBarFragment extends Fragment
                 else if(item.getItemId() == R.id.itemCerrarSesion)
                 {
                     // Cerrar sesion
-                    LoginBD login = new FirebaseBD();
+                    LoginBD login = new FirebaseBD(getContext());
                     login.cerrarSesion();
 
                     // Matar todas las actividades anteriores y volver al login

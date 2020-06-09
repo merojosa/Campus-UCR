@@ -28,7 +28,7 @@ public class GuardarAppService extends IntentService
 
         if(appId != -1)
         {
-            LoginBD loginBD = new FirebaseBD();
+            LoginBD loginBD = new FirebaseBD(getApplicationContext());
             String correo = loginBD.obtenerCorreoActual();
             String usuario = correo.substring(0, correo.indexOf('@'));
 
