@@ -97,7 +97,7 @@ public class MainForoGeneral extends AppCompatActivity {
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
-        this.databaseReference.getTemasRef().addListenerForSingleValueEvent(new ValueEventListener() {
+        this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Se borra la lista
@@ -105,6 +105,7 @@ public class MainForoGeneral extends AppCompatActivity {
                 // Se recorre el snapshot para sacar los datos
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
+                    // Esto podría producir NullPointerException
                     int id = ds.child("id").getValue(Integer.class);
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
@@ -140,8 +141,8 @@ public class MainForoGeneral extends AppCompatActivity {
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                //adapter.setTemas(MainForoGeneral.this.temasLocales);
-                adapter.setTemas(temas);
+                adapter.setTemas(MainForoGeneral.this.temasLocales);
+                //adapter.setTemas(temas);
                 //llenarTemasFirebase(temas);
             }
         });

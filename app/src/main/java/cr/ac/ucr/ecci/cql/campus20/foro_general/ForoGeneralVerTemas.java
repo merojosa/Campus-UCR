@@ -76,7 +76,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         // Se instancia el firebaseReference
         databaseReference = new ForoGeneralFirebaseDatabase();
 
-        this.databaseReference.getTemasRef().addListenerForSingleValueEvent(new ValueEventListener() {
+        this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Se borra la lista
@@ -84,6 +84,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 // Se recorre el snapshot para sacar los datos
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
+                    // Esto podría producir NullPointerException
                     int id = ds.child("id").getValue(Integer.class);
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
