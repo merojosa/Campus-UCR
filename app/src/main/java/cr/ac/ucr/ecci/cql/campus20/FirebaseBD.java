@@ -105,4 +105,11 @@ public class FirebaseBD implements CampusBD
         DatabaseReference referencia = mDatabase.getReference(path);
         return referencia.push().getKey();
     }
+
+    @Override
+    public void eliminarDato(String path)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.setValue(null).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
+    }
 }

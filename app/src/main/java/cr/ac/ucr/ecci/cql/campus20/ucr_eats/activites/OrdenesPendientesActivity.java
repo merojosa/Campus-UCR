@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -8,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,21 +22,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.OrdersAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
 public class OrdenesPendientesActivity extends AppCompatActivity
 {
-    private List<Order> list;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapterRV;
+    private List<Order> listaOrdenes;
+    private CampusBD db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordenes_pendientes);
+
+        db = new FirebaseBD();
+
+        listaOrdenes = new ArrayList<>();
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referencia = mDatabase.getReference(CompraActivity.PATH_PEDIDOS);
@@ -50,17 +55,15 @@ public class OrdenesPendientesActivity extends AppCompatActivity
                 GenericTypeIndicator<HashMap<String, Order>> t = new GenericTypeIndicator<HashMap<String, Order>>() {};
                 Map<String, Order> mapOrdenes = dataSnapshot.getValue(t);
 
-                List<Order> listaOrdenesPendientes = new ArrayList<>();
-
                 if(mapOrdenes != null)
                 {
                     for (Map.Entry<String, Order> entrada : mapOrdenes.entrySet())
                     {
-                        listaOrdenesPendientes.add(entrada.getValue());
+                        listaOrdenes.add(entrada.getValue());
                     }
                 }
 
-                setupRecyclerView(listaOrdenesPendientes);
+                setupRecyclerView();
             }
 
             @Override
@@ -69,14 +72,26 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         });
     }
 
-    public void setupRecyclerView(List<Order> listaOrdenes)
+    public void setupRecyclerView()
     {
-        recyclerView = findViewById(R.id.ordenes_pendientes_rv);
+        RecyclerView recyclerView = findViewById(R.id.ordenes_pendientes_rv);
 
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerView , (view, position) ->
+                new RecyclerItemClickListener(this, recyclerView, (view, position) ->
                 {
-
+                    new AlertDialog.Builder(this)
+                            .setTitle("Completar orden")
+                            .setMessage("¿Desea completar esta orden?")
+                            .setIcon(R.drawable.info_personalizado)
+                            .setPositiveButton("Completar orden", (dialog, whichButton) ->
+                            {
+                                db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
+                                        .get(position).getIdOrder());
+                                
+                                listaOrdenes.clear();
+                            })
+                            .setNegativeButton("Cancelar", (dialog, which) ->
+                            {}).show();
                 })
         );
 
@@ -92,7 +107,7 @@ public class OrdenesPendientesActivity extends AppCompatActivity
                 mLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        adapterRV = new OrdersAdapter(listaOrdenes);
+        RecyclerView.Adapter adapterRV = new OrdersAdapter(listaOrdenes);
         recyclerView.setAdapter(adapterRV);
     }
 }
