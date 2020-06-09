@@ -276,6 +276,10 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
                     // Se inserta el tema como Favorito
                     añadirTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
+                    // Se inserta el tema como Favorito en Firebase
+                    añadirTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
                 } else {
                     // Se da un mensaje al usuario
                     Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
@@ -283,6 +287,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
                     // Se elimina al tema de la lista de Favoritos
                     eliminarTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
+                    // Se elimina el tema como Favorito en Firebase
+                    eliminarTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
         });
@@ -351,6 +358,13 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mFavoritoViewModel.insert(fav);
     }
 
+
+    public void añadirTemaFavoritoFirebase(int identificadorTema, String nombreUsuario)
+    {
+        Favorito fav = new Favorito(identificadorTema, nombreUsuario);
+        this.databaseReference.getFavoritosRef().child(nombreUsuario).child(Integer.toString(identificadorTema)).setValue(fav);
+    }
+
     /**
      * Método que se encarga de invocar el método para borrado de un tema que está
      * añadido como favorito
@@ -359,6 +373,12 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     public void eliminarTemaFavorito(int identificadorTema, String nombreUsuario)
     {
         mFavoritoViewModel.deleteOneFavorito(identificadorTema, nombreUsuario);
+    }
+
+
+    public void eliminarTemaFavoritoFirebase(int identificadorTema, String nombreUsuario)
+    {
+        this.databaseReference.getFavoritosRef().child(nombreUsuario).child(Integer.toString(identificadorTema)).setValue(null);
     }
 
     /**
