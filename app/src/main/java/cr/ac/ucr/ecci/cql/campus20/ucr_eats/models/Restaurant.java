@@ -3,6 +3,7 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -49,6 +50,7 @@ public class Restaurant
     public Restaurant(){}
 
     // Firebase data constructor
+    @Ignore
     public Restaurant(@NonNull DataSnapshot data)
     {
         this.setName(data.child("name").getValue(String.class));
@@ -61,6 +63,19 @@ public class Restaurant
         this.setOpening_hour(Objects.requireNonNull(data.child("opening_hour").getValue(Integer.class)));
         this.setClosing_hour(Objects.requireNonNull(data.child("closing_hour").getValue(Integer.class)));
         this.setRating(Objects.requireNonNull(data.child("rating").getValue(Double.class)));
+    }
+
+    @Ignore
+    public Restaurant(String name, String photo, double latitude, double longitude,
+                      String daysOpen, int openingTime, int closingTime)
+    {
+        this.name = name;
+        this.photo = photo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.daysOpen = daysOpen;
+        this.openingTime = openingTime;
+        this.closing_hour = closingTime;
     }
 
     public String getName() {
@@ -143,16 +158,6 @@ public class Restaurant
         this.capacity_max = capacity_max;
     }
 
-    public Restaurant(String name, String photo, double latitude, double longitude,
-                      String daysOpen, int openingTime, int closingTime)
-    {
-        this.name = name;
-        this.photo = photo;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.daysOpen = daysOpen;
-        this.openingTime = openingTime;
-        this.closing_hour = closingTime;
-    }
+
 
 }
