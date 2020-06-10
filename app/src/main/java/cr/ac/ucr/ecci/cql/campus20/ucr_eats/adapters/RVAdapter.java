@@ -176,6 +176,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 double latitud = card.getLatitud();
                 //irUbicacionSoda(card);
                 Intent intent = new Intent(view.getContext(), SodaMapActivity.class);
+                intent.putExtra("sodaLat", card.getLatitud());
+                intent.putExtra("sodaLong", card.getLongitud());
                 view.getContext().startActivity(intent);
             });
         }

@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -12,7 +14,14 @@ import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.R;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -26,7 +35,8 @@ import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import cr.ac.ucr.ecci.cql.campus20.R;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,22 +52,27 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class SodaMapActivity extends AppCompatActivity {
-
-
-    // Create names for the map's source, icon, and layer IDs.
+/**
+ * Use Mapbox Java Services to request directions from the Mapbox Directions API and show the
+ * route with a LineLayer.
+ */
+public class SodaMapActivity extends AppCompatActivity implements PermissionsListener {
 
     private static final String ROUTE_LAYER_ID = "route-layer-id";
     private static final String ROUTE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
     private static final String RED_PIN_ICON_ID = "red-pin-icon-id";
-
     private MapView mapView;
     private DirectionsRoute currentRoute;
     private MapboxDirections client;
     private Point origin;
     private Point destination;
+    private LocationComponent locationComponent;
+    private MapboxMap mapboxMap;
+    private PermissionsManager permissionsManager;
+    private double sodaLat;
+    private double sodaLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +85,27 @@ public class SodaMapActivity extends AppCompatActivity {
         // This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_soda_map);
 
+        // Setup the MapView
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                SodaMapActivity.this.mapboxMap = mapboxMap;
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-                        // Set the origin location to the Alhambra landmark in Granada, Spain.
-                        origin = Point.fromLngLat(-3.588098, 37.176164);
 
-                        // Set the destination location to the Plaza del Triunfo in Granada, Spain.
-                        destination = Point.fromLngLat(-3.601845, 37.184080);
+                        enableLocationComponent(style);
+
+
+
+                        origin = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                                locationComponent.getLastKnownLocation().getLatitude());
+
+                        sodaLat = getIntent().getDoubleExtra("sodaLat", 0.0);
+                        sodaLong = getIntent().getDoubleExtra("sodaLong", 0.0);
+                        destination = Point.fromLngLat(sodaLong, sodaLat);
 
                         initSource(style);
 
@@ -94,7 +117,6 @@ public class SodaMapActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     /**
@@ -115,7 +137,7 @@ public class SodaMapActivity extends AppCompatActivity {
     private void initLayers(@NonNull Style loadedMapStyle) {
         LineLayer routeLayer = new LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID);
 
-// Add the LineLayer to the map. This layer will display the directions route.
+        // Add the LineLayer to the map. This layer will display the directions route.
         routeLayer.setProperties(
                 lineCap(Property.LINE_CAP_ROUND),
                 lineJoin(Property.LINE_JOIN_ROUND),
@@ -124,16 +146,44 @@ public class SodaMapActivity extends AppCompatActivity {
         );
         loadedMapStyle.addLayer(routeLayer);
 
-// Add the red marker icon image to the map
+        // Add the red marker icon image to the map
         loadedMapStyle.addImage(RED_PIN_ICON_ID, BitmapUtils.getBitmapFromDrawable(
                 getResources().getDrawable(R.drawable.mapbox_marker_icon_default)));
 
-// Add the red marker icon SymbolLayer to the map
+        // Add the red marker icon SymbolLayer to the map
         loadedMapStyle.addLayer(new SymbolLayer(ICON_LAYER_ID, ICON_SOURCE_ID).withProperties(
                 iconImage(RED_PIN_ICON_ID),
                 iconIgnorePlacement(true),
                 iconAllowOverlap(true),
                 iconOffset(new Float[] {0f, -9f})));
+    }
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+        // Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(this))
+        {
+            // Get an instance of the component
+            locationComponent = mapboxMap.getLocationComponent();
+
+            // Activate with options
+            locationComponent.activateLocationComponent(
+                    LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+
+            // Enable to make component visible
+            locationComponent.setLocationComponentEnabled(true);
+
+            // Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+
+            // Set the component's render mode
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+        }
+        else
+        {
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(this);
+        }
     }
 
     /**
@@ -178,11 +228,11 @@ public class SodaMapActivity extends AppCompatActivity {
                         @Override
                         public void onStyleLoaded(@NonNull Style style) {
 
-// Retrieve and update the source designated for showing the directions route
+                            // Retrieve and update the source designated for showing the directions route
                             GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
 
-// Create a LineString with the directions route's geometry and
-// reset the GeoJSON source for the route LineLayer source
+                            // Create a LineString with the directions route's geometry and
+                            // reset the GeoJSON source for the route LineLayer source
                             if (source != null) {
                                 source.setGeoJson(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6));
                             }
@@ -199,6 +249,30 @@ public class SodaMapActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain)
+    {
+        Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted)
+    {
+        if (granted) {
+            enableLocationComponent(mapboxMap.getStyle());
+        } else {
+            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -233,7 +307,7 @@ public class SodaMapActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-// Cancel the Directions API request
+        // Cancel the Directions API request
         if (client != null) {
             client.cancelCall();
         }
