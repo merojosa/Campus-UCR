@@ -55,6 +55,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private String temaSeleccionado;
     private PreguntaViewModel mPreguntaViewModel;
     private RankPreguntaViewModel mRankPreguntaViewModel;
+    private String nombreUsuario;
 
     /**
      * Método que se invoca al entrar a la actividad de Crear una pregunta
@@ -62,6 +63,10 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Nombre del usuario actual
+        Intent mIntent = getIntent();
+        this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
+
         // Instancias necesarias
         mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
         mRankPreguntaViewModel = new ViewModelProvider(this).get(RankPreguntaViewModel.class);
@@ -184,8 +189,11 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
+
+        // TODO: AGREGAR A FIREBASE TAMBIEN
+
         String texto = mEditText.getText().toString();
-        Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, 0, 0);
+        Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);
 
         Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);

@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
@@ -32,9 +33,12 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
     private LiveData<List<Pregunta>> preguntas;
+    private List<Pregunta> preguntasFireBase;
+    ForoGeneralFirebaseDatabase databaseReference;
     private PreguntaViewModel mPreguntaViewModel;
     private TextView tituloTema;
     private RecyclerView recyclerViewPreguntas;
@@ -56,6 +60,41 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
         int idTemaSeleccionado = mIntent.getIntExtra("idTemaSeleccionado", 0);
         String temaSeleccionado = mIntent.getStringExtra("temaSeleccionado");
 
+
+        //String nombreUsuario = mIntent.getStringExtra("nombreUsuario");
+        this.preguntasFireBase = new ArrayList<>();
+
+
+        /*
+        this.databaseReference.getPreguntasRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se recorre el snapshot para sacar los datos
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    // Esto podría producir NullPointerException
+                    int id = ds.child("id").getValue(Integer.class);
+                    String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+                    int temaID = ds.child("temaID").getValue(Integer.class);
+                    String texto = ds.child("texto").getValue(String.class);
+                    int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
+                    int contadorDisLikes = ds.child("contadorDisLikes").getValue(Integer.class);
+
+                    // Se crea el tema
+                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes);
+                    ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+            }
+        });
+        */
+
         // Setear el view para las preguntas
         recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
         recyclerViewPreguntas.setLayoutManager(new LinearLayoutManager(this));
@@ -72,6 +111,11 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
         // Setea el titulo del tema seleccionado en la pantalla de ver preguntas
         tituloTema = (TextView) findViewById(R.id.temaSeleccionado);
         tituloTema.setText(temaSeleccionado);
+
+        /*if(this.preguntasFireBase.size() > 0){
+            preguntaCards = preguntasAdapter.convertToPreguntaCards(this.preguntasFireBase);
+        }*/
+
         preguntas.observe(this, new Observer<List<Pregunta>>() {
             @Override
             public void onChanged(List<Pregunta> preguntas) {

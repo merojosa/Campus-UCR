@@ -35,7 +35,7 @@ public class PreguntaRepository {
     /**
      * Recupera un LiveData (lista que puede cambiar) de preguntas de un tema asociado
      * @param id el id del tema a recuperar
-     * @return una lista con las preguntas pde un tema especifico
+     * @return una lista con las preguntas pde un tema especifico, asociado a un usuario especifico
      */
     public LiveData<List<Pregunta>> getPreguntasTema(int id){
         return mPreguntaDao.getPreguntasTema(id);

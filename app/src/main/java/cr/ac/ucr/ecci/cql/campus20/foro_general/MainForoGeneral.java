@@ -203,6 +203,7 @@ public class MainForoGeneral extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
                 intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
                 intent.putExtra("temaSeleccionado", temaSeleccionado);
+                //intent.putExtra("nombreUsuario", firebase.getNombreUsuario());
                 startActivity(intent);
             }
         });
@@ -268,6 +269,7 @@ public class MainForoGeneral extends AppCompatActivity {
      */
     private void crearPregunta() {
         Intent intent = new Intent(this, CrearPreguntaForoGeneral.class);
+        intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
         // Llamada a la actividad de crear pregunta
         startActivity(intent);
     }
