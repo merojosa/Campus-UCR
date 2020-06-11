@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -11,15 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.constants.MapboxConstants;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
@@ -28,11 +38,15 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
-public class CompraActivity extends AppCompatActivity
+public class CompraActivity extends AppCompatActivity implements PermissionsListener
 {
     private Meal meal;
     public static final String PATH_PEDIDOS = "ucr_eats/pedidos";
     private String currentRestaurant;
+
+    // Referencia: https://docs.mapbox.com/android/maps/examples/show-a-users-location-on-a-fragment/
+    private MapboxMap mapboxMap;
+    private PermissionsManager permissionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -70,22 +84,21 @@ public class CompraActivity extends AppCompatActivity
         SupportMapFragment mapFragment;
         if (savedInstanceState == null)
         {
-
             // Create fragment
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            // Build mapboxMap
+            // Build a Mapbox map
             MapboxMapOptions options = MapboxMapOptions.createFromAttributes(this, null);
             options.camera(new CameraPosition.Builder()
-                    .target(new LatLng(-52.6885, -70.1395))
-                    .zoom(9)
+                    .target(new LatLng(38.899895, -77.03401))
+                    .zoom(16.5f)
                     .build());
 
             // Create map fragment
             mapFragment = SupportMapFragment.newInstance(options);
 
             // Add map fragment to parent container
-            transaction.add(R.id.container, mapFragment, "com.mapbox.map");
+            transaction.add(R.id.location_frag_container, mapFragment, "com.mapbox.map");
             transaction.commit();
         }
         else
@@ -95,13 +108,10 @@ public class CompraActivity extends AppCompatActivity
 
         if (mapFragment != null)
         {
-            mapFragment.getMapAsync(mapboxMap -> mapboxMap.setStyle(Style.MAPBOX_STREETS, style ->
-            {
-
-                // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-
-
-            }));
+            mapFragment.getMapAsync(mapboxMap -> {
+                CompraActivity.this.mapboxMap = mapboxMap;
+                mapboxMap.setStyle(Style.OUTDOORS, this::enableLocationComponent);
+            });
         }
     }
 
@@ -123,6 +133,62 @@ public class CompraActivity extends AppCompatActivity
         startActivity(intent);
         finish();
 
+    }
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle)
+    {
+        // Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(this))
+        {
+
+            // Get an instance of the LocationComponent.
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+            // Activate the LocationComponent
+            locationComponent.activateLocationComponent(
+                    LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+
+            // Enable the LocationComponent so that it's actually visible on the map
+            locationComponent.setLocationComponentEnabled(true);
+
+            // Set the LocationComponent's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+
+            // Set the LocationComponent's render mode
+            locationComponent.setRenderMode(RenderMode.NORMAL);
+        }
+        else
+        {
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain)
+    {
+        Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted)
+    {
+        if (granted)
+        {
+            mapboxMap.getStyle(this::enableLocationComponent);
+        }
+        else
+        {
+            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
 }
