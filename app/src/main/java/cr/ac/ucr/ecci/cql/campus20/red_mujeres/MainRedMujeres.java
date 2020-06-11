@@ -1,74 +1,66 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-
-// Imports especificos de Directions API
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.geojson.FeatureCollection;
-
-import android.os.Handler;
-import android.widget.Toast;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-
-// Clases para calcular una ruta
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import android.util.Log;
-
-// Imports necesarios para la interfaz de usuario de navegacion
-import android.view.View;
-import android.widget.Button;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-// Imports especificos de Directions API
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
+
+// Imports especificos de Directions API
+// Clases para calcular una ruta
+// Imports necesarios para la interfaz de usuario de navegacion
+// Imports especificos de Directions API
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
@@ -134,21 +126,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     public void onClick(View v) {
 
 //                        // Pregunta a usuario si desea compartir ruta con personas de confianza
-//                        FragmentManager fm = getSupportFragmentManager();
-//                        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
-//                        alertDialog.show(fm, "fragment_compartir_ruta");
+                        //FragmentManager fm = getSupportFragmentManager();
+                        //CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
+                        //alertDialog.show(fm, "fragment_compartir_ruta");
+                        popupCompartir();
 
                         //*PENDIENTE*dialogo debe manejar respuesta afirmativa/negativa y LUEGO llamar a navegacion
                         // posiblemente se deba colocar en el metodo de despliegue de navegacion del listener
                         // al implementar la navegación con navigationView
-
-                        boolean simulateRoute = false; //Simulación de ruta para testing
-                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                .directionsRoute(currentRoute)
-                                .shouldSimulateRoute(simulateRoute)
-                                .build();
-
-                        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
                     }
                 });
 
@@ -171,6 +156,47 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             }
 
         });
+    }
+
+    public void iniciarRuta() {
+        boolean simulateRoute = false; //Simulación de ruta para testing
+        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                .directionsRoute(currentRoute)
+                .shouldSimulateRoute(simulateRoute)
+                .build();
+
+        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
+    }
+
+    private void popupCompartir() {
+        // create a dialog with AlertDialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
+
+        builder.setTitle("Compartir viaje");
+        builder.setMessage("¿Desea compartir el viaje con sus contactos?");
+
+        String positiveText = "Sí";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Compartir el viaje con contactos
+                    }
+                });
+
+        //No se desea compartir el viaje, empezamos la navegacion automaticamente
+        String negativeText = "No";
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        iniciarRuta();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     // Iconos de navegacion
