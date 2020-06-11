@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
+package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;

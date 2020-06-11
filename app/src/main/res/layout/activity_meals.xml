@@ -43,6 +43,11 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/soda_placeholder" />
 
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/meals_recycler"
                 android:layout_width="match_parent"

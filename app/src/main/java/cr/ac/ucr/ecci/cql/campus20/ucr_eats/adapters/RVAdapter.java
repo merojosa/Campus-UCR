@@ -28,7 +28,7 @@ import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaMapActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.SodaMapActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
