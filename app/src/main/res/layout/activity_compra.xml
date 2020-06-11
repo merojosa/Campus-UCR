@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ucr_eats.activites.CompraActivity">
 
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/appBar"
         class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
@@ -14,86 +13,73 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_app_bar" />
 
-    <TextView
-        android:id="@+id/tituloCompra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Titulo Soda"
-        android:textSize="44sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar"
-        app:layout_constraintVertical_bias="0.009" />
-
-    <TextView
-        android:id="@+id/platilloCompra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Platillo"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tituloCompra" />
-
-    <ImageView
-        android:id="@+id/platilloImagenCompra"
-        android:layout_width="347dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/location_frag_cardview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/platilloCompra"
-        app:layout_constraintVertical_bias="0.207"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/location_frag_cardview"
-        android:layout_width="356dp"
-        android:layout_height="323dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginVertical="50dp"
-        android:layout_marginTop="31dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="@dimen/cardview_default_elevation"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCompra"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/platilloImagenCompra">
-
-        <FrameLayout
-            android:id="@+id/location_frag_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/buttonCompra"
-        android:layout_width="0dp"
-        android:layout_height="62dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/azul_UCR"
-        android:text="Realizar pedido"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tituloCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Titulo Soda"
+            android:textAlignment="center"
+            android:textSize="44sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/platilloCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Platillo"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/platilloImagenCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/location_frag_cardview"
+            android:layout_width="356dp"
+            android:layout_height="213dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="50dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="@dimen/cardview_default_elevation">
+
+            <FrameLayout
+                android:id="@+id/location_frag_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/buttonCompra"
+            android:layout_width="379dp"
+            android:layout_height="62dp"
+            android:backgroundTint="@color/azul_UCR"
+            android:text="Realizar pedido"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
