@@ -21,4 +21,8 @@ public interface CampusBD
     public void escribirDatos(String path, Object datos);
 
     public void agregarDatos(String path, Object datos);
+
+    public String obtenerIdUnicoPath(String path);
+
+    public void eliminarDato(String path);
 }

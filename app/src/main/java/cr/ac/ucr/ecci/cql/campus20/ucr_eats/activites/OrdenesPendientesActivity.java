@@ -1,7 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
@@ -20,15 +25,23 @@ import java.util.Map;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.OrdersAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
-public class OrdenesPendientesActivity extends AppCompatActivity {
+public class OrdenesPendientesActivity extends AppCompatActivity
+{
+    private List<Order> listaOrdenes;
+    private CampusBD db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordenes_pendientes);
+
+        db = new FirebaseBD();
+
+        listaOrdenes = new ArrayList<>();
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referencia = mDatabase.getReference(CompraActivity.PATH_PEDIDOS);
@@ -40,14 +53,17 @@ public class OrdenesPendientesActivity extends AppCompatActivity {
             {
                 // Para obtener el map con el formato especificado, sino, devuelve un HashMap
                 GenericTypeIndicator<HashMap<String, Order>> t = new GenericTypeIndicator<HashMap<String, Order>>() {};
-                Map<String, Order> td = dataSnapshot.getValue(t);
+                Map<String, Order> mapOrdenes = dataSnapshot.getValue(t);
 
-                List<Order> listaOrdenesPendientes = new ArrayList<>();
-
-                for (Map.Entry<String, Order> entrada : td.entrySet())
+                if(mapOrdenes != null)
                 {
-                    listaOrdenesPendientes.add(entrada.getValue());
+                    for (Map.Entry<String, Order> entrada : mapOrdenes.entrySet())
+                    {
+                        listaOrdenes.add(entrada.getValue());
+                    }
                 }
+
+                setupRecyclerView();
             }
 
             @Override
@@ -56,9 +72,42 @@ public class OrdenesPendientesActivity extends AppCompatActivity {
         });
     }
 
-    private void imprimir(List<Order> lista)
+    public void setupRecyclerView()
     {
-        System.out.println(lista.get(0).getMeal().getName());
-    }
+        RecyclerView recyclerView = findViewById(R.id.ordenes_pendientes_rv);
 
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView, (view, position) ->
+                {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Completar orden")
+                            .setMessage("¿Desea completar esta orden?")
+                            .setIcon(R.drawable.info_personalizado)
+                            .setPositiveButton("Completar orden", (dialog, whichButton) ->
+                            {
+                                db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
+                                        .get(position).getIdOrder());
+                                
+                                listaOrdenes.clear();
+                            })
+                            .setNegativeButton("Cancelar", (dialog, which) ->
+                            {}).show();
+                })
+        );
+
+        // Performance
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                mLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        RecyclerView.Adapter adapterRV = new OrdersAdapter(listaOrdenes);
+        recyclerView.setAdapter(adapterRV);
+    }
 }

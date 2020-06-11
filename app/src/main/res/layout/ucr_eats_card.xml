@@ -82,8 +82,15 @@
 
                 <Space
                     android:layout_width="0dp"
-                    android:layout_weight="7"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="3" />
+
+                <TextView
+                    android:id="@+id/capacidad_soda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:text="@string/capacity_left_placeholder" />
 
                 <ImageView
                     android:id="@+id/ubicacion_soda"
