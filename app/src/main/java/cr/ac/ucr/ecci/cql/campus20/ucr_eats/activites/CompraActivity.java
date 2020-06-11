@@ -1,15 +1,22 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -54,6 +61,48 @@ public class CompraActivity extends AppCompatActivity
 
         Button buttonCompra = findViewById(R.id.buttonCompra);
         buttonCompra.setOnClickListener(v -> realizarCompra());
+
+        // Map box fragment:
+
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
+
+        // Create supportMapFragment
+        SupportMapFragment mapFragment;
+        if (savedInstanceState == null)
+        {
+
+            // Create fragment
+            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            // Build mapboxMap
+            MapboxMapOptions options = MapboxMapOptions.createFromAttributes(this, null);
+            options.camera(new CameraPosition.Builder()
+                    .target(new LatLng(-52.6885, -70.1395))
+                    .zoom(9)
+                    .build());
+
+            // Create map fragment
+            mapFragment = SupportMapFragment.newInstance(options);
+
+            // Add map fragment to parent container
+            transaction.add(R.id.container, mapFragment, "com.mapbox.map");
+            transaction.commit();
+        }
+        else
+        {
+            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentByTag("com.mapbox.map");
+        }
+
+        if (mapFragment != null)
+        {
+            mapFragment.getMapAsync(mapboxMap -> mapboxMap.setStyle(Style.MAPBOX_STREETS, style ->
+            {
+
+                // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+
+
+            }));
+        }
     }
 
     public void realizarCompra()
