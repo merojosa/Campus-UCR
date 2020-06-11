@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -43,10 +44,16 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
     private Meal meal;
     public static final String PATH_PEDIDOS = "ucr_eats/pedidos";
     private String currentRestaurant;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     // Referencia: https://docs.mapbox.com/android/maps/examples/show-a-users-location-on-a-fragment/
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
+    private LocationComponent locationComponent;
+
+    private boolean customLocation = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -122,7 +129,17 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
         String email = campusBD.obtenerCorreoActual();
         String username = email.substring(0, email.indexOf('@'));
 
-        Order order = new Order(username, meal, currentRestaurant, Calendar.getInstance().getTime());
+        if(customLocation == false)
+        {
+            Location location = locationComponent.getLastKnownLocation();
+            if(location != null)
+            {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+        }
+
+        Order order = new Order(username, meal, currentRestaurant, Calendar.getInstance().getTime(), latitude, longitude);
         String orderId = campusBD.obtenerIdUnicoPath(PATH_PEDIDOS);
         order.setIdOrder(orderId);
 
@@ -143,7 +160,7 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
         {
 
             // Get an instance of the LocationComponent.
-            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent = mapboxMap.getLocationComponent();
 
             // Activate the LocationComponent
             locationComponent.activateLocationComponent(
