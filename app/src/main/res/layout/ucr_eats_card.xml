@@ -58,27 +58,34 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
 
-                <ImageView
-                    android:id="@+id/imagen_estrella"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_marginEnd="-5dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_star" />
+                    android:layout_weight="2">
 
-                <TextView
-                    android:id="@+id/rating_soda"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:layout_marginStart="-5dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/rating_soda"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:scaleType="centerCrop"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/imagen_estrella"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/ic_star" />
+
+                </LinearLayout>
+
+
 
                 <Space
                     android:layout_width="0dp"

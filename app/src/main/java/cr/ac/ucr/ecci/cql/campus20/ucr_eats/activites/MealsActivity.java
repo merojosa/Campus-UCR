@@ -6,11 +6,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +44,8 @@ public class MealsActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private MealsAdapter adapter;
     private MealViewModel viewModel;
+    private ImageView sodaRatingStar;
+    private TextView sodaRatingNum;
     private List<Meal> meals;
 
     private String currentRestaurant;
@@ -43,6 +54,7 @@ public class MealsActivity extends AppCompatActivity
     public final static String MEAL_KEY = "Meals";
     public final static String NOMBRE_SODA_KEY = "Soda";
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,6 +71,46 @@ public class MealsActivity extends AppCompatActivity
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
             currentRestaurant = card.getNombre();
+            sodaRatingNum = findViewById(R.id.rating_num);
+            // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+            sodaRatingStar = findViewById(R.id.rating_star);
+
+            sodaRatingStar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MealsActivity.this);
+                        View layout= null;
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        layout = inflater.inflate(R.layout.soda_rating_dialog, null);
+                        final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                        builder.setTitle("Califica la soda");
+                        //builder.setMessage("Thank you for rating us , it will help us to provide you the best service .");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Float value = ratingBar.getRating();
+                                // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+                                sodaRatingNum.setText(value.toString());
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setCancelable(false);
+                        builder.setView(layout);
+                        builder.show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
 
         // Hardcoded restaurant id until the restaurant story gets done
