@@ -17,7 +17,6 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.constants.MapboxConstants;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -174,6 +173,16 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
 
             // Set the LocationComponent's render mode
             locationComponent.setRenderMode(RenderMode.NORMAL);
+
+            mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
+                @Override
+                public boolean onMapClick(@NonNull LatLng point)
+                {
+                    Intent intent = new Intent(getApplicationContext(), OrderLocationActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
         }
         else
         {
