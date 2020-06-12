@@ -111,7 +111,7 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
 
                     // Transform the appearance of the button to become the cancel button
                     selectLocationButton.setBackgroundColor(
-                            ContextCompat.getColor(OrderLocationActivity.this, R.color.colorAccent));
+                            ContextCompat.getColor(OrderLocationActivity.this, R.color.black));
                     selectLocationButton.setText("Cancelar");
 
                     // Show the SymbolLayer icon to represent the selected map location
@@ -137,7 +137,7 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
 
                     // Switch the button appearance back to select a location.
                     selectLocationButton.setBackgroundColor(
-                            ContextCompat.getColor(OrderLocationActivity.this, R.color.colorPrimary));
+                            ContextCompat.getColor(OrderLocationActivity.this, R.color.azul_UCR));
                     selectLocationButton.setText("Confirmar ubicación");
 
                     // Show the red hovering ImageView marker
@@ -246,6 +246,7 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
     {
         System.out.println(point.latitude());
         System.out.println(point.longitude());
+        finish();
     }
 
     @SuppressWarnings( {"MissingPermission"})

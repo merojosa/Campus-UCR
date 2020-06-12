@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="8dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/azul_UCR"
         android:text="Confirmar ubicación"
         android:textColor="@android:color/white"/>
 
