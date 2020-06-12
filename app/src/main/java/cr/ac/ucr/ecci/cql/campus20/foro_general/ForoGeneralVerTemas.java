@@ -185,7 +185,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 adapter.setFavoritos(favoritos);    // Se llama al método del adapter
             }
         });
-
     }
 
     private void iniciarRecycler() {
