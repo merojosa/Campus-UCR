@@ -19,8 +19,21 @@ public class Coffe extends Place {
         super.setType("coffe");
     }
 
+    public Coffe(int id, String name, String description, int image, String title) {
+        super(id, name, description, image, title);
+        super.setType("coffe");
+    }
+
     public Coffe(int id, String name, String description, int image) {
         super(id, name, description, image);
         super.setType("coffe");
+    }
+
+    public String getCoffeName() {
+        return super.getName();
+    }
+
+    public void setCoffeName(String name) {
+        super.setName(name);
     }
 }

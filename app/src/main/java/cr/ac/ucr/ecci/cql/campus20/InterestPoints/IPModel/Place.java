@@ -13,6 +13,7 @@ public class Place extends GeneralData implements Parcelable {
     public int rating;
     public int floor;
     public int image;
+    public String title;
 
     Place() {}
 
@@ -26,7 +27,14 @@ public class Place extends GeneralData implements Parcelable {
         this.image = image;
     }
 
-    // Constructor for Faculties one
+    public Place(int id, String name, String description, int image, String title) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.title = title;
+    }
+
     public Place(int id, String name, String description, int image) {
         this.id = id;
         this.name = name;
@@ -34,14 +42,12 @@ public class Place extends GeneralData implements Parcelable {
         this.image = image;
     }
 
-    // Constructor for Faculties two
     public Place(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    // Constructor used in DeploymentScript
     public Place(int id, String name, String description, String type, int rating, int something) {
         this.id = id;
         this.name = name;
@@ -50,6 +56,47 @@ public class Place extends GeneralData implements Parcelable {
         this.rating = rating;
         // Somthing
     }
+
+    protected Place(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        type = in.readString();
+        rating = in.readInt();
+        floor = in.readInt();
+        image = in.readInt();
+        title = in.readString();
+    }
+
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(type);
+        dest.writeInt(rating);
+        dest.writeInt(floor);
+        dest.writeInt(image);
+        dest.writeString(title);
+    }
+
 
     @Override
     public int getId() {
@@ -110,45 +157,12 @@ public class Place extends GeneralData implements Parcelable {
         this.image = image;
     }
 
-    public static Creator<Place> getCREATOR() {
-        return CREATOR;
-    }
-
-    protected Place(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        description = in.readString();
-        type = in.readString();
-        rating = in.readInt();
-        floor = in.readInt();
-        image = in.readInt();
-    }
-
-    public static final Creator<Place> CREATOR = new Creator<Place>() {
-        @Override
-        public Place createFromParcel(Parcel in) {
-            return new Place(in);
-        }
-
-        @Override
-        public Place[] newArray(int size) {
-            return new Place[size];
-        }
-    };
-
     @Override
-    public int describeContents() {
-        return 0;
+    public String getTitle() {
+        return title;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(type);
-        dest.writeInt(rating);
-        dest.writeInt(floor);
-        dest.writeInt(image);
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

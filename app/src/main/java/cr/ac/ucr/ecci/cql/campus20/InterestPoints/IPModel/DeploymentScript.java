@@ -36,7 +36,7 @@ public class DeploymentScript {
         createComments();
         createCoffeShops();
     }
-/*
+    /*
     private static void clearDatabase(Context context) {
         DataAccess db = new DataAccess(context);
         db.resetDatabase();
