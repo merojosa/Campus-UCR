@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,12 +87,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     private List<Map<String,Object>>   map = new ArrayList<>();
 
-//    // Builder para cambiar perfil de navegacion
-//    private MapboxDirections mapboxDirections;
-//    private MapboxDirections.Builder directionsBuilder;
-
     // Botón para inicializar navegación
     private Button button;
+
+    //Instancia de compartir
+    private CompartirViaje comp = new CompartirViaje();
 
     // Despliegue mapa al llamar a la actividad
     @Override
@@ -129,11 +131,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                         //FragmentManager fm = getSupportFragmentManager();
                         //CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
                         //alertDialog.show(fm, "fragment_compartir_ruta");
-                        popupCompartir();
-
-                        //*PENDIENTE*dialogo debe manejar respuesta afirmativa/negativa y LUEGO llamar a navegacion
-                        // posiblemente se deba colocar en el metodo de despliegue de navegacion del listener
-                        // al implementar la navegación con navigationView
+                        iniciarRuta();
                     }
                 });
 
@@ -153,8 +151,16 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
-            }
+                //Botón de visibilidad de la localización del usuario
+                FloatingActionButton share = findViewById(R.id.shareTrip);
+                share.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupCompartir();
+                    }
+                });
 
+            }
         });
     }
 
@@ -180,23 +186,50 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Compartir el viaje con contactos
+                        //TODO: Refactor
+                        enviarWhatsapp();
                     }
                 });
 
-        //No se desea compartir el viaje, empezamos la navegacion automaticamente
+        //No se desea compartir el viaje, cerramos el pop up
         String negativeText = "No";
         builder.setNegativeButton(negativeText,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        iniciarRuta();
+                        dialog.dismiss();
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+
+    private void enviarWhatsapp(){
+        PackageManager pm=getPackageManager();
+        try {
+
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            String text = "Hola! Esta es mi ruta";
+
+            PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+            //Verifica que la app esté instalada
+            waIntent.setPackage("com.whatsapp");
+
+            waIntent.putExtra(Intent.EXTRA_TEXT, text);
+            startActivity(Intent.createChooser(waIntent, "Compartir con"));
+
+        } catch (PackageManager.NameNotFoundException e) {
+            //TODO:Mejorar mensaje de error
+            Context context = getApplicationContext();
+            CharSequence text = "Whatsapp no está instalado";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     // Iconos de navegacion

@@ -63,5 +63,21 @@
         mapbox:rippleColor="@color/blanco_UCR"
         mapbox:useCompatPadding="true" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/shareTrip"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/azul_UCR"
+        android:elevation="0dp"
+        app:srcCompat="@drawable/share"
+        mapbox:backgroundTint="@color/verde_UCR"
+        mapbox:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        mapbox:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="bottom|end"
+        mapbox:maxImageSize="26dp"
+        mapbox:rippleColor="@color/blanco_UCR"
+        mapbox:useCompatPadding="true"
+         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
