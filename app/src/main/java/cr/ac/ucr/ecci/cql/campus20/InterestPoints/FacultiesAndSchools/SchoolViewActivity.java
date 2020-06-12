@@ -3,14 +3,23 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.widget.LinearLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
@@ -22,6 +31,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
+    private PopupWindow popComments;
 
     private School school;
     private Place place;
@@ -39,27 +49,20 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         schoolName = intentSchool.getStringExtra(Intent.EXTRA_TEXT);
 
         TextView tittle = findViewById(R.id.schoolName);
-//        School school = School.select(getApplicationContext(), schoolName);
-//        if(school != null) {
-//            ImageView image = findViewById(R.id.schoolImage);
-//            image.setImageResource(school.getImage());
-//        }
         tittle.setText(schoolName);
 
-    }
+        /*POPUP*/
+        Button popButton = findViewById(R.id.comments);
+        popButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentPopUp commentPopUp = new CommentPopUp(); //Mandar cosas
+                commentPopUp.showCommentsPopup(view);
+            }
+        });
+        /*POPUP*/
 
-//    /**
-//     * EFE: send the user to the location in maps
-//     * REQ:
-//     * view: send by the button that calls this method
-//     * latitude : latitude of the point that the user wants to go.
-//     * longitude: longitude of the point that the user wants to go.
-//     * MOD: ---
-//     * */
-//    public void goTo(View view) {
-//        Intent intent = new Intent(this, Map.class);
-//        startActivity(intent);
-//    }
+    }
 
     @Override
     public void onClick(String title) {

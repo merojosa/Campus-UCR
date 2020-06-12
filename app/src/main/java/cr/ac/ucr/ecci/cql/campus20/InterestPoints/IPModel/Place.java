@@ -29,8 +29,7 @@ public class Place extends GeneralData implements Parcelable {
     private int like;
     private int dislike;
 
-    public Place() {
-    }
+    public Place() { }
 
     public Place(int id, String name, String description, String type, int rating, int floor, int like, int dislike) {
         this.id = id;

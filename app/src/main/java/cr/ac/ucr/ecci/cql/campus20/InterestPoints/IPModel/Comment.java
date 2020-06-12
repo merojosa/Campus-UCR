@@ -80,9 +80,7 @@ public class Comment extends GeneralData {
         this.cRating = cRating;
     }
 
-    public String getPhotoPath() {
-        return photo_path;
-    }
+    public String getPhotoPath() { return photo_path; }
 
     public void setPhotoPath(String photo_path) {
         this.photo_path = photo_path;
