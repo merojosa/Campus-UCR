@@ -30,6 +30,7 @@ public class Redireccionador
 
     public Redireccionador()
     {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         loginBD = new FirebaseBD();
     }
