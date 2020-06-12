@@ -16,7 +16,10 @@ import java.util.Objects;
 public class Restaurant
 {
     @PrimaryKey
-    public int id;
+    private int id;
+
+    @Ignore
+    private String firebaseId;
 
     @ColumnInfo(name = "name")
     public String name = "";
@@ -159,5 +162,19 @@ public class Restaurant
     }
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
 }

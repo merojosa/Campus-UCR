@@ -68,7 +68,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             }
 
             cards.add(
-                    new SodaCard(R.drawable.la_u, soda.name, soda.photo, horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max)
+                    new SodaCard(R.drawable.la_u, soda.getFirebaseId(), soda.name, soda.photo,
+                            horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max)
             );
         }
 

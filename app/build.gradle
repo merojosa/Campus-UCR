@@ -90,7 +90,4 @@ dependencies {
 
     // For LifeCycle extension updated
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
-
 }
