@@ -66,7 +66,6 @@ public class MainUcrEats extends AppCompatActivity
 
         this.noResults = this.findViewById(R.id.noResultsText);
 
-        // aun la lista de sodas no está completa
         this.getFirebaseRestaurant();
     }
 
@@ -91,7 +90,10 @@ public class MainUcrEats extends AppCompatActivity
                     Restaurant so = soda.getValue(Restaurant.class);
 
                     if (so != null)
+                    {
                         so.setFirebaseId(soda.getKey());
+                        so.setServings(soda);
+                    }
 
                     if(soda.exists()) {
                         Log.e("datos", "" + soda.getValue());

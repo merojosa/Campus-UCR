@@ -1,5 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.models;
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -8,8 +10,11 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Objects;
+
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 
 @Entity(tableName = "Restaurant",
         indices = {@Index(value={"name"}, unique = true)}) // Unique Restaurant name
@@ -50,6 +55,12 @@ public class Restaurant
 
     public int capacity_max;
 
+    @Ignore
+    private int totalServings;
+
+    @Ignore
+    private int availableServings;
+
     public Restaurant(){}
 
     // Firebase data constructor
@@ -79,6 +90,22 @@ public class Restaurant
         this.daysOpen = daysOpen;
         this.openingTime = openingTime;
         this.closing_hour = closingTime;
+    }
+
+    public void setServings(DataSnapshot data)
+    {
+        DataSnapshot mealsRoot = data.child("meals");
+
+        Iterable<DataSnapshot> meals = mealsRoot.getChildren();
+
+        this.totalServings = 0;
+        this.availableServings = 0;
+
+        for(DataSnapshot meal : meals)
+        {
+            this.totalServings += Objects.requireNonNull(meal.child("max").getValue(Integer.class));
+            this.availableServings += Objects.requireNonNull(meal.child("available").getValue(Integer.class));
+        }
     }
 
     public String getName() {
@@ -176,5 +203,21 @@ public class Restaurant
 
     public void setFirebaseId(String firebaseId) {
         this.firebaseId = firebaseId;
+    }
+
+    public int getTotalServings() {
+        return totalServings;
+    }
+
+    public void setTotalServings(int totalServings) {
+        this.totalServings = totalServings;
+    }
+
+    public int getAvailableServings() {
+        return availableServings;
+    }
+
+    public void setAvailableServings(int availableServings) {
+        this.availableServings = availableServings;
     }
 }

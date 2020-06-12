@@ -56,7 +56,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         mealsViewHolder.mealName.setText(meal.getName());
         mealsViewHolder.mealPrice.setText(Integer.toString(meal.getPrice()));
         mealsViewHolder.mealsLeft.setText(
-                String.format(resources.getString(R.string.meals_left_placeholder),
+                String.format(resources.getString(R.string.servings_placeholder),
                         meal.getAvailableServings(), meal.getMaxServings()));
 
         if(meal.getPhoto() != null)
