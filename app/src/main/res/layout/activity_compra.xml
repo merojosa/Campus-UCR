@@ -15,71 +15,75 @@
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_app_bar" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-        <TextView
-            android:id="@+id/tituloCompra"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Titulo Soda"
-            android:textAlignment="center"
-            android:textSize="44sp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/platilloCompra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Platillo"
-            android:textSize="30sp" />
+            <TextView
+                android:id="@+id/tituloCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titulo Soda"
+                android:textAlignment="center"
+                android:textSize="44sp"
+                android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/platilloImagenCompra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/platilloCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Platillo"
+                android:textSize="30sp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/location_frag_cardview"
-            android:layout_width="356dp"
-            android:layout_height="213dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginVertical="50dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="@dimen/cardview_default_elevation">
+            <ImageView
+                android:id="@+id/platilloImagenCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars" />
 
-            <FrameLayout
-                android:id="@+id/location_frag_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/location_frag_cardview"
+                android:layout_width="356dp"
+                android:layout_height="213dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="50dp"
+                app:cardElevation="5dp">
 
-        <Button
-            android:id="@+id/buttonCompra"
-            android:layout_width="379dp"
-            android:layout_height="62dp"
-            android:backgroundTint="@color/azul_UCR"
-            android:text="Realizar pedido"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
-    </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/location_frag_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/buttonCompra"
+                android:layout_width="379dp"
+                android:layout_height="62dp"
+                android:backgroundTint="@color/azul_UCR"
+                android:text="Realizar pedido"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
