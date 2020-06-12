@@ -47,7 +47,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new FirebaseDB(getApplicationContext());
+        db = new FirebaseDB();
         setContentView(R.layout.activity_faculties);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Facultades");

@@ -47,7 +47,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        db = new FirebaseDB(getApplicationContext());
+        db = new FirebaseDB();
         spinner = findViewById(R.id.schoolProgressBar);
         spinner.setVisibility(View.VISIBLE);
         Intent intentFaculties = getIntent();
