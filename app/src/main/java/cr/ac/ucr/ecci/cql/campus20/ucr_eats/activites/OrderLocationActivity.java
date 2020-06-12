@@ -1,5 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -50,6 +52,10 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
     private PermissionsManager permissionsManager;
     private ImageView hoveringMarker;
     private Layer droppedMarkerLayer;
+
+    public static final String LATITUD_KEY = "latitude";
+    public static final String LONGITUD_KEY = "longitud";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -201,7 +207,9 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
             if (style != null) {
                 enableLocationPlugin(style);
             }
-        } else {
+        }
+        else
+        {
             Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
             finish();
         }
@@ -215,8 +223,10 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
 
     private void reverseGeocode(final Point point)
     {
-        System.out.println(point.latitude());
-        System.out.println(point.longitude());
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(LATITUD_KEY, point.latitude());
+        resultIntent.putExtra(LONGITUD_KEY, point.longitude());
+        setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 

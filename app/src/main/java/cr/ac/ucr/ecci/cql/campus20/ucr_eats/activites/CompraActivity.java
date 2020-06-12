@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -53,12 +54,17 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
 
     private boolean customLocation = false;
 
+    private static final int CODIGO_RESULTADO = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compra);
+
+        Toast.makeText(this, "Recordá que si no lo especificás, se usará tu ubicación actual", Toast.LENGTH_LONG).show();
+
 
         meal = getIntent().getParcelableExtra(MealsActivity.MEAL_KEY);
         currentRestaurant = getIntent().getStringExtra(MealsActivity.NOMBRE_SODA_KEY);
@@ -179,7 +185,7 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
                 public boolean onMapClick(@NonNull LatLng point)
                 {
                     Intent intent = new Intent(getApplicationContext(), OrderLocationActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, CODIGO_RESULTADO);
                     return true;
                 }
             });
@@ -214,6 +220,19 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
         {
             Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
             finish();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODIGO_RESULTADO && resultCode == Activity.RESULT_OK)
+        {
+            latitude = data.getDoubleExtra(OrderLocationActivity.LATITUD_KEY, this.latitude);
+            longitude = data.getDoubleExtra(OrderLocationActivity.LONGITUD_KEY, this.longitude);
+            customLocation = true;
+            Toast.makeText(this, "Ubicación personalizada guardada", Toast.LENGTH_LONG).show();
         }
     }
 
