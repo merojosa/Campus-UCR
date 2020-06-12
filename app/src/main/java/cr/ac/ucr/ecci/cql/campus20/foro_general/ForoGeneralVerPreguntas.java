@@ -114,7 +114,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD(getApplicationContext());
+                        LoginBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(ForoGeneralVerPreguntas.this);

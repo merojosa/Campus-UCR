@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
@@ -29,10 +28,10 @@ public class Redireccionador
     private LoginBD loginBD;
 
 
-    public Redireccionador(Context context)
+    public Redireccionador()
     {
-        loginBD = new FirebaseBD(context);
-        mDatabase = loginBD.getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        loginBD = new FirebaseBD();
     }
 
     // Termina la actividad actual cuando redirecciona

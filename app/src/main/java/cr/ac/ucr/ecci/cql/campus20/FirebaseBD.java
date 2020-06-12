@@ -1,11 +1,8 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,38 +10,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
-
 import timber.log.Timber;
 
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
 public class FirebaseBD implements LoginBD
 {
-    protected FirebaseDatabase mDatabase;
+    private FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
 
-    protected DatabaseReference appInicial;
+    private DatabaseReference appInicial;
     private ValueEventListener firebaseListener;
 
-    public FirebaseBD(Context context)
+
+
+    public FirebaseBD()
     {
-        boolean hasBeenInitialized = false;
-        List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
-        FirebaseApp myApp = null;
-        if(firebaseApps.size() > 0){
-            hasBeenInitialized = true;
-        }
-
-        if(!hasBeenInitialized) {
-            FirebaseApp.initializeApp(context);
-            myApp = FirebaseApp.getInstance();
-            FirebaseDatabase.getInstance(myApp).setPersistenceEnabled(true);
-        }else{
-            myApp = FirebaseApp.getInstance();
-        }
-
         auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance(myApp);
+        mDatabase = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -106,14 +88,6 @@ public class FirebaseBD implements LoginBD
     {
         DatabaseReference referencia = mDatabase.getReference(path);
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
-    }
-
-    public DatabaseReference getReference(String path) {
-        return mDatabase.getReference(path);
-    }
-
-    public DatabaseReference getReference() {
-        return mDatabase.getReference();
     }
 
 }

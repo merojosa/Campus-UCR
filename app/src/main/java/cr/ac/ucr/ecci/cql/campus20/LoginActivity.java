@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        redireccionador = new Redireccionador(getApplicationContext());
-        loginBD = new FirebaseBD(getApplicationContext());
+        redireccionador = new Redireccionador();
+        loginBD = new FirebaseBD();
 
         if(loginBD.autenticado())
         {

@@ -96,7 +96,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                         startActivity(new Intent(ForoGeneralVerTemas.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD(getApplicationContext());
+                        LoginBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(ForoGeneralVerTemas.this);

@@ -35,8 +35,8 @@ public class MainEmptyActivity extends AppCompatActivity
 
     private void iniciar()
     {
-        LoginBD loginBD = new FirebaseBD(getApplicationContext());
-        Redireccionador redireccionador = new Redireccionador(getApplicationContext());
+        LoginBD loginBD = new FirebaseBD();
+        Redireccionador redireccionador = new Redireccionador();
         
         if(loginBD.autenticado())
         {
