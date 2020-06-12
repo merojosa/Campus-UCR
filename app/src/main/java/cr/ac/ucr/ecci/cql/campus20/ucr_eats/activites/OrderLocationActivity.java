@@ -1,6 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.Layer;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import java.util.List;
@@ -37,9 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
 import static com.mapbox.mapboxsdk.style.layers.Property.VISIBLE;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -93,9 +88,6 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
             hoveringMarker.setLayoutParams(params);
             mapView.addView(hoveringMarker);
 
-            // Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
-            initDroppedMarker(style);
-
             // Button for user to drop marker or to pick marker back up.
             selectLocationButton = findViewById(R.id.select_location_button);
             selectLocationButton.setOnClickListener(view ->
@@ -106,13 +98,6 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
                     // Use the map target's coordinates to make a reverse geocoding search
                     final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
 
-                    // Hide the hovering red hovering ImageView marker
-                    hoveringMarker.setVisibility(View.INVISIBLE);
-
-                    // Transform the appearance of the button to become the cancel button
-                    selectLocationButton.setBackgroundColor(
-                            ContextCompat.getColor(OrderLocationActivity.this, R.color.black));
-                    selectLocationButton.setText("Cancelar");
 
                     // Show the SymbolLayer icon to represent the selected map location
                     if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null)
@@ -153,20 +138,6 @@ public class OrderLocationActivity extends AppCompatActivity implements Permissi
         });
     }
 
-    private void initDroppedMarker(@NonNull Style loadedMapStyle)
-    {
-        // Add the marker image to map
-        loadedMapStyle.addImage("dropped-icon-image", BitmapFactory.decodeResource(
-                getResources(), R.drawable.marcador_negro));
-        loadedMapStyle.addSource(new GeoJsonSource("dropped-marker-source-id"));
-        loadedMapStyle.addLayer(new SymbolLayer(DROPPED_MARKER_LAYER_ID,
-                "dropped-marker-source-id").withProperties(
-                iconImage("dropped-icon-image"),
-                visibility(NONE),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        ));
-    }
 
     @Override
     public void onResume()
