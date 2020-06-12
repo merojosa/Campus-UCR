@@ -25,9 +25,9 @@ public class DeploymentScript {
      * Executes all the statements that create and populate the database.
      * Should be called once on application create in MainActivity.
      *
-     * @param context Current application context.
+     * @param db Firebase database instance where the data will be inserted.
      */
-    public void RunScript(Context context, FirebaseDB db) {
+    public void RunScript(FirebaseDB db) {
         this.db = db;
         createFaculties();
         createPlaces();
