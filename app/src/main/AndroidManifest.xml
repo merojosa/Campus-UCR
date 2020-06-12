@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ucr_eats.activites.OrderLocationActivity"></activity>
+        <activity
+            android:name=".ucr_eats.activites.OrderLocationActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"
+            />
         <activity
             android:name=".ucr_eats.activites.OrdenesPendientesActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
