@@ -42,9 +42,10 @@
 
 
             <LinearLayout
-                android:layout_width="226dp"
-                android:layout_height="45dp"
-                android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/calification_text"

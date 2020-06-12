@@ -71,6 +71,7 @@ public class MealsActivity extends AppCompatActivity
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
             currentRestaurant = card.getNombre();
+            /*
             sodaRatingNum = findViewById(R.id.rating_num);
             // SET RATING OF USER FOR THIS SODA WITH FIREBASE
             sodaRatingStar = findViewById(R.id.rating_star);
@@ -110,7 +111,7 @@ public class MealsActivity extends AppCompatActivity
                     }
                 }
             });
-
+            */
         }
 
         // Hardcoded restaurant id until the restaurant story gets done
