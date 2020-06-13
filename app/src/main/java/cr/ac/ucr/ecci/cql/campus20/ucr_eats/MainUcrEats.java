@@ -66,16 +66,15 @@ public class MainUcrEats extends AppCompatActivity
 
         this.noResults = this.findViewById(R.id.noResultsText);
 
-        // aun la lista de sodas no está completa
-        this.getFirebaseRestaurant("1");
+        this.getFirebaseRestaurant();
     }
 
 
-    private void getFirebaseRestaurant(String id)
+    private void getFirebaseRestaurant()
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
-        DatabaseReference ref = db.getRestaurantRef(id);
+        DatabaseReference ref = db.getRestaurantsRef();
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,22 +82,27 @@ public class MainUcrEats extends AppCompatActivity
             {
                 // Get all meals/children data from snapshot
                 Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
-                ArrayList<Restaurant> soda = new ArrayList<>();
+                ArrayList<Restaurant> sodas = new ArrayList<>();
                 // Iterate array
-                for(final DataSnapshot sodas : sodaData)
+                for(final DataSnapshot soda : sodaData)
                 {
-                    Log.e("Nombre:", ""+sodas.getValue());
-                    Restaurant so = sodas.getValue(Restaurant.class);
-//                    String name = so.getName();
+                    Log.e("Nombre:", ""+soda.getValue());
+                    Restaurant so = soda.getValue(Restaurant.class);
 
+                    if (so != null)
+                    {
+                        so.setFirebaseId(soda.getKey());
+                        so.setServings(soda);
+                    }
 
-                    if(sodas.exists()) {
-                        Log.e("datos", "" + sodas.getValue());
-                        soda.add(so);
+                    if(soda.exists()) {
+                        Log.e("datos", "" + soda.getValue());
+                        sodas.add(so);
                     }
                 }
-                if (soda.size() > 0)
-                    sodasAdapter.setSodaCard(soda);
+
+                if (sodas.size() > 0)
+                    sodasAdapter.setSodaCard(sodas);
 
             }
 
