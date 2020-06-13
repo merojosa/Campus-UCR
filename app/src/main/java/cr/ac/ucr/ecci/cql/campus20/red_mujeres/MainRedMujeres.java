@@ -8,6 +8,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -29,6 +34,7 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
@@ -54,8 +60,11 @@ import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
@@ -90,7 +99,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
 
-    private List<Map<String,Object>>   map = new ArrayList<>();
+    public DatabaseReference grupo;
+    public DatabaseReference usuarios;
+    private FirebaseDatabase mDatabase;
+
+    ArrayList<Map<String, Object>> userArr;
+    ArrayList<Map<String, Object>> groupArr;
+    ArrayList<Map<String, Object>> usersLocations;
+
+    private Queue<Map<String, Object>> locationsQueue;
 
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
@@ -108,6 +125,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        mDatabase = FirebaseDatabase.getInstance();
+
+        usersLocations = new ArrayList<>();
+        userArr = new ArrayList<>();
+        locationsQueue = new LinkedList<>();
 
         //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
     }
@@ -121,11 +143,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
 
                 addDestinationIconSymbolLayer(style);
-                //getGroupMembersPositions();
+                getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
                 button = findViewById(R.id.startButton);
@@ -373,19 +396,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         //Solicidtamos a la base de datos informacion del grupo
         FireBaseRedMujeres db = new FireBaseRedMujeres();
-        db.fetchGroupAsync("GrupoEj");
         // Un handler para preguntar a la BD cad cierta cantidad de tiempo.
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
                 //si he recuperado datos, los marco en el mapa
-                if(db.userArr.size() > 0){
-                    map = db.userArr;
-                    addMarkers(map);
-                    //volvemos a consultar por cambios
-                   db.fetchGroupAsync("GroupEj");
-                }
+                readGroupData("GrupoEj");
+                //System.out.println(locationsQueue);
+
                 //pregunto cada medio segundo
                 handler.postDelayed(this, 2000);
             }
@@ -432,28 +451,70 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-//    public static final class Builder {
-//        private final MapboxDirections.Builder directionsBuilder;
-//
-//        private Builder() {
-//            directionsBuilder = MapboxDirections.builder();
-//        }
-//
-//        public Builder Profile(@NonNull @DirectionsCriteria.ProfileCriteria String profile) {
-//            directionsBuilder.profile(profile);
-//            return this;
-//        }
-//
-//        public static Builder builder(Context context) {
-//            return builder(context, new LocaleUtils());
-//        }
-//
-//        static Builder builder(Context context, LocaleUtils localeUtils) {
-//            return new Builder()
-//                    .Profile(DirectionsCriteria.PROFILE_WALKING);
-//        }
-//
-//    }
+    //Obtiene el json especifico para la referencia a la base de datos en el nodo del grupo especifcado
+    public  void readGroupData( String nombreGrupo){
+        groupArr = new ArrayList<>();
+        grupo = mDatabase.getReference("Comunidades").child(nombreGrupo);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
+                Map<String,Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+                ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
+
+                for(int i = 0 ; i< users.size();++i){
+                    //Recuperamos la informacion de los integrantes del grupo
+                    readGroupUsersData(""+users.get(i));
+                };
+
+                if(!usersLocations.equals(userArr)){
+                    System.out.println("Entreeeeeeee");
+                    addMarkers(userArr);
+                    usersLocations = new ArrayList<>(userArr);
+                    userArr = new ArrayList<>();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        grupo.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+    //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
+    public  void readGroupUsersData(String id){
+        usuarios = mDatabase.getReference("usuarios_red_mujeres").child(id);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Json se comporta como un mapa KEY = nombre atributo, Value = valor
+                Map<String,Object> list = (HashMap<String, Object>) dataSnapshot.getValue();
+                if(!userArr.contains(list)) {
+                    userArr.add(list);
+
+                    if(!locationsQueue.contains(list))
+                        locationsQueue.add(list);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        usuarios.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    //interfaz para trajar datos fuera del contexto del OnChangeData
+    public interface FirebaseCallBack {
+
+        void onCallBack(ArrayList<Map<String, Object>> list);
+
+    }
+
 
 }
 
