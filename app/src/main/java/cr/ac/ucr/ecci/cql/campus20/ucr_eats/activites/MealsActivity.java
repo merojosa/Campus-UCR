@@ -31,12 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.MealViewModel;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
 public class MealsActivity extends AppCompatActivity
 {
@@ -71,10 +73,14 @@ public class MealsActivity extends AppCompatActivity
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
             currentRestaurant = card.getNombre();
-            /*
+
             sodaRatingNum = findViewById(R.id.rating_num);
+
             // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+            getFirebaseUserRate("1"); // hard coded by now
+
             sodaRatingStar = findViewById(R.id.rating_star);
+
 
             sodaRatingStar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,7 +117,7 @@ public class MealsActivity extends AppCompatActivity
                     }
                 }
             });
-            */
+
         }
 
         // Hardcoded restaurant id until the restaurant story gets done
@@ -192,5 +198,43 @@ public class MealsActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void getFirebaseUserRate(String id)
+    {
+        CampusBD logged = new FirebaseBD();
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        // Para comperar con la codificación de caracteres especiales en Firebase
+        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+
+        DatabaseReference ref = db.getRestaurantRateByUser(id, encodedMail);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Double rate = dataSnapshot.getValue(Double.class);
+                sodaRatingNum.setText(rate.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+                sodaRatingNum.setText(0);
+            }
+        });
+    }
+
+
+    // Utilizado para transformar todos los carácteres que son válidos para
+    // una dirección
+    private String encodeMailForFirebase(String uncodedMail)
+    {
+        String codedMail = uncodedMail;
+        codedMail = codedMail.replace("@", "<a>");
+        codedMail = codedMail.replace(".", "<dot>");
+        //...
+
+        return codedMail;
     }
 }

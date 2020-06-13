@@ -65,7 +65,8 @@
                     android:layout_margin="1dp"
                     android:layout_marginStart="-5dp"
                     android:gravity="center_vertical"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:text="0"/>
 
                 <ImageView
                     android:id="@+id/rating_star"
