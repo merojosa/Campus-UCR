@@ -90,7 +90,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
             arrayLikes[k] = preguntaCards.get(k).getContadorLikes();
             arrayDislikes[k] = preguntaCards.get(k).getContadorDislikes();
             List<Integer> mRankPregList = mRankPreguntaViewModel.getRank(preguntaCards.get(k).getId());
-            if(mRankPregList != null){
+            if(mRankPregList != null && mRankPregList.size() > 0){
                 arrayStatusRank[k] = mRankPregList.get(0);
             }
         }

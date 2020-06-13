@@ -25,11 +25,13 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 public class Redireccionador
 {
     private DatabaseReference mDatabase;
-    private LoginBD loginBD;
+    private CampusBD loginBD;
+    private FirebaseDatabase base;
 
 
     public Redireccionador()
     {
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         loginBD = new FirebaseBD();
     }

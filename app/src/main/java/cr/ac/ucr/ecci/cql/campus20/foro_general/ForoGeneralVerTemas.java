@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,10 +30,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
@@ -58,6 +61,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     ForoGeneralFirebaseDatabase databaseReference;
     DatabaseReference temasDatabaseReference;
     List<Tema> temasLocales;
+    List<Favorito> favoritosLocales;
 
 
     /**
@@ -72,6 +76,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         idList = new ArrayList<>();
 
         temasLocales = new ArrayList<>();
+        favoritosLocales = new ArrayList<>();
 
         // Se instancia el firebaseReference
         databaseReference = new ForoGeneralFirebaseDatabase();
@@ -85,11 +90,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     // Esto podría producir NullPointerException
-                    int id = ds.child("id").getValue(Integer.class);
+                    int id = Objects.requireNonNull(ds.child("id").getValue(Integer.class));
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
-                    int contUsers = ds.child("contadorUsuarios").getValue(Integer.class);
-                    int imagen = ds.child("imagen").getValue(Integer.class);
+                    int contUsers = Objects.requireNonNull(ds.child("contadorUsuarios").getValue(Integer.class));
+                    int imagen = Objects.requireNonNull(ds.child("imagen").getValue(Integer.class));
 
                     // Se crea el tema
                     Tema temita = new Tema(id, titulo, description, contUsers, imagen);
@@ -105,6 +110,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
             }
         });
+
 
         busquedaFiltrada();
         iniciarRecycler();
@@ -140,7 +146,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                         startActivity(new Intent(ForoGeneralVerTemas.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(ForoGeneralVerTemas.this);
@@ -182,7 +188,40 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
             @Override
             public void onChanged( @Nullable final List<Favorito> favoritos) {
-                adapter.setFavoritos(favoritos);    // Se llama al método del adapter
+                //adapter.setFavoritos(favoritos);    // Se llama al método del adapter
+            }
+        });
+
+        // Prueba con el Favorito -> usuario
+        this.databaseReference.getFavoritosRef().child(this.databaseReference.obtenerUsuario())
+                .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se borra la lista
+                ForoGeneralVerTemas.this.favoritosLocales.clear();
+
+                // Chequea si existe el snapshot y si el usuario tiene favoritos almacenados en Firebase
+                if (dataSnapshot.exists()) //&& dataSnapshot.hasChild(ForoGeneralVerTemas.this.databaseReference.obtenerUsuario()))
+                {
+                    // Se recorre el snapshot para sacar los datos
+                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                        // Esto podría producir NullPointerException
+                        int id = Objects.requireNonNull(ds.child("idTema").getValue(Integer.class));
+                        String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+
+                        // Se crea el tema
+                        Favorito fav = new Favorito(id, nombreUsuario);
+                        ForoGeneralVerTemas.this.favoritosLocales.add(fav);
+                    }
+                    adapter.setFavoritos(ForoGeneralVerTemas.this.favoritosLocales);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Fallo al leer favoritos", databaseError.toException());
             }
         });
 

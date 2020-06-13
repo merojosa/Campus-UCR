@@ -24,10 +24,10 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.List;
 import java.util.Objects;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
@@ -114,7 +114,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(ForoGeneralVerPreguntas.this);
