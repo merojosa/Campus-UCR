@@ -28,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
@@ -98,6 +100,9 @@ public class MealsActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int id) {
                                 Float value = ratingBar.getRating();
                                 // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+                                updateFirebaseUserRate("1", (double)value);
+                                // UPDATE TOTAL RATING FOR RSODA
+                                // ...SA
                                 sodaRatingNum.setText(value.toString());
                                 dialog.dismiss();
                             }
@@ -200,7 +205,7 @@ public class MealsActivity extends AppCompatActivity
 
     }
 
-    private void getFirebaseUserRate(String id)
+    private void getFirebaseUserRate(String restaurantId)
     {
         CampusBD logged = new FirebaseBD();
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
@@ -208,7 +213,7 @@ public class MealsActivity extends AppCompatActivity
         // Para comperar con la codificación de caracteres especiales en Firebase
         String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
 
-        DatabaseReference ref = db.getRestaurantRateByUser(id, encodedMail);
+        DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -236,5 +241,21 @@ public class MealsActivity extends AppCompatActivity
         //...
 
         return codedMail;
+    }
+    
+    private void updateFirebaseUserRate(String restaurantId, Double value)
+    {
+        CampusBD logged = new FirebaseBD();
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        // Para comperar con la codificación de caracteres especiales en Firebase
+        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+
+        DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rate", value);
+
+        ref.getParent().updateChildren(map);
     }
 }
