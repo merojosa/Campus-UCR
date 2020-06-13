@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +50,14 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
     @Override
     public void onBindViewHolder(MealsViewHolder mealsViewHolder, int position)
     {
+        Resources resources = this.context.getResources();
+
         Meal meal = meals.get(position);
         mealsViewHolder.mealName.setText(meal.getName());
         mealsViewHolder.mealPrice.setText(Integer.toString(meal.getPrice()));
+        mealsViewHolder.mealsLeft.setText(
+                String.format(resources.getString(R.string.servings_placeholder),
+                        meal.getAvailableServings(), meal.getMaxServings()));
 
         if(meal.getPhoto() != null)
             this.loadImage(mealsViewHolder.mealPicture, meal.getPhoto());
@@ -72,12 +78,18 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         notifyDataSetChanged();
     }
 
+    public List<Meal> getMeals()
+    {
+        return meals;
+    }
+
     // El holder del adapter. Aqui va el contenido del card.
     public static class MealsViewHolder extends RecyclerView.ViewHolder
     {
         TextView mealName;
         TextView mealPrice;
         ImageView mealPicture;
+        TextView mealsLeft;
 
         public MealsViewHolder(View itemView)
         {
@@ -86,6 +98,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
             mealName = itemView.findViewById(R.id.meal_name);
             mealPrice = itemView.findViewById(R.id.meal_price);
             mealPicture = itemView.findViewById(R.id.meal_picture);
+            mealsLeft = itemView.findViewById(R.id.meals_left_text);
         }
     }
 
