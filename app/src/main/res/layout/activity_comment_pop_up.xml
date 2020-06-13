@@ -22,7 +22,34 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
         android:layout_width="match_parent"
-        android:layout_height="198dp"/>
+        android:layout_height="198dp" />
 
+    <TextView
+        android:id="@+id/blank"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:fontFamily="@font/myriad_pro_bold"
+        android:gravity=""
+        android:text="Su opinión es importante"
+        android:textColor="@color/blanco_UCR"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/rating_place"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:text="Aqui va el rating"/>
+
+    <EditText
+        android:id="@+id/comentario"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Comente..."
+        android:gravity="left"
+        android:background="@color/blanco_UCR"/>
 </LinearLayout>
 

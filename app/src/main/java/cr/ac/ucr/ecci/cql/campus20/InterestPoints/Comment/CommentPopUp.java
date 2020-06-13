@@ -112,7 +112,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
 
         View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT; //revisar que sirve mejor
+        int width = 375;//LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; //Para la parte de atrás
 

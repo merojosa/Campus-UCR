@@ -70,7 +70,7 @@ public class DeploymentScript {
         int[] rating = {5, 3, 4};
         int floor = 0;
         for (int i = 0; i < PlaceNames.length; ++i) {
-            placesList.add(new Place(i, PlaceNames[i], PlaceDescriptions[i], PlaceType, rating[i], floor, 0, 0));
+            placesList.add(new Place(i, PlaceNames[i], PlaceDescriptions[i], PlaceType, rating[i], floor));
         }
         for (Place p : placesList) {
             db.insert("Place", p);
@@ -297,7 +297,7 @@ public class DeploymentScript {
         int[] placesFK = {0, 1};
         String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
         for (int i = 0; i < placesFK.length; ++i) {
-            commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada"));
+            commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
         }
         for (Comment c : commentList) {
             db.insert("Comment", c);

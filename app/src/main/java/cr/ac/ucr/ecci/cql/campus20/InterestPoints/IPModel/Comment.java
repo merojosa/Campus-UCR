@@ -27,16 +27,20 @@ public class Comment extends GeneralData {
     private String date;
     private float cRating;
     private String photo_path;
+    private int like;
+    private int dislike;
 
     public Comment() {}
 
-    public Comment(int id, int id_place_fk, String description, String date, float cRating, String photo_path) {
+    public Comment(int id, int id_place_fk, String description, String date, float cRating, String photo_path, int like, int dislike) {
         this.id = id;
         this.id_place_fk = id_place_fk;
         this.description = description;
         this.date = date;
         this.cRating = cRating;
         this.photo_path = photo_path;
+        this.like = like;
+        this.dislike = dislike;
     }
 
     @Override
@@ -85,5 +89,13 @@ public class Comment extends GeneralData {
     public void setPhotoPath(String photo_path) {
         this.photo_path = photo_path;
     }
+
+    public int getLike(){return like;}
+
+    public void setLike(int like){ this.like =like;}
+
+    public int getDislike(){return dislike;}
+
+    public void setDislike(int dislike) {this.dislike = dislike;}
 
 }

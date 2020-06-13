@@ -26,20 +26,16 @@ public class Place extends GeneralData implements Parcelable {
     private int rating;
     private int floor;
     private int image;
-    private int like;
-    private int dislike;
 
     public Place() { }
 
-    public Place(int id, String name, String description, String type, int rating, int floor, int like, int dislike) {
+    public Place(int id, String name, String description, String type, int rating, int floor) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.rating = rating;
         this.floor = floor;
-        this.like = like;
-        this.dislike = dislike;
     }
 
     protected Place(Parcel in) {
@@ -49,8 +45,6 @@ public class Place extends GeneralData implements Parcelable {
         type = in.readString();
         rating = in.readInt();
         floor = in.readInt();
-        like = in.readInt();
-        dislike = in.readInt();
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
@@ -73,8 +67,6 @@ public class Place extends GeneralData implements Parcelable {
         this.rating = rating;
         this.floor = floor;
         this.image = image;
-        this.like = like;
-        this.dislike = dislike;
     }
 
     @Override
@@ -144,21 +136,6 @@ public class Place extends GeneralData implements Parcelable {
         dest.writeString(type);
         dest.writeInt(rating);
         dest.writeInt(floor);
-        dest.writeInt(like);
-        dest.writeInt(dislike);
     }
 
-    public int getLikes() {
-        return like;
-    }
-
-    public void setLike(int like) { this.like = like; }
-
-    public int getDislikes() {
-        return dislike;
-    }
-
-    public void setDislike(int dislike) {
-        this.dislike = dislike;
-    }
 }
