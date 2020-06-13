@@ -15,6 +15,7 @@ import timber.log.Timber;
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
 public class FirebaseBD implements LoginBD
 {
+    private static boolean isPersistenceEnabled;
     protected FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
 
@@ -26,6 +27,10 @@ public class FirebaseBD implements LoginBD
     public FirebaseBD()
     {
         auth = FirebaseAuth.getInstance();
+        if(!isPersistenceEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            isPersistenceEnabled = true;
+        }
         mDatabase = FirebaseDatabase.getInstance();
     }
 
