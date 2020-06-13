@@ -73,10 +73,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         GeneralData datoGeneral = temp.get(position);
 
         // Para que Strings largos no queden cortados en lista
-        if(datoGeneral.getTitle().length() > 22){
+        if(datoGeneral.getTitle() != null && datoGeneral.getTitle().length() > 22){
             myViewHolder.mTitle.setText(datoGeneral.getTitle().substring(0, 19) + "...");
-        }else{
+        }else if (datoGeneral.getTitle() != null) {
             myViewHolder.mTitle.setText(datoGeneral.getTitle());
+        } else {
+            myViewHolder.mTitle.setText("Titulo default");
         }
 
         // myViewHolder.mDescription.setText(Util.recortarTexto(datoGeneral.getDescription(), Util.TAMANO_DESCRIPCION_LISTA));

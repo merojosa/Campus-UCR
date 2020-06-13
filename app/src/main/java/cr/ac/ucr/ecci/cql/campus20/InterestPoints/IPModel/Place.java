@@ -1,10 +1,9 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Place extends GeneralData implements Parcelable {
+public class Place extends GeneralData {
 
     public int id;
     public String name;
@@ -40,12 +39,14 @@ public class Place extends GeneralData implements Parcelable {
         this.name = name;
         this.description = description;
         this.image = image;
+        this.type = "";
     }
 
     public Place(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.type = "";
     }
 
     public Place(int id, String name, String description, String type, int rating, int something) {
@@ -54,6 +55,7 @@ public class Place extends GeneralData implements Parcelable {
         this.description = description;
         this.type = type;
         this.rating = rating;
+        this.type = "";
         // Somthing
     }
 
@@ -67,36 +69,6 @@ public class Place extends GeneralData implements Parcelable {
         image = in.readInt();
         title = in.readString();
     }
-
-    public static final Creator<Place> CREATOR = new Creator<Place>() {
-        @Override
-        public Place createFromParcel(Parcel in) {
-            return new Place(in);
-        }
-
-        @Override
-        public Place[] newArray(int size) {
-            return new Place[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(type);
-        dest.writeInt(rating);
-        dest.writeInt(floor);
-        dest.writeInt(image);
-        dest.writeString(title);
-    }
-
 
     @Override
     public int getId() {
