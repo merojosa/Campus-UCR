@@ -24,15 +24,17 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
     private List<GeneralData> originalData;
     Context context;
 
-    private final ListAdapter.ListAdapterOnClickHandler mClickHandler;
 
-    public CommentsList(ListAdapter.ListAdapterOnClickHandler mClickHandler) {
-        this.mClickHandler = mClickHandler;
-    }
+    private final CommentListOnClickHandler mClickHandler;
 
-    public interface ListAdapterOnClickHandler{
+    public interface CommentListOnClickHandler{
         void onClick(String title);
     }
+
+    public CommentsList(CommentListOnClickHandler clickHandler) {
+        this.mClickHandler = clickHandler;
+    }
+
 
     public class MyViewHolderComments extends RecyclerView.ViewHolder implements View
             .OnClickListener{
@@ -54,7 +56,7 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
 
     }
 
-    //@NonNull
+    @NonNull
     @Override
     public MyViewHolderComments onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
@@ -79,5 +81,11 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
     @Override
     public int getItemCount() {
         return 0;
+    }
+
+    public void setListData(List<GeneralData> data){
+        temp = data;
+        originalData = temp;
+        notifyDataSetChanged();
     }
 }
