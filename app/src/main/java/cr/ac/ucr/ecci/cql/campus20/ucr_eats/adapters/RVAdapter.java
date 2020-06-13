@@ -67,8 +67,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 horario = "Abierto";
             }
 
+            int photoid = soda.getId() == 1 ? R.drawable.la_u : R.drawable.plaza_chou;
             cards.add(
-                    new SodaCard(R.drawable.la_u, soda.getFirebaseId(), soda.name, soda.photo,
+                    new SodaCard(photoid, soda.getFirebaseId(), soda.name, soda.photo,
                             horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max,
                             soda.getTotalServings(), soda.getAvailableServings())
             );

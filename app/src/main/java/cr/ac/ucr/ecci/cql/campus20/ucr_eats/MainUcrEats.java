@@ -84,11 +84,12 @@ public class MainUcrEats extends AppCompatActivity
                 Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
                 ArrayList<Restaurant> sodas = new ArrayList<>();
                 // Iterate array
+                int id = 1;
                 for(final DataSnapshot soda : sodaData)
                 {
                     Log.e("Nombre:", ""+soda.getValue());
                     Restaurant so = soda.getValue(Restaurant.class);
-
+                    so.setId(id++);
                     if (so != null)
                     {
                         so.setFirebaseId(soda.getKey());
