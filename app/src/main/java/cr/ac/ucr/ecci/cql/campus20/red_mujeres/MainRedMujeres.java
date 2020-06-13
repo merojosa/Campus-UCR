@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +61,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacem
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
+
 // Imports especificos de Directions API
 // Clases para calcular una ruta
 // Imports necesarios para la interfaz de usuario de navegacion
@@ -67,6 +69,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
+    static final int REQUEST_SELECT_CONTACT = 1;
     // Variables para agregar el mapa y la capa de localizacion
     private MapboxMap mapboxMap;
     private MapView mapView;
@@ -126,11 +129,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-//                        // Pregunta a usuario si desea compartir ruta con personas de confianza
-                        //FragmentManager fm = getSupportFragmentManager();
-                        //CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
-                        //alertDialog.show(fm, "fragment_compartir_ruta");
                         iniciarRuta();
                     }
                 });
@@ -187,7 +185,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: Refactor
-                        enviarWhatsapp();
+                        //enviarWhatsapp();
+                        enviarSMS("Prueba");
                     }
                 });
 
@@ -203,7 +202,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     private void enviarWhatsapp(){
@@ -231,6 +229,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             toast.show();
         }
     }
+
+    public void enviarSMS(String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("smsto:"));  // This ensures only SMS apps respond
+        intent.putExtra("sms_body", message);
+       // intent.putExtra(Intent.EXTRA_STREAM, attachment);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
 
     // Iconos de navegacion
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
