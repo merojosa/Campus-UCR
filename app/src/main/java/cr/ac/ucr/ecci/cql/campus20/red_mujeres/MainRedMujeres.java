@@ -94,7 +94,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private Button button;
 
     //Instancia de compartir
-    private String message = "Hola! Esta es mi ruta";
+    private String message = "Hola! Te comparto la ruta que planeo seguir. ";
     private Double latitudDes;
     private Double longitudDes;
     private Double latitudOri;
@@ -188,7 +188,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: Refactor
-                        enviarWhatsapp();
+                        enviarWhatsapp(message);
                         enviarSMS(message);
                     }
                 });
@@ -207,9 +207,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         dialog.show();
     }
 
-    public void enviarWhatsapp() {
+    public void enviarWhatsapp(String message) {
         PackageManager pm = getPackageManager();
-        String text = "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
+        String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
         try {
 
             Intent waIntent = new Intent(Intent.ACTION_SEND);
@@ -234,9 +234,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void enviarSMS(String message) {
+        String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setData(Uri.parse("smsto:"));  // This ensures only SMS apps respond
-        intent.putExtra("sms_body", message);
+        intent.putExtra("sms_body", text);
         // intent.putExtra(Intent.EXTRA_STREAM, attachment);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -267,8 +268,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         //LocationComponent locationComponent = null;
         latitudDes = point.getLatitude();
         longitudDes = point.getLongitude();
-        latitudOri = locationComponent.getLastKnownLocation().getLongitude();
-        longitudOri = locationComponent.getLastKnownLocation().getLatitude();
+        latitudOri = locationComponent.getLastKnownLocation().getLatitude();
+        longitudOri = locationComponent.getLastKnownLocation().getLongitude();
         Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
                 locationComponent.getLastKnownLocation().getLatitude());
