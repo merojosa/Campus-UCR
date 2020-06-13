@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 /*Adaptador de lista genérica*/
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
-    private List<GeneralData> temp;
-    private List<GeneralData> originalData;
+    private List<Place> temp;
+    private List<Place> originalData;
     Context context;
 
     private final ListAdapterOnClickHandler mClickHandler;
@@ -50,8 +51,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         @Override
         public void onClick(View v) {
             int posicionAdaptador = getAdapterPosition();
-            GeneralData datoGeneral = temp.get(posicionAdaptador);
-            mClickHandler.onClick(datoGeneral.getTitle());
+            Place datoGeneral = temp.get(posicionAdaptador);
+            mClickHandler.onClick(datoGeneral.getName());
         }
     }
 
@@ -70,19 +71,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
-        GeneralData datoGeneral = temp.get(position);
+        Place place = temp.get(position);
 
         // Para que Strings largos no queden cortados en lista
-        if(datoGeneral.getTitle() != null && datoGeneral.getTitle().length() > 22){
-            myViewHolder.mTitle.setText(datoGeneral.getTitle().substring(0, 19) + "...");
-        }else if (datoGeneral.getTitle() != null) {
-            myViewHolder.mTitle.setText(datoGeneral.getTitle());
+        if(place.getName() != null && place.getName().length() > 22){
+            myViewHolder.mTitle.setText(place.getName().substring(0, 19) + "...");
+        }else if (place.getName() != null) {
+            myViewHolder.mTitle.setText(place.getName());
         } else {
-            myViewHolder.mTitle.setText("Titulo default");
+            myViewHolder.mTitle.setText("Nombre default");
         }
 
         // myViewHolder.mDescription.setText(Util.recortarTexto(datoGeneral.getDescription(), Util.TAMANO_DESCRIPCION_LISTA));
-        myViewHolder.mImage.setImageResource(datoGeneral.getImage());
+        myViewHolder.mImage.setImageResource(place.getImage());
     }
 
     @Override
@@ -93,16 +94,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         return 0;
     }
 
-    public void setListData(List<GeneralData> data){
+    public void setListData(List<Place> data){
         temp = data;
         originalData = temp;
         notifyDataSetChanged();
     }
 
     public void filter(String query){
-        List<GeneralData> newList = new ArrayList<GeneralData>();
-        for(GeneralData elemento : originalData){
-            if(elemento.getTitle().toLowerCase().contains(query.toLowerCase()))
+        List<Place> newList = new ArrayList<Place>();
+        for(Place elemento : originalData){
+            if(elemento.getName().toLowerCase().contains(query.toLowerCase()))
                 newList.add(elemento);
         }
         temp = newList;

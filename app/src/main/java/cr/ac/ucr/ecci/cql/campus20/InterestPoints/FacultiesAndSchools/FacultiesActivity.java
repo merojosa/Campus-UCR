@@ -27,6 +27,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -35,7 +36,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<GeneralData> temp = new ArrayList<>();
+    private List<Place> temp = new ArrayList<>();
     private List<Faculty> facultiesList;
 
     private ProgressBar spinner;
@@ -60,7 +61,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         facultiesList = new ArrayList<>();
-        temp = new ArrayList<>();
+        temp = new ArrayList<Place>();
         getFacultiesList();
     }
 
@@ -71,7 +72,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         boolean finded = false;
         int index = 0;
         while (index < facultiesList.size() && !finded){
-            if(facultiesList.get(index).getTitle().equals(title)){
+            if(facultiesList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;

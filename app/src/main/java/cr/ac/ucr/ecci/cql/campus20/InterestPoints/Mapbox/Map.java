@@ -2,7 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -22,7 +21,6 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -44,7 +42,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
@@ -76,10 +74,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     //variables para inicializar navegación
     private Button button;
 
-    School school;
-    Coffe coffe;
+    Place place;
     private String nameTemporal = "";
-    Coordinate coordinate;
     private Intent details;
     Double originLatitude = 0.00;
     Double originLongitude = 0.00;
@@ -95,13 +91,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         Intent intentItemList = getIntent();
         // Getting item title information
         String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
+
         // Getting the place that the map is showing
-
-        // Getting the Coordinates of the place
-        this.coordinate = getIntent().getParcelableExtra("coordinate");
-        destinationLatitude = coordinate.getLatitude();
-        destinationLongitude = coordinate.getLongitude();
-
+        this.place = getIntent().getParcelableExtra("place");
+        this.destinationLatitude = place.getLatitude();
+        this.destinationLongitude = place.getLongitude();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(itemTitle);

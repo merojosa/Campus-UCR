@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.os.Parcel;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 public class Place extends GeneralData {
@@ -12,51 +13,30 @@ public class Place extends GeneralData {
     public int rating;
     public int floor;
     public int image;
-    public String title;
+    public double latitude;
+    public double longitude;
 
     Place() {}
 
-    public Place(int id, String name, String description, int rating, int floor, int image) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = "";
-        this.rating = rating;
-        this.floor = floor;
-        this.image = image;
-    }
-
-    public Place(int id, String name, String description, int image, String title) {
+    // Used in the Faculty/DeploymentScript
+    // Used in the Coffe/DeploymentScript
+    // Used in the School
+    public Place(int id, String name, String description, int image, String type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
-        this.title = title;
+        this.type = type;
     }
 
-    public Place(int id, String name, String description, int image) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.type = "";
-    }
-
-    public Place(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = "";
-    }
-
-    public Place(int id, String name, String description, String type, int rating, int something) {
+    // Used in the Deployment Script/Fincas/Places
+    public Place(int id, String name, String description, String type, int rating, int floor) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.rating = rating;
-        this.type = "";
-        // Somthing
+        this.floor = floor;
     }
 
     protected Place(Parcel in) {
@@ -67,7 +47,8 @@ public class Place extends GeneralData {
         rating = in.readInt();
         floor = in.readInt();
         image = in.readInt();
-        title = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     @Override
@@ -129,12 +110,19 @@ public class Place extends GeneralData {
         this.image = image;
     }
 
-    @Override
-    public String getTitle() {
-        return title;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
