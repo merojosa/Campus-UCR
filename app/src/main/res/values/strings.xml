@@ -37,4 +37,5 @@
     <string name="price_placeholder">1000</string>
     <string name="image">image</string>
     <string name="restaurant_placeholder">Restaurant</string>
+    <string name="chooser_title">Elegir app</string>
 </resources>
