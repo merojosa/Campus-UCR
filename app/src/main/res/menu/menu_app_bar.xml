@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/itemPreferencias"
         android:title="Preferencias" />
 
     <item android:id="@+id/itemCerrarSesion"
         android:title="Cerrar Sesión" />
+
+    <item
+        android:id="@+id/ordenesPendientes"
+        android:icon="@drawable/ordenes_pendientes"
+        android:title="Órdenes pendientes"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>
