@@ -19,8 +19,10 @@
         android:textColor="@color/blanco_UCR"
         android:textSize="20dp" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comments_list"
         android:layout_width="match_parent"
-        android:layout_height="198dp" />
+        android:layout_height="198dp"/>
 
 </LinearLayout>
+

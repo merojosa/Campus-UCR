@@ -6,13 +6,34 @@
     android:padding="10sp"
     android:layout_marginBottom="3dp">
 
-    <TextView
-        android:id="@+id/comentario"
+    <LinearLayout
+        android:id="@+id/ratingComment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/myriad_pro_regular"
-        android:paddingLeft="10sp"
-        android:textSize="25sp" />
+        android:layout_height="50dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="horizontal"
+        android:padding="10sp">
 
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="254dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/like"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:background="none"
+            android:drawableRight="@drawable/like32px"/>
+        <Button
+            android:id="@+id/dislike"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:background="none"
+            android:drawableRight="@drawable/dislike64px"/>
+
+    </LinearLayout>
 
 </LinearLayout>
