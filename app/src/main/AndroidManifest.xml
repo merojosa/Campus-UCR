@@ -63,7 +63,14 @@
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+            android:theme="@style/AppTheme.InterestsThemeNoBar" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />

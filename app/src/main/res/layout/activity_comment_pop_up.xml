@@ -38,18 +38,28 @@
         android:textColor="@color/blanco_UCR"
         android:textSize="20dp"/>
 
-    <TextView
-        android:id="@+id/rating_place"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:text="Aqui va el rating"/>
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="251dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:rating="3.5" />
 
     <EditText
         android:id="@+id/comentario"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Comente..."
+        android:layout_height="119dp"
+        android:background="@color/blanco_UCR"
         android:gravity="left"
-        android:background="@color/blanco_UCR"/>
+        android:text="Comente..." />
+
+    <Button
+        android:id="@+id/acceptar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subir" />
+
+
 </LinearLayout>
 

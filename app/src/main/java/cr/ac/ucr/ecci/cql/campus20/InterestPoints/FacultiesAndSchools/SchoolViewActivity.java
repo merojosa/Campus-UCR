@@ -1,6 +1,8 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -18,24 +20,37 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentsList;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class SchoolViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class SchoolViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler{
 
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
-    private PopupWindow popComments;
 
     private School school;
     private Place place;
     private Faculty faculty;
+    private CommentsList.CommentListOnClickHandler onClickHandler;
 
     String schoolName;
 
@@ -56,6 +71,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         popButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 CommentPopUp commentPopUp = new CommentPopUp(); //Mandar cosas
                 commentPopUp.showCommentsPopup(view);
             }

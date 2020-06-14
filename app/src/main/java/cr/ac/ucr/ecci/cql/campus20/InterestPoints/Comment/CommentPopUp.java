@@ -66,7 +66,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         startActivity(childActivity);
 */
-
     }
 
     private void setupRecyclerView(){
@@ -101,22 +100,31 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         tmp.addAll(Comentarios);
     }
 
-
     /**
      * Crea lo necesario para levantar el popup
      * @param view
      */
     public void showCommentsPopup(final View view) {
+        db = new FirebaseDB();
 
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
 
         View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
-        int width = 375;//LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
+        int width = LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; //Para la parte de atrás
 
-        /*Métodos de CommentPopUp*/
+        /*Lista*/
+        setupRecyclerView();
+        mCommensList = new CommentsList(this);
+        mRecyclerView.setAdapter(mCommensList);
+        Comentarios = new ArrayList<>();
+        tmp = new ArrayList<>();
+        getCommentsList();
+
+        /*Ratingbar*/
+
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
