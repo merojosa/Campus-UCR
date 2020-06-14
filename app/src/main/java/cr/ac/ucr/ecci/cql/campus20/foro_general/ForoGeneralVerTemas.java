@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +46,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-
     private AdaptadorTemas adapter;
 
     private TemaViewModel mTemaViewModel;
@@ -49,6 +53,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Integer> idList;
+
+    // Instancia de Firebase para el foro general y sus hijos
+    ForoGeneralFirebaseDatabase databaseReference;
+    DatabaseReference temasDatabaseReference;
+    List<Tema> temasLocales;
 
 
     /**
@@ -61,6 +70,41 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_temas);
         idList = new ArrayList<>();
+
+        temasLocales = new ArrayList<>();
+
+        // Se instancia el firebaseReference
+        databaseReference = new ForoGeneralFirebaseDatabase();
+
+        this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se borra la lista
+                ForoGeneralVerTemas.this.temasLocales.clear();
+                // Se recorre el snapshot para sacar los datos
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    // Esto podría producir NullPointerException
+                    int id = ds.child("id").getValue(Integer.class);
+                    String titulo = ds.child("titulo").getValue(String.class);
+                    String description = ds.child("description").getValue(String.class);
+                    int contUsers = ds.child("contadorUsuarios").getValue(Integer.class);
+                    int imagen = ds.child("imagen").getValue(Integer.class);
+
+                    // Se crea el tema
+                    Tema temita = new Tema(id, titulo, description, contUsers, imagen);
+                    ForoGeneralVerTemas.this.temasLocales.add(temita);
+                }
+                adapter.setTemas(ForoGeneralVerTemas.this.temasLocales);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+            }
+        });
 
         busquedaFiltrada();
         iniciarRecycler();
@@ -129,8 +173,8 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
             @Override
             public void onChanged(List<Tema> temas) {
-                if (temas != null)
-                    adapter.setTemas(temas);        // Se llama al método del adapter
+//                if (temas != null)
+//                    adapter.setTemas(temas);        // Se llama al método del adapter
             }
         });
 
@@ -179,7 +223,14 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     }
                     i++;
                 }
+
+
+                String nombreTema = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
+                int idTemaSek = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
+
                 temaSeleccionado = result.getTitulo();
+                //int idTemaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
+                //String temaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
 
                 // Llamada a la actividad de ver preguntas
                 Intent intent = new Intent(getApplicationContext(), ForoGeneralVerPreguntas.class);
@@ -215,20 +266,23 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 //String nombreTema = mTemaViewModel.getAllTemas().getValue().get(position).getTitulo();
                 //int idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
 
+                //String nombreTema = ForoGeneralVerTemas.this.temasLocales.get(position).getTitulo();
+                //int idTema = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
+
                 if (check) {
                     // Se da un mensaje al usuario
                     Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
                             " añadido a Favoritos", Toast.LENGTH_SHORT).show();
 
                     // Se inserta el tema como Favorito
-                    añadirTemaFavorito(idTema);
+                    añadirTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 } else {
                     // Se da un mensaje al usuario
                     Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
                             " quitado de Favoritos", Toast.LENGTH_SHORT).show();
 
                     // Se elimina al tema de la lista de Favoritos
-                    eliminarTemaFavorito(idTema);
+                    eliminarTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
         });
@@ -291,9 +345,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * @param identificadorTema, que es el identificador del tema que se va a insertar
      * como favorito
      */
-    public void añadirTemaFavorito(int identificadorTema)
+    public void añadirTemaFavorito(int identificadorTema, String nombreUsuario)
     {
-        Favorito fav = new Favorito(identificadorTema);
+        Favorito fav = new Favorito(identificadorTema, nombreUsuario);
         mFavoritoViewModel.insert(fav);
     }
 
@@ -302,9 +356,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
      * añadido como favorito
      * @param identificadorTema, que es el identificador del tema que se va a eliminar
      */
-    public void eliminarTemaFavorito(int identificadorTema)
+    public void eliminarTemaFavorito(int identificadorTema, String nombreUsuario)
     {
-        mFavoritoViewModel.deleteOneFavorito(identificadorTema);
+        mFavoritoViewModel.deleteOneFavorito(identificadorTema, nombreUsuario);
     }
 
     /**

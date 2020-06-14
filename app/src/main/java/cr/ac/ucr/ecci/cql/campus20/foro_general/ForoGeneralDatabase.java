@@ -24,7 +24,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class, Favorito.class, RankPregunta.class, Respuesta.class}, version = 6, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class, RankPregunta.class, Respuesta.class}, version = 9, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
 
@@ -62,6 +62,9 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 TemaDao temaDao = INSTANCE.temaDao();
                 temaDao.borrarTodo();
 
+                FavoritoDao favoritoDao = INSTANCE.favoritoDao();
+                favoritoDao.deleteAll();
+
                 // Creación de temas para insertarlos en la base de datos
                 Tema temaUno = new Tema(1, "General", "Lo más nuevo", 10, R.drawable.foro1);
                 Tema temaDos = new Tema(2, "Escuelas", "Información sobre distintas escuelas", 3, R.drawable.foro_escuelas);
@@ -78,6 +81,9 @@ public abstract class ForoGeneralDatabase extends RoomDatabase
                 temaDao.insert(temaCinco);
                 temaDao.insert(temaSeis);
                 temaDao.insert(temaSiete);
+
+                Favorito fav1 = new Favorito(1, "test");
+                favoritoDao.insert(fav1);
             });
 
         }
