@@ -50,7 +50,6 @@ public class MenuRedMujeres extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu_red_mujeres);
 
         mDatabase = FirebaseDatabase.getInstance();
         recuperarDatos(currentUser);

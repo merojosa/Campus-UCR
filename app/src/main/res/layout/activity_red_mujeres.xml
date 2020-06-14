@@ -76,8 +76,24 @@
         android:layout_gravity="bottom|end"
         mapbox:maxImageSize="26dp"
         mapbox:rippleColor="@color/blanco_UCR"
-        mapbox:useCompatPadding="true"
-         />
+        mapbox:useCompatPadding="true"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sos"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="#FF3D00"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:focusable="auto"
+        mapbox:backgroundTint="@color/verde_UCR"
+        mapbox:layout_constraintBottom_toTopOf="@+id/shareTrip"
+        mapbox:layout_constraintEnd_toEndOf="@+id/mapView"
+        mapbox:maxImageSize="32dp"
+        mapbox:rippleColor="@color/blanco_UCR"
+        mapbox:srcCompat="@drawable/baseline_report_white_48"
+        mapbox:useCompatPadding="true" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
