@@ -114,6 +114,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         DatabaseReference ref = db.getReference("Comment");
         List<Comment> commentList = new ArrayList<>();
+
+        
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

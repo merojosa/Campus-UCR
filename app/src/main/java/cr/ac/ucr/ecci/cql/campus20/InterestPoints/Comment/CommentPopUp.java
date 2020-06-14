@@ -77,7 +77,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         mListAdapter = new CommentsList(this);
         mRecyclerView.setAdapter(mListAdapter);
-        setDataList();
+        setDataList(); //foreing key
         mListAdapter.setListData(tmp);
         mListAdapter.notifyDataSetChanged();
 
