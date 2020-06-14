@@ -1,7 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 public class Coffe extends Place {
 

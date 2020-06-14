@@ -70,25 +70,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private NavigationMapRoute navigationMapRoute;
     private TextView TextButtton;
 
-
     //variables para inicializar navegación
     private Button button;
     private Place place;
     private Intent details;
+    private double destinationLatitude;
+    private double destinationLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token)); //Tomar el token público
 
-        // Relationship with the map view
-        Intent intentItemList = getIntent();
-        // Getting item title information
-        //String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
-
         // Getting the place that the map is showing
         this.place = getIntent().getParcelableExtra("place");
         String itemTitle = this.place.getName();
+        this.destinationLatitude = this.place.getLatitude();
+        this.destinationLongitude = this.place.getLongitude();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(itemTitle);
@@ -158,9 +156,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
     public void setNavigation() {
 
-        Point destinationPoint = Point.fromLngLat(this.place.getLongitude(), this.place.getLatitude());
-        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                locationComponent.getLastKnownLocation().getLatitude());
+        Point destinationPoint = Point.fromLngLat(this.destinationLongitude, this.destinationLatitude);
+        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(), locationComponent.getLastKnownLocation().getLatitude());
 
         GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
         if (source != null) {
@@ -329,13 +326,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // Según tipo de actividad se selecciona el activity correcto
-                if (tipo == 0) {
-                    details = new Intent(Map.this, CoffeViewActivity.class);
-                }else if(tipo == 1){
-                    details = new Intent(Map.this, SchoolViewActivity.class);
-                }
-
+                details = new Intent(Map.this, Place.class);
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
                 startActivity(details);
                 return true;
