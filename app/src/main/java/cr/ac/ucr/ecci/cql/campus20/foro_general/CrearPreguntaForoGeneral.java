@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,18 +32,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankPreguntaViewModel;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class CrearPreguntaForoGeneral extends AppCompatActivity {
@@ -179,7 +175,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(CrearPreguntaForoGeneral.this);
@@ -219,18 +215,28 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
 
     private void agregarPregunta() {
 
-
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);
 
-        // Inserta en Firebase tambien
-        this.databaseReference.getPreguntasRef().child(nombreUsuario).child(Integer.toString(pregunta.id)).setValue(pregunta);
+        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
+        mPreguntaViewModel.getIDPorTextoYUsuario(pregunta.texto, pregunta.nombreUsuario).observe(this, new Observer<List<Pregunta>>() {
+            @Override
+            public void onChanged(List<Pregunta> preguntas) {
+                int idGenerado = 0;
+                for(Pregunta pregunta : preguntas){
+                    idGenerado = pregunta.id;
+                }
 
-        Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);
-        // Llamada a la actividad de ver respuestas
-        intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
-        intent.putExtra("temaSeleccionado", temaSeleccionado);
-        startActivity(intent);
+                // Inserta en Firebase tambien
+                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(pregunta);
+
+                Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerPreguntas.class);
+                // Llamada a la actividad de ver respuestas
+                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+                intent.putExtra("temaSeleccionado", temaSeleccionado);
+                startActivity(intent);
+            }
+        });
     }
 }

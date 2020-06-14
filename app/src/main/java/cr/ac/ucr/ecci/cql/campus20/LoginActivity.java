@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private LoginBD loginBD;
+    private CampusBD loginBD;
 
     private Redireccionador redireccionador;
 

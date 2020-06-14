@@ -28,12 +28,11 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
     private LiveData<List<Pregunta>> preguntas;
@@ -60,19 +59,18 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
         int idTemaSeleccionado = mIntent.getIntExtra("idTemaSeleccionado", 0);
         String temaSeleccionado = mIntent.getStringExtra("temaSeleccionado");
 
+        this.preguntasFireBase = new ArrayList<Pregunta>();
 
-        //String nombreUsuario = mIntent.getStringExtra("nombreUsuario");
-        this.preguntasFireBase = new ArrayList<>();
+        // Se instancia el firebaseReference
+        this.databaseReference = new ForoGeneralFirebaseDatabase();
 
-
-        /*
-        this.databaseReference.getPreguntasRef().addValueEventListener(new ValueEventListener() {
+        this.databaseReference.getPreguntasRef().child(String.valueOf(idTemaSeleccionado)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Se recorre el snapshot para sacar los datos
+                ForoGeneralVerPreguntas.this.preguntasFireBase.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    // Esto podría producir NullPointerException
                     int id = ds.child("id").getValue(Integer.class);
                     String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
                     int temaID = ds.child("temaID").getValue(Integer.class);
@@ -80,11 +78,31 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
                     int contadorDisLikes = ds.child("contadorDisLikes").getValue(Integer.class);
 
-                    // Se crea el tema
+                    // Se crea la pregunta
                     Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes);
                     ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
                 }
 
+                // Setear el view para las preguntas
+                recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
+                recyclerViewPreguntas.setLayoutManager(new LinearLayoutManager(ForoGeneralVerPreguntas.this));
+                // Si no se cambia el tamanno, hacer esto mejora el performance
+                recyclerViewPreguntas.setHasFixedSize(true);
+
+                // Setear el adaptador para las preguntas
+                ForoGeneralVerPreguntas.this.preguntasAdapter = new RVAdapterPregunta(ForoGeneralVerPreguntas.this, preguntaCards, ForoGeneralVerPreguntas.this);
+                recyclerViewPreguntas.setAdapter(preguntasAdapter);
+
+                // Setea el titulo del tema seleccionado en la pantalla de ver preguntas
+                tituloTema = (TextView) findViewById(R.id.temaSeleccionado);
+                tituloTema.setText(temaSeleccionado);
+
+                if(ForoGeneralVerPreguntas.this.preguntasFireBase.size() > 0){
+                    preguntaCards = preguntasAdapter.convertToPreguntaCards(ForoGeneralVerPreguntas.this.preguntasFireBase);
+                    preguntasAdapter.setPreguntaCards(ForoGeneralVerPreguntas.this.preguntasFireBase);
+                }else{
+                    tituloTema.setText(temaSeleccionado + ": No tiene preguntas!");
+                }
             }
 
             @Override
@@ -92,41 +110,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                 // Failed to read value
                 Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
             }
-        });
-        */
 
-        // Setear el view para las preguntas
-        recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
-        recyclerViewPreguntas.setLayoutManager(new LinearLayoutManager(this));
-        // Si no se cambia el tamanno, hacer esto mejora el performance
-        recyclerViewPreguntas.setHasFixedSize(true);
-
-        // Setear el adaptador para las preguntas
-        this.preguntasAdapter = new RVAdapterPregunta(this, preguntaCards, this);
-        recyclerViewPreguntas.setAdapter(preguntasAdapter);
-
-        // Instancia el viewModel para recuperar la lista asincrónicamente
-        mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
-        preguntas = mPreguntaViewModel.getPreguntasTema(idTemaSeleccionado);
-        // Setea el titulo del tema seleccionado en la pantalla de ver preguntas
-        tituloTema = (TextView) findViewById(R.id.temaSeleccionado);
-        tituloTema.setText(temaSeleccionado);
-
-        /*if(this.preguntasFireBase.size() > 0){
-            preguntaCards = preguntasAdapter.convertToPreguntaCards(this.preguntasFireBase);
-        }*/
-
-        preguntas.observe(this, new Observer<List<Pregunta>>() {
-            @Override
-            public void onChanged(List<Pregunta> preguntas) {
-                // Si la lista tiene preguntas agrega las preguntas
-                if(preguntas.size() > 0){
-                    preguntaCards = preguntasAdapter.convertToPreguntaCards(preguntas);
-                    preguntasAdapter.setPreguntaCards(preguntas);
-                }else{
-                    tituloTema.setText(temaSeleccionado + ": No tiene preguntas!");
-                }
-            }
         });
 
         // Este código debería ser una llamado y no el código en sí
@@ -158,7 +142,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(ForoGeneralVerPreguntas.this);
@@ -198,7 +182,6 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
 
         Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
         intent.putExtra("preguntaSeleccionada", preguntaSeleccionada);
-
         startActivity(intent);
     }
 }

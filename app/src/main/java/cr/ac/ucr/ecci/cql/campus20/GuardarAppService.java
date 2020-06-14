@@ -3,11 +3,6 @@ package cr.ac.ucr.ecci.cql.campus20;
 import android.app.IntentService;
 import android.content.Intent;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
-import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
-
 
 public class GuardarAppService extends IntentService
 {
@@ -28,7 +23,7 @@ public class GuardarAppService extends IntentService
 
         if(appId != -1)
         {
-            LoginBD loginBD = new FirebaseBD();
+            CampusBD loginBD = new FirebaseBD();
             String correo = loginBD.obtenerCorreoActual();
             String usuario = correo.substring(0, correo.indexOf('@'));
 

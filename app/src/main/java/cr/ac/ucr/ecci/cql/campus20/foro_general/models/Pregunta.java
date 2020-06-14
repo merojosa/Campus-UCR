@@ -31,15 +31,15 @@ public class Pregunta {
     @ColumnInfo(name = "contadorLikes")
     public int contadorLikes = 0;
 
-    @ColumnInfo(name = "contadorDisikes")
-    public int contadorDisikes = 0;
+    @ColumnInfo(name = "contadorDisLikes")
+    public int contadorDisLikes = 0;
 
-    public Pregunta(int id, String nombreUsuario, int temaID, String texto, int contadorLikes, int contadorDisikes) {
+    public Pregunta(int id, String nombreUsuario, int temaID, String texto, int contadorLikes, int contadorDisLikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.temaID = temaID;
         this.texto = texto;
         this.contadorLikes = contadorLikes;
-        this.contadorDisikes = contadorDisikes;
+        this.contadorDisLikes = contadorDisLikes;
     }
 }

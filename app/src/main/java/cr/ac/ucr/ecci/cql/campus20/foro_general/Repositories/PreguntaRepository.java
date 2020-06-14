@@ -62,4 +62,14 @@ public class PreguntaRepository {
             mPreguntaDao.updateDislikes(id, num);
         });
     }
+
+    /**
+     * Método para recuperar la pregunta con un texto y un nombre de usuario específico
+     * @param texto el texto de la pregunta a buscar
+     * @param nombreUsuario el nombre de usuario que creó la pregunta a buscar
+     * @return un LiveData que contiene una lista con la pregunta con las especificaciones requeridas
+     */
+    public LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
+        return mPreguntaDao.getIDPorTextoYUsuario(texto, nombreUsuario);
+    }
 }

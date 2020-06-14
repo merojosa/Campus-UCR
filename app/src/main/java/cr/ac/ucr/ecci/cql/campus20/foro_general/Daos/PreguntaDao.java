@@ -31,6 +31,11 @@ public interface PreguntaDao
     @Query("SELECT * FROM Pregunta WHERE id = :id")
     Pregunta getPreguntaPorID(int id);
 
+
+    // Recuperar el ID, basándose por el texto de la pregunta y el nombre del usuario que la escribió
+    @Query("SELECT * FROM Pregunta WHERE texto =:texto AND nombreUsuario =:nombreUsuario")
+    LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario);
+
     // Para recuperar todas las preguntas relacionadas a un tema especifico
     @Query("SELECT * FROM Pregunta WHERE temaID = :temaID ORDER BY id")
     LiveData<List<Pregunta>> getPreguntasTema(int temaID);
@@ -44,7 +49,7 @@ public interface PreguntaDao
     void updateLikes(int id,int num);
 
     // Disminuye los likes
-    @Query("UPDATE Pregunta SET contadorDisikes = contadorDisikes + :num WHERE id = :id")
+    @Query("UPDATE Pregunta SET contadorDisLikes = contadorDisLikes + :num WHERE id = :id")
     void updateDislikes(int id,int num);
 }
 

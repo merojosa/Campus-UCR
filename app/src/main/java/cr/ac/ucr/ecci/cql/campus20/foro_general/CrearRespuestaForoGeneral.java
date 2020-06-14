@@ -23,7 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
@@ -100,7 +100,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(CrearRespuestaForoGeneral.this);
