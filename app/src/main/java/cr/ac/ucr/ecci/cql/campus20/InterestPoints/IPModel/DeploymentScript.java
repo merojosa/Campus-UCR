@@ -53,6 +53,10 @@ public class DeploymentScript {
         createSchools();
         createComments();
         createCoffeShops();
+        createLibrary();
+        createOffice();
+        createSoda();
+        createPhotocopier();
         /*Saves the activity names in room database.*/
         AsyncTask.execute(new Runnable() {
             @Override
@@ -263,4 +267,46 @@ public class DeploymentScript {
         }
         Log.d("comments", "Comments were inserted in database.");
     }
+
+    private void createLibrary() {
+        Library tinoco = new Library(0,  "Tinoco", "", R.drawable.libros, 9.943473, -84.0469052);
+        db.insert("Library", tinoco);
+
+        Library carlos = new Library(1, "Carlos Monge", "", R.drawable.libros, 9.943473, -84.0469052);
+        db.insert("Library", carlos);
+
+    }
+
+    private void createOffice() {
+        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.943473, -84.0469052);
+        db.insert("Office", oficina1);
+
+        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.943473, -84.0469052);
+        db.insert("Office", oficina2);
+
+    }
+
+    private void createSoda() {
+        Soda odonto = new Soda(0,  "Soda de Odontología", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", odonto);
+
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", generales);
+
+        Soda economicas = new Soda(2,  "Soda de Económicas", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", economicas);
+
+    }
+
+    private void createPhotocopier() {
+        Photocopier exactas = new Photocopier(0,  "CopiasExactas", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", exactas);
+
+        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", millenium);
+
+        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", misCopias);
+    }
+
 }

@@ -42,8 +42,13 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Photocopier;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Soda.SodaViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -318,7 +323,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     public boolean onCreateOptionsMenu(Menu menu){
 
         Intent intent = getIntent();
-        int tipo = intent.getExtras().getInt("typeActivity");
+        //int tipo = intent.getExtras().getInt("typeActivity");
 
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
 
@@ -331,13 +336,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                 }else if(place.getType() == "school"){
                     details = new Intent(Map.this, SchoolViewActivity.class);
                 } else if (place.getType() == "soda") {
-                    details = new Intent(Map.this, SchoolViewActivity.class);
+                    details = new Intent(Map.this, SodaViewActivity.class);
                 } else if (place.getType() == "biblioteca") {
-                    details = new Intent(Map.this, SchoolViewActivity.class);
+                    details = new Intent(Map.this, LibraryViewActivity.class);
                 } else if (place.getType() == "oficina") {
-                    details = new Intent(Map.this, SchoolViewActivity.class);
+                    details = new Intent(Map.this, OfficeViewActivity.class);
                 } else { // Fotocopiadoras
-                    details = new Intent(Map.this, SchoolViewActivity.class);
+                    details = new Intent(Map.this, PhotocopierViewActivity.class);
                 }
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
                 startActivity(details);
