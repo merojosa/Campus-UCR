@@ -73,14 +73,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
     //variables para inicializar navegación
     private Button button;
-
-    Place place;
-    private String nameTemporal = "";
+    private Place place;
     private Intent details;
-    Double originLatitude = 0.00;
-    Double originLongitude = 0.00;
-    Double destinationLatitude = 0.00;
-    Double destinationLongitude = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +84,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         // Relationship with the map view
         Intent intentItemList = getIntent();
         // Getting item title information
-        String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
+        //String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
 
         // Getting the place that the map is showing
         this.place = getIntent().getParcelableExtra("place");
-        this.destinationLatitude = place.getLatitude();
-        this.destinationLongitude = place.getLongitude();
+        String itemTitle = this.place.getName();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(itemTitle);
@@ -124,7 +117,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
                 //Texto de boton de comienzo de ruteo
                 TextButtton = (TextView)findViewById(R.id.startButton);
-                TextButtton.setText("Ir " + nameTemporal);
+                TextButtton.setText("Ir " + place.getName());
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -164,7 +157,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     }
 
     public void setNavigation() {
-        Point destinationPoint = Point.fromLngLat(destinationLongitude, destinationLatitude);
+
+        Point destinationPoint = Point.fromLngLat(this.place.getLongitude(), this.place.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
                 locationComponent.getLastKnownLocation().getLatitude());
 

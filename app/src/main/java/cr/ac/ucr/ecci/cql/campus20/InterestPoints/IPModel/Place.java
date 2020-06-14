@@ -1,10 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Place extends GeneralData {
+public class Place extends GeneralData implements Parcelable {
 
     public int id;
     public String name;
@@ -50,6 +51,18 @@ public class Place extends GeneralData {
         latitude = in.readDouble();
         longitude = in.readDouble();
     }
+
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 
     @Override
     public int getId() {
@@ -124,5 +137,23 @@ public class Place extends GeneralData {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(type);
+        dest.writeInt(rating);
+        dest.writeInt(floor);
+        dest.writeInt(image);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 }

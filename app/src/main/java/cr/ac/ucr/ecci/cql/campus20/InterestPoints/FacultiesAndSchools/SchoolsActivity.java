@@ -129,7 +129,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
                 // ------------------ Tomando las cooredenadas del lugar ---------------------------
 
-                DatabaseReference ref2 = db.getReference("Coordinate");
+                DatabaseReference ref2 = db.getReference("School");
                 ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(new ValueEventListener() {
 
                     @Override
@@ -137,6 +137,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
                         // Enviando los datos correctos al mapa
                         childActivity.putExtra("place", school);
                         childActivity.putExtra("index", 1);
+                        childActivity.putExtra("title", school.getName());
                         childActivity.putExtra("latitude", school.getLatitude());
                         childActivity.putExtra("longitude", school.getLongitude());
 
