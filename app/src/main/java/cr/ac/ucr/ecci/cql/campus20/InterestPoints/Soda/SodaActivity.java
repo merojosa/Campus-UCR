@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Soda;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,71 +22,69 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Soda;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class SodaActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<Place>();
-    private List<Coffe> coffeList;
+    private List<Place> temp = new ArrayList<>();
+    private List<Soda> sodaList;
 
     private ProgressBar spinner;
-    private Coffe coffe;
+    private Soda soda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coffe_shops);
+        setContentView(R.layout.activity_soda);
 
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Cafés");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Sodas");
             getSupportActionBar().show();
         }
 
-        spinner = findViewById(R.id.coffeeProgressBar);
+        spinner = findViewById(R.id.sodasProgressBar);
         spinner.setVisibility(View.VISIBLE);
 
         setupRecyclerView();
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         temp = new ArrayList<>();
-        coffeList = new ArrayList<>();
-        getCoffeeList();
+        sodaList = new ArrayList<>();
+        getSodasList();
     }
 
     @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
-        while (index < coffeList.size() && !finded){
-            if(coffeList.get(index).getName().equals(title)){
+        while (index < sodaList.size() && !finded){
+            if(sodaList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
             }
         }
-        Intent childActivity = new Intent(CoffeShopsActivity.this, Map.class);
-        childActivity.putExtra("typeActivity", 0);
+        Intent childActivity = new Intent(SodaActivity.this, Map.class);
+        childActivity.putExtra("typeActivity", 6);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra("attribute", coffeList.get(index).getDescription());
+        childActivity.putExtra("attribute", sodaList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.coffe = coffeList.get(index);
+        this.soda = sodaList.get(index);
 
-        childActivity.putExtra("place", coffe);
+        childActivity.putExtra("place", soda);
         childActivity.putExtra("index", 2);
 
         startActivity(childActivity);
     }
-
 
     /*This method creates the search box in toolbar and filters the rows according to the search criteria.*/
     @Override
@@ -120,14 +118,14 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     }
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
-    private void getCoffeeList(){
+    private void getSodasList(){
         FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Coffe");
+        DatabaseReference ref = db.getReference("Soda");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot coffee : dataSnapshot.getChildren()){
-                    coffeList.add(coffee.getValue(Coffe.class));
+                for(DataSnapshot soda : dataSnapshot.getChildren()){
+                    sodaList.add(soda.getValue(Soda.class));
                 }
                 setDataList();
                 mListAdapter.setListData(temp);
@@ -143,6 +141,6 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     }
 
     public void setDataList(){
-        temp.addAll(coffeList);
+        temp.addAll(sodaList);
     }
 }
