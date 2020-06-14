@@ -23,15 +23,37 @@ public class PreguntaViewModel extends AndroidViewModel {
     }
 
     /**
-     * Metood que retorna las preguntas de un tema especifico
+     * Método que retorna las preguntas de un tema especifico
      * @param id el id del tema para recuperar sus preguntas
      * @return una lista de preguntas dentro de un LiveData
      */
     public LiveData<List<Pregunta>> getPreguntasTema(int id) { return mRepository.getPreguntasTema(id); }
 
+    /**
+     * Método que inserta una pregunta
+     * @param pregunta la pregunta a insertar
+     */
     public void insert(Pregunta pregunta) { mRepository.insert(pregunta);}
 
+    /**
+     * Método que actualiza los likes de una pregunta
+     * @param id el identificador único de la pregunta
+     * @param num el número a poner en el contador
+     */
     public void updateLikes(int id, int num) { mRepository.updateLikes(id, num);}
 
+    /**
+     * Método que actualiza los Dislikes de una pregunta
+     * @param id el identificador único de la pregunta
+     * @param num el número a poner en el contador
+     */
     public void updateDislikes(int id, int num) { mRepository.updateDislikes(id, num);}
+
+    /**
+     * Método que retorna la pregunta creada por con el texto y nombre de usuario especificado
+     * @param texto el texto de la pregunta a buscar
+     * @param nombreUsuario el nombre del usuario que creó la pregunta a buscar
+     * @return una lista con la pregunta con esas especificaciones dentro de un LiveData
+     */
+    public LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){ return mRepository.getIDPorTextoYUsuario(texto, nombreUsuario); }
 }
