@@ -17,13 +17,15 @@ public class SchoolPlacesAdapter extends BaseAdapter {
     private List<Place> mData;
     private Context mContext;
     private int idImage;
-//    private List<String> originalList;
+    private String[] auxOriginalList;
+    private int[] auxIndexName;
 
-    public SchoolPlacesAdapter(List<Place> data, Context context, Boolean helperImage) {
+    public SchoolPlacesAdapter(List<Place> data, Context context, String[] originalList) {
         mData = data;
         mContext = context;
-        verifyImage(helperImage);
-//        originalList = mData;
+        auxOriginalList = originalList;
+        idImage = R.drawable.drop_ampliar;
+        auxIndexName = new int[]{idImage, idImage, idImage};
     }
 
     public int getCount() {
@@ -44,40 +46,50 @@ public class SchoolPlacesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Place place = mData.get(position);
-//        boolean showImag = showImage(place);
-        View rowView = inflater.inflate(R.layout.list_item, parent, false);
-        TextView title = (TextView)rowView.findViewById(R.id.tv_item_title);
+        View rowView = inflater.inflate(R.layout.list_item_school_places, parent, false);
+        TextView title = rowView.findViewById(R.id.tv_item_title);
         title.setText(place.getName());
 
-//        if(showImag){
-            ImageView imagen = (ImageView)rowView.findViewById(R.id.imageListIP);
+        if(showImage(place.getName())){
+            ImageView imagen = rowView.findViewById(R.id.imageListSchoolPlaces);
             imagen.setImageResource(idImage);
-//        }
+        }
 
         return rowView;
     }
 
-    public void verifyImage(boolean helperImage){
-        if(!helperImage){
-            idImage = R.drawable.drop_ampliar;
-        }else{
-            idImage = R.drawable.drop_contraer;
+    //Metodo para determinar que icono de dropdown debe ser mostrado
+    public void verifyImage(boolean helperImage, String itemName){
+        cleanIndexArray();
+        if(helperImage){
+            for(int i = 0; i < auxOriginalList.length; i++){
+                if(auxOriginalList[i].equals(itemName)){
+                    auxIndexName[i] = R.drawable.drop_contraer;
+                }
+            }
         }
     }
 
-//    public boolean showImage(String place){
-//        boolean show = false;
-//        int cont = 0;
-//        while(!show && cont < originalList.size()){
-//            if (place.equals(originalList.get(0))){
-//                show = true;
-//            }else{
-//                cont += 1;
-//            }
-//        }
-//
-//        return show;
-//    }
+    //Metodo para determinar enque casos de la lista se debe mostrar el icono de dropdown
+    public boolean showImage(String place){
+        boolean show = false;
+        int cont = 0;
+        while(!show && cont < auxOriginalList.length){
+            if (place.equals(auxOriginalList[cont])){
+                show = true;
+                idImage = auxIndexName[cont]; //Para desplegar el icono correcto
+            }else{
+                cont += 1;
+            }
+        }
+        return show;
+    }
+
+    public void cleanIndexArray(){
+        for(int i = 0; i<auxIndexName.length; i++){
+            auxIndexName[i] = R.drawable.drop_ampliar;
+        }
+    }
 
 }
 

@@ -47,11 +47,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         String placeName = intentPlace.getStringExtra(Intent.EXTRA_TEXT);
 
         TextView tittle = findViewById(R.id.schoolName);
-//        School school = School.select(getApplicationContext(), schoolName);
-//        if(school != null) {
-//            ImageView image = findViewById(R.id.schoolImage);
-//            image.setImageResource(school.getImage());
-//        }
 
         populateOptionsList();
 
@@ -97,64 +92,71 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         auxTest(valuesBath, valuesBath1);
         //
 
-        SchoolPlacesAdapter adapter = new SchoolPlacesAdapter(optionsSchools, this, listHelper);
+        //Creacion del adaptador
+        SchoolPlacesAdapter adapter = new SchoolPlacesAdapter(optionsSchools, this, listOptions);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listView.requestFocus();
                 Place  itemValue = (Place) listView.getItemAtPosition(position);
-                if(!listHelper){
+                //Si se le da click a un elemento que conforma el dropdown
+                if(itemValue.getName().equals(listOptions[0]) || itemValue.getName().equals(listOptions[1]) || itemValue.getName().equals(listOptions[2])){
+                    if(!listHelper){
 
-                    //Sacar a metodo aparte
-                    List<Place> auxList = new ArrayList<>();
-                    if(itemValue.getName() == listOptions[0]){ //Laboratorios
-                        auxList =valuesLabs;
-                        auxLastItemSelected = listOptions[0];
-                    }else if(itemValue.getName() == listOptions[1]){ //Asocias
-                        auxList =valuesAsc;
-                        auxLastItemSelected = listOptions[1];
-                    }else if(itemValue.getName() == listOptions[2]){ //Baños
-                        auxList =valuesBath;
-                        auxLastItemSelected = listOptions[2];
-                    }
-                    addOptionsOnList(optionsSchools, position, auxList);
-                    //
-                    listHelper = true;
-                    adapter.verifyImage(listHelper);
-
-
-                }else{
-                    //cuando ya se muestran opciones en la lista se debe limpiar
-                    optionsSchools.clear();
-//                    addOptionsOnList(optionsSchools, -1, optionsSchools); //Se manda -1 para evitar caida en este caso
-                    populateOptionsList();
-                    if(!itemValue.getName().equals(auxLastItemSelected)){  //Si seleccione uno diferente al ultimo seleccionado debo mostrar sus items
                         //Sacar a metodo aparte
                         List<Place> auxList = new ArrayList<>();
-                        int auxPos = 0;
                         if(itemValue.getName() == listOptions[0]){ //Laboratorios
                             auxList =valuesLabs;
                             auxLastItemSelected = listOptions[0];
-//                            auxPos = 0;
                         }else if(itemValue.getName() == listOptions[1]){ //Asocias
                             auxList =valuesAsc;
                             auxLastItemSelected = listOptions[1];
-                            auxPos = 1;
                         }else if(itemValue.getName() == listOptions[2]){ //Baños
                             auxList =valuesBath;
                             auxLastItemSelected = listOptions[2];
-                            auxPos = 2;
                         }
-                        addOptionsOnList(optionsSchools, auxPos, auxList);
+                        addOptionsOnList(optionsSchools, position, auxList);
                         //
+
+                        listHelper = true;
+                        adapter.verifyImage(listHelper, itemValue.getName());
+
                     }else{
-                        listHelper = false;
-                        adapter.verifyImage(listHelper);
+                        //cuando ya se muestran opciones en la lista se debe limpiar
+                        optionsSchools.clear();
+                        populateOptionsList();
+                        if(!itemValue.getName().equals(auxLastItemSelected)){  //Si seleccione uno diferente al ultimo seleccionado debo mostrar sus items
+
+                            //Sacar a metodo aparte
+                            List<Place> auxList = new ArrayList<>();
+                            int auxPos = 0;
+                            if(itemValue.getName() == listOptions[0]){ //Laboratorios
+                                auxList =valuesLabs;
+                                auxLastItemSelected = listOptions[0];
+                            }else if(itemValue.getName() == listOptions[1]){ //Asocias
+                                auxList =valuesAsc;
+                                auxLastItemSelected = listOptions[1];
+                                auxPos = 1;
+                            }else if(itemValue.getName() == listOptions[2]){ //Baños
+                                auxList =valuesBath;
+                                auxLastItemSelected = listOptions[2];
+                                auxPos = 2;
+                            }
+                            addOptionsOnList(optionsSchools, auxPos, auxList);
+                            //
+
+                        }else{
+                            listHelper = false;
+                        }
                     }
+                    adapter.verifyImage(listHelper, itemValue.getName());
+                    adapter.notifyDataSetChanged();
+                }else{
+                    //cuando se le da click a un item de baño, lab... especifico
+                    //Debe levantar el fragmento u otra activity
                 }
-                adapter.notifyDataSetChanged();
+
             }
         });
     }
@@ -162,22 +164,17 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     //Metodo para agregar items relacionados con la opcion seleccionada
     public void addOptionsOnList(List<Place> itemsList, int position,  List<Place> options){
         for (int i = 0; i < options.size(); i++) {
-//            School s = new School();
-//            s.setName(options[i]);
-//            itemsList.add(position + i+1, s);
-
             itemsList.add(position + i+1, options.get(i));
         }
     }
 
+    //Para las lista de opciones para mostrar en la vista de escuelas
     public void populateOptionsList(){
-        for (String val: listOptions) { //Para las lista de opciones para mostrar en la vista de escuelas
+        for (String val: listOptions) {
             School s = new School();
-            s.setImage(R.drawable.drop_ampliar);
             s.setName(val);
             optionsSchools.add(s);
         }
     }
-
 
 }
