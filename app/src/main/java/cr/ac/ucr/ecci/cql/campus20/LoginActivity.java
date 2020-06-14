@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private LoginBD loginBD;
+    private CampusBD campusBD;
 
     private Redireccionador redireccionador;
 
@@ -26,9 +26,9 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         redireccionador = new Redireccionador();
-        loginBD = new FirebaseBD();
+        campusBD = new FirebaseBD();
 
-        if(loginBD.autenticado())
+        if(campusBD.autenticado())
         {
             redireccionador.irActividadGuardada(this);
         }
@@ -67,9 +67,9 @@ public class LoginActivity extends AppCompatActivity
     public void validarCredenciales(String correo, String contrasenna)
     {
 
-        if(loginBD.autenticado() == false)
+        if(campusBD.autenticado() == false)
         {
-            Task tareaValidador = loginBD.iniciarSesion(correo, contrasenna);
+            Task tareaValidador = campusBD.iniciarSesion(correo, contrasenna);
 
             tareaValidador.addOnCompleteListener(this, task ->
             {

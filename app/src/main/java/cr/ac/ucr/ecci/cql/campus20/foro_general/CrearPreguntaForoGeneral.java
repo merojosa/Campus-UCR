@@ -34,7 +34,7 @@ import java.util.Random;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankPreguntaViewModel;
@@ -145,7 +145,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(CrearPreguntaForoGeneral.this);

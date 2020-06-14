@@ -3,7 +3,7 @@ package cr.ac.ucr.ecci.cql.campus20;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
-public interface LoginBD
+public interface CampusBD
 {
     // Se obliga a que sea una tarea asincronica y el que lo invoca tiene que manejarlo.
     public Task iniciarSesion(String correo, String contrasenna);

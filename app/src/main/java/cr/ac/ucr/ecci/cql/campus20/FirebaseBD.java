@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import timber.log.Timber;
 
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
-public class  FirebaseBD implements LoginBD
+public class  FirebaseBD implements CampusBD
 {
     private static boolean isPersistenceEnabled;
     protected FirebaseDatabase mDatabase;
