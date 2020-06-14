@@ -1,32 +1,28 @@
-package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class PhotocopierViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
-    String coffeName;
+    String photocopierName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coffe_view);
+        setContentView(R.layout.activity_photocopier_view);
 
-        Intent intentCoffe = getIntent();
-        coffeName = intentCoffe.getStringExtra(Intent.EXTRA_TEXT);
+        Intent intentPhotocopier = getIntent();
+        photocopierName = intentPhotocopier.getStringExtra(Intent.EXTRA_TEXT);
 
-        TextView tittle = findViewById(R.id.coffeName);
-        tittle.setText(coffeName);
+        TextView tittle = findViewById(R.id.photocopierName);
+        tittle.setText(photocopierName);
 
     }
 

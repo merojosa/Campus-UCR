@@ -1,35 +1,31 @@
-package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class LibraryViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
-    String coffeName;
+    String libraryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coffe_view);
+        setContentView(R.layout.activity_library_view);
 
-        Intent intentCoffe = getIntent();
-        coffeName = intentCoffe.getStringExtra(Intent.EXTRA_TEXT);
+        Intent intentLibrary = getIntent();
+        libraryName = intentLibrary.getStringExtra(Intent.EXTRA_TEXT);
 
-        TextView tittle = findViewById(R.id.coffeName);
-        tittle.setText(coffeName);
-
+        TextView tittle = findViewById(R.id.libraryName);
+        tittle.setText(libraryName);
     }
 
+    //    /**
 //     * EFE: send the user to the location in maps
 //     * REQ:
 //     * view: send by the button that calls this method

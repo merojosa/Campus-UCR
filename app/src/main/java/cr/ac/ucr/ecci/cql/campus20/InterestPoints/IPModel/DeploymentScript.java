@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
+
+import androidx.room.Room;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -10,6 +13,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -20,6 +26,19 @@ import cr.ac.ucr.ecci.cql.campus20.R;
  */
 public class DeploymentScript {
 
+    /**
+     * Enum representing the activity names inserted in the Room database.
+     * */
+    public enum ActivityNames {
+        INTEREST_POINTS,
+        COFFEE_SHOPS,
+        FOOD_COURTS,
+        PHOTOCOPIERS,
+        FACULTIES,
+        LIBRARIES,
+        OFFICES
+    }
+
     private FirebaseDB db;
     /**
      * Executes all the statements that create and populate the database.
@@ -27,20 +46,35 @@ public class DeploymentScript {
      *
      * @param db Firebase database instance where the data will be inserted.
      */
-    public void RunScript(FirebaseDB db) {
+    public void RunScript(FirebaseDB db, Context context) {
         this.db = db;
         createFaculties();
         createPlaces();
         createSchools();
         createComments();
         createCoffeShops();
+        createLibrary();
+        createOffice();
+        createSoda();
+        createPhotocopier();
+        /*Saves the activity names in room database.*/
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run(){
+                createActivityNames(context);
+            }
+        });
     }
-    /*
-    private static void clearDatabase(Context context) {
-        DataAccess db = new DataAccess(context);
-        db.resetDatabase();
-        Log.d("reset", "Database was reset");
-    }*/
+
+    private void createActivityNames(Context context){
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(context, IPRoomDatabase.class, "IPRoomDatabase").build();
+        ActivityInfoDao activityInfoDao = roomDatabase.activityInfoDao();
+        String[] activityNames = {"Puntos de interés", "Cafeterías", "Sodas", "Fotocopiadoras", "Facultades", "Bibliotecas", "Oficinas"};
+        for (int i = 0; i < activityNames.length; ++i) {
+            activityInfoDao.insert(new ActivityInfo(i, activityNames[i]));
+        }
+
+    }
 
     private void createFaculties() {
         List<Faculty> list = new ArrayList<>();
@@ -232,4 +266,46 @@ public class DeploymentScript {
         }
         Log.d("comments", "Comments were inserted in database.");
     }
+
+    private void createLibrary() {
+        Library tinoco = new Library(0,  "Tinoco", "", R.drawable.libros, 9.943473, -84.0469052);
+        db.insert("Library", tinoco);
+
+        Library carlos = new Library(1, "Carlos Monge", "", R.drawable.libros, 9.943473, -84.0469052);
+        db.insert("Library", carlos);
+
+    }
+
+    private void createOffice() {
+        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.943473, -84.0469052);
+        db.insert("Office", oficina1);
+
+        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.943473, -84.0469052);
+        db.insert("Office", oficina2);
+
+    }
+
+    private void createSoda() {
+        Soda odonto = new Soda(0,  "Soda de Odontología", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", odonto);
+
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", generales);
+
+        Soda economicas = new Soda(2,  "Soda de Económicas", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        db.insert("Soda", economicas);
+
+    }
+
+    private void createPhotocopier() {
+        Photocopier exactas = new Photocopier(0,  "CopiasExactas", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", exactas);
+
+        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", millenium);
+
+        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.943473, -84.0469052);
+        db.insert("Photocopier", misCopias);
+    }
+
 }

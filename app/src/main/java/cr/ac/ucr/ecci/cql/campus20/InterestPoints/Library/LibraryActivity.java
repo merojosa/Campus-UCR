@@ -1,23 +1,20 @@
-package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import androidx.appcompat.widget.SearchView;
-import androidx.room.Room;
-
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,68 +24,74 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Library;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class LibraryActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<>();
-    private List<Faculty> facultiesList;
+    private List<Place> temp = new ArrayList<Place>();
+    private List<Library> libraryList;
 
     private ProgressBar spinner;
-
-    private FirebaseDB db;
-
-//    private Faculty faculty;
+    private Library library;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new FirebaseDB();
-        setContentView(R.layout.activity_faculties);
-        if(getSupportActionBar() != null){
+        setContentView(R.layout.activity_library);
+
+        if (getSupportActionBar() != null) {
             setActivityTitle();
         }
 
-        spinner = findViewById(R.id.facultyProgressBar);
+        spinner = findViewById(R.id.libraryProgressBar);
         spinner.setVisibility(View.VISIBLE);
+
         setupRecyclerView();
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
-        facultiesList = new ArrayList<>();
-        temp = new ArrayList<Place>();
-        getFacultiesList();
+        temp = new ArrayList<>();
+        libraryList = new ArrayList<>();
+        getLibrariesList();
     }
 
-    // el clic en una facultad debe llevarme a la lista de escuelas
     @Override
     public void onClick(String title) {
-
         boolean finded = false;
         int index = 0;
-        while (index < facultiesList.size() && !finded){
-            if(facultiesList.get(index).getName().equals(title)){
+        while (index < libraryList.size() && !finded){
+            if(libraryList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
             }
         }
 
-        Intent childActivity = new Intent(FacultiesActivity.this, SchoolsActivity.class);
+        //System.out.println("----------------------------jajajajaja   " + index);
+
+        Intent childActivity = new Intent(LibraryActivity.this, Map.class);
+        childActivity.putExtra("typeActivity", 4);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra(Intent.EXTRA_INDEX, facultiesList.get(index).getId());
+        childActivity.putExtra("attribute", libraryList.get(index).getDescription());
+
+        // Setting school and coordinate objects
+        this.library = libraryList.get(index);
+
+        childActivity.putExtra("place", library);
+        childActivity.putExtra("index", 2);
 
         startActivity(childActivity);
+
     }
 
     /*This method creates the search box in toolbar and filters the rows according to the search criteria.*/
@@ -115,6 +118,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         return super.onCreateOptionsMenu(menu);
     }
 
+
     private void setupRecyclerView() {
         mRecyclerView = findViewById(R.id.rv_list_item);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -122,13 +126,14 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     }
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
-    private void getFacultiesList(){
-        DatabaseReference ref = db.getReference("Faculty");
+    private void getLibrariesList(){
+        FirebaseDB db = new FirebaseDB();
+        DatabaseReference ref = db.getReference("Library");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot faculty : dataSnapshot.getChildren()) {
-                    facultiesList.add(faculty.getValue(Faculty.class));
+                for(DataSnapshot library : dataSnapshot.getChildren()){
+                    libraryList.add(library.getValue(Library.class));
                 }
                 setDataList();
                 mListAdapter.setListData(temp);
@@ -144,7 +149,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     }
 
     public void setDataList(){
-        temp.addAll(facultiesList);
+        temp.addAll(libraryList);
     }
 
     private void setActivityTitle(){
@@ -154,10 +159,9 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.FACULTIES.ordinal()));
+                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.LIBRARIES.ordinal()));
                 getSupportActionBar().show();
             }
         });
     }
-
 }
