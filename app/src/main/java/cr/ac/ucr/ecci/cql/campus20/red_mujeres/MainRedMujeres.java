@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,6 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.mapbox.android.core.location.LocationEngine;
+import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineProvider;
+import com.mapbox.android.core.location.LocationEngineRequest;
+import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -71,9 +78,12 @@ import android.view.View;
 import android.widget.Button;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
@@ -108,15 +118,25 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
 
+    private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+    private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+    private LocationEngine locationEngine;
+
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
-    private FirebaseDatabase mDatabase;
+    private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
+
+    private Double lastLatitudeKnown = 0.0;
+    private Double lastLongitudeKnown = 0.0;
 
     ArrayList<Map<String, Object>> userArr;
     ArrayList<Map<String, Object>> groupArr;
     ArrayList<Map<String, Object>> usersLocations;
+
+    String userID =  null;
     private Queue<Map<String, Object>> locationsQueue;
 
+    private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
 //    private MapboxDirections.Builder directionsBuilder;
@@ -127,6 +147,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     // Despliegue mapa al llamar a la actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setUserID();
+        userArr = new ArrayList<>();
+        groupArr = new ArrayList<>();
+        usersLocations = new ArrayList<>();
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN)); //Tomar el token
         setContentView(R.layout.activity_red_mujeres);
@@ -148,9 +172,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             public void onStyleLoaded(@NonNull Style style) {
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
-
                 addDestinationIconSymbolLayer(style);
-                //getGroupMembersPositions();
+                getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
                 button = findViewById(R.id.startButton);
@@ -300,12 +323,23 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
+            initLocationEngine();
         }
         else
         {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
         }
+    }
+    private void initLocationEngine() {
+        locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+
+        LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
+
+        locationEngine.requestLocationUpdates(request, callback, getMainLooper());
+        locationEngine.getLastLocation(callback);
     }
 
 
@@ -392,6 +426,55 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+    // clase interna para poder escuchar los cambios de posicion en el telefono
+    private class MainActivityLocationCallback
+            implements LocationEngineCallback<LocationEngineResult> {
+
+        private final WeakReference<MainRedMujeres> activityWeakReference;
+
+        MainActivityLocationCallback(MainRedMujeres activity) {
+            this.activityWeakReference = new WeakReference<>(activity);
+        }
+
+        /**
+         * The LocationEngineCallback interface's method which fires when the device's location has changed.
+         *
+         * @param result the LocationEngineResult object which has the last known location within it.
+         */
+        @Override
+        public void onSuccess(LocationEngineResult result) {
+            MainRedMujeres activity = activityWeakReference.get();
+
+            if (activity != null) {
+                Location location = result.getLastLocation();
+
+                if (location == null) {
+                    return;
+                }
+                Double latitude = result.getLastLocation().getLatitude();
+                Double longitude  = result.getLastLocation().getLongitude();
+                //si la obicacion cambio tanto en latitud o longitud, actualizamos en la DB la informacion
+                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLatitudeKnown) != 0) {
+                    System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
+                    UpdateMyLocation(latitude, longitude);
+                }
+// Pass the new location to the Maps SDK's LocationComponent
+                if (activity.mapboxMap != null && result.getLastLocation() != null) {
+                    activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+
+            MainRedMujeres activity = activityWeakReference.get();
+            if (activity != null) {
+                Toast.makeText(activity, exception.getLocalizedMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void getGroupMembersPositions() {
@@ -498,8 +581,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 if(!userArr.contains(list)) {
                     userArr.add(list);
 
-                    if(!locationsQueue.contains(list))
-                        locationsQueue.add(list);
                 }
             }
             @Override
@@ -514,6 +595,22 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public interface FirebaseCallBack {
 
         void onCallBack(ArrayList<Map<String, Object>> list);
+
+    }
+
+    private void setUserID(){
+        //En su momento deberá usarse el id asociado a la comunidad
+        Intent intent = getIntent();
+        this.userID ="1";
+
+    }
+
+    public void UpdateMyLocation(Double laititude, Double longitude){
+        // actualizamo el nodo en firebase
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
+        ref.child(this.userID).child("Latitud").setValue(laititude);
+        ref.child(this.userID).child("Longitud").setValue(longitude);
+
 
     }
 

@@ -63,6 +63,7 @@ public class ComunidadDetalle extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //Llamado a la actividad que despliega el mapa
+                    System.out.println(usuarioID);
                     startActivity(new Intent(ComunidadDetalle.this, MainRedMujeres.class)
                             .putExtra("usuarioID", usuarioID)
                             .putExtra("usuarioName", usuarioNombre));
