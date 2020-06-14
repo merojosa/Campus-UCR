@@ -30,7 +30,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     private ListView listView;
 
-    private School school;
     private Place place;
     private Faculty faculty;
 
@@ -41,13 +40,14 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     String schoolName;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_view);
 
-        Intent intentSchool = getIntent();
-        schoolName = intentSchool.getStringExtra(Intent.EXTRA_TEXT);
+        Intent intentPlace = getIntent();
+        String placeName = intentPlace.getStringExtra(Intent.EXTRA_TEXT);
 
         TextView tittle = findViewById(R.id.schoolName);
 //        School school = School.select(getApplicationContext(), schoolName);
@@ -61,20 +61,8 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         listView = (ListView) findViewById(R.id.listSchoolItems);
         setListComponents();
 
+        tittle.setText(placeName);
     }
-
-//    /**
-//     * EFE: send the user to the location in maps
-//     * REQ:
-//     * view: send by the button that calls this method
-//     * latitude : latitude of the point that the user wants to go.
-//     * longitude: longitude of the point that the user wants to go.
-//     * MOD: ---
-//     * */
-//    public void goTo(View view) {
-//        Intent intent = new Intent(this, Map.class);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onClick(String title) {

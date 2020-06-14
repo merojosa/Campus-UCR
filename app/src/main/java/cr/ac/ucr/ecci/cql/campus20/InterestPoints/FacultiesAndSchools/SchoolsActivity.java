@@ -19,9 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
@@ -35,19 +32,18 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<GeneralData> temp = new ArrayList<>();
+    private List<Place> temp = new ArrayList<>();
     private List<School> schoolsList;
     private ProgressBar spinner;
 
     private FirebaseDB db;
     private School school;
-    private Coordinate coordinateGlobal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        db = new FirebaseDB(getApplicationContext());
+        db = new FirebaseDB();
         spinner = findViewById(R.id.schoolProgressBar);
         spinner.setVisibility(View.VISIBLE);
         Intent intentFaculties = getIntent();
@@ -79,7 +75,7 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         boolean finded = false;
         int index = 0;
         while (index < schoolsList.size() && !finded){
-            if(schoolsList.get(index).getTitle().equals(title)){
+            if(schoolsList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -92,11 +88,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
         // Setting school and coordinate objects
         this.school = schoolsList.get(index);
-        this.coordinateGlobal = new Coordinate();
-        //coordinate.setLatitude(9.911820721309361);
-        //coordinate.setLongitude(-84.08615402814974);
+        childActivity.putExtra("place", this.school);
+        childActivity.putExtra("title", this.school.getName());
         getSpecificCoordenates(school, childActivity);
-
 
     }
 
@@ -135,20 +129,17 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
                 // ------------------ Tomando las cooredenadas del lugar ---------------------------
 
-                DatabaseReference ref2 = db.getReference("Coordinate");
+                DatabaseReference ref2 = db.getReference("School");
                 ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(new ValueEventListener() {
-                    private Coordinate coordinate;
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot tempCoordinate : dataSnapshot.getChildren()){
-                            coordinate = tempCoordinate.getValue(Coordinate.class);
-                        }
                         // Enviando los datos correctos al mapa
-
                         childActivity.putExtra("place", school);
                         childActivity.putExtra("index", 1);
-                        childActivity.putExtra("coordinate", coordinate);
+                        childActivity.putExtra("title", school.getName());
+                        childActivity.putExtra("latitude", school.getLatitude());
+                        childActivity.putExtra("longitude", school.getLongitude());
 
                         startActivity(childActivity);
                     }

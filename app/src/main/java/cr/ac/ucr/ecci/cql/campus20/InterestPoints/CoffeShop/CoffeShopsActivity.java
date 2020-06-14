@@ -22,10 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -35,12 +34,11 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<GeneralData> temp = new ArrayList<>();
+    private List<Place> temp = new ArrayList<Place>();
     private List<Coffe> coffeList;
 
     private ProgressBar spinner;
     private Coffe coffe;
-    private Coordinate coordinate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         boolean finded = false;
         int index = 0;
         while (index < coffeList.size() && !finded){
-            if(coffeList.get(index).getTitle().equals(title)){
+            if(coffeList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -83,15 +81,9 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
 
         // Setting school and coordinate objects
         this.coffe = coffeList.get(index);
-        this.coordinate = new Coordinate();
-        // Estas son coordenadas temporales
-        coordinate.setLatitude(9.911820721309361);
-        coordinate.setLongitude(-84.08615402814974);
-        //getSpecificCoordenates(school.getId());
 
         childActivity.putExtra("place", coffe);
         childActivity.putExtra("index", 2);
-        childActivity.putExtra("coordinate", coordinate);
 
         startActivity(childActivity);
 
@@ -131,7 +123,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getCoffeeList(){
-        FirebaseDB db = new FirebaseDB(getApplicationContext());
+        FirebaseDB db = new FirebaseDB();
         DatabaseReference ref = db.getReference("Coffe");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
