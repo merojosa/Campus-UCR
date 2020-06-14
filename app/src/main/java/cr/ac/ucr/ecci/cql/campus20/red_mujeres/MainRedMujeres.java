@@ -49,6 +49,7 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.geojson.FeatureCollection;
 
 import android.os.Handler;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -229,7 +230,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        panico();
+
+                        //panico();
+                        final String [] items = new String[] {"911", "Contacto Emergencia"};
+                        final Integer[] icons = new Integer[] {R.drawable.ecci, R.drawable.ecci};
+                        ListAdapter adapter = new ArrayAdapterWithIcon(MainRedMujeres.this, items, icons);
+
+                        new AlertDialog.Builder(MainRedMujeres.this).setTitle("LLAMAR A")
+                                .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int item ) {
+                                        Toast.makeText(MainRedMujeres.this, "Item Selected: " + item, Toast.LENGTH_SHORT).show();
+                                    }
+                                }).show();
                     }
                 });
 
@@ -247,8 +259,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void panico() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:911"));
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        String num="//911";
+        callIntent.setData(Uri.parse("tel:"+num));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE}, 1);
@@ -436,6 +449,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             permissionsManager.requestLocationPermissions(this);
         }
     }
+
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
@@ -446,7 +460,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         locationEngine.requestLocationUpdates(request, callback, getMainLooper());
         locationEngine.getLastLocation(callback);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
