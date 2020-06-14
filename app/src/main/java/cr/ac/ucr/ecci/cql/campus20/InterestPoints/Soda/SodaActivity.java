@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Soda;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
@@ -46,8 +51,7 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
         setContentView(R.layout.activity_soda);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Sodas");
-            getSupportActionBar().show();
+            setActivityTitle();
         }
 
         spinner = findViewById(R.id.sodasProgressBar);
@@ -142,5 +146,18 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
 
     public void setDataList(){
         temp.addAll(sodaList);
+    }
+
+    private void setActivityTitle(){
+        ActivityInfoDao activityInfoDao;
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
+        activityInfoDao = roomDatabase.activityInfoDao();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.FOOD_COURTS.ordinal()));
+                getSupportActionBar().show();
+            }
+        });
     }
 }

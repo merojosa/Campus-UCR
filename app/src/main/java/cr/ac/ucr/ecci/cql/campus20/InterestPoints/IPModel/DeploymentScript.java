@@ -69,12 +69,11 @@ public class DeploymentScript {
     private void createActivityNames(Context context){
         IPRoomDatabase roomDatabase = Room.databaseBuilder(context, IPRoomDatabase.class, "IPRoomDatabase").build();
         ActivityInfoDao activityInfoDao = roomDatabase.activityInfoDao();
-        if(activityInfoDao.getAll().size() == 0) {
-            String[] activityNames = {"Puntos de interés", "Cafeterías", "Sodas", "Fotocopiadoras", "Facultades", "Bibliotecas", "Oficinas"};
-            for (int i = 0; i < activityNames.length; ++i) {
-                activityInfoDao.insert(new ActivityInfo(i, activityNames[i]));
-            }
+        String[] activityNames = {"Puntos de interés", "Cafeterías", "Sodas", "Fotocopiadoras", "Facultades", "Bibliotecas", "Oficinas"};
+        for (int i = 0; i < activityNames.length; ++i) {
+            activityInfoDao.insert(new ActivityInfo(i, activityNames[i]));
         }
+
     }
 
     private void createFaculties() {
