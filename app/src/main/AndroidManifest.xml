@@ -78,9 +78,11 @@
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
-        <activity android:name=".red_mujeres.MainRedMujeres" />
-        <activity android:name=".red_mujeres.MenuRedMujeres" />
+
+        <activity android:name=".red_mujeres.MainRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity android:name=".red_mujeres.MenuRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
+
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="locked"
