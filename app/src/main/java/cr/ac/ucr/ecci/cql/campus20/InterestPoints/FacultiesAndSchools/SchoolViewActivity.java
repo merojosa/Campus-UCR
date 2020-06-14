@@ -2,9 +2,11 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +54,11 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private Faculty faculty;
     private CommentsList.CommentListOnClickHandler onClickHandler;
 
+    private Context mContext;
+    private Activity mActivity;
+    private ConstraintLayout mLayout;
+    private PopupWindow mPopupWindow;
+
     String schoolName;
 
 
@@ -59,6 +66,10 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_view);
+
+        mContext = getApplicationContext();
+        mActivity = SchoolViewActivity.this;
+        mLayout = findViewById(R.id.school_view);
 
         Intent intentSchool = getIntent();
         schoolName = intentSchool.getStringExtra(Intent.EXTRA_TEXT);
@@ -71,9 +82,17 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         popButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                CommentPopUp commentPopUp = new CommentPopUp(); //Mandar cosas
-                commentPopUp.showCommentsPopup(view);
+                List<Comment> comments = new ArrayList<>();
+                /*Comentarios de prueba*/
+                /*comments.add(new Comment(0, 0, "Hola mundo", "", 4.3f, "", 1, 0));
+                comments.add(new Comment(1, 0, "Adios mundo", "", 4.1f, "", 1, 1));
+                comments.add(new Comment(2, 0, "Adios mundo", "", 4.1f, "", 1, 1));
+                comments.add(new Comment(3, 0, "Adios mundo", "", 4.1f, "", 1, 1));
+                comments.add(new Comment(4, 0, "Adios mundo", "", 4.1f, "", 1, 1));
+                comments.add(new Comment(5, 0, "Adios mundo", "", 4.1f, "", 1, 1));
+                comments.add(new Comment(6, 0, "Adios mundo", "", 4.1f, "", 1, 1));*/
+                /*Comentarios de Firebase*/
+                showComments(view);
             }
         });
         /*POPUP*/
@@ -88,6 +107,27 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
+    private void showComments(View view){
+        FirebaseDB db = new FirebaseDB();
+        DatabaseReference ref = db.getReference("Comment");
+        List<Comment> commentList = new ArrayList<>();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot comment : dataSnapshot.getChildren()) {
+                    commentList.add(comment.getValue(Comment.class));
+                }
+                CommentPopUp commentPopUp = new CommentPopUp(view, commentList); //Mandar cosas
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

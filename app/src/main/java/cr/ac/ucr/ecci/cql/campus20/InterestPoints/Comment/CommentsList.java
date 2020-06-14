@@ -14,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.ComunidadAdapter;
 
 public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolderComments> {
 
-    private List<GeneralData> temp;
-    private List<GeneralData> originalData;
+    private List<Comment> temp;
+    private List<Comment> originalData;
     Context context;
 
 
@@ -50,8 +51,8 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
         @Override
         public void onClick(View v) {
             int posicionAdaptador = getAdapterPosition();
-            GeneralData datoGeneral = temp.get(posicionAdaptador);
-            mClickHandler.onClick(datoGeneral.getDescription());
+            Comment comment = temp.get(posicionAdaptador);
+            mClickHandler.onClick(comment.getDescription());
         }
 
     }
@@ -68,23 +69,20 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderComments holder, int position) {
-        GeneralData datoGeneral = temp.get(position);
-
-        // Para que Strings largos no queden cortados en lista
-        if(datoGeneral.getDescription().length() > 22){
-            holder.mComment.setText(datoGeneral.getDescription().substring(0, 19) + "...");
-        }else{
-            holder.mComment.setText(datoGeneral.getDescription());
-        }
+        Comment comment = temp.get(position);
+        holder.mComment.setText(comment.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(temp != null)
+            return temp.size();
+        else
+            return 0;
     }
 
-    public void setListData(List<GeneralData> data){
-        temp = data;
+    public void setListData(List<Comment> comments){
+        temp = comments;
         originalData = temp;
         notifyDataSetChanged();
     }

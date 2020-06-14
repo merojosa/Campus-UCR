@@ -37,62 +37,16 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
     private RecyclerView mRecyclerView;
     private CommentsList mCommensList;
-    private List<GeneralData> tmp = new ArrayList<>();
+    private List<Comment> tmp;
     private List<Comment> Comentarios;
+    private CommentsList mListAdapter;
     private FirebaseDB db;
-
-    public CommentPopUp(){}
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        db = new FirebaseDB();
-
-        setupRecyclerView();
-        mCommensList = new CommentsList(this);
-        mRecyclerView.setAdapter(mCommensList);
-        Comentarios = new ArrayList<>();
-        tmp = new ArrayList<>();
-        getCommentsList();
-    }
-
-
-    @Override
-    public void onClick(String title) {
-        /*
-        Intent childActivity = new Intent(CommentPopUp.this, CommentsActivity.class);
-        childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra(Intent.EXTRA_INDEX, Comentarios.get(index).getId());
-
-        startActivity(childActivity);
-*/
-    }
+    private View view;
 
     private void setupRecyclerView(){
-        mRecyclerView = findViewById(R.id.comments_list);
+        mRecyclerView = view.findViewById(R.id.comments_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-    }
-
-    //Mandarle de quién
-    private void getCommentsList(){
-        DatabaseReference ref = db.getReference("Comment");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot comment : dataSnapshot.getChildren()){
-                    Comentarios.add(comment.getValue(Comment.class));
-                }
-                setDataList();
-                mCommensList.setListData(tmp);
-                mCommensList.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     //Quizá hacer consulta aquí
@@ -104,7 +58,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Crea lo necesario para levantar el popup
      * @param view
      */
-    public void showCommentsPopup(final View view) {
+    public CommentPopUp(final View view, List<Comment> comments) {
         db = new FirebaseDB();
 
         LayoutInflater inflater = (LayoutInflater)
@@ -114,17 +68,18 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         int width = LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; //Para la parte de atrás
+        this.view = popupView;
+        Comentarios = comments;
+        tmp = new ArrayList<Comment>();
 
         /*Lista*/
         setupRecyclerView();
-        mCommensList = new CommentsList(this);
-        mRecyclerView.setAdapter(mCommensList);
-        Comentarios = new ArrayList<>();
-        tmp = new ArrayList<>();
-        getCommentsList();
 
-        /*Ratingbar*/
-
+        mListAdapter = new CommentsList(this);
+        mRecyclerView.setAdapter(mListAdapter);
+        setDataList();
+        mListAdapter.setListData(tmp);
+        mListAdapter.notifyDataSetChanged();
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -142,4 +97,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     /*POPUP*/
     }
 
+    /*Solo para probar, hay que poner algo más útil.*/
+    @Override
+    public void onClick(String title) {
+        Toast.makeText(view.getContext(), title, Toast.LENGTH_LONG);
+    }
 }
