@@ -22,6 +22,7 @@
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeShopsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
+        <activity android:name=".foro_general.ForoGeneralVerPreguntas"></activity>
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,24 +36,19 @@
             android:name=".foro_general.CrearPreguntaForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
-            android:name=".foro_general.ForoGeneralVerTemas"
-            android:theme="@style/AppTheme.ForoGeneral" />
-        <activity
-            android:name=".foro_general.MainForoGeneral"
-            android:theme="@style/AppTheme.ForoGeneral" />
-        <activity
-            android:name=".foro_general.ForoGeneralVerPreguntas"
-            android:theme="@style/AppTheme.ForoGeneral" />
-        <activity
             android:name=".foro_general.CrearRespuestaForoGeneral"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
+            android:name=".foro_general.ForoGeneralVerTemas"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
             android:name=".foro_general.ForoGeneralVerRespuestas"
             android:theme="@style/AppTheme.ForoGeneral" />
-        <activity android:name=".ucr_eats.MainUcrEats" />
         <activity
-            android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
-            android:theme="@style/AppTheme.InterestsTheme" />
+            android:name=".foro_general.MainForoGeneral"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity android:name=".ucr_eats.MainUcrEats" />
+        <activity android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity" />
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
@@ -68,7 +64,7 @@
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
     </application>
 
 </manifest>
