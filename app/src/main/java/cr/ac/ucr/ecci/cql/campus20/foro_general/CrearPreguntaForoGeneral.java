@@ -30,6 +30,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,12 +225,14 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
             @Override
             public void onChanged(List<Pregunta> preguntas) {
                 int idGenerado = 0;
+                List<Pregunta> preguntaRoom = new ArrayList<Pregunta>();
                 for(Pregunta pregunta : preguntas){
                     idGenerado = pregunta.id;
+                    preguntaRoom.add(pregunta);
                 }
 
                 // Inserta en Firebase tambien
-                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(pregunta);
+                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(preguntaRoom.get(0));
 
                 Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerPreguntas.class);
                 // Llamada a la actividad de ver respuestas
