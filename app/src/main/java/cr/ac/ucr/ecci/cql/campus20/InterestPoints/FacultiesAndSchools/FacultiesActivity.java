@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
+import androidx.room.Room;
 
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,9 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -51,8 +57,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         db = new FirebaseDB();
         setContentView(R.layout.activity_faculties);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Facultades");
-            getSupportActionBar().show();
+            setActivityTitle();
         }
 
         spinner = findViewById(R.id.facultyProgressBar);
@@ -140,6 +145,19 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
 
     public void setDataList(){
         temp.addAll(facultiesList);
+    }
+
+    private void setActivityTitle(){
+        ActivityInfoDao activityInfoDao;
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
+        activityInfoDao = roomDatabase.activityInfoDao();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.FACULTIES.ordinal()));
+                getSupportActionBar().show();
+            }
+        });
     }
 
 }

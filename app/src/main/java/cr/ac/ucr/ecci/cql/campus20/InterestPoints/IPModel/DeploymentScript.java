@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
+
+import androidx.room.Room;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -10,6 +13,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -20,6 +26,19 @@ import cr.ac.ucr.ecci.cql.campus20.R;
  */
 public class DeploymentScript {
 
+    /**
+     * Enum representing the activity names inserted in the Room database.
+     * */
+    public enum ActivityNames {
+        INTEREST_POINTS,
+        COFFEE_SHOPS,
+        FOOD_COURTS,
+        PHOTOCOPIERS,
+        FACULTIES,
+        LIBRARIES,
+        OFFICES
+    }
+
     private FirebaseDB db;
     /**
      * Executes all the statements that create and populate the database.
@@ -27,20 +46,32 @@ public class DeploymentScript {
      *
      * @param db Firebase database instance where the data will be inserted.
      */
-    public void RunScript(FirebaseDB db) {
+    public void RunScript(FirebaseDB db, Context context) {
         this.db = db;
         createFaculties();
         createPlaces();
         createSchools();
         createComments();
         createCoffeShops();
+        /*Saves the activity names in room database.*/
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run(){
+                createActivityNames(context);
+            }
+        });
     }
-    /*
-    private static void clearDatabase(Context context) {
-        DataAccess db = new DataAccess(context);
-        db.resetDatabase();
-        Log.d("reset", "Database was reset");
-    }*/
+
+    private void createActivityNames(Context context){
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(context, IPRoomDatabase.class, "IPRoomDatabase").build();
+        ActivityInfoDao activityInfoDao = roomDatabase.activityInfoDao();
+        if(activityInfoDao.getAll().size() == 0) {
+            String[] activityNames = {"Puntos de interés", "Cafeterías", "Sodas", "Fotocopiadoras", "Facultades", "Bibliotecas", "Oficinas"};
+            for (int i = 0; i < activityNames.length; ++i) {
+                activityInfoDao.insert(new ActivityInfo(i, activityNames[i]));
+            }
+        }
+    }
 
     private void createFaculties() {
         List<Faculty> list = new ArrayList<>();
