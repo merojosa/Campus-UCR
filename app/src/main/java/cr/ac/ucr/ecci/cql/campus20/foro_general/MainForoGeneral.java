@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
@@ -33,6 +34,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.TemasFavoritosAdapter;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
@@ -50,7 +55,6 @@ public class MainForoGeneral extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
-
 
     private List<Integer> idList;
 
@@ -156,11 +160,9 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-        // Este código debería ser una llamado y no el código en sí
-
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
@@ -176,12 +178,20 @@ public class MainForoGeneral extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home_foro:
-                        Intent intentForo = new Intent(MainForoGeneral.this, MainForoGeneral.class);
-                        startActivity(intentForo);
+                        startActivity(new Intent(MainForoGeneral.this, MainForoGeneral.class));
                         break;
                     case R.id.temas_foro:
-                        Intent intent2Foro = new Intent(MainForoGeneral.this, ForoGeneralVerTemas.class);
-                        startActivity(intent2Foro);
+                        startActivity(new Intent(MainForoGeneral.this, ForoGeneralVerTemas.class));
+                        break;
+                    case R.id.pref_foro:
+                        startActivity(new Intent(MainForoGeneral.this, ConfiguracionActivity.class));
+                        break;
+                    case R.id.logout_foro:
+                        CampusBD login = new FirebaseBD();
+                        login.cerrarSesion();
+
+                        ActivityCompat.finishAffinity(MainForoGeneral.this);
+                        startActivity(new Intent(MainForoGeneral.this, LoginActivity.class));
                         break;
                     default:
                         return true;

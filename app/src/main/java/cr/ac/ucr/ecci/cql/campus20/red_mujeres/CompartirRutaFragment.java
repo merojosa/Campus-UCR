@@ -6,11 +6,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -31,6 +26,7 @@ public class CompartirRutaFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
+        //MainRedMujeres mujeres = new MainRedMujeres();
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
@@ -42,7 +38,8 @@ public class CompartirRutaFragment extends DialogFragment {
                 })
                 .setNegativeButton(R.string.negativo_compartir_ruta, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Correr la otra magia
+                        //TODO Averiguar bien por qué no funciona el llamado a la navegación
+                        //mujeres.iniciarRuta();
                     }
                 });
         // Create the AlertDialog object and return it

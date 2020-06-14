@@ -1,19 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterViewAnimator;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,12 +14,20 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.FavoritoViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
@@ -68,10 +69,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         escuchar();
 
 
-
         //Codigo que maneja la navegacion de izquierda a derecha
         dl = (DrawerLayout)findViewById(R.id.activity_main_foro_general_ver_temas);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
@@ -87,12 +87,20 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home_foro:
-                        Intent intentForo = new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class);
-                        startActivity(intentForo);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, MainForoGeneral.class));
                         break;
                     case R.id.temas_foro:
-                        Intent intent2Foro = new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class);
-                        startActivity(intent2Foro);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class));
+                        break;
+                    case R.id.pref_foro:
+                        startActivity(new Intent(ForoGeneralVerTemas.this, ConfiguracionActivity.class));
+                        break;
+                    case R.id.logout_foro:
+                        CampusBD login = new FirebaseBD();
+                        login.cerrarSesion();
+
+                        ActivityCompat.finishAffinity(ForoGeneralVerTemas.this);
+                        startActivity(new Intent(ForoGeneralVerTemas.this, LoginActivity.class));
                         break;
                     default:
                         return true;
@@ -110,6 +118,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Metodo para obtener la lista de temas y de favoritos desde los viewmodel
+     */
     private void llenar(){
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
@@ -139,6 +150,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * Metodo para escuchar los clicks sobre los items de la lista temas y los favoritos
+     */
     private void escuchar(){
         // Recepción de los clicks del adapter
         adapter.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener() {
@@ -220,7 +234,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * inicia un cruadro de texto y espera los cambios, en caso de haber cambios, llama al metodo filtrar
+     */
     private void busquedaFiltrada() {
         this.search = findViewById(R.id.search);
         this.search.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_black_24dp, 0, 0, 0);
@@ -240,7 +256,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Metodo que obtine el texto recibido del cuadro de texto, la lista de temas del viewmodel y
+     * lo envia al adapter para realizar el filtrado tanto de temas como de favoritos
+     * @param texto string recibido del cuadro de texto
+     */
     private void filtrar(String texto) {
         // Obtiene el cambio en la lista de temas, directo desde el ViewModel
         mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {

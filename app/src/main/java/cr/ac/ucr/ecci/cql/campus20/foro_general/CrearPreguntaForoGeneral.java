@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -28,11 +29,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankPreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.TemaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
 public class CrearPreguntaForoGeneral extends AppCompatActivity {
@@ -46,6 +54,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     private int idTemaSeleccionado;
     private String temaSeleccionado;
     private PreguntaViewModel mPreguntaViewModel;
+    private RankPreguntaViewModel mRankPreguntaViewModel;
 
     /**
      * Método que se invoca al entrar a la actividad de Crear una pregunta
@@ -55,6 +64,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Instancias necesarias
         mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
+        mRankPreguntaViewModel = new ViewModelProvider(this).get(RankPreguntaViewModel.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_pregunta_foro_general);
         this.temasLista = new ArrayList<Tema>();
@@ -126,12 +136,20 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home_foro:
-                        Intent intentForo = new Intent(CrearPreguntaForoGeneral.this, MainForoGeneral.class);
-                        startActivity(intentForo);
+                        startActivity(new Intent(CrearPreguntaForoGeneral.this, MainForoGeneral.class));
                         break;
                     case R.id.temas_foro:
-                        Intent intent2Foro = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerTemas.class);
-                        startActivity(intent2Foro);
+                        startActivity(new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerTemas.class));
+                        break;
+                    case R.id.pref_foro:
+                        startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
+                        break;
+                    case R.id.logout_foro:
+                        CampusBD login = new FirebaseBD();
+                        login.cerrarSesion();
+
+                        ActivityCompat.finishAffinity(CrearPreguntaForoGeneral.this);
+                        startActivity(new Intent(CrearPreguntaForoGeneral.this, LoginActivity.class));
                         break;
                     default:
                         return true;
@@ -169,8 +187,9 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);
+
         Intent intent = new Intent(this, ForoGeneralVerPreguntas.class);
-        // Llamada a la actividad de crear pregunta
+        // Llamada a la actividad de ver respuestas
         intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
         intent.putExtra("temaSeleccionado", temaSeleccionado);
         startActivity(intent);
