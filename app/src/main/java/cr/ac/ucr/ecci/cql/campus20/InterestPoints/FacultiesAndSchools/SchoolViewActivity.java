@@ -95,11 +95,13 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
         List<String> itemsList = new ArrayList<String>(Arrays.asList(values));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, itemsList);
+        SchoolPlacesAdapter adapter = new SchoolPlacesAdapter(itemsList, this, listHelper);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, itemsList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listView.requestFocus();
                 String  itemValue = (String) listView.getItemAtPosition(position);
                 if(!listHelper){
 
@@ -118,6 +120,8 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                     addOptionsOnList(itemsList, position, auxArray);
                     //
                     listHelper = true;
+                    adapter.verifyImage(listHelper);
+
 
                 }else{
                     //cuando ya se muestran opciones en la lista se debe limpiar
@@ -144,10 +148,10 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                         //
                     }else{
                         listHelper = false;
+                        adapter.verifyImage(listHelper);
                     }
                 }
                 adapter.notifyDataSetChanged();
-
             }
         });
     }

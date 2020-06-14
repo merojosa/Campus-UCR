@@ -41,7 +41,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             super(view);
 
             mTitle = (TextView) view.findViewById(R.id.tv_item_title);
-            mImage = (ImageView) view.findViewById(R.id.imageFactSchool);
+            mImage = (ImageView) view.findViewById(R.id.imageListIP);
             // mDescription = (TextView) view.findViewById(R.id.tv_item_description);
 
             view.setOnClickListener(this);
