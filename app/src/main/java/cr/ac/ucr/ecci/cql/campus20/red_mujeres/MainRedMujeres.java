@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -67,7 +69,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 // Imports necesarios para la interfaz de usuario de navegacion
 // Imports especificos de Directions API
 
-public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
+public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener, NavigationListener {
 
     static final int REQUEST_SELECT_CONTACT = 1;
     // Variables para agregar el mapa y la capa de localizacion
@@ -161,6 +163,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
+                //Botón de visibilidad de la localización del usuario
+                FloatingActionButton sos = findViewById(R.id.sos);
+                sos.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        panico();
+                    }
+                });
+
             }
         });
     }
@@ -173,6 +184,17 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 .build();
 
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
+    }
+
+    public void panico() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:911"));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        } else {
+            startActivity(callIntent);
+        }
     }
 
     public void popupCompartir() {
@@ -359,6 +381,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                panico();
+            }
+        }
     }
 
     @Override
