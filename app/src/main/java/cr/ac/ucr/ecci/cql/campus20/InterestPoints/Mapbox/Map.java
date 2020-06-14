@@ -336,7 +336,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, SchoolViewActivity.class);
                 } else if (place.getType() == "oficina") {
                     details = new Intent(Map.this, SchoolViewActivity.class);
-                } else {
+                } else { // Fotocopiadoras
                     details = new Intent(Map.this, SchoolViewActivity.class);
                 }
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
