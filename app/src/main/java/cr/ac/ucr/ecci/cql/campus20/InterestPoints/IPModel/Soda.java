@@ -6,12 +6,12 @@ public class Soda extends Place{
 
     public Soda() {
         super();
-        super.setType("coffe");
+        super.setType("soda");
     }
 
     public Soda(Parcel in) {
         super(in);
-        super.setType("coffe");
+        super.setType("soda");
     }
 
     public Soda(int id, String name, String description, int image, double latitude, double longitude) {
