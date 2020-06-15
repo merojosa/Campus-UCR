@@ -2,7 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,7 +73,8 @@ public class MealsActivity extends AppCompatActivity
         {
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
-            currentRestaurant = card.getNombre();
+            this.currentRestaurant = card.getNombre();
+            this.startMealsSync(card.getFirebaseId());
 
             sodaRatingNum = findViewById(R.id.rating_num);
 
@@ -125,15 +125,7 @@ public class MealsActivity extends AppCompatActivity
 
         }
 
-        // Hardcoded restaurant id until the restaurant story gets done
-        this.getFirebaseMeals("1");
-
         this.setupRecyclerView();
-
-        // Add an observer to the available meals (commented, data is updated from firebase now)
-        //ViewModelProvider provider = new ViewModelProvider(this);
-        //this.viewModel = provider.get(MealViewModel.class);
-        //this.viewModel.getMealsByRestId(card.getId()).observe(this, meals -> adapter.setMeals(meals));
     }
 
     public void setupRecyclerView()
@@ -172,7 +164,7 @@ public class MealsActivity extends AppCompatActivity
                 .into((ImageView) findViewById(R.id.meals_rest_img));
     }
 
-    private void getFirebaseMeals(String id)
+    private void startMealsSync(String id)
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
@@ -242,7 +234,7 @@ public class MealsActivity extends AppCompatActivity
 
         return codedMail;
     }
-    
+
     private void updateFirebaseUserRate(String restaurantId, Double value)
     {
         CampusBD logged = new FirebaseBD();

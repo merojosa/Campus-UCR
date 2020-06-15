@@ -92,13 +92,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3" />
 
-                <TextView
-                    android:id="@+id/capacidad_soda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:text="@string/capacity_left_placeholder" />
-
                 <ImageView
                     android:id="@+id/ubicacion_soda"
                     android:layout_width="0dp"
@@ -107,6 +100,27 @@
                     android:layout_margin="5dp"
                     android:src="@drawable/ic_soda_place" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="1dp">
+
+                <TextView
+                    android:id="@+id/capacidad_soda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/capacity_left_placeholder" />
+
+                <TextView
+                    android:id="@+id/servings_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/servings_placeholder"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
 
         </LinearLayout>

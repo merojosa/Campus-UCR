@@ -68,8 +68,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 horario = "Abierto";
             }
 
+            int photoid = soda.getId() == 1 ? R.drawable.la_u : R.drawable.plaza_chou;
             cards.add(
-                    new SodaCard(R.drawable.la_u, soda.name, soda.photo, horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max)
+                    new SodaCard(photoid, soda.getFirebaseId(), soda.name, soda.photo,
+                            horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max,
+                            soda.getTotalServings(), soda.getAvailableServings())
             );
         }
 
@@ -105,6 +108,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 String.format(resources.getString(R.string.capacity_left_placeholder),
                         sodaCards.get(i).getAvailableCapacity(), sodaCards.get(i).getMaxCapacity()));
 
+        sodaViewHolder.servingsText.setText(
+                String.format(resources.getString(R.string.servings_placeholder),
+                        sodaCards.get(i).getAvailableServings(), sodaCards.get(i).getTotalServings())
+        );
+
         set_schedule(sodaViewHolder, i);
 
         loadCardImage(sodaViewHolder, i);
@@ -136,6 +144,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
         TextView capacitySoda;
 
+        TextView servingsText;
+
         public SodaViewHolder(View itemView)
         {
             super(itemView);
@@ -148,6 +158,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             ubicacionSoda = itemView.findViewById(R.id.ubicacion_soda);
             ratingSoda= itemView.findViewById(R.id.rating_soda);
             capacitySoda= itemView.findViewById(R.id.capacidad_soda);
+            servingsText = itemView.findViewById(R.id.servings_text);
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {

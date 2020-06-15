@@ -26,9 +26,9 @@ public class Rating {
     @ColumnInfo(name = "point")
     private int point;
 
-
-    public Rating(int restaurant_id,  int point)
+    public Rating(int id, int restaurant_id,  int point)
     {
+        this.setId(id);
         this.setRestaurant_id(restaurant_id);
         this.setPoint(point);
     }
