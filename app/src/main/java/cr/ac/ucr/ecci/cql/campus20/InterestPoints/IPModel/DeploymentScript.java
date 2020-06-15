@@ -51,7 +51,6 @@ public class DeploymentScript {
         createFaculties();
         createPlaces();
         createSchools();
-        createComments();
         createCoffeShops();
         createLibrary();
         createOffice();
@@ -96,26 +95,26 @@ public class DeploymentScript {
     }
 
     private void createCoffeShops() {
-        Coffe angar = new Coffe(0,  "Café Angar", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", angar);
+        Coffee angar = new Coffee(0,  "Café Angar", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", angar);
 
-        Coffe noventaYCinco = new Coffe(1, "95 grados", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", noventaYCinco);
+        Coffee noventaYCinco = new Coffee(1, "95 grados", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", noventaYCinco);
 
-        Coffe krakovia = new Coffe(2,  "Café Krakovia", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", krakovia);
+        Coffee krakovia = new Coffee(2,  "Café Krakovia", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", krakovia);
 
-        Coffe aroma = new Coffe(3, "Aroma y Sabor", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", aroma);
+        Coffee aroma = new Coffee(3, "Aroma y Sabor", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", aroma);
 
-        Coffe musmanni = new Coffe(4,  "Musmanni San Pedro", "", R.drawable.pan512px,9.9342365, -84.050532);
-        db.insert("Coffe", musmanni);
+        Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "", R.drawable.pan512px,9.9342365, -84.050532);
+        db.insert("Coffee", musmanni);
 
-        Coffe rincon = new Coffe(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", rincon);
+        Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", rincon);
 
-        Coffe cafe_cacao = new Coffe(6, "Café & Cacao", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffe", cafe_cacao);
+        Coffee cafe_cacao = new Coffee(6, "Café & Cacao", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
+        db.insert("Coffee", cafe_cacao);
 
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
@@ -139,6 +138,13 @@ public class DeploymentScript {
     private void createSchools() {
 
         int[] FacultiesFK = {8, 8};
+
+        ArrayList<Comment> commentList = new ArrayList<>();
+        /*ID's de la ECCI respectivamente.*/
+        String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
+        for (int i = 0; i < comments.length; ++i) {
+            commentList.add(new Comment(i, 36, Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 5, 10));
+        }
 
         School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px,9.9342365, -84.050532);
         db.insert("School", artes);
@@ -220,7 +226,7 @@ public class DeploymentScript {
         db.insert("School", ingenieria4);
         School ingenieria5 = new School(35, 8, 0, "Arquitectura", "", R.drawable.arqui512px, 9.934584, -84.0547457);
         db.insert("School", ingenieria5);
-        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px, 9.9379246, -84.0541789);
+        School ingenieria6 = new School(36, 8, 0, "Computación e Informática", "", R.drawable.compu512px, 9.9379246, -84.0541789, commentList);
         db.insert("School", ingenieria6);
         School ingenieria7 = new School(37, 8, 1, "Ingeniería de Biosistemas", "", R.drawable.biosistemas512px, 9.9379246, -84.0541789);
         db.insert("School", ingenieria7);
@@ -252,19 +258,6 @@ public class DeploymentScript {
         db.insert("School", odonto);
 
         Log.d("places", "Schools were inserted in database.");
-    }
-
-    private void createComments() {
-        List<Comment> commentList = new ArrayList<>();
-        int[] placesFK = {0, 1};
-        String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
-        for (int i = 0; i < placesFK.length; ++i) {
-            commentList.add(new Comment(i, placesFK[i], comments[i], UtilDates.DateToString(Calendar.getInstance().getTime())));
-        }
-        for (Comment c : commentList) {
-            db.insert("Comment", c);
-        }
-        Log.d("comments", "Comments were inserted in database.");
     }
 
     private void createLibrary() {

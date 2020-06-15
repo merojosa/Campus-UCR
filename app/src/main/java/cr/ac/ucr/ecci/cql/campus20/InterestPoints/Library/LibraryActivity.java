@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
@@ -39,11 +40,13 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<Place>();
+    private List<Place> temp = new ArrayList<>();
     private List<Library> libraryList;
 
     private ProgressBar spinner;
-    private Library library;
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,12 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
+    }
+
+    @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
@@ -77,15 +86,13 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
             }
         }
 
-        //System.out.println("----------------------------jajajajaja   " + index);
-
         Intent childActivity = new Intent(LibraryActivity.this, Map.class);
         childActivity.putExtra("typeActivity", 4);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
         childActivity.putExtra("attribute", libraryList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.library = libraryList.get(index);
+        Library library = libraryList.get(index);
 
         childActivity.putExtra("place", library);
         childActivity.putExtra("index", 2);
@@ -128,8 +135,8 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getLibrariesList(){
         FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Library");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref = db.getReference(Place.TYPE_LIBRARY);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot library : dataSnapshot.getChildren()){
@@ -139,13 +146,15 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
@@ -156,12 +165,14 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
         ActivityInfoDao activityInfoDao;
         IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
         activityInfoDao = roomDatabase.activityInfoDao();
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.LIBRARIES.ordinal()));
-                getSupportActionBar().show();
-            }
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.LIBRARIES.ordinal()));
+            getSupportActionBar().show();
         });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 }

@@ -1,36 +1,69 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.widget.LinearLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentsList;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class SchoolViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class SchoolViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler{
 
     private ListView listView;
 
     private Place place;
+    private Faculty faculty;
+    private CommentsList.CommentListOnClickHandler onClickHandler;
+
+    private Context mContext;
+    private Activity mActivity;
+    private ConstraintLayout mLayout;
+    private PopupWindow mPopupWindow;
 
     private boolean listHelper; //Para saber si ya hay items de opciones en la lista
     private String auxLastItemSelected; //Para guardar el ultimo elemento seleccionado y ayudar a ocultar elementos
@@ -42,6 +75,11 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_view);
+
+        this.place = getIntent().getParcelableExtra("place");
+        mContext = getApplicationContext();
+        mActivity = SchoolViewActivity.this;
+        mLayout = findViewById(R.id.school_view);
 
         Intent intentPlace = getIntent();
         String placeName = intentPlace.getStringExtra(Intent.EXTRA_TEXT);
@@ -55,6 +93,16 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         setListComponents();
 
         tittle.setText(placeName);
+        /*POPUP*/
+        Button popButton = findViewById(R.id.comments);
+        popButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentPopUp commentPopUp = new CommentPopUp(view, place);
+            }
+        });
+        /*POPUP*/
+
     }
 
     @Override

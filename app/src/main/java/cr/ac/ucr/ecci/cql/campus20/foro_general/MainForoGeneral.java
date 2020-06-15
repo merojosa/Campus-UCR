@@ -37,7 +37,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.LoginBD;
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.TemasFavoritosAdapter;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.TemaDao;
@@ -187,7 +187,7 @@ public class MainForoGeneral extends AppCompatActivity {
                         startActivity(new Intent(MainForoGeneral.this, ConfiguracionActivity.class));
                         break;
                     case R.id.logout_foro:
-                        LoginBD login = new FirebaseBD();
+                        CampusBD login = new FirebaseBD();
                         login.cerrarSesion();
 
                         ActivityCompat.finishAffinity(MainForoGeneral.this);

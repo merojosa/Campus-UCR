@@ -1,15 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 

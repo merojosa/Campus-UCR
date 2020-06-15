@@ -1,11 +1,13 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -29,21 +31,20 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class SchoolsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
-    private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
     private List<School> schoolsList;
     private ProgressBar spinner;
 
-    private FirebaseDB db;
-    private School school;
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        db = new FirebaseDB();
         spinner = findViewById(R.id.schoolProgressBar);
         spinner.setVisibility(View.VISIBLE);
         Intent intentFaculties = getIntent();
@@ -52,21 +53,26 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(facultyName); //Se saca el nombre de la faultad donde estoy
-
             getSupportActionBar().show();
         }
 
-        mRecyclerView = findViewById(R.id.rv_list_item);
+        RecyclerView mRecyclerView = findViewById(R.id.rv_list_item);
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-            mRecyclerView.setLayoutManager(linearLayoutManager);
-            mRecyclerView.setHasFixedSize(true);
-            mListAdapter = new ListAdapter(this);
-            mRecyclerView.setAdapter(mListAdapter);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mListAdapter = new ListAdapter(this);
+        mRecyclerView.setAdapter(mListAdapter);
 
         temp = new ArrayList<>();
         schoolsList = new ArrayList<>();
         getSchoolsList(facultyId);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
     }
 
     @Override
@@ -87,17 +93,18 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         childActivity.putExtra("attribute", schoolsList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.school = schoolsList.get(index);
-        childActivity.putExtra("place", this.school);
-        childActivity.putExtra("title", this.school.getName());
-        getSpecificCoordenates(school, childActivity);
+        School school = schoolsList.get(index);
+        childActivity.putExtra("place", school);
+        childActivity.putExtra("title", school.getName());
+        goToMap(school, childActivity);
 
     }
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getSchoolsList(int facultyId){
-        DatabaseReference ref = db.getReference("School");
-        ref.orderByChild("id_faculty_fk").equalTo(facultyId).addValueEventListener(new ValueEventListener() {
+        FirebaseDB db = new FirebaseDB();
+        ref = db.getReference(Place.TYPE_SCHOOL);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot school : dataSnapshot.getChildren()){
@@ -107,61 +114,33 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.orderByChild("id_faculty_fk").equalTo(facultyId).addValueEventListener(listener);
     }
 
-    private void getSpecificCoordenates(School school, Intent childActivity){
-        DatabaseReference ref = db.getReference("Place");
-        ref.orderByChild("id").equalTo(school.getId_place_fk()).addValueEventListener(new ValueEventListener() {
-            private Place place;
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot tempPlace : dataSnapshot.getChildren()){
-                    place = tempPlace.getValue(Place.class);
-                }
-
-                // ------------------ Tomando las cooredenadas del lugar ---------------------------
-
-                DatabaseReference ref2 = db.getReference("School");
-                ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        // Enviando los datos correctos al mapa
-                        childActivity.putExtra("place", school);
-                        childActivity.putExtra("index", 1);
-                        childActivity.putExtra("title", school.getName());
-                        childActivity.putExtra("latitude", school.getLatitude());
-                        childActivity.putExtra("longitude", school.getLongitude());
-
-                        startActivity(childActivity);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                // ---------------------------------------------------------------------------------
-
-            }
-
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-            }
-        });
+    private void goToMap(School school, Intent childActivity){
+        // Enviando los datos correctos al mapa
+        childActivity.putExtra("place", school);
+        childActivity.putExtra("index", 1);
+        childActivity.putExtra("title", school.getName());
+        childActivity.putExtra("latitude", school.getLatitude());
+        childActivity.putExtra("longitude", school.getLongitude());
+        startActivity(childActivity);
     }
 
-   public void setDataList(){ temp.addAll(schoolsList); }
+    public void setDataList(){
+        temp.addAll(schoolsList);
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
+    }
 }

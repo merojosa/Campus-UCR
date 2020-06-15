@@ -1,12 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +9,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Photocopier;
@@ -40,11 +40,13 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<Place>();
+    private List<Place> temp = new ArrayList<>();
     private List<Photocopier> photocopierList;
 
     private ProgressBar spinner;
-    private Photocopier photocopier;
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,12 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
+    }
+
+    @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
@@ -84,7 +92,7 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
 
 
         // Setting school and coordinate objects
-        this.photocopier = photocopierList.get(index);
+        Photocopier photocopier = photocopierList.get(index);
 
         childActivity.putExtra("place", photocopier);
         childActivity.putExtra("index", 2);
@@ -127,8 +135,8 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getPhotocopierList(){
         FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Photocopier");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref = db.getReference(Place.TYPE_PHOTOCOPIER);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot photocopier : dataSnapshot.getChildren()){
@@ -138,13 +146,15 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
@@ -155,12 +165,14 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
         ActivityInfoDao activityInfoDao;
         IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
         activityInfoDao = roomDatabase.activityInfoDao();
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.PHOTOCOPIERS.ordinal()));
-                getSupportActionBar().show();
-            }
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.PHOTOCOPIERS.ordinal()));
+            getSupportActionBar().show();
         });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 }

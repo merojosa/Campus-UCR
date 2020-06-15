@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InterestPoints.Library.LibraryViewActivity"></activity>
+        <activity android:name=".InterestPoints.Comment.CommentPopUp"></activity>
+        <activity android:name=".red_mujeres.MisComunidades" />
+        <activity android:name=".InterestPoints.Library.LibraryViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Library.LibraryActivity"
             android:theme="@style/AppTheme.InterestsTheme"/>
@@ -36,7 +39,6 @@
             android:name=".InterestPoints.Soda.SodaActivity"
             android:theme="@style/AppTheme.InterestsTheme"
             />
-        <activity android:name=".red_mujeres.MisComunidades" />
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
@@ -87,7 +89,10 @@
             android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+            android:theme="@style/AppTheme.InterestsThemeNoBar" >
+        </activity>
+
+
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />

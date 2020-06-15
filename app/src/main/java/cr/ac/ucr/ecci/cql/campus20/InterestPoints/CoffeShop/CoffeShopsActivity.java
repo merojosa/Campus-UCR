@@ -23,8 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffee;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
@@ -39,15 +40,16 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<Place>();
-    private List<Coffe> coffeList;
+    private List<Place> temp = new ArrayList<>();
+    private List<Coffee> coffeeList;
 
     private ProgressBar spinner;
-    private Coffe coffe;
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coffe_shops);
 
@@ -62,16 +64,22 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         temp = new ArrayList<>();
-        coffeList = new ArrayList<>();
+        coffeeList = new ArrayList<>();
         getCoffeeList();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
     }
 
     @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
-        while (index < coffeList.size() && !finded){
-            if(coffeList.get(index).getName().equals(title)){
+        while (index < coffeeList.size() && !finded){
+            if(coffeeList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -80,12 +88,12 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         Intent childActivity = new Intent(CoffeShopsActivity.this, Map.class);
         childActivity.putExtra("typeActivity", 0);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra("attribute", coffeList.get(index).getDescription());
+        childActivity.putExtra("attribute", coffeeList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.coffe = coffeList.get(index);
+        Coffee coffee = coffeeList.get(index);
 
-        childActivity.putExtra("place", coffe);
+        childActivity.putExtra("place", coffee);
         childActivity.putExtra("index", 2);
 
         startActivity(childActivity);
@@ -126,40 +134,44 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getCoffeeList(){
         FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Coffe");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref = db.getReference(Place.TYPE_COFFEE);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
-                    coffeList.add(coffee.getValue(Coffe.class));
+                    coffeeList.add(coffee.getValue(Coffee.class));
                 }
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
-        temp.addAll(coffeList);
+        temp.addAll(coffeeList);
     }
 
     private void setActivityTitle(){
         ActivityInfoDao activityInfoDao;
         IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
         activityInfoDao = roomDatabase.activityInfoDao();
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.COFFEE_SHOPS.ordinal()));
-                getSupportActionBar().show();
-            }
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.COFFEE_SHOPS.ordinal()));
+            getSupportActionBar().show();
         });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 }

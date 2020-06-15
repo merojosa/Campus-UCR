@@ -25,20 +25,20 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 public class Redireccionador
 {
     private DatabaseReference mDatabase;
-    private LoginBD loginBD;
+    private CampusBD campusBD;
 
 
     public Redireccionador()
     {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        loginBD = new FirebaseBD();
+        campusBD = new FirebaseBD();
     }
 
     // Termina la actividad actual cuando redirecciona
     public void irActividadGuardada(Context context)
     {
         // Si no hay actividad guardada, ir a la actividad de configuracion
-        String correo = loginBD.obtenerCorreoActual();
+        String correo = campusBD.obtenerCorreoActual();
         String idUsuario = correo.substring(0, correo.indexOf('@'));
         Intent intentConfiguracion = new Intent(context, ConfiguracionActivity.class);
 
@@ -77,7 +77,7 @@ public class Redireccionador
 
         if(VerificadorInternet.conexionInternet(context))
         {
-            loginBD.tareaAppDefaultAsync(idUsuario, listener);
+            campusBD.tareaAppDefaultAsync(idUsuario, listener);
 
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask()
@@ -89,7 +89,7 @@ public class Redireccionador
                     if (resultado.get() == false)
                     {
                         //  Timeout
-                        loginBD.detenerAppDefaultAsync();
+                        campusBD.detenerAppDefaultAsync();
 
                         Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
