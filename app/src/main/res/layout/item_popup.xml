@@ -17,8 +17,8 @@
 
         <TextView
             android:id="@+id/comment"
-            android:layout_width="217dp"
-            android:layout_height="31dp"
+            android:layout_width="242dp"
+            android:layout_height="38dp"
             android:fontFamily="@font/myriad_pro_regular"
             android:textColor="@color/blanco_UCR"
             android:textSize="15dp" />
