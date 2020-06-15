@@ -99,6 +99,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
        // setupLikesnDislikes
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
+        popComments.setAnimationStyle(R.style.popup_window_animation);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         //Para salir tocar afuera
