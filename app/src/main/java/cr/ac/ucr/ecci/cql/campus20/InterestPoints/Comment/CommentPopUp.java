@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +23,13 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,22 +37,26 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesA
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class CommentPopUp extends AppCompatActivity implements CommentsList.CommentListOnClickHandler {
 
     private RecyclerView mRecyclerView;
-    private CommentsList mCommensList;
     private List<Comment> tmp;
     private List<Comment> Comentarios;
     private CommentsList mListAdapter;
     private FirebaseDB db;
+    private DatabaseReference ref;
+    private ValueEventListener listener;
     private View view;
     private RatingBar rt;
     private EditText editComment;
     private Button getRating;
+    private Place place;
     private String comment;
     private float rate;
     private Button setLike;
@@ -63,8 +70,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Crea lo necesario para levantar el popup
      * @param view
      */
-    public CommentPopUp(final View view, List<Comment> comments) {
+    public CommentPopUp(final View view, Place place) {
         db = new FirebaseDB();
+        this.place = place;
     /*Popup*/
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
@@ -74,7 +82,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; //Para la parte de atrás
         this.view = popupView;
-        Comentarios = comments;
+        Comentarios = place.comments != null? place.comments : new ArrayList<>();
         tmp = new ArrayList<Comment>();
 
         /*Lista*/
@@ -88,6 +96,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         /*Ratingbar y comentario*/
         setupCommentRating();
 
+        setCommentsListener();
+
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -99,10 +109,26 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
                 //Close the window when clicked
                 popComments.dismiss();
+                ref.removeEventListener(listener);
                 return true;
             }
         });
+
+        setUpSendButton();
         /*POPUP*/
+    }
+
+    private void setUpSendButton(){
+        Button sendButton = view.findViewById(R.id.enviar_c_r);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Agrega un comentario a firebase, probar solo con ECCI*/
+                Comment comment = Comentarios.get(Comentarios.size() -1);
+                comment.setId(comment.getId() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
+            }
+        });
     }
 
     private void setupRecyclerView(){
@@ -147,6 +173,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
     //Quizá hacer consulta aquí
     public void setDataList(){
+        tmp = new ArrayList<>();
         tmp.addAll(Comentarios);
     }
 
@@ -154,5 +181,32 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     @Override
     public void onClick(String title) {
         Toast.makeText(view.getContext(), title, Toast.LENGTH_LONG);
+    }
+
+    private void setCommentsListener(){
+
+        db = new FirebaseDB();
+
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Comentarios.clear();
+                for (DataSnapshot comment : dataSnapshot.getChildren()) {
+                    Comentarios.add(comment.getValue(Comment.class));
+                }
+                setDataList();
+                mListAdapter.setListData(tmp);
+                mListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        };
+
+        ref = db.getReference(place.getType()).child(Integer.toString(place.getId())).child("comments");
+        ref.addValueEventListener(listener);
+
     }
 }

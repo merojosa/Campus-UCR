@@ -1,20 +1,15 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-
-/*
-https://www.geeksforgeeks.org/android-creating-a-ratingbar/
-https://abhiandroid.com/ui/ratingbar
-https://www.youtube.com/watch?v=LpNJhJF3gW8
-
-hacer el rating float
- */
-
-public class Comment extends GeneralData {
+public class Comment extends GeneralData implements Parcelable {
 
     private int id;
     private int id_place_fk;
+    private String type;
     private String description;
     private String date;
     private float cRating;
@@ -24,9 +19,10 @@ public class Comment extends GeneralData {
 
     public Comment() {}
 
-    public Comment(int id, int id_place_fk, String description, String date, float cRating, String photo_path, int like, int dislike) {
+    public Comment(int id, int id_place_fk, String type, String description, String date, float cRating, String photo_path, int like, int dislike) {
         this.id = id;
         this.id_place_fk = id_place_fk;
+        this.type = type;
         this.description = description;
         this.date = date;
         this.cRating = cRating;
@@ -34,6 +30,30 @@ public class Comment extends GeneralData {
         this.like = like;
         this.dislike = dislike;
     }
+
+    protected Comment(Parcel in) {
+        id = in.readInt();
+        id_place_fk = in.readInt();
+        type = in.readString();
+        description = in.readString();
+        date = in.readString();
+        cRating = in.readFloat();
+        photo_path = in.readString();
+        like = in.readInt();
+        dislike = in.readInt();
+    }
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 
     @Override
     public int getId() {
@@ -50,6 +70,14 @@ public class Comment extends GeneralData {
 
     public void setId_place_fk(int id_place_fk) {
         this.id_place_fk = id_place_fk;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -90,4 +118,21 @@ public class Comment extends GeneralData {
 
     public void setDislike(int dislike) {this.dislike = dislike;}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(id_place_fk);
+        dest.writeString(type);
+        dest.writeString(description);
+        dest.writeString(date);
+        dest.writeFloat(cRating);
+        dest.writeString(photo_path);
+        dest.writeInt(like);
+        dest.writeInt(dislike);
+    }
 }
