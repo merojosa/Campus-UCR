@@ -224,7 +224,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 Log.w("FIREBASE", "Fallo al leer favoritos", databaseError.toException());
             }
         });
-
     }
 
     private void iniciarRecycler() {

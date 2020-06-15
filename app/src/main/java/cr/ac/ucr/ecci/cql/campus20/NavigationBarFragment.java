@@ -1,13 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -31,7 +29,6 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerPreguntas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerRespuestas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
-import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 

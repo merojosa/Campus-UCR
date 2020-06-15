@@ -41,4 +41,7 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
         return this.rootReference.child(FAVORITOS_PATH);
     }
 
+    // Método que devuelve la referencia al child Preguntas
+    public DatabaseReference getPreguntasRef() { return this.rootReference.child(PREGUNTAS_PATH); }
+
 }

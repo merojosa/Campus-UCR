@@ -104,7 +104,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         for(Pregunta pregunta : preguntas)
         {
             cards.add(
-                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisikes)
+                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisLikes)
             );
         }
 
