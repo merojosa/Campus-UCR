@@ -52,6 +52,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private Button getRating;
     private String comment;
     private float rate;
+    private Button setLike;
+    private Button setDislike;
+    private int like;
+    private int dislike;
 
     public CommentPopUp(){}
 
@@ -105,19 +109,37 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         mRecyclerView = view.findViewById(R.id.comments_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
+/*
+        setLike = view.findViewById(R.id.like);
+        setDislike = view.findViewById(R.id.dislike);
+
+        setLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        setDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+*/
     }
 
     private void setupCommentRating(){
         editComment = view.findViewById(R.id.comentario);
         rt = view.findViewById(R.id.ratingBar);
         getRating = view.findViewById(R.id.enviar_c_r);
-        LayerDrawable stars=(LayerDrawable)rt.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
         getRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rate = rt.getRating();
                 comment = editComment.getText().toString();
+                String kk = String.valueOf(rate);
+                Toast.makeText(view.getContext(), comment + kk, Toast.LENGTH_LONG).show();
             }
         });
 
