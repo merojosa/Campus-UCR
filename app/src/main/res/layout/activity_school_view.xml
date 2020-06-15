@@ -13,7 +13,7 @@
         android:layout_width="327dp"
         android:layout_height="117dp"
         android:layout_marginStart="43dp"
-        android:layout_marginTop="82dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="42dp"
         android:layout_marginBottom="51dp"
         android:fontFamily="@font/myriad_pro_bold"
@@ -26,42 +26,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/mapbox"-->
-<!--        android:layout_width="67dp"-->
-<!--        android:layout_height="57dp"-->
-<!--        android:layout_marginStart="312dp"-->
-<!--        android:layout_marginTop="250dp"-->
-<!--        android:layout_marginEnd="32dp"-->
-<!--        android:layout_marginBottom="424dp"-->
-<!--        android:backgroundTint="#00EAE4E4"-->
-<!--        android:onClick="goTo"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:srcCompat="@drawable/map256" />-->
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="97dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="142dp"
-        android:layout_marginEnd="265dp"
-        android:layout_marginBottom="355dp"
-        android:fontFamily="@font/myriad_pro_semi"
-        android:text="Aquí iría toda la info "
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ListView
+        android:id="@+id/listSchoolItems"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/schoolName" />
 
-
-
-
-
-    <!-- Inclusión de la barra de navegación general-->
     <fragment
         android:id="@+id/NavigationBar"
         class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"

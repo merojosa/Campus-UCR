@@ -1,13 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 

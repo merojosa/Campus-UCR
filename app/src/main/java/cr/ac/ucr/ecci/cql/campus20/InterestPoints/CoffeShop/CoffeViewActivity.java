@@ -17,7 +17,6 @@ public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.
 
     String coffeName;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,6 @@ public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.
 
     }
 
-//    /**
 //     * EFE: send the user to the location in maps
 //     * REQ:
 //     * view: send by the button that calls this method
