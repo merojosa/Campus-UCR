@@ -140,9 +140,15 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         String textoRespuesta = mEditText.getText().toString();
         int idPregunta = pregunta.getId();
 
-        Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
-        //Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, 0, 0);
+        //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
+        Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, 0, 0);
         mRespuestaViewModel.insert(respuesta);
+
+        //insertar en firebase
+
+
+
+
         //Luego de insertar volver a vista previa
         Intent intent = new Intent(this, ForoGeneralVerRespuestas.class);
         intent.putExtra("preguntaSeleccionada", pregunta);

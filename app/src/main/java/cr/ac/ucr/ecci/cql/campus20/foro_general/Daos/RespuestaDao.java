@@ -23,6 +23,7 @@ public interface RespuestaDao {
     @Delete
     void delete(Respuesta respuesta);
 
+    //recuperar una respuesta especifica
     @Query("SELECT * FROM Respuesta WHERE id = :id")
     Respuesta getRespuestaPorID(int id);
 
@@ -35,4 +36,12 @@ public interface RespuestaDao {
 
     @Query("DELETE FROM Respuesta WHERE id = :id")
     void borrarRespuesta(int id);
+
+    // Aumenta los likes
+    @Query("UPDATE Respuesta SET cantidad_likes = cantidad_likes + :num WHERE id = :id")
+    void updateLikes(int id,int num);
+
+    // Disminuye los likes
+    @Query("UPDATE Respuesta SET cantidad_dislikes = cantidad_dislikes + :num WHERE id = :id")
+    void updateDislikes(int id,int num);
 }

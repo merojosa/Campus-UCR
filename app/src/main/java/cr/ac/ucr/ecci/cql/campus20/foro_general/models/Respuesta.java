@@ -33,10 +33,10 @@ public class Respuesta {
     @ColumnInfo(name = "cantidad_dislikes")
     public int contadorDislikes = 0;
 
-    //public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
-    public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
+    public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
+    //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
         this.id = id;
-        //this.nombreUsuario = nombreUsuario;
+        this.nombreUsuario = nombreUsuario;
         this.texto = texto;
         this.preguntaID = preguntaID;
         this.contadorLikes = contadorLikes;
