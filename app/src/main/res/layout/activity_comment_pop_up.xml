@@ -23,6 +23,7 @@
         android:id="@+id/comments_list"
         android:layout_width="match_parent"
         android:layout_height="198dp"
+        android:descendantFocusability="blocksDescendants"
         />
 
     <TextView
@@ -65,7 +66,7 @@
                 android:layout_marginLeft="10dp"
                 android:background="@color/blanco_UCR"
                 android:gravity="left"
-                android:text="Comente..." />
+                android:hint="Comente..." />
 
             <TextView
                 android:id="@+id/blank2"

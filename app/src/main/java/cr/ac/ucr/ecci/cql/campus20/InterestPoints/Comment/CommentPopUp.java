@@ -121,32 +121,15 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         mRecyclerView.setHasFixedSize(true);
     }
 
-    private void setupLikesnDislikes(){
-
-        this.place = place;
-        Comentarios = place.comments != null? place.comments : new ArrayList<>();
-        setLike = view.findViewById(R.id.clike);
-        setDislike = view.findViewById(R.id.cdislike);
-        setLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Comment comment;
-                comment = Comentarios.get(Comentarios.size() - 1);
-                comment.setLike(comment.getLike() + 1);
-                ref.child(Integer.toString(comment.getId())).setValue(comment);
-            }
-        });
-
-        setDislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Comment comment;
-                comment = Comentarios.get(Comentarios.size() - 1);
-                comment.setDislike(comment.getDislike() + 1);
-                ref.child(Integer.toString(comment.getId())).setValue(comment);
-
-            }
-        });
+    @Override
+    public void onClick(int position, boolean like){
+        Comment comment = Comentarios.get(position);
+        if(comment != null) {
+            if(like)
+                ref.child(Integer.toString(comment.getId())).child("like").setValue(comment.getLike() + 1);
+            else
+                ref.child(Integer.toString(comment.getId())).child("dislike").setValue(comment.getDislike() + 1);
+        }
     }
 
     private void setupCommentRating() {
@@ -186,28 +169,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         });
     }
 
-/*commentList.add(new Comment(i, placesFK[i], Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
-    private void setUpSendButton(){
-        Button sendButton = view.findViewById(R.id.enviar_c_r);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Comment comment = Comentarios.get(Comentarios.size() -1);
-                comment.setId(comment.getId() + 1);
-                ref.child(Integer.toString(comment.getId())).setValue(comment);
-            }
-        });
-    }*/
-
     public void setDataList(){
         tmp = new ArrayList<>();
         tmp.addAll(Comentarios);
-    }
-
-    /*Solo para probar, hay que poner algo más útil.*/
-    @Override
-    public void onClick(String title) {
-        Toast.makeText(view.getContext(), title, Toast.LENGTH_LONG);
     }
 
     private void setCommentsListener(){
