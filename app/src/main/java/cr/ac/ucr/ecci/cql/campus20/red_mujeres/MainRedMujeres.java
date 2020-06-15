@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +50,9 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.geojson.FeatureCollection;
 
 import android.os.Handler;
+import android.view.Gravity;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -230,18 +233,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        //panico();
-                        final String [] items = new String[] {"911", "Contacto Emergencia"};
-                        final Integer[] icons = new Integer[] {R.drawable.ecci, R.drawable.ecci};
-                        ListAdapter adapter = new ArrayAdapterWithIcon(MainRedMujeres.this, items, icons);
-
-                        new AlertDialog.Builder(MainRedMujeres.this).setTitle("LLAMAR A")
-                                .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int item ) {
-                                        Toast.makeText(MainRedMujeres.this, "Item Selected: " + item, Toast.LENGTH_SHORT).show();
-                                    }
-                                }).show();
+                        popupPanico();
                     }
                 });
 
@@ -258,9 +250,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
     }
 
-    public void panico() {
+    public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
-        String num="//911";
+        String num="911";
+        if (truePanic>0){
+            num = "12345678";
+        }
         callIntent.setData(Uri.parse("tel:"+num));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -268,6 +263,25 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         } else {
             startActivity(callIntent);
         }
+    }
+    public void popupPanico() {
+        final String [] items = new String[] {"911", "Contacto Emergencia"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
+        builder.setTitle("¡EMERGENCIA!");
+
+        builder.setIcon(R.drawable.sos);
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                panico(which);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     public void popupCompartir() {
