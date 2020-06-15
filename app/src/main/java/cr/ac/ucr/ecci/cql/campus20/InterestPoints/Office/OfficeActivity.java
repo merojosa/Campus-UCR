@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
@@ -39,11 +40,13 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<Place> temp = new ArrayList<Place>();
+    private List<Place> temp = new ArrayList<>();
     private List<Office> officeList;
 
     private ProgressBar spinner;
-    private Office office;
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
 
     @Override
@@ -67,6 +70,12 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
+    }
+
+    @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
@@ -84,7 +93,7 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
 
 
         // Setting school and coordinate objects
-        this.office = officeList.get(index);
+        Office office = officeList.get(index);
 
         childActivity.putExtra("place", office);
         childActivity.putExtra("index", 2);
@@ -127,8 +136,8 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getOfficesList(){
         FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Office");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref = db.getReference(Place.TYPE_OFFICE);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot office : dataSnapshot.getChildren()){
@@ -138,13 +147,15 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
@@ -155,12 +166,14 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
         ActivityInfoDao activityInfoDao;
         IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
         activityInfoDao = roomDatabase.activityInfoDao();
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSupportActionBar().setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.OFFICES.ordinal()));
-                getSupportActionBar().show();
-            }
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.OFFICES.ordinal()));
+            getSupportActionBar().show();
         });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 }

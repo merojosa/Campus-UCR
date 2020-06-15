@@ -109,22 +109,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 return true;
             }
         });
-
-        setUpSendButton();
         /*POPUP*/
-    }
-
-    private void setUpSendButton(){
-        Button sendButton = view.findViewById(R.id.enviar_c_r);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Agrega un comentario a firebase, probar solo con ECCI*/
-                Comment comment = Comentarios.get(Comentarios.size() -1);
-                comment.setId(comment.getId() + 1);
-                ref.child(Integer.toString(comment.getId())).setValue(comment);
-            }
-        });
     }
 
     private void setupRecyclerView(){

@@ -51,7 +51,6 @@ public class DeploymentScript {
         createFaculties();
         createPlaces();
         createSchools();
-        createComments();
         createCoffeShops();
         createLibrary();
         createOffice();
@@ -259,20 +258,6 @@ public class DeploymentScript {
         db.insert("School", odonto);
 
         Log.d("places", "Schools were inserted in database.");
-    }
-
-    private void createComments() {
-        List<Comment> commentList = new ArrayList<>();
-        /*ID's de la EIE y ECCI respectivamente.*/
-        int[] placesFK = {31, 36};
-        String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
-        for (int i = 0; i < placesFK.length; ++i) {
-            commentList.add(new Comment(i, placesFK[i], Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
-        }
-        for (Comment c : commentList) {
-            db.insert("Comment", c);
-        }
-        Log.d("comments", "Comments were inserted in database.");
     }
 
     private void createLibrary() {

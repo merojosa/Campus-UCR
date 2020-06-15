@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".InterestPoints.Comment.CommentPopUp"></activity>
         <activity android:name=".red_mujeres.MisComunidades" />
-        <activity android:name=".InterestPoints.Library.LibraryViewActivity"></activity>
+        <activity android:name=".InterestPoints.Library.LibraryViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Library.LibraryActivity"
             android:theme="@style/AppTheme.InterestsTheme"/>
@@ -89,11 +90,6 @@
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
 
 
