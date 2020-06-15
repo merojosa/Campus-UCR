@@ -41,10 +41,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Photocopier;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierViewActivity;

@@ -6,15 +6,17 @@ public class Comment extends GeneralData {
 
     private int id;
     private int id_place_fk;
+    private String type;
     private String description;
     private String date;
 
     public Comment() {
     }
 
-    public Comment(int id, int id_place_fk, String description, String date) {
+    public Comment(int id, int id_place_fk, String type, String description, String date) {
         this.id = id;
         this.id_place_fk = id_place_fk;
+        this.type = type;
         this.description = description;
         this.date = date;
     }
@@ -34,6 +36,14 @@ public class Comment extends GeneralData {
 
     public void setId_place_fk(int id_place_fk) {
         this.id_place_fk = id_place_fk;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {

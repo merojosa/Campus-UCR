@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffee;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
@@ -40,10 +40,10 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<Place>();
-    private List<Coffe> coffeList;
+    private List<Coffee> coffeeList;
 
     private ProgressBar spinner;
-    private Coffe coffe;
+    private Coffee coffee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         temp = new ArrayList<>();
-        coffeList = new ArrayList<>();
+        coffeeList = new ArrayList<>();
         getCoffeeList();
     }
 
@@ -70,8 +70,8 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
-        while (index < coffeList.size() && !finded){
-            if(coffeList.get(index).getName().equals(title)){
+        while (index < coffeeList.size() && !finded){
+            if(coffeeList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -80,12 +80,12 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         Intent childActivity = new Intent(CoffeShopsActivity.this, Map.class);
         childActivity.putExtra("typeActivity", 0);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra("attribute", coffeList.get(index).getDescription());
+        childActivity.putExtra("attribute", coffeeList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.coffe = coffeList.get(index);
+        this.coffee = coffeeList.get(index);
 
-        childActivity.putExtra("place", coffe);
+        childActivity.putExtra("place", coffee);
         childActivity.putExtra("index", 2);
 
         startActivity(childActivity);
@@ -131,7 +131,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
-                    coffeList.add(coffee.getValue(Coffe.class));
+                    coffeeList.add(coffee.getValue(Coffee.class));
                 }
                 setDataList();
                 mListAdapter.setListData(temp);
@@ -147,7 +147,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     }
 
     public void setDataList(){
-        temp.addAll(coffeList);
+        temp.addAll(coffeeList);
     }
 
     private void setActivityTitle(){

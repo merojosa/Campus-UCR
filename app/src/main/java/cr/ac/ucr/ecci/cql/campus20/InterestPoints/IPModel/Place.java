@@ -3,6 +3,9 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
 public class Place extends GeneralData implements Parcelable {
@@ -17,17 +20,38 @@ public class Place extends GeneralData implements Parcelable {
     public double latitude;
     public double longitude;
 
+    public static final String TYPE_COFFEE = "Coffee";
+    public static final String TYPE_FACULTY = "Faculty";
+    public static final String TYPE_OFFICE = "Office";
+    public static final String TYPE_PHOTOCOPIER = "Photocopier";
+    public static final String TYPE_LIBRARY = "Library";
+    public static final String TYPE_SCHOOL = "School";
+    public static final String TYPE_SODA = "Soda";
+    public static final String TYPE_PLACE = "Place";
+
+    public ArrayList<Comment> comments;
+
     Place() {}
 
     // Used in the Faculty/DeploymentScript
     // Used in the Coffe/DeploymentScript
     // Used in the School
+    public Place(int id, String name, String description, int image, String type, ArrayList<Comment> comments) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.type = type;
+        this.comments = comments;
+    }
+
     public Place(int id, String name, String description, int image, String type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
         this.type = type;
+        this.comments = comments;
     }
 
     // Used in the Deployment Script/Fincas/Places
@@ -50,6 +74,8 @@ public class Place extends GeneralData implements Parcelable {
         image = in.readInt();
         latitude = in.readDouble();
         longitude = in.readDouble();
+        this.comments = new ArrayList<>();
+        in.readList(this.comments, Comment.class.getClassLoader());
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
@@ -139,6 +165,14 @@ public class Place extends GeneralData implements Parcelable {
         this.longitude = longitude;
     }
 
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -155,5 +189,6 @@ public class Place extends GeneralData implements Parcelable {
         dest.writeInt(image);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeList(comments);
     }
 }
