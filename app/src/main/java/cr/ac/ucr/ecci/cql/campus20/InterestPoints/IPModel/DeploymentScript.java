@@ -262,8 +262,9 @@ public class DeploymentScript {
     }
 
     private void createComments() {
+        /*
         List<Comment> commentList = new ArrayList<>();
-        /*ID's de la EIE y ECCI respectivamente.*/
+        /*ID's de la EIE y ECCI respectivamente.
         int[] placesFK = {31, 36};
         String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
         for (int i = 0; i < placesFK.length; ++i) {
@@ -273,6 +274,7 @@ public class DeploymentScript {
             db.insert("Comment", c);
         }
         Log.d("comments", "Comments were inserted in database.");
+        */
     }
 
     private void createLibrary() {
