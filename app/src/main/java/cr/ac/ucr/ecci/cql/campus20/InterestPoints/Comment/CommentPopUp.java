@@ -140,6 +140,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         setDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Comment comment;
+                comment = Comentarios.get(Comentarios.size() - 1);
+                comment.setDislike(comment.getDislike() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
 
             }
         });
