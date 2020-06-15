@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +23,10 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 1 Diana validada
     // 2 Denisse validada
     // 3 Berta no validada
-    private static final String currentUser = "1";
+    // 4 Julio no validado
+    // 5 Claudia no validada
+    // 6 Juan no validado
+    private static final String currentUser = "3";
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
@@ -80,6 +85,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 // recupera atributo de validacion del usuario actual.
                 boolean val = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
                 String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
+
                 // revisa si el usuario ya ha sido validado
                 if (val) {
                     //recupera grupos a los que pertenece el usuario actual.
@@ -98,7 +104,7 @@ public class MenuRedMujeres extends AppCompatActivity {
             // Manipulacion de datos del snapshot y llamados a metodos si el no esta validado.
                 } else {
                     // si no muestre popup
-                    popupRegistro(nombre);
+                    popupRegistro(nombre, currentUserID);
                 }
             }
             @Override
@@ -120,46 +126,66 @@ public class MenuRedMujeres extends AppCompatActivity {
         }
     }
 
-    private void procesarValidacion() {
+    // Proceso de validación. Envía una solicited con los datos del usuario al administrador
+    // por correo, y este puede aprobar o rechazar la solicitud
+    private void procesarValidacion(String currentUserID) {
 
-        // proceso de validacion temporal
-        // pregunta al admin si quiere validar al usuario
+        DatabaseReference root = mDatabase.getReference();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
 
-        builder.setTitle("Psss Admin");
-        builder.setMessage("Validar usuario?");
+                String nombre = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Nombre").getValue();
+                String genero = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Género").getValue();
+                String carne = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Carne").getValue();
+                String correo = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("CorreoUCR").getValue();
+                enviarSolicitudAdmin(nombre, genero, carne, correo);
+            }
 
-        String positiveText = "Aceptar";
-        builder.setPositiveButton(positiveText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        enviarConfirmacion(true);
-                        // write 1 en la bd
-
-                        //continua a actividad
-                        continuarActividad(true, null);
-                    }
-                });
-
-        String negativeText = "Denegar";
-        builder.setNegativeButton(negativeText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        enviarConfirmacion(false);
-
-                        startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+            @Override
+            public void fallo(DatabaseError databaseError) {}
+        });
     }
 
-    private void popupRegistro(String nombre) {
+    private void enviarSolicitudAdmin(String nombre, String genero, String carne, String correo) {
+        String newline = System.getProperty("line.separator");
+
+        List<String> toEmailList = new ArrayList<>();
+        toEmailList.add("admredmujeres@gmail.com");
+
+        String asunto = "Pendiente revisión: Nueva solicitud de unión a Red de Mujeres";
+        String cuerpo = "Hola Admin, recientemente el/la estudiante " + nombre +
+                " ha enviado una solicitud para unirse al módulo de Red de Mujeres." + newline +
+                "Su información es la siguiente: " + newline +
+                "Nombre: " + nombre + newline +
+                "Carne: " + carne + newline +
+                "Género: " + genero + newline +
+                "Correo Institucional: " + correo + newline +
+                "Para aceptar o denegar esta solicitud, por favor visitar el siguiente enlace: ";
+
+        try {
+            new SendMailTask(MenuRedMujeres.this).execute("campus.virtual.ucr@gmail.com", //remitente
+                    "Campus2020", //contraseña remitente
+                    toEmailList, //lista de destinatarios
+                    asunto, //asunto
+                    cuerpo); //mensaje en el cuerpo
+        } catch (Exception e) {
+            Log.i("Excepcion", e.getMessage());
+        }
+//        Intent i = new Intent(Intent.ACTION_SEND);
+//        i.setType("message/rfc822");
+//        i.putExtra(Intent.EXTRA_EMAIL , new String[]{"admredmujeres@gmail.com"});
+//        i.putExtra(Intent.EXTRA_SUBJECT, asunto);
+//        i.putExtra(Intent.EXTRA_TEXT, cuerpo);
+//        try {
+//            startActivity(Intent.createChooser(i, "Enviando solicitud..."));
+//        } catch (android.content.ActivityNotFoundException ex) {
+//            Toast.makeText(MenuRedMujeres.this, "Error. Ningún cliente de correo electrónico ha sido instalado en el dispositivo.", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    private void popupRegistro(String nombre, String currentUserID) {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
 
@@ -172,7 +198,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // proceso de validacion
-                        procesarValidacion();
+                        procesarValidacion(currentUserID);
                     }
                 });
 
