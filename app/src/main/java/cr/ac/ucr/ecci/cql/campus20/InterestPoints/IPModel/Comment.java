@@ -100,7 +100,7 @@ public class Comment extends GeneralData implements Parcelable {
         return cRating;
     }
 
-    public void setcRating(String cRrating) {
+    public void setcRating(float cRrating) {
         this.cRating = cRating;
     }
 

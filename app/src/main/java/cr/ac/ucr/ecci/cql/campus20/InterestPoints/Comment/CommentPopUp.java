@@ -60,8 +60,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private EditText editComment;
     private Button getRating;
     private Place place;
-    private String comment;
-    private float rate;
     private Button setLike;
     private Button setDislike;
     private int like;
@@ -151,28 +149,40 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         getRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 /*Construcción del comentario*/
-                Comment comment = Comentarios.get(Comentarios.size() -1);
-
-                comment.setId(comment.getId() + 1);
-                comment.setId_place_fk(place.getId());
-                comment.setType(Place.TYPE_SCHOOL);
-                comment.setDescription(editComment.getText().toString());
-                comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
-                comment.setcRating(String.valueOf(rt.getRating())); // Repensa
+                Comment comment;
+                //Si no hay comentarios agrega uno con ID 0
+                if (Comentarios.isEmpty()){
+                    //comment = Comentarios.get(Comentarios.size());
+                    comment = new Comment();
+                    comment.setId(0);
+                    comment.setId_place_fk(place.getId());
+                    comment.setType(Place.TYPE_SCHOOL);
+                    comment.setDescription(editComment.getText().toString());
+                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
+                    comment.setcRating(rt.getRating()); // Repensar
+                    Comentarios.add(comment);
+                }else { //Si si hay agreguea uno más
+                    comment = Comentarios.get(Comentarios.size()-1);
+                    comment.setId(comment.getId() + 1);
+                    comment.setId_place_fk(place.getId());
+                    comment.setType(Place.TYPE_SCHOOL);
+                    comment.setDescription(editComment.getText().toString());
+                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
+                    comment.setcRating(rt.getRating()); // Repensar
+                }
                 //inserta en firebase
                 ref.child(Integer.toString(comment.getId())).setValue(comment);
             }
         });
     }
-/*
+
+/*commentList.add(new Comment(i, placesFK[i], Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
     private void setUpSendButton(){
         Button sendButton = view.findViewById(R.id.enviar_c_r);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Agrega un comentario a firebase, probar solo con ECCI
                 Comment comment = Comentarios.get(Comentarios.size() -1);
                 comment.setId(comment.getId() + 1);
                 ref.child(Integer.toString(comment.getId())).setValue(comment);
