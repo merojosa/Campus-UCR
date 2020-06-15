@@ -328,15 +328,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (place.getType().equals("coffe")) {
+                if (place.getType().equals(Place.TYPE_COFFEE)) {
                     details = new Intent(Map.this, CoffeViewActivity.class);
-                }else if(place.getType().equals("school")){
+                }else if(place.getType().equals(Place.TYPE_SCHOOL)){
                     details = new Intent(Map.this, SchoolViewActivity.class);
-                } else if (place.getType().equals("soda")) {
+                    details.putExtra("place", place);
+                } else if (place.getType().equals(Place.TYPE_SODA)) {
                     details = new Intent(Map.this, SodaViewActivity.class);
-                } else if (place.getType().equals("library")) {
+                } else if (place.getType().equals(Place.TYPE_LIBRARY)) {
                     details = new Intent(Map.this, LibraryViewActivity.class);
-                } else if (place.getType().equals("office")) {
+                } else if (place.getType().equals(Place.TYPE_OFFICE)) {
                     details = new Intent(Map.this, OfficeViewActivity.class);
                 } else { // Fotocopiadoras
                     details = new Intent(Map.this, PhotocopierViewActivity.class);

@@ -49,9 +49,9 @@ public class InterestPointsActivity extends AppCompatActivity {
 
     private void setActivityTitle(){
         ActivityInfoDao activityInfoDao;
-        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").allowMainThreadQueries().build();
         activityInfoDao = roomDatabase.activityInfoDao();
-        AsyncTask.execute(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 TextView title = findViewById(R.id.textGrid);

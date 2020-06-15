@@ -76,6 +76,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_view);
 
+        this.place = getIntent().getParcelableExtra("place");
         mContext = getApplicationContext();
         mActivity = SchoolViewActivity.this;
         mLayout = findViewById(R.id.school_view);
@@ -97,18 +98,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         popButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                List<Comment> comments = new ArrayList<>();
-                /*Comentarios de prueba*/
-                /*comments.add(new Comment(0, 0, "Hola mundo", "", 4.3f, "", 1, 0));
-                comments.add(new Comment(1, 0, "Adios mundo", "", 4.1f, "", 1, 1));
-                comments.add(new Comment(2, 0, "Adios mundo", "", 4.1f, "", 1, 1));
-                comments.add(new Comment(3, 0, "Adios mundo", "", 4.1f, "", 1, 1));
-                comments.add(new Comment(4, 0, "Adios mundo", "", 4.1f, "", 1, 1));
-                comments.add(new Comment(5, 0, "Adios mundo", "", 4.1f, "", 1, 1));
-                comments.add(new Comment(6, 0, "Adios mundo", "", 4.1f, "", 1, 1));*/
-                /*Comentarios de Firebase*/
-                showComments(view);
+                CommentPopUp commentPopUp = new CommentPopUp(view, place);
             }
         });
         /*POPUP*/
@@ -123,27 +113,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
-
-    /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
-    private void showComments(View view){
-        FirebaseDB db = new FirebaseDB();
-        DatabaseReference ref = db.getReference("Comment");
-        List<Comment> commentList = new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot comment : dataSnapshot.getChildren()) {
-                    commentList.add(comment.getValue(Comment.class));
-                }
-                CommentPopUp commentPopUp = new CommentPopUp(view, commentList); //Mandar cosas
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     //Para hacer pruebas

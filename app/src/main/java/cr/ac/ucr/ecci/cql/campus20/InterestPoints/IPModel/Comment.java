@@ -1,8 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Comment extends GeneralData {
+public class Comment extends GeneralData implements Parcelable {
 
     private int id;
     private int id_place_fk;
@@ -27,6 +30,30 @@ public class Comment extends GeneralData {
         this.like = like;
         this.dislike = dislike;
     }
+
+    protected Comment(Parcel in) {
+        id = in.readInt();
+        id_place_fk = in.readInt();
+        type = in.readString();
+        description = in.readString();
+        date = in.readString();
+        cRating = in.readFloat();
+        photo_path = in.readString();
+        like = in.readInt();
+        dislike = in.readInt();
+    }
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 
     @Override
     public int getId() {
@@ -91,4 +118,21 @@ public class Comment extends GeneralData {
 
     public void setDislike(int dislike) {this.dislike = dislike;}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(id_place_fk);
+        dest.writeString(type);
+        dest.writeString(description);
+        dest.writeString(date);
+        dest.writeFloat(cRating);
+        dest.writeString(photo_path);
+        dest.writeInt(like);
+        dest.writeInt(dislike);
+    }
 }

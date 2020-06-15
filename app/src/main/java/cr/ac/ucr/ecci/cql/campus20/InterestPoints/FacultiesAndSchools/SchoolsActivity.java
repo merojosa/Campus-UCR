@@ -37,6 +37,8 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
     private ProgressBar spinner;
 
     private FirebaseDB db;
+    private DatabaseReference ref2;
+    private ValueEventListener firebaseListener;
     private School school;
 
     @Override
@@ -67,6 +69,12 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
         temp = new ArrayList<>();
         schoolsList = new ArrayList<>();
         getSchoolsList(facultyId);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        ref2.removeEventListener(firebaseListener);
     }
 
     @Override
@@ -129,8 +137,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
 
                 // ------------------ Tomando las cooredenadas del lugar ---------------------------
 
-                DatabaseReference ref2 = db.getReference("School");
-                ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(new ValueEventListener() {
+                ref2 = db.getReference("School");
+
+                firebaseListener = new ValueEventListener() {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -148,7 +157,9 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
                     }
-                });
+                };
+
+                ref2.orderByChild("id_place_fk").equalTo(place.getId()).addValueEventListener(firebaseListener);
 
                 // ---------------------------------------------------------------------------------
 
