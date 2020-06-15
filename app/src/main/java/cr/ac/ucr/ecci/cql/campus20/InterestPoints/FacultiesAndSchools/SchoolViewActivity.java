@@ -92,12 +92,12 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         setListComponents();
 
         tittle.setText(placeName);
-    }
         /*POPUP*/
         Button popButton = findViewById(R.id.comments);
         popButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 List<Comment> comments = new ArrayList<>();
                 /*Comentarios de prueba*/
                 /*comments.add(new Comment(0, 0, "Hola mundo", "", 4.3f, "", 1, 0));
@@ -130,9 +130,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         DatabaseReference ref = db.getReference("Comment");
         List<Comment> commentList = new ArrayList<>();
-
-
-
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -38,7 +38,6 @@
             android:name=".InterestPoints.Soda.SodaActivity"
             android:theme="@style/AppTheme.InterestsTheme"
             />
-        <activity android:name=".red_mujeres.MisComunidades" />
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
