@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.MainEmptyActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +23,11 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     // 1 Diana validada
     // 2 Denisse validada
-    // 3 Berta no validada
+    // 3 Berta  validada
     // 4 Julio no validado
     // 5 Claudia no validada
     // 6 Juan no validado
-    private static final String currentUser = "3";
+    private static final String currentUser = "4";
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
@@ -39,10 +40,9 @@ public class MenuRedMujeres extends AppCompatActivity {
     public final ArrayList<Map<String,Object>> groupArr;
     public final ArrayList<Map<String,Object>> userArr;
 
-    //Referencias a bd
+    //Referencias a BD
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
-
 
     public MenuRedMujeres() {
         this.groupArr = new ArrayList<>();
@@ -128,11 +128,12 @@ public class MenuRedMujeres extends AppCompatActivity {
 
     // Proceso de validación. Envía una solicited con los datos del usuario al administrador
     // por correo, y este puede aprobar o rechazar la solicitud
+    // Modifica el valor del atributo SolicitudEnviada del usuario en cuestión
     private void procesarValidacion(String currentUserID) {
 
-        DatabaseReference root = mDatabase.getReference();
+        DatabaseReference usuario = mDatabase.getReference();
 
-        bd.autCallback(root, new FirebaseListener() {
+        bd.autCallback(usuario, new FirebaseListener() {
             @Override
             public void exito(DataSnapshot dataSnapshot) {
 
@@ -140,11 +141,17 @@ public class MenuRedMujeres extends AppCompatActivity {
                 String genero = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Género").getValue();
                 String carne = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Carne").getValue();
                 String correo = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("CorreoUCR").getValue();
+
+                // Envía solicitud y actualiza atributo SolicitudEnviada
                 enviarSolicitudAdmin(nombre, genero, carne, correo);
+                usuario.child("usuarios_red_mujeres").child(currentUserID).child("SolicitudEnviada").setValue(true);
+
+                //Método básico y ***temporal*** de verificación
+                verificarSolicitud(currentUserID);
 
                 // Vuelve a la pagina principal de UCR Eats,
                 // dado que no existe página inicial per se y la app se inicializa en esta
-                startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
+                startActivity(new Intent(MenuRedMujeres.this, MainEmptyActivity.class));
             }
 
             @Override
@@ -152,6 +159,55 @@ public class MenuRedMujeres extends AppCompatActivity {
         });
     }
 
+    // Verificación temporal. Acepta solicitudes tras revisar:
+    // 1. Que el usuario no esté validado
+    // 2. Que el usuario haya envidado una solicitud
+    // 3. Que el usuario sea mujer
+    // Actualiza la BD acorde a esto
+    private void verificarSolicitud(String currentUserID){
+
+        DatabaseReference usuario = mDatabase.getReference();
+
+        bd.autCallback(usuario, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+
+                boolean validado = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
+                boolean solicitudEnviada = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("SolicitudEnviada").getValue();
+                String genero = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Género").getValue();
+
+                // Si el usuario aún no ha sido validado y recientemente envió una solicitud
+                if (validado == false) {
+                    if(solicitudEnviada == true){
+                        // Verifica género de usuario
+                        if(genero.equals("Mujer")){
+                            // Acepta solicitud
+                            usuario.child("usuarios_red_mujeres").child(currentUserID).child("Validado").setValue(true);
+                            // Enviar confirmación por correo
+                            //TODO:enviar correo aceptación
+                        }
+                        else{
+                            // Rechaza solicitud
+                            // Mantiene en true el valor de SolicitudEnviada para denotar que
+                            // el usuario ha sido rechazado
+                            usuario.child("usuarios_red_mujeres").child(currentUserID).child("Validado").setValue(false);
+                            // Enviar confirmación por correo
+                            //TODO:enviar correo rechazo
+                        }
+                    }
+                }
+
+            }
+            @Override
+            public void fallo(DatabaseError databaseError) {}
+        });
+
+
+    }
+
+    // Método que compone el correo de solicitud, lo llena con datos del usuario recuperados de BD
+    // Y utiliza SendMailTask para enviarlo al administrador para revisión
+    // Modifica el valor del atributo SolicitudEnviada del usuario en cuestión
     private void enviarSolicitudAdmin(String nombre, String genero, String carne, String correo) {
         List<String> toEmailList = new ArrayList<>();
         toEmailList.add("admredmujeres@gmail.com");

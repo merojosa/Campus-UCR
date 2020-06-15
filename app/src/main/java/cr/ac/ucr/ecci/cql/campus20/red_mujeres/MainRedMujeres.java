@@ -138,7 +138,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
-    private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
+    private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();
 
     private Double lastLatitudeKnown = 0.0;
     private Double lastLongitudeKnown = 0.0;
@@ -221,7 +221,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
-                //Botón de visibilidad de la localización del usuario
+                //Botón para compartir ruta
                 FloatingActionButton share = findViewById(R.id.shareTrip);
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -230,7 +230,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
-                //Botón de visibilidad de la localización del usuario
+                //Botón de pánico
                 FloatingActionButton sos = findViewById(R.id.sos);
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -242,6 +242,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             }
         });
     }
+
     public void iniciarRuta() {
         boolean simulateRoute = false; //Simulación de ruta para testing
         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
@@ -252,6 +253,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
     }
 
+    //Funcionalidad botón de pánico
     public void panico() {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:911"));
@@ -263,6 +265,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    //Pop up para obtener confirmación de usuario respecto a si desea compartir su ruta
     public void popupCompartir() {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
@@ -295,6 +298,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         dialog.show();
     }
 
+    //Método para compartir ruta por medio de WhatsApp
     public void enviarWhatsapp(String message) {
         PackageManager pm = getPackageManager();
         String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
@@ -321,6 +325,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    //Método para compartir ruta por medio de mensajes de texto
     public void enviarSMS(String message) {
         String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
         Intent intent = new Intent(Intent.ACTION_SEND);
