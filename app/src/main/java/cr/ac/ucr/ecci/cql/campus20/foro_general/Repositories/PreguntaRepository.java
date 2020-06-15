@@ -35,7 +35,7 @@ public class PreguntaRepository {
     /**
      * Recupera un LiveData (lista que puede cambiar) de preguntas de un tema asociado
      * @param id el id del tema a recuperar
-     * @return una lista con las preguntas pde un tema especifico
+     * @return una lista con las preguntas pde un tema especifico, asociado a un usuario especifico
      */
     public LiveData<List<Pregunta>> getPreguntasTema(int id){
         return mPreguntaDao.getPreguntasTema(id);
@@ -61,5 +61,15 @@ public class PreguntaRepository {
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
             mPreguntaDao.updateDislikes(id, num);
         });
+    }
+
+    /**
+     * Método para recuperar la pregunta con un texto y un nombre de usuario específico
+     * @param texto el texto de la pregunta a buscar
+     * @param nombreUsuario el nombre de usuario que creó la pregunta a buscar
+     * @return un LiveData que contiene una lista con la pregunta con las especificaciones requeridas
+     */
+    public LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
+        return mPreguntaDao.getIDPorTextoYUsuario(texto, nombreUsuario);
     }
 }
