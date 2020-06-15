@@ -80,7 +80,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="5"
-                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/ic_star" />
 
                 </LinearLayout>
@@ -90,7 +89,7 @@
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="7" />
 
                 <ImageView
                     android:id="@+id/ubicacion_soda"
