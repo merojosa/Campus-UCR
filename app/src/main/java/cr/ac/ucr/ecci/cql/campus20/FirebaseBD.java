@@ -23,7 +23,6 @@ public class FirebaseBD implements CampusBD
     private ValueEventListener firebaseListener;
 
 
-
     public FirebaseBD()
     {
         auth = FirebaseAuth.getInstance();
