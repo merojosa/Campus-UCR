@@ -56,8 +56,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         }
     }
 
-
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
@@ -67,7 +65,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         //View view = inflater.inflate(R.layout.list_item, viewGroup, false);
         return new MyViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
