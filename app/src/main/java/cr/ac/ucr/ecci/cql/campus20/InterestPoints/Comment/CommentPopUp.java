@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
@@ -41,6 +43,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class CommentPopUp extends AppCompatActivity implements CommentsList.CommentListOnClickHandler {
@@ -57,8 +60,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private EditText editComment;
     private Button getRating;
     private Place place;
-    private String comment;
-    private float rate;
+    private Button setLike;
+    private Button setDislike;
+    private int like;
+    private int dislike;
 
     public CommentPopUp(){}
 
@@ -72,7 +77,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     /*Popup*/
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-
         View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
         int width = LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -91,9 +95,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         /*Ratingbar y comentario*/
         setupCommentRating();
-
         setCommentsListener();
-
+       // setupLikesnDislikes
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -118,23 +121,84 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         mRecyclerView.setHasFixedSize(true);
     }
 
-    private void setupCommentRating(){
-        editComment = view.findViewById(R.id.comentario);
-        rt = view.findViewById(R.id.ratingBar);
-        getRating = view.findViewById(R.id.enviar_c_r);
-        LayerDrawable stars=(LayerDrawable)rt.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
-        getRating.setOnClickListener(new View.OnClickListener() {
+    private void setupLikesnDislikes(){
+
+        this.place = place;
+        Comentarios = place.comments != null? place.comments : new ArrayList<>();
+        setLike = view.findViewById(R.id.clike);
+        setDislike = view.findViewById(R.id.cdislike);
+        setLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rate = rt.getRating();
-                comment = editComment.getText().toString();
+                Comment comment;
+                comment = Comentarios.get(Comentarios.size() - 1);
+                comment.setLike(comment.getLike() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
             }
         });
 
+        setDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comment comment;
+                comment = Comentarios.get(Comentarios.size() - 1);
+                comment.setDislike(comment.getDislike() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
+
+            }
+        });
     }
 
-    //Quizá hacer consulta aquí
+    private void setupCommentRating() {
+        editComment = view.findViewById(R.id.comentario);
+        rt = view.findViewById(R.id.ratingBar);
+        getRating = view.findViewById(R.id.enviar_c_r);
+
+        getRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Construcción del comentario*/
+                Comment comment;
+                //Si no hay comentarios agrega uno con ID 0
+                if (Comentarios.isEmpty()){
+                    comment = new Comment();
+                    comment.setId(0);
+                    comment.setId_place_fk(place.getId());
+                    comment.setType(Place.TYPE_SCHOOL);
+                    comment.setDescription(editComment.getText().toString());
+                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
+                    float rate = rt.getRating();
+                    comment.setRating(rate); // Repensar
+                    Comentarios.add(comment);
+                }else { //Si si hay agreguea uno más
+                    comment = Comentarios.get(Comentarios.size()-1);
+                    comment.setId(comment.getId() + 1);
+                    comment.setId_place_fk(place.getId());
+                    comment.setType(Place.TYPE_SCHOOL);
+                    comment.setDescription(editComment.getText().toString());
+                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
+                    float rate = rt.getRating();
+                    comment.setRating(rate);// Repensar
+                }
+                //inserta en firebase
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
+            }
+        });
+    }
+
+/*commentList.add(new Comment(i, placesFK[i], Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
+    private void setUpSendButton(){
+        Button sendButton = view.findViewById(R.id.enviar_c_r);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Comment comment = Comentarios.get(Comentarios.size() -1);
+                comment.setId(comment.getId() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
+            }
+        });
+    }*/
+
     public void setDataList(){
         tmp = new ArrayList<>();
         tmp.addAll(Comentarios);
@@ -170,6 +234,5 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         ref = db.getReference(place.getType()).child(Integer.toString(place.getId())).child("comments");
         ref.addValueEventListener(listener);
-
     }
 }

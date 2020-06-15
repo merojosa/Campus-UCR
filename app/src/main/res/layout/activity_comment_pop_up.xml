@@ -60,8 +60,9 @@
 
             <EditText
                 android:id="@+id/comentario"
-                android:layout_width="match_parent"
+                android:layout_width="343dp"
                 android:layout_height="119dp"
+                android:layout_marginLeft="10dp"
                 android:background="@color/blanco_UCR"
                 android:gravity="left"
                 android:text="Comente..." />

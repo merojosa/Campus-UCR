@@ -143,7 +143,7 @@ public class DeploymentScript {
         /*ID's de la ECCI respectivamente.*/
         String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
         for (int i = 0; i < comments.length; ++i) {
-            commentList.add(new Comment(i, 36, Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
+            commentList.add(new Comment(i, 36, Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 5, 10));
         }
 
         School artes = new School(0, 0, 0, "Artes Dramáticas", "", R.drawable.artesdramaticas512px,9.9342365, -84.050532);

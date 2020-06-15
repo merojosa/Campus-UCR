@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -8,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/ratingComment"
-        android:layout_width="match_parent"
+        android:layout_width="388dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:orientation="horizontal"
@@ -16,25 +17,49 @@
 
         <TextView
             android:id="@+id/comment"
-            android:layout_width="254dp"
-            android:layout_height="wrap_content"
+            android:layout_width="217dp"
+            android:layout_height="31dp"
             android:fontFamily="@font/myriad_pro_regular"
             android:textColor="@color/blanco_UCR"
             android:textSize="15dp" />
-        <!--
+
         <Button
-            android:id="@+id/like"
-            android:layout_width="50dp"
+            android:id="@+id/clike"
+            android:layout_width="38dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:drawableRight="@drawable/like32px"/>
+            android:drawableLeft="@drawable/ic_thumb_up_grey_24dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/no_like"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/blanco_UCR"
+            android:textSize="15dp" />
+
         <Button
-            android:id="@+id/dislike"
-            android:layout_width="50dp"
+            android:id="@+id/cdislike"
+            android:layout_width="39dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:drawableRight="@drawable/dislike64px"/>
--->
+            android:drawableLeft="@drawable/ic_thumb_down_grey_24dp"/>
+
+        <TextView
+            android:id="@+id/no_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/blanco_UCR"
+            android:textSize="15dp" />
+
     </LinearLayout>
 
 </LinearLayout>
