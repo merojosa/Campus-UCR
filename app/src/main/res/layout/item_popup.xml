@@ -24,23 +24,42 @@
             android:textSize="15dp" />
 
         <Button
-            android:id="@+id/like"
+            android:id="@+id/clike"
             android:layout_width="38dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_thumb_up_grey_24dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/no_like"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
             android:gravity="center"
-            android:text="0" />
+            android:text="0"
+            android:textColor="@color/blanco_UCR"
+            android:textSize="15dp" />
 
         <Button
-            android:id="@+id/dislike"
+            android:id="@+id/cdislike"
             android:layout_width="39dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_thumb_down_grey_24dp"
-            android:text="0" />
+            android:drawableLeft="@drawable/ic_thumb_down_grey_24dp"/>
+
+        <TextView
+            android:id="@+id/no_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/blanco_UCR"
+            android:textSize="15dp" />
+
     </LinearLayout>
 
 </LinearLayout>

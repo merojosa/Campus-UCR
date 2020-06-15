@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,15 +37,18 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
         this.mClickHandler = clickHandler;
     }
 
-
     public class MyViewHolderComments extends RecyclerView.ViewHolder implements View
             .OnClickListener{
 
         public TextView mComment;
+        public TextView mLike;
+        public TextView mDislike;
 
         public MyViewHolderComments(View view) {
             super(view);
             mComment = (TextView) view.findViewById(R.id.comment);
+            mLike = (TextView) view.findViewById(R.id.no_like);
+            mDislike = (TextView) view.findViewById(R.id.no_dislike);
             view.setOnClickListener(this);
         }
 
@@ -54,7 +58,6 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
             Comment comment = temp.get(posicionAdaptador);
             mClickHandler.onClick(comment.getDescription());
         }
-
     }
 
     @NonNull
@@ -71,6 +74,8 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolderComments holder, int position) {
         Comment comment = temp.get(position);
         holder.mComment.setText(comment.getDescription());
+        holder.mLike.setText(String.valueOf(comment.getLike()));
+        holder.mDislike.setText(String.valueOf(comment.getDislike()));
     }
 
     @Override

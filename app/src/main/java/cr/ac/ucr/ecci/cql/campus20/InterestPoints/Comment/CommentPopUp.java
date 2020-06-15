@@ -95,8 +95,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         /*Ratingbar y comentario*/
         setupCommentRating();
-
         setCommentsListener();
+       // setupLikesnDislikes
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -119,11 +119,14 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         mRecyclerView = view.findViewById(R.id.comments_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-/*
+    }
+
+    private void setupLikesnDislikes(){
+
         this.place = place;
         Comentarios = place.comments != null? place.comments : new ArrayList<>();
-        setLike = view.findViewById(R.id.like);
-        setDislike = view.findViewById(R.id.dislike);
+        setLike = view.findViewById(R.id.clike);
+        setDislike = view.findViewById(R.id.cdislike);
         setLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +143,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
             }
         });
-        */
     }
 
     private void setupCommentRating() {
