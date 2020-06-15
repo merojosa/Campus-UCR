@@ -141,6 +141,10 @@ public class MenuRedMujeres extends AppCompatActivity {
                 String carne = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Carne").getValue();
                 String correo = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("CorreoUCR").getValue();
                 enviarSolicitudAdmin(nombre, genero, carne, correo);
+
+                // Vuelve a la pagina principal de UCR Eats,
+                // dado que no existe página inicial per se y la app se inicializa en esta
+                startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
             }
 
             @Override
@@ -149,21 +153,20 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     private void enviarSolicitudAdmin(String nombre, String genero, String carne, String correo) {
-        String newline = System.getProperty("line.separator");
-
         List<String> toEmailList = new ArrayList<>();
         toEmailList.add("admredmujeres@gmail.com");
 
         String asunto = "Pendiente revisión: Nueva solicitud de unión a Red de Mujeres";
         String cuerpo = "Hola Admin, recientemente el/la estudiante " + nombre +
-                " ha enviado una solicitud para unirse al módulo de Red de Mujeres." + newline +
-                "Su información es la siguiente: " + newline +
-                "Nombre: " + nombre + newline +
-                "Carne: " + carne + newline +
-                "Género: " + genero + newline +
-                "Correo Institucional: " + correo + newline +
-                "Para aceptar o denegar esta solicitud, por favor visitar el siguiente enlace: ";
+                " ha enviado una solicitud para unirse al módulo de Red de Mujeres." + "<br/>" +
+                "Su información es la siguiente: " + "<br/>" +
+                "Nombre: " + nombre + "<br/>" +
+                "Carne: " + carne + "<br/>" +
+                "Género: " + genero + "<br/>" +
+                "Correo Institucional: " + correo + "<br/>" +
+                "Favor aceptar o denegar esta solicitud. ";
 
+        //Envío de correo de solicitud a cuenta de admin, desde correo oficial de Campus UCR
         try {
             new SendMailTask(MenuRedMujeres.this).execute("campus.virtual.ucr@gmail.com", //remitente
                     "Campus2020", //contraseña remitente
@@ -173,6 +176,11 @@ public class MenuRedMujeres extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("Excepcion", e.getMessage());
         }
+
+        //Otro método para enviar solicitudes, permite a los estudiantes modificar el cuerpo del correo
+        //De esta manera, se manda la solicitud desde una dirección personal, desde la aplicación de correo
+        //Instalada en el dispositivo del usuario
+        //Útil si se desea incluir información adicional/input del solicitante
 //        Intent i = new Intent(Intent.ACTION_SEND);
 //        i.setType("message/rfc822");
 //        i.putExtra(Intent.EXTRA_EMAIL , new String[]{"admredmujeres@gmail.com"});
