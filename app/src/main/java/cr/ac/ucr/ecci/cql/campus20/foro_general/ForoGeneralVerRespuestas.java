@@ -45,11 +45,17 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    ForoGeneralFirebaseDatabase databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_respuestas);
         Intent mIntent = getIntent();
+
+        // Se instancia el firebaseReference
+        this.databaseReference = new ForoGeneralFirebaseDatabase();
 
         // Boton flotante de Agregar Respuestas
         buttonAgregarRespuestas = findViewById(R.id.buttonAgregarRespuestas);
@@ -144,6 +150,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private void crearRespuesta(PreguntaCard pregunta) {
         Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
         intent.putExtra("preguntaSeleccionada", pregunta);
+        intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
 
         startActivity(intent);
     }

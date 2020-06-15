@@ -13,7 +13,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 public class RespuestaRepository {
 
     private RespuestaDao mRespuestaDao;
-    private PreguntaRepository mRepository;
+    //private PreguntaRepository mRepository;
 
     public RespuestaRepository(Application application) {
 
