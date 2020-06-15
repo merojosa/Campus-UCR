@@ -78,7 +78,7 @@
         android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="9dp"
-        android:background="@color/celeste_UCR"
+        android:background="@drawable/bottom_shape_comments"
         android:fontFamily="@font/myriad_pro_semi"
         android:text="@string/Comentarios"
         android:textColor="@color/blanco_UCR"
