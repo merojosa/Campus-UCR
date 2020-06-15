@@ -112,23 +112,25 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 return true;
             }
         });
-
         /*POPUP*/
     }
-
 
     private void setupRecyclerView(){
         mRecyclerView = view.findViewById(R.id.comments_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 /*
+        this.place = place;
+        Comentarios = place.comments != null? place.comments : new ArrayList<>();
         setLike = view.findViewById(R.id.like);
         setDislike = view.findViewById(R.id.dislike);
-
         setLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Comment comment;
+                comment = Comentarios.get(Comentarios.size() - 1);
+                comment.setLike(comment.getLike() + 1);
+                ref.child(Integer.toString(comment.getId())).setValue(comment);
             }
         });
 
@@ -138,7 +140,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
             }
         });
-*/
+        */
     }
 
     private void setupCommentRating() {
@@ -153,14 +155,14 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 Comment comment;
                 //Si no hay comentarios agrega uno con ID 0
                 if (Comentarios.isEmpty()){
-                    //comment = Comentarios.get(Comentarios.size());
                     comment = new Comment();
                     comment.setId(0);
                     comment.setId_place_fk(place.getId());
                     comment.setType(Place.TYPE_SCHOOL);
                     comment.setDescription(editComment.getText().toString());
                     comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
-                    comment.setcRating(rt.getRating()); // Repensar
+                    float rate = rt.getRating();
+                    comment.setRating(rate); // Repensar
                     Comentarios.add(comment);
                 }else { //Si si hay agreguea uno más
                     comment = Comentarios.get(Comentarios.size()-1);
@@ -169,7 +171,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                     comment.setType(Place.TYPE_SCHOOL);
                     comment.setDescription(editComment.getText().toString());
                     comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
-                    comment.setcRating(rt.getRating()); // Repensar
+                    float rate = rt.getRating();
+                    comment.setRating(rate);// Repensar
                 }
                 //inserta en firebase
                 ref.child(Integer.toString(comment.getId())).setValue(comment);
@@ -189,7 +192,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             }
         });
     }*/
-
 
     public void setDataList(){
         tmp = new ArrayList<>();
@@ -226,6 +228,5 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         ref = db.getReference(place.getType()).child(Integer.toString(place.getId())).child("comments");
         ref.addValueEventListener(listener);
-
     }
 }
