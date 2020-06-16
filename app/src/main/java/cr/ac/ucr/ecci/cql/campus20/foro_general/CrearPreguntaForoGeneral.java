@@ -83,8 +83,6 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         this.temasLista = new ArrayList<Tema>();
         // Llamado a base de datos
 
-
-
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -215,7 +213,6 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
-
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);

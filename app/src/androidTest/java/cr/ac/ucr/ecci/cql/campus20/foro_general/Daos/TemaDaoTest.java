@@ -43,6 +43,7 @@ public class TemaDaoTest {
 
     // Data set para testing
     private static int TEMA_ID = 1;
+    private static int TEMA_PREGUNTA2 = 2;
     private static Tema TEMA_PRUEBA = new Tema(TEMA_ID, "PruebaTema", "Pa ver si funciona", 100, R.drawable.foro1);
     private static Tema TEMA_PRUEBA2 = new Tema(2, "Prueba2", "Pa verificar", 10, R.drawable.foro_calificado);
 
@@ -53,7 +54,7 @@ public class TemaDaoTest {
      * @throws InterruptedException que es la excepcion de interrupción
      */
     @Test
-    public void getTemasDatasaseVacia() throws InterruptedException {
+    public void getTemasDatabaseVacia() throws InterruptedException {
         // TEST
         List<Tema> temas = LiveDataTestUtil.getValue(this.database.temaDao().getTemas());
         assertTrue("There is a problema with the list",temas.isEmpty());
