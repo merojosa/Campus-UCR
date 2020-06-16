@@ -221,10 +221,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+
+
                 button = findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
                         iniciarRuta();
                     }
                 });
@@ -438,7 +442,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapboxBlue);
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("Iniciar Viaje");
         return true;
     }
 

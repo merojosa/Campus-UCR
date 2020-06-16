@@ -22,19 +22,19 @@
         <Button
             android:id="@+id/startButton"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
             android:layout_margin="32dp"
-            android:layout_marginTop="80dp"
-            android:background="@color/blanco_UCR"
+            android:background="@color/azul_UCR"
             android:cursorVisible="true"
-            android:elevation="24dp"
             android:enabled="true"
-            android:paddingLeft="24dp"
-            android:text="Comenzar ruta al destino elegido"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:foregroundGravity="top"
+            android:text="Seleccionar Ubicación en Mapa"
+            android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="@color/gris_medio_UCR"
-            android:textSize="14sp" />
+            android:textColor="@color/blanco_UCR"
+            android:textSize="18sp" />
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
