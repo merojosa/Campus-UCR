@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="375dp"
-    android:layout_height="400dp"
-    android:padding="5dp"
+    android:layout_height="360dp"
+    android:padding="10dp"
     android:layout_gravity="center">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="390dp"
-        app:cardBackgroundColor="@color/gris_claro_UCR"
+        android:layout_height="350dp"
+        app:cardBackgroundColor="@color/azul_UCR"
         app:cardCornerRadius="25dp">
 
         <LinearLayout
@@ -21,12 +21,13 @@
             <TextView
                 android:id="@+id/titleSchoolItem"
                 android:layout_width="match_parent"
-                android:layout_height="51dp"
+                android:layout_height="35dp"
                 android:fontFamily="@font/myriad_pro_bold"
-                android:gravity="center_horizontal"
+                android:textAlignment="center"
                 android:text="Titulo"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:paddingBottom="10dp"
+                android:textColor="@color/blanco_UCR"
+                android:textSize="22dp" />
 
 
             <LinearLayout
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingLeft="20dp"
-                android:paddingBottom="5dp">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:text="Piso: "
@@ -42,8 +43,8 @@
                     android:gravity="right"
                     android:layout_width="156dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="17dp"/>
+                    android:textColor="@color/blanco_UCR"
+                    android:textSize="18dp"/>
 
                 <TextView
                     android:id="@+id/floor"
@@ -51,8 +52,8 @@
                     android:gravity="left"
                     android:layout_width="156dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="17dp"/>
+                    android:textColor="@color/blanco_UCR"
+                    android:textSize="18dp"/>
 
 
 
@@ -63,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingLeft="20dp"
-                android:paddingBottom="5dp">
+                android:paddingBottom="18dp">
 
                 <TextView
 
@@ -72,7 +73,7 @@
                     android:gravity="right"
                     android:layout_width="156dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
+                    android:textColor="@color/blanco_UCR"
                     android:textSize="17dp"/>
 
                 <TextView
@@ -81,35 +82,35 @@
                     android:gravity="left"
                     android:layout_width="156dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="17dp"/>
+                    android:textColor="@color/blanco_UCR"
+                    android:textSize="18dp"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingBottom="5dp">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:paddingLeft="20dp"-->
+<!--                android:paddingBottom="5dp">-->
 
-                <TextView
-                    android:text="Descripción: "
-                    android:fontFamily="@font/myriad_pro_semi"
-                    android:gravity="right"
-                    android:layout_width="156dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="17dp"/>
+<!--                <TextView-->
+<!--                    android:text="Descripción: "-->
+<!--                    android:fontFamily="@font/myriad_pro_semi"-->
+<!--                    android:gravity="right"-->
+<!--                    android:layout_width="156dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="17dp"/>-->
 
-                <TextView
-                    android:id="@+id/desc"
-                    android:fontFamily="@font/myriad_pro_semi"
-                    android:gravity="left"
-                    android:layout_width="156dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="17dp"/>
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/desc"-->
+<!--                    android:fontFamily="@font/myriad_pro_semi"-->
+<!--                    android:gravity="left"-->
+<!--                    android:layout_width="156dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="17dp"/>-->
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="250dp"
@@ -122,14 +123,14 @@
                     android:id="@+id/imageWiFi"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:padding="10dp" />
+                    android:paddingLeft="25dp" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
                     android:id="@+id/checkboxWiFi"
-                    android:gravity="end"
-                    android:padding="25dp"/>
+                    android:layout_width="53dp"
+                    android:layout_height="match_parent"
+                    android:buttonTint="@color/blanco_UCR"
+                    android:padding="25dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,7 +150,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/checkboxPC"
-                    android:gravity="end"
+                    android:buttonTint="@color/blanco_UCR"
                     android:padding="25dp"/>
             </LinearLayout>
 
@@ -170,8 +171,9 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/checkboxProjector"
-                    android:gravity="end"
-                    android:padding="25dp"/>
+                    android:buttonTint="@color/blanco_UCR"
+                    android:padding="25dp"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -191,7 +193,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/checkboxExtintor"
-                    android:gravity="end"
+                    android:buttonTint="@color/blanco_UCR"
                     android:padding="25dp"/>
             </LinearLayout>
 

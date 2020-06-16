@@ -79,12 +79,13 @@ public class Place extends GeneralData implements Parcelable {
     }
 
     //Para los baños
-    public Place(int id, String name, String description, String type, int floor, boolean wifi) {
+    public Place(int id, String name, String description, String type, int floor, int capacity, boolean wifi) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.floor = floor;
+        this.capacity = capacity;
         this.setWifi(wifi);
     }
 

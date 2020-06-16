@@ -17,7 +17,7 @@
         android:layout_marginBottom="51dp"
         android:fontFamily="@font/myriad_pro_bold"
         android:gravity="center"
-        android:text="SchoolName"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/mapbox"
