@@ -374,6 +374,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public boolean onMapClick(@NonNull LatLng point) {
 
+        latitudOri = locationComponent.getLastKnownLocation().getLatitude();
+        longitudOri = locationComponent.getLastKnownLocation().getLongitude();
+        latitudDes = point.getLatitude();
+        longitudDes = point.getLongitude();
         //LocationComponent locationComponent = null;
         Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
