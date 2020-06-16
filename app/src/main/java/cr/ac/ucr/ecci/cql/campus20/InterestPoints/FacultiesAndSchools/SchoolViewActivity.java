@@ -39,6 +39,8 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentsList;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Asociation;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Bathroom;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Laboratory;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
@@ -71,6 +74,14 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private final static String[] listOptions = {"Laboratorios", "Asociacion de estudiantes", "Baños"};
     private List<Place> optionsSchools =  new ArrayList<>();
 
+    private List<Place> laboratoriesList;
+    private List<Bathroom> bathroomsList;
+    private List<Asociation> asociationList;
+
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +98,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         TextView tittle = findViewById(R.id.schoolName);
 
         populateOptionsList();
+        getExtrasSchool();
 
         listHelper = false;
         listView = (ListView) findViewById(R.id.listSchoolItems);
@@ -126,16 +138,18 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     public void setListComponents(){
 
+        getLabs();
         //Para pruebas
-        List<Place> valuesLabs = new ArrayList<>();
+        List<Place> valuesLabs = laboratoriesList;
         List<Place> valuesAsc = new ArrayList<>();
         List<Place> valuesBath = new ArrayList<>();
 
-        String[] valuesLabs1 = new String[] { "Lab1", "Lab2", "Lab3"};
+//        String[] valuesLabs1 = new String[] { "Lab1", "Lab2", "Lab3"};
         String[] valuesAsc1 = new String[] { "Horario: 7:00-19:00"};
         String[] valuesBath1 = new String[] { "Baño 1er piso", "Baño 2do piso", "Baño 3er piso"};
 
-        auxTest(valuesLabs, valuesLabs1);
+//        auxTest(valuesLabs, valuesLabs1);
+
         auxTest(valuesAsc, valuesAsc1);
         auxTest(valuesBath, valuesBath1);
         //
@@ -223,6 +237,42 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
             s.setName(val);
             optionsSchools.add(s);
         }
+    }
+
+    public void getExtrasSchool(){
+        laboratoriesList = new ArrayList<>();
+        bathroomsList = new ArrayList<>();
+        asociationList = new ArrayList<>();
+
+        getLabs();
+    }
+
+    private void getLabs(){
+        FirebaseDB db = new FirebaseDB();
+        ref = db.getReference(Place.TYPE_LABORATORY);
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot laboratory : dataSnapshot.getChildren()) {
+                    if(laboratory.getValue(Laboratory.class).getId_school_fk() == place.getId()){
+                        laboratoriesList.add(laboratory.getValue(Laboratory.class));
+                    }
+                }
+                removeListener();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        };
+
+        ref.addValueEventListener(listener);
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 
 }

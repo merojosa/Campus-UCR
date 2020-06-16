@@ -28,6 +28,9 @@ public class Place extends GeneralData implements Parcelable {
     public static final String TYPE_SCHOOL = "School";
     public static final String TYPE_SODA = "Soda";
     public static final String TYPE_PLACE = "Place";
+    public static final String TYPE_BATHROOM = "Bathroom";
+    public static final String TYPE_ASOCIATION= "Asociation";
+    public static final String TYPE_LABORATORY = "Laboratory";
 
     public ArrayList<Comment> comments;
 
@@ -52,6 +55,14 @@ public class Place extends GeneralData implements Parcelable {
         this.image = image;
         this.type = type;
         this.comments = comments;
+    }
+
+    public Place(int id, String name, String description, String type, int floor) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.floor = floor;
     }
 
     // Used in the Deployment Script/Fincas/Places
