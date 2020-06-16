@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.MealsItemView;
 
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHolder>
 {
@@ -83,8 +85,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         return meals;
     }
 
-    // El holder del adapter. Aqui va el contenido del card.
-    public static class MealsViewHolder extends RecyclerView.ViewHolder
+    public static class MealsViewHolder extends RecyclerView.ViewHolder implements MealsItemView
     {
         TextView mealName;
         TextView mealPrice;
@@ -100,12 +101,37 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
             mealPicture = itemView.findViewById(R.id.meal_picture);
             mealsLeft = itemView.findViewById(R.id.meals_left_text);
         }
+
+        @Override
+        public void setName(String name)
+        {
+            this.mealName.setText(name);
+        }
+
+        @Override
+        public void setPrice(int price)
+        {
+            this.mealPrice.setText(Integer.toString(price));
+        }
+
+        @Override
+        public void setPicture(Picasso picasso, String url) {
+            picasso.load(url)
+                    .placeholder(R.drawable.soda_placeholder)
+                    .into(this.mealPicture);
+        }
+
+        @Override
+        public void setServings(String format, int remaining, int max)
+        {
+            this.mealsLeft.setText(String.format(format, remaining, max));
+        }
     }
 
 
     private void loadImage(ImageView imageView, String url)
     {
-        this.picasso.load(url)
+        picasso.load(url)
             .placeholder(R.drawable.soda_placeholder)
             .into(imageView);
     }
