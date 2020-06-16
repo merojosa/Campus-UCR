@@ -54,4 +54,63 @@ public class Respuesta {
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
     }
+
+
+    //GETS Y SETS PARA TESTING
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @NonNull
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(@NonNull String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public int getPreguntaID() {
+        return preguntaID;
+    }
+
+    public void setPreguntaID(int preguntaID) {
+        this.preguntaID = preguntaID;
+    }
+
+    public int getTemaID() {
+        return temaID;
+    }
+
+    public void setTemaID(int temaID) {
+        this.temaID = temaID;
+    }
+
+    public int getContadorLikes() {
+        return contadorLikes;
+    }
+
+    public void setContadorLikes(int contadorLikes) {
+        this.contadorLikes = contadorLikes;
+    }
+
+    public int getContadorDislikes() {
+        return contadorDislikes;
+    }
+
+    public void setContadorDislikes(int contadorDislikes) {
+        this.contadorDislikes = contadorDislikes;
+    }
 }
