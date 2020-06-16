@@ -3,7 +3,8 @@
     package="cr.ac.ucr.ecci.cql.campus20">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,8 @@
         <activity android:name=".red_mujeres.FormularioComunidad"></activity>
         <activity
             android:name=".ucr_eats.activites.OrderLocationActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+            android:theme="@style/AppTheme.InterestsThemeNoBar"
+            />
         <activity
             android:name=".ucr_eats.activites.OrdenesPendientesActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
@@ -39,7 +41,6 @@
             android:theme="@style/AppTheme.InterestsThemeNoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -78,9 +79,11 @@
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
-        <activity android:name=".red_mujeres.MainRedMujeres" />
-        <activity android:name=".red_mujeres.MenuRedMujeres" />
+
+        <activity android:name=".red_mujeres.MainRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity android:name=".red_mujeres.MenuRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
+
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="locked"
