@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -34,6 +35,10 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //Crea respuesta a partir de la pregunta que se seleccionó del lista de preguntas.
 public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
@@ -146,13 +151,27 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
         //insertar en firebase
 
+        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
+        mRespuestaViewModel.getIDPorTextoYUsuario(respuesta.texto, respuesta.nombreUsuario).observe(this, new Observer<List<Respuesta>>() {
+            @Override
+            public void onChanged(List<Respuesta> respuestas) {
+                int idGenerado = 0;
+                List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
+                for (Respuesta respuesta : respuestas) {
+                    idGenerado = respuesta.id;
+                    respuestaRoom.add(respuesta);
+                }
+
+                // Inserta en Firebase tambien
+                CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
 
 
-
-        //Luego de insertar volver a vista previa
-        Intent intent = new Intent(this, ForoGeneralVerRespuestas.class);
-        intent.putExtra("preguntaSeleccionada", pregunta);
-        startActivity(intent);
+                //Luego de insertar volver a vista previa
+                Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
+                intent.putExtra("preguntaSeleccionada", pregunta);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

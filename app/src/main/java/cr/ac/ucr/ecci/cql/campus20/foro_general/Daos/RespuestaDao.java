@@ -27,6 +27,12 @@ public interface RespuestaDao {
     @Query("SELECT * FROM Respuesta WHERE id = :id")
     Respuesta getRespuestaPorID(int id);
 
+
+    // Recuperar el ID, basándose por el texto de la pregunta y el nombre del usuario que la escribió
+    @Query("SELECT * FROM Respuesta WHERE texto =:texto AND nombreUsuario =:nombreUsuario")
+    LiveData<List<Respuesta>> getIDPorTextoYUsuario(String texto, String nombreUsuario);
+
+
     //Para recuperar las respuestas asociadas a pregunta
     @Query("SELECT * FROM Respuesta WHERE preguntaID = :preguntaID")
     LiveData<List<Respuesta>> getRespuestasDePregunta(int preguntaID);

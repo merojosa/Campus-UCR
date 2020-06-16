@@ -63,4 +63,14 @@ public class RespuestaRepository {
             mRespuestaDao.updateDislikes(id, num);
         });
     }
+
+    /**
+     * Método para recuperar la respuesta con un texto y un nombre de usuario específico
+     * @param texto el texto de la respuesta a buscar
+     * @param nombreUsuario el nombre de usuario que creó la respuesta a buscar
+     * @return un LiveData que contiene una lista con la respuesta con las especificaciones requeridas
+     */
+    public LiveData<List<Respuesta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
+        return mRespuestaDao.getIDPorTextoYUsuario(texto, nombreUsuario);
+    }
 }
