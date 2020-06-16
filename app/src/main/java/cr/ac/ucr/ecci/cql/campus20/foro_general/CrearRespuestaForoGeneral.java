@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -18,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.util.Log;
+
 import com.google.android.material.navigation.NavigationView;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
@@ -27,6 +30,14 @@ import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
+
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //Crea respuesta a partir de la pregunta que se seleccionó del lista de preguntas.
 public class CrearRespuestaForoGeneral extends AppCompatActivity {
@@ -41,6 +52,9 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+    private String nombreUsuario;
+    ForoGeneralFirebaseDatabase databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +64,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         Intent mIntent = getIntent();
         pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
 
+        // Nombre del usuario actual
+        this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
+
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
+
+
+        // Se instancia el firebaseReference
+        databaseReference = new ForoGeneralFirebaseDatabase();
 
         // Codigo para agregar borde al espacio para rellenar la pregunta
         mEditText = (EditText) findViewById(R.id.textoCrearRespuesta);
@@ -68,7 +89,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (verificarRespuesta()) {
-                    agregarPregunta();
+                    agregarRespuesta();
                 }
             }
         });
@@ -117,19 +138,41 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     }
 
     /**
-     * Este método inserta una nueva pregunta partir de lo que se digite, luego de insertar en
+     * Este método inserta una nueva respuesta partir de lo que se digite, luego de insertar en
      * la base de datos se devuelve a la vista de respuesta para dicha pregunta
      */
-    private void agregarPregunta() {
+    private void agregarRespuesta() {
         String textoRespuesta = mEditText.getText().toString();
         int idPregunta = pregunta.getId();
+        int idTema = pregunta.getTemaID();
 
-        Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
+        //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
+        Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
         mRespuestaViewModel.insert(respuesta);
-        //Luego de insertar volver a vista previa
-        Intent intent = new Intent(this, ForoGeneralVerRespuestas.class);
-        intent.putExtra("preguntaSeleccionada", pregunta);
-        startActivity(intent);
+
+        //insertar en firebase
+
+        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
+        mRespuestaViewModel.getIDPorTextoYUsuario(respuesta.texto, respuesta.nombreUsuario).observe(this, new Observer<List<Respuesta>>() {
+            @Override
+            public void onChanged(List<Respuesta> respuestas) {
+                int idGenerado = 0;
+                List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
+                for (Respuesta respuesta : respuestas) {
+                    idGenerado = respuesta.id;
+                    respuestaRoom.add(respuesta);
+                }
+
+                // Inserta en Firebase tambien
+                CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
+
+
+                //Luego de insertar volver a vista previa
+                Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
+                intent.putExtra("preguntaSeleccionada", pregunta);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
