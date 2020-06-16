@@ -20,7 +20,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,8 +33,6 @@ import androidx.annotation.NonNull;
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
-    private RestaurantViewModel restaurantViewModel;
-
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;
@@ -84,11 +81,12 @@ public class MainUcrEats extends AppCompatActivity
                 Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
                 ArrayList<Restaurant> sodas = new ArrayList<>();
                 // Iterate array
+                int id = 1;
                 for(final DataSnapshot soda : sodaData)
                 {
                     Log.e("Nombre:", ""+soda.getValue());
                     Restaurant so = soda.getValue(Restaurant.class);
-
+                    so.setId(id++);
                     if (so != null)
                     {
                         so.setFirebaseId(soda.getKey());
