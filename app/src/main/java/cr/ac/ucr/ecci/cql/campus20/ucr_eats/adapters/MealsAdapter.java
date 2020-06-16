@@ -1,6 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -11,9 +10,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.shape.CornerFamily;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,17 +19,20 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.MealsItemView;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.MealsPresenter;
 
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHolder>
 {
     private final Context context;
     private List<Meal> meals;
-    Picasso picasso;
+    private MealsPresenter presenter;
+    private Picasso picasso;
 
     public MealsAdapter(Context context, List<Meal> meals)
     {
         this.context = context;
         this.meals = meals;
+        this.presenter = new MealsPresenter(meals);
         this.picasso = new Picasso.Builder(this.context)
                 .indicatorsEnabled(true)
                 .loggingEnabled(true) //add other settings as needed
@@ -52,20 +51,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
     @Override
     public void onBindViewHolder(MealsViewHolder mealsViewHolder, int position)
     {
-        Resources resources = this.context.getResources();
-
-        Meal meal = meals.get(position);
-        mealsViewHolder.mealName.setText(meal.getName());
-        mealsViewHolder.mealPrice.setText(Integer.toString(meal.getPrice()));
-        mealsViewHolder.mealsLeft.setText(
-                String.format(resources.getString(R.string.servings_placeholder),
-                        meal.getAvailableServings(), meal.getMaxServings()));
-
-        if(meal.getPhoto() != null)
-            this.loadImage(mealsViewHolder.mealPicture, meal.getPhoto());
-
-        //sodaViewHolder.imagenSoda.setImageResource(sodaCards.get(i).getFoto());
-//        loadCardImage(sodaViewHolder, position);
+        this.presenter.onBindMealItemAtPosition(position, mealsViewHolder);
     }
 
     @Override
@@ -91,11 +77,12 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         TextView mealPrice;
         ImageView mealPicture;
         TextView mealsLeft;
+        View itemView;
 
         public MealsViewHolder(View itemView)
         {
             super(itemView);
-
+            this.itemView = itemView;
             mealName = itemView.findViewById(R.id.meal_name);
             mealPrice = itemView.findViewById(R.id.meal_price);
             mealPicture = itemView.findViewById(R.id.meal_picture);
@@ -115,19 +102,30 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
         }
 
         @Override
-        public void setPicture(Picasso picasso, String url) {
-            picasso.load(url)
-                    .placeholder(R.drawable.soda_placeholder)
-                    .into(this.mealPicture);
+        public void setPicture(String url)
+        {
+            if(url != null)
+            {
+                Picasso picasso = new Picasso.Builder(this.itemView.getContext())
+                        .indicatorsEnabled(true)
+                        .loggingEnabled(true)
+                        .build();
+
+                picasso.load(url)
+                        .placeholder(R.drawable.soda_placeholder)
+                        .into(this.mealPicture);
+            }
         }
 
         @Override
-        public void setServings(String format, int remaining, int max)
+        public void setServings(int remaining, int max)
         {
+            Resources resources = this.itemView.getContext().getResources();
+            String format = resources.getString(R.string.servings_placeholder);
+
             this.mealsLeft.setText(String.format(format, remaining, max));
         }
     }
-
 
     private void loadImage(ImageView imageView, String url)
     {
