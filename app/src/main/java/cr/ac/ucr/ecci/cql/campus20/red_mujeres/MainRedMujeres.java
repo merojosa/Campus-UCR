@@ -1,11 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,17 +7,27 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -34,61 +38,26 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-
-// Imports especificos de Directions API
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.geojson.FeatureCollection;
-
-import android.os.Handler;
-import android.view.Gravity;
-import android.widget.ListAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.style.layers.Layer;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-
-// Clases para calcular una ruta
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import android.util.Log;
-
-// Imports necesarios para la interfaz de usuario de navegacion
-import android.view.View;
-import android.widget.Button;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -98,17 +67,19 @@ import java.util.Map;
 import java.util.Queue;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-// Imports especificos de Directions API
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
+
+// Imports especificos de Directions API
+// Clases para calcular una ruta
+// Imports necesarios para la interfaz de usuario de navegacion
+// Imports especificos de Directions API
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
@@ -240,6 +211,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             }
         });
     }
+
     public void iniciarRuta() {
         boolean simulateRoute = false; //Simulación de ruta para testing
         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
@@ -264,6 +236,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             startActivity(callIntent);
         }
     }
+
     public void popupPanico() {
         final String [] items = new String[] {"911", "Contacto Emergencia"};
 
@@ -296,9 +269,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO: Refactor
-                        enviarWhatsapp(message);
-                        enviarSMS(message);
+                        boolean valido = coordenadasValidas(latitudOri, longitudOri, latitudDes, longitudDes);
+                        if(valido) {
+                            enviarWhatsapp(message);
+                            enviarSMS(message);
+                        } else {
+                            Context context = getApplicationContext();
+                            CharSequence error = "Coordenadas invalidas";
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, error, duration);
+                            toast.show();
+                        }
                     }
                 });
 
@@ -339,6 +321,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
             Toast toast = Toast.makeText(context, error, duration);
             toast.show();
+        }
+    }
+
+    public boolean coordenadasValidas(Double latitudOri, Double longitudOri, Double latitudDes, Double longitudDes) {
+        if(longitudDes == null || latitudDes == null || longitudOri == null || latitudOri == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -746,8 +736,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
-
-
     }
 
 

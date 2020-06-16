@@ -193,7 +193,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     // Envía respuesta de solicitud a ingreso a la comunidad
-    private void enviarConfirmacion(boolean aceptado) {
+    public String enviarConfirmacion(boolean aceptado) {
         List<String> toEmailList = Arrays.asList(correo); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
 
         String asunto = "";
@@ -216,6 +216,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("Excepcion", e.getMessage());
         }
+        return cuerpo;
     }
 
     // Metodos para sacar informacion de la bd de contexto y poder utilizarla
