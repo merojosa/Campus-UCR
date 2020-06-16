@@ -207,6 +207,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                 }else{
                     //cuando se le da click a un item de baño, lab... especifico
                     //Debe levantar el fragmento u otra activity
+
+                    SchoolPlacesPopUp schoolPlacesPopUp = new SchoolPlacesPopUp(view, itemValue);
+
                 }
 
             }
@@ -237,7 +240,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         getLabs(db);
         getBathrooms(db);
-//        getAsociation();
+//        getAsociation(db);
     }
 
     public void getLabs(FirebaseDB db){
