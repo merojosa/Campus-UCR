@@ -22,6 +22,8 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
         this.rootReference = FirebaseDatabase.getInstance().getReference(ROOT_PATH);
         this.rootReference.child(TEMAS_PATH).keepSynced(true);
         this.rootReference.child(FAVORITOS_PATH).keepSynced(true);
+        this.rootReference.child(PREGUNTAS_PATH).keepSynced(true);
+        this.rootReference.child(RESPUESTAS_PATH).keepSynced(true);
     }
 
     public String obtenerUsuario()

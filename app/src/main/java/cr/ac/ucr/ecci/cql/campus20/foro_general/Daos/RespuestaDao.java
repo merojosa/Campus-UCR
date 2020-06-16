@@ -41,6 +41,10 @@ public interface RespuestaDao {
     @Query("SELECT * FROM Respuesta WHERE preguntaID = :preguntaID AND temaID = :temaID")
     LiveData<List<Respuesta>> getRespuestasDePreguntaYTema(int preguntaID, int temaID);
 
+    //Para recuperar la respuesta especifica asociadas a pregunta y un tema
+    @Query("SELECT * FROM Respuesta WHERE id = :id AND preguntaID = :preguntaID AND temaID = :temaID")
+    LiveData<List<Respuesta>> getRespuestaDePreguntaYTema(int id, int preguntaID, int temaID);
+
     @Query("DELETE FROM Respuesta")
     void borrarTodo();
 

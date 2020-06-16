@@ -74,4 +74,14 @@ public class RespuestaViewModel extends AndroidViewModel {
     public LiveData<List<Respuesta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
         return mRepository.getIDPorTextoYUsuario(texto, nombreUsuario);
     }
+
+    /**
+     * Método que retorna una respuesta especifica
+     * @param idPregunta el id de la pregunta
+     * @param idTema el id del tema
+     * @return una lista de respuestas dentro de un LiveData
+     */
+    public LiveData<List<Respuesta>> getRespuestaDePreguntaYTema(int id, int idPregunta, int idTema) {
+        return mRepository.getRespuestaDePreguntaYTema(id, idPregunta, idTema);
+    }
 }

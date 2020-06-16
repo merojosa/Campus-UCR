@@ -83,4 +83,8 @@ public class RespuestaRepository {
     public LiveData<List<Respuesta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
         return mRespuestaDao.getIDPorTextoYUsuario(texto, nombreUsuario);
     }
+
+    public LiveData<List<Respuesta>> getRespuestaDePreguntaYTema(int id, int idPregunta, int idTema) {
+        return mRespuestaDao.getRespuestaDePreguntaYTema(id, idPregunta, idTema);
+    }
 }
