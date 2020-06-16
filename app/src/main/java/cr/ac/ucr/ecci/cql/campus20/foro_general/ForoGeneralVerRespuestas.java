@@ -46,11 +46,17 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    ForoGeneralFirebaseDatabase databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_respuestas);
         Intent mIntent = getIntent();
+
+        // Se instancia el firebaseReference
+        this.databaseReference = new ForoGeneralFirebaseDatabase();
 
         // Boton flotante de Agregar Respuestas
         buttonAgregarRespuestas = findViewById(R.id.buttonAgregarRespuestas);
@@ -58,6 +64,12 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         PreguntaCard preguntaSeleccionada = mIntent.getParcelableExtra("preguntaSeleccionada");
 
         int idPreguntaSeleccionada = preguntaSeleccionada.getId();
+        int idTemaSeleccionado = preguntaSeleccionada.getTemaID();
+
+        //sacar los elementos de la vista desde firebase
+        //pasarlos a respuestas
+
+
 
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
 
@@ -70,7 +82,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
-        respuestas = mRespuestaViewModel.getRespuestasDePregunta(idPreguntaSeleccionada);
+        //respuestas = mRespuestaViewModel.getRespuestasDePregunta(idPreguntaSeleccionada);
+        respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
 
         tituloPregunta = (TextView) findViewById(R.id.preguntaSeleccionada);
         tituloPregunta.setText(preguntaSeleccionada.getTexto());
@@ -145,6 +158,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private void crearRespuesta(PreguntaCard pregunta) {
         Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
         intent.putExtra("preguntaSeleccionada", pregunta);
+        intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
 
         startActivity(intent);
     }
