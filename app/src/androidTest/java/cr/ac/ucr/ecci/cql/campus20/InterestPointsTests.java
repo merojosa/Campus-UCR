@@ -73,4 +73,21 @@ public class InterestPointsTests {
         onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("Mis Copias"), is("Mis Copias"))));
     }
 
+    /**
+     * Entra a InterestPointsActivity, hace click en Bibliotecas y revisa que exista la entrada "Carlos Monge Alfaro".
+     * */
+    @Test
+    public void testInterestPointsBibliotecas(){
+        onView(withText("Bibliotecas")).perform(click());
+        onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("Carlos Monge Alfaro"), is("Carlos Monge Alfaro"))));
+    }
+
+    /**
+     * Entra a InterestPointsActivity, hace click en Oficinas y revisa que exista la entrada "OCCI".
+     * */
+    @Test
+    public void testInterestPointsOficinas(){
+        onView(withText(" Oficinas")).perform(click());
+        onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("OCCI"), is("OCCI"))));
+    }
 }
