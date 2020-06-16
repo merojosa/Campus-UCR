@@ -94,6 +94,7 @@ public class MealsActivity extends AppCompatActivity
                         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         layout = inflater.inflate(R.layout.soda_rating_dialog, null);
                         final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                        ratingBar.setStepSize((float)1.0);
                         builder.setTitle("Califica la soda");
                         //builder.setMessage("Thank you for rating us , it will help us to provide you the best service .");
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
