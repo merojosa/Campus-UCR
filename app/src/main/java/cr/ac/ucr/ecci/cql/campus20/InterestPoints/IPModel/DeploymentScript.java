@@ -57,6 +57,8 @@ public class DeploymentScript {
         createSoda();
         createPhotocopier();
         createLaboratory();
+        //createAsociation();
+        createBathrooms();
         /*Saves the activity names in room database.*/
         AsyncTask.execute(new Runnable() {
             @Override
@@ -267,38 +269,41 @@ public class DeploymentScript {
 
         Laboratory labQuimica1 = new Laboratory(1, 9, 0, "Lab 101", "Laboratorio de quimica", 1, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica1);
-
         Laboratory labQuimica2 = new Laboratory(2, 9, 0, "Lab 102", "Laboratorio de quimica", 1, 25, false, false, false, true);
         db.insert("Laboratory", labQuimica2);
-
         Laboratory labQuimica3 = new Laboratory(3, 9, 0, "Lab 103", "Laboratorio de quimica", 2, 25, false, false, false, true);
         db.insert("Laboratory", labQuimica3);
-
         Laboratory labQuimica4 = new Laboratory(4, 9, 0, "Lab 205", "Laboratorio de quimica", 2, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica4);
-
         Laboratory labQuimica5 = new Laboratory(5, 9, 0, "Lab 206", "Laboratorio de quimica", 2, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica5);
 
         Laboratory labComputacion1 = new Laboratory(6, 36, 0, "Lab 104", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion1);
-
         Laboratory labComputacion2 = new Laboratory(7, 36, 0, "Lab 105", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion2);
-
         Laboratory labComputacion3 = new Laboratory(8, 36, 0, "Lab 106", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion3);
-
         Laboratory labComputacion4 = new Laboratory(9, 36, 0, "Lab 107", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion4);
-
         Laboratory labComputacion5 = new Laboratory(10, 36, 0, "Lab redes y oper", "Laboratorio exclusivo para estudiantes del " +
                 "proyecto integador de redes y sitemas operativos", 3, 25, true, true, true, false);
         db.insert("Laboratory", labComputacion5);
-
         Laboratory labComputacion6 = new Laboratory(11, 36, 0, "Lab bases e inge", "Laboratorio de exclusivo para estudiantes del " +
                 "proyecto integrador de sistemas operativos y bases de datos", 4, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion6);
+    }
+
+    //verificar más adelante, pues es una asocia por escuela
+    private void createAsociation(){
+        Asociation asocia0 = new Asociation(0, 0, 0, "Asocia de ", "Asociación de estudiantes de ", 1, 15, true, true, false);
+        db.insert("Asociation", asocia0);
+    }
+
+    private void createBathrooms(){
+        Bathroom br1 = new Bathroom(0, 0, 0, "Bañoo", "", 1, true);
+        db.insert("Bathroom", br1);
+
     }
 
     private void createLibrary() {

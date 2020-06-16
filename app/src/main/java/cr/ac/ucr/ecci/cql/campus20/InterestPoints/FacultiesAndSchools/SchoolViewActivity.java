@@ -103,9 +103,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
         TextView tittle = findViewById(R.id.schoolName);
 
+        //Para opcines del dropdown
         populateOptionsList();
         getPlacesInSchool();
-
         listHelper = false;
         listView = (ListView) findViewById(R.id.listSchoolItems);
         setListComponents();
@@ -143,21 +143,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     }
 
     public void setListComponents(){
-
-//        //Para pruebas
-//        List<Place> valuesLabs = laboratoriesList;
-//        List<Place> valuesAsc = new ArrayList<>();
-//        List<Place> valuesBath = new ArrayList<>();
-//
-////        String[] valuesLabs1 = new String[] { "Lab1", "Lab2", "Lab3"};
-//        String[] valuesAsc1 = new String[] { "Horario: 7:00-19:00"};
-//        String[] valuesBath1 = new String[] { "Baño 1er piso", "Baño 2do piso", "Baño 3er piso"};
-//
-////        auxTest(valuesLabs, valuesLabs1);
-//
-//        auxTest(valuesAsc, valuesAsc1);
-//        auxTest(valuesBath, valuesBath1);
-//        //
 
         //Creacion del adaptador
         SchoolPlacesAdapter adapter = new SchoolPlacesAdapter(optionsSchools, this, listOptions);
@@ -252,7 +237,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         getLabs(db);
         getBathrooms(db);
-        getAsociation(db);
+//        getAsociation(db);
     }
 
     public void getLabs(FirebaseDB db){
@@ -297,26 +282,26 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         refBathrooms.addValueEventListener(listenerBathrooms);
     }
 
-    public void getAsociation(FirebaseDB db){
-        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
-        listenerAsociation = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot asociation : dataSnapshot.getChildren()) {
-                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
-                        asociationList.add(asociation.getValue(Asociation.class));
-                    }
-                }
-                removeListener();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-            }
-        };
-        refAsociation.addValueEventListener(listenerAsociation);
-    }
+//    public void getAsociation(FirebaseDB db){
+//        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
+//        listenerAsociation = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot asociation : dataSnapshot.getChildren()) {
+//                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
+//                        asociationList.add(asociation.getValue(Asociation.class));
+//                    }
+//                }
+//                removeListener();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+//            }
+//        };
+//        refAsociation.addValueEventListener(listenerAsociation);
+//    }
 
     private void removeListener(){
         if(refLabs != null && listenerLabs != null)
@@ -325,8 +310,8 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         if(refBathrooms != null && listenerBathrooms != null)
             refBathrooms.removeEventListener(listenerBathrooms);
 
-        if(refAsociation != null && listenerAsociation != null)
-            refAsociation.removeEventListener(listenerAsociation);
+//        if(refAsociation != null && listenerAsociation != null)
+//            refAsociation.removeEventListener(listenerAsociation);
     }
 
 }
