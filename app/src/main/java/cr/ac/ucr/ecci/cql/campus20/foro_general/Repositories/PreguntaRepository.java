@@ -72,4 +72,11 @@ public class PreguntaRepository {
     public LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){
         return mPreguntaDao.getIDPorTextoYUsuario(texto, nombreUsuario);
     }
+
+    /**
+     * Método que borra lo que se encuentra en la tabla Pregunta
+     */
+    public void borrarTodo(){
+        mPreguntaDao.borrarTodo();
+    }
 }

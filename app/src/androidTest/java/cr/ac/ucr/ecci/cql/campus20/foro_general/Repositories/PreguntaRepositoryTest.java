@@ -68,6 +68,9 @@ public class PreguntaRepositoryTest {
 
         // Se crea el repositorio
         this.repositorio = new PreguntaRepository((Application) context.getApplicationContext());
+        // Se debe eliminar la información del repositorio ya que, una vez corrido el test
+        // almacenaría las preguntas creadas
+        this.repositorio.borrarTodo();
     }
 
 
@@ -84,7 +87,7 @@ public class PreguntaRepositoryTest {
         // Se devuelven los favoritos almacenados en la base de datos por medio del Repository
         List<Pregunta> preguntasTema = LiveDataTestUtil.getValue(this.repositorio.getPreguntasTema(TEMA_ID1));
 
-        // Prueba que la lista NO contiene Favoritos
+        // Prueba que la lista NO contiene preguntas
         assertTrue("Falla la prueba", preguntasTema.isEmpty());
     }
 
@@ -103,8 +106,6 @@ public class PreguntaRepositoryTest {
         this.database.temaDao().insert(temaPrueba2);
 
         Thread.sleep(100);
-
-        Tema tema = this.database.temaDao().buscarTemaPorID(TEMA_ID1);
 
         // Se prueba el insert
         this.repositorio.insert(PREGUNTA_PRUEBA);

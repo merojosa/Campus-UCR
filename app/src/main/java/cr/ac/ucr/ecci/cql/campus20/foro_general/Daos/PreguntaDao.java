@@ -27,7 +27,7 @@ public interface PreguntaDao
     @Delete
     void delete(Pregunta pregunta);
 
-    // Recuperar el ID, basándose por el texto de la pregunta y el nombre del usuario que la escribió
+    // Recuperar pregunta, basándose por el texto de la pregunta y el nombre del usuario que la escribió
     @Query("SELECT * FROM Pregunta WHERE texto =:texto AND nombreUsuario =:nombreUsuario")
     LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario);
 
