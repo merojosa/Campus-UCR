@@ -3,7 +3,6 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
@@ -19,6 +18,12 @@ public class Place extends GeneralData implements Parcelable {
     public int image;
     public double latitude;
     public double longitude;
+
+    private boolean wifi;
+    private int capacity;
+    private boolean computers;
+    private boolean projector;
+    private boolean extintor;
 
     public static final String TYPE_COFFEE = "Coffee";
     public static final String TYPE_FACULTY = "Faculty";
@@ -57,12 +62,30 @@ public class Place extends GeneralData implements Parcelable {
         this.comments = comments;
     }
 
-    public Place(int id, String name, String description, String type, int floor) {
+    //Para los laboratorios
+    public Place(int id, String name, String description, String type, int floor, int capacity,
+                 boolean wifi, boolean computers, boolean projector, boolean extintor) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.floor = floor;
+        this.setCapacity(capacity);
+        this.setWifi(wifi);
+        this.setComputers(computers);
+        this.setProjector(projector);
+        this.setExtintor(extintor);
+
+    }
+
+    //Para los baños
+    public Place(int id, String name, String description, String type, int floor, boolean wifi) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.floor = floor;
+        this.setWifi(wifi);
     }
 
     // Used in the Deployment Script/Fincas/Places
@@ -176,6 +199,46 @@ public class Place extends GeneralData implements Parcelable {
         this.longitude = longitude;
     }
 
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean isComputers() {
+        return computers;
+    }
+
+    public void setComputers(boolean computers) {
+        this.computers = computers;
+    }
+
+    public boolean isProjector() {
+        return projector;
+    }
+
+    public void setProjector(boolean projector) {
+        this.projector = projector;
+    }
+
+    public boolean isExtintor() {
+        return extintor;
+    }
+
+    public void setExtintor(boolean extintor) {
+        this.extintor = extintor;
+    }
+
     public ArrayList<Comment> getComments() {
         return comments;
     }
@@ -202,4 +265,6 @@ public class Place extends GeneralData implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeList(comments);
     }
+
+
 }

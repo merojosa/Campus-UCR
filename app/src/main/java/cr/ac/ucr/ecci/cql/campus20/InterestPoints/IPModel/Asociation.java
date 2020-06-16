@@ -15,16 +15,16 @@ public class Asociation extends Place {
 
     public Asociation() { }
 
-    public Asociation(int id, int id_school_fk, int id_place_fk, String name, String description,
-                      int floor, int capacity, boolean wifi, boolean computers, boolean extintor) {
-        super(id, name, description, TYPE_ASOCIATION, floor);
-        this.id_school_fk = id_school_fk;
-        this.id_place_fk = id_place_fk;
-        this.capacity = capacity;
-        this.wifi = wifi;
-        this.computers = computers;
-        this.extintor = extintor;
-    }
+//    public Asociation(int id, int id_school_fk, int id_place_fk, String name, String description,
+//                      int floor, int capacity, boolean wifi, boolean computers, boolean extintor) {
+//        super(id, name, description, TYPE_ASOCIATION, floor);
+//        this.id_school_fk = id_school_fk;
+//        this.id_place_fk = id_place_fk;
+//        this.capacity = capacity;
+//        this.wifi = wifi;
+//        this.computers = computers;
+//        this.extintor = extintor;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Asociation(Parcel in) {

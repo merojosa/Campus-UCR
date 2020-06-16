@@ -14,10 +14,9 @@ public class Bathroom extends Place {
     public Bathroom() { }
 
     public Bathroom(int id, int id_school_fk, int id_place_fk, String name, String description, int floor, boolean wifi) {
-        super(id, name, description, TYPE_BATHROOM, floor);
+        super(id, name, description, TYPE_BATHROOM, floor, wifi);
         this.id_school_fk = id_school_fk;
         this.id_place_fk = id_place_fk;
-        this.wifi = wifi;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -30,7 +29,7 @@ public class Bathroom extends Place {
         super.description = in.readString();
 //        super.rating = in.readInt();
         super.floor = in.readInt();
-        wifi = in.readBoolean();
+        super.setWifi(in.readBoolean());
     }
 
     public int getId_school_fk() {

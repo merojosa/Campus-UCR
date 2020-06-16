@@ -18,14 +18,9 @@ public class Laboratory extends Place {
 
     public Laboratory(int id, int id_school_fk, int id_place_fk, String name, String description,
                       int floor, int capacity, boolean wifi, boolean computers, boolean projector, boolean extintor) {
-        super(id, name, description, TYPE_LABORATORY, floor);
+        super(id, name, description, TYPE_LABORATORY, floor, capacity, wifi, computers, projector, extintor);
         this.id_school_fk = id_school_fk;
         this.id_place_fk = id_place_fk;
-        this.setCapacity(capacity);
-        this.wifi = wifi;
-        this.setComputers(computers);
-        this.setProjector(projector);
-        this.setExtintor(extintor);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -38,11 +33,11 @@ public class Laboratory extends Place {
         super.description = in.readString();
         super.rating = in.readInt();
         super.floor = in.readInt();
-        capacity = in.readInt();
-        wifi = in.readBoolean();
-        computers = in.readBoolean();
-        projector = in.readBoolean();
-        extintor = in.readBoolean();
+        super.setCapacity(in.readInt());
+        super.setWifi(in.readBoolean());
+        super.setComputers(in.readBoolean());
+        super.setProjector(in.readBoolean());
+        super.setExtintor(in.readBoolean());
     }
 
     public int getId_school_fk() {
@@ -61,7 +56,7 @@ public class Laboratory extends Place {
         this.id_place_fk = id_place_fk;
     }
 
-    public boolean get_wifi(){
+    public boolean is_wifi(){
         return this.wifi;
     }
 
@@ -75,7 +70,7 @@ public class Laboratory extends Place {
         this.capacity = capacity;
     }
 
-    public boolean getComputers() {
+    public boolean isComputers() {
         return computers;
     }
 
@@ -83,7 +78,7 @@ public class Laboratory extends Place {
         this.computers = computers;
     }
 
-    public boolean getProjector() {
+    public boolean isProjector() {
         return projector;
     }
 
@@ -91,7 +86,7 @@ public class Laboratory extends Place {
         this.projector = projector;
     }
 
-    public boolean getExtintor() {
+    public boolean isExtintor() {
         return extintor;
     }
 

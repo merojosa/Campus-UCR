@@ -351,10 +351,10 @@ public class DeploymentScript {
     }
 
     //verificar más adelante, pues es una asocia por escuela
-    private void createAsociation(){
-        Asociation asocia0 = new Asociation(0, 0, 0, "Asocia de ", "Asociación de estudiantes de ", 1, 15, true, true, false);
-        db.insert("Asociation", asocia0);
-    }
+//    private void createAsociation(){
+//        Asociation asocia0 = new Asociation(0, 0, 0, "Asocia de ", "Asociación de estudiantes de ", 1, 15, true, true, false);
+//        db.insert("Asociation", asocia0);
+//    }
 
     private void createBathrooms(){
         Bathroom br1 = new Bathroom(0, 0, 0, "Baño de Artes Dramáticas", "", 1, true);
