@@ -27,18 +27,22 @@ public class Respuesta {
     @ColumnInfo(name = "preguntaID")
     public int preguntaID;
 
+    @ColumnInfo(name = "temaID")
+    public int temaID;
+
     @ColumnInfo(name = "cantidad_likes")
     public int contadorLikes = 0;
 
     @ColumnInfo(name = "cantidad_dislikes")
     public int contadorDislikes = 0;
 
-    public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
+    public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int temaID, int contadorLikes, int contadorDislikes) {
     //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.texto = texto;
         this.preguntaID = preguntaID;
+        this.temaID = temaID;
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
     }

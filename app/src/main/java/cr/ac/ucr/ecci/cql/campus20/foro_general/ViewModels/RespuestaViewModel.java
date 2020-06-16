@@ -30,6 +30,16 @@ public class RespuestaViewModel extends AndroidViewModel {
     }
 
     /**
+     * Método que retorna las respuestas de una pregunta especifica
+     * @param idPregunta el id de la pregunta
+     * @param idTema el id del tema
+     * @return una lista de respuestas dentro de un LiveData
+     */
+    public LiveData<List<Respuesta>> getRespuestasDePreguntaYTema(int idPregunta, int idTema) {
+        return mRepository.getRespuestasDePreguntaYTema(idPregunta, idTema);
+    }
+
+    /**
      * Método que inserta una respuesta
      * @param respuesta la pregunta a insertar
      */

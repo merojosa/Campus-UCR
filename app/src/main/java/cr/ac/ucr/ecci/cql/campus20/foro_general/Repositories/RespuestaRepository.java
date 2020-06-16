@@ -43,6 +43,16 @@ public class RespuestaRepository {
     }
 
     /**
+     * Recupera un LiveData (lista que puede cambiar) de respuestas de una pregunta asociado
+     * @param idPregunta Identificar de la pregunta
+     * @param idTema Identificar del tema
+     * @return
+     */
+    public LiveData<List<Respuesta>> getRespuestasDePreguntaYTema(int idPregunta, int idTema){
+        return mRespuestaDao.getRespuestasDePreguntaYTema(idPregunta, idTema);
+    }
+
+    /**
      * Update a la base de datos, para sumar al contador de likes
      * @param id Identificacion de la pregunta
      * @param num cantidad a sumar al contador de likes

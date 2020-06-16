@@ -63,6 +63,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         PreguntaCard preguntaSeleccionada = mIntent.getParcelableExtra("preguntaSeleccionada");
 
         int idPreguntaSeleccionada = preguntaSeleccionada.getId();
+        int idTemaSeleccionado = preguntaSeleccionada.getTemaID();
 
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
 
@@ -75,7 +76,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
-        respuestas = mRespuestaViewModel.getRespuestasDePregunta(idPreguntaSeleccionada);
+        //respuestas = mRespuestaViewModel.getRespuestasDePregunta(idPreguntaSeleccionada);
+        respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
 
         tituloPregunta = (TextView) findViewById(R.id.preguntaSeleccionada);
         tituloPregunta.setText(preguntaSeleccionada.getTexto());

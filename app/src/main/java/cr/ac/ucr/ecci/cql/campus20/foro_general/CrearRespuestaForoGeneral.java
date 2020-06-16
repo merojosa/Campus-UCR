@@ -144,9 +144,10 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private void agregarRespuesta() {
         String textoRespuesta = mEditText.getText().toString();
         int idPregunta = pregunta.getId();
+        int idTema = pregunta.getTemaID();
 
         //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
-        Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, 0, 0);
+        Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
         mRespuestaViewModel.insert(respuesta);
 
         //insertar en firebase
