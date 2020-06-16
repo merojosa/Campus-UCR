@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;

@@ -55,6 +55,7 @@ public class MainForoGeneral extends AppCompatActivity {
     ForoGeneralFirebaseDatabase databaseReference;
     DatabaseReference temasDatabaseReference;
     List<Tema> temasLocales;
+    List<Favorito> favoritosLocales;
 
     int onlyOnce = 0;
 
@@ -74,6 +75,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
         idList = new ArrayList<>();
         temasLocales = new ArrayList<>();
+        favoritosLocales = new ArrayList<>();
 
         // Se instancia el RecyclerView
         RecyclerView recyclerView = findViewById(R.id.listaTemasFavoritos);
@@ -115,6 +117,44 @@ public class MainForoGeneral extends AppCompatActivity {
 
         adapter.setTemas(this.temasLocales);
 
+        // Prueba con el Favorito -> usuario
+        this.databaseReference.getFavoritosRef().child(this.databaseReference.obtenerUsuario())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // Se borra la lista
+                        MainForoGeneral.this.favoritosLocales.clear();
+
+                        // Chequea si existe el snapshot y si el usuario tiene favoritos almacenados en Firebase
+                        if (dataSnapshot.exists()) //&& dataSnapshot.hasChild(ForoGeneralVerTemas.this.databaseReference.obtenerUsuario()))
+                        {
+                            // Se recorre el snapshot para sacar los datos
+                            for (DataSnapshot ds : dataSnapshot.getChildren())
+                            {
+                                // Esto podría producir NullPointerException
+                                int id = ds.child("idTema").getValue(Integer.class);
+                                String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+
+                                // Se crea el tema
+                                Favorito fav = new Favorito(id, nombreUsuario);
+                                MainForoGeneral.this.favoritosLocales.add(fav);
+                            }
+                            adapter.setFavoritos(MainForoGeneral.this.favoritosLocales);
+
+                            int count = MainForoGeneral.this.favoritosLocales.size();
+                            for (int i = 0; i< count; i++){
+                                idList.add(i, MainForoGeneral.this.favoritosLocales.get(i).getIdTema());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Failed to read value
+                        Log.w("FIREBASE", "Fallo al leer favoritos", databaseError.toException());
+                    }
+                });
+
 //        try
 //        {
 //            Thread.sleep(100);
@@ -142,13 +182,14 @@ public class MainForoGeneral extends AppCompatActivity {
                 if (MainForoGeneral.this.temasLocales != null)
                 {
                     // Update the cached copy of the words in the adapter.
-                    adapter.setFavoritos(favoritos);
+                    //adapter.setFavoritos(favoritos);
 
-                    //para considerar cambios
-                    int count = favoritos.size();
-                    for (int i = 0; i< count; i++){
-                        idList.add(i, favoritos.get(i).getIdTema());
-                    }
+//                    //para considerar cambios
+//                    int count = favoritos.size();
+//                    for (int i = 0; i< count; i++){
+//                        idList.add(i, favoritos.get(i).getIdTema());
+//                    }
+                    Log.d("FIREBASE", "Entró al viejo adapter");
                 }
 
             }
@@ -247,8 +288,6 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-        // Obtiene el nombre del usuario (para búsquedas e inserciones en favoritos)
-        //Toast.makeText(MainForoGeneral.this, this.databaseReference.obtenerUsuario(), Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -13,13 +13,15 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
     private static String PREGUNTAS_PATH = "preguntas";
 
     private DatabaseReference rootReference = null;
+    private FirebaseDatabase mDatabase;
 
     // Constructor
     public ForoGeneralFirebaseDatabase()
     {
         this.rootReference = FirebaseDatabase.getInstance().getReference(ROOT_PATH);
+        this.rootReference.child(TEMAS_PATH).keepSynced(true);
+        this.rootReference.child(FAVORITOS_PATH).keepSynced(true);
     }
-
 
     public String obtenerUsuario()
     {
@@ -31,6 +33,12 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
     public DatabaseReference getTemasRef()
     {
         return this.rootReference.child(TEMAS_PATH);
+    }
+
+    // Método que obtiene la referencia al child Favoritos
+    public DatabaseReference getFavoritosRef()
+    {
+        return this.rootReference.child(FAVORITOS_PATH);
     }
 
     // Método que devuelve la referencia al child Preguntas

@@ -23,10 +23,12 @@ public class Redireccionador
 {
     private DatabaseReference mDatabase;
     private CampusBD loginBD;
+    private FirebaseDatabase base;
 
 
     public Redireccionador()
     {
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         loginBD = new FirebaseBD();
     }
