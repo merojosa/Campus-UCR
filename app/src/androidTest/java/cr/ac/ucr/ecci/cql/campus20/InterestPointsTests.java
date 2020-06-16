@@ -10,11 +10,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeShopsActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierActivity;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
@@ -79,7 +83,7 @@ public class InterestPointsTests {
     @Test
     public void testInterestPointsBibliotecas(){
         onView(withText("Bibliotecas")).perform(click());
-        onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("Carlos Monge Alfaro"), is("Carlos Monge Alfaro"))));
+        onData(allOf(is(instanceOf(LibraryActivity.class)), hasEntry(equalTo("Carlos Monge Alfaro"), is("Carlos Monge Alfaro"))));
     }
 
     /**
@@ -88,6 +92,24 @@ public class InterestPointsTests {
     @Test
     public void testInterestPointsOficinas(){
         onView(withText(" Oficinas")).perform(click());
-        onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("OCCI"), is("OCCI"))));
+        onData(allOf(is(instanceOf(OfficeActivity.class)), hasEntry(equalTo("OCCI"), is("OCCI"))));
+    }
+
+    /**
+     * Entra a InterestPointsActivity, hace click en Facultades y revisa que exista la entrada "Artes".
+     * */
+    @Test
+    public void testInterestPointsFaculties(){
+        onView(withText("Facultades")).perform(click());
+        onData(allOf(is(instanceOf(FacultiesActivity.class)), hasEntry(equalTo("Artes"), is("Artes"))));
+    }
+
+    /**
+     * Entra a InterestPointsActivity, hace click en Cafeterías y revisa que exista la entrada "95 grados".
+     * */
+    @Test
+    public void testInterestPointsCofeeShops(){
+        onView(withText("Cafeterías")).perform(click());
+        onData(allOf(is(instanceOf(CoffeShopsActivity.class)), hasEntry(equalTo("95 grados"), is("95 grados"))));
     }
 }
