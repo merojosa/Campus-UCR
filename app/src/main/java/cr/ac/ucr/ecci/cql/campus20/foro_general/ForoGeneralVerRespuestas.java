@@ -112,11 +112,26 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                     if(temaID == idTemaSeleccionado){
                         Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes);
                         ForoGeneralVerRespuestas.this.respuestasFireBase.add(respuesta);
+
+
+                        //busca si esta en la base local, si no esta lo agrega
+                        /*temp = mRespuestaViewModel.getRespuestaDePreguntaYTema(id, idPreguntaSeleccionada, idTemaSeleccionado);
+                        temp.observe(ForoGeneralVerRespuestas.this, new Observer<List<Respuesta>>() {
+                            @Override
+                            public void onChanged(List<Respuesta> respuestas) {
+                                if (respuestas.size() < 1) {
+                                    //el valor no esta en room, hay que agregarlo
+                                    mRespuestaViewModel.insert(respuesta);
+                                    //adapterRespuesta.setRespuestas(respuestas);
+                                }
+                            }
+                        });*/
                     }
 
                 }
                 if(ForoGeneralVerRespuestas.this.respuestasFireBase.size()>0){
                     adapterRespuesta.setRespuestas(ForoGeneralVerRespuestas.this.respuestasFireBase);
+                    //confirmacion temporal para saber cual presentar
                     enNube[0] = true;
                 }
 
