@@ -213,7 +213,6 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
-
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);
