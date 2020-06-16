@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,9 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.geojson.FeatureCollection;
 
 import android.os.Handler;
+import android.view.Gravity;
+import android.widget.ListAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -93,7 +97,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-// Imports para animación de localización actual
+// Imports para animación de ruta
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TypeEvaluator;
@@ -102,7 +106,6 @@ import android.graphics.Color;
 import android.view.animation.LinearInterpolator;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.geojson.LineString;
-//import com.mapbox.mapboxandroiddemo.R;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
@@ -235,7 +238,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        panico();
+                        popupPanico();
                     }
                 });
 
@@ -253,16 +256,38 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
     }
 
-    //Funcionalidad botón de pánico
-    public void panico() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:911"));
+    public void panico(int truePanic) {
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        String num="911";
+        if (truePanic>0){
+            num = "12345678";
+        }
+        callIntent.setData(Uri.parse("tel:"+num));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             startActivity(callIntent);
         }
+    }
+    public void popupPanico() {
+        final String [] items = new String[] {"911", "Contacto Emergencia"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
+        builder.setTitle("¡EMERGENCIA!");
+
+        builder.setIcon(R.drawable.sos);
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                panico(which);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     //Pop up para obtener confirmación de usuario respecto a si desea compartir su ruta
@@ -447,6 +472,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             permissionsManager.requestLocationPermissions(this);
         }
     }
+
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
@@ -457,7 +483,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         locationEngine.requestLocationUpdates(request, callback, getMainLooper());
         locationEngine.getLastLocation(callback);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
