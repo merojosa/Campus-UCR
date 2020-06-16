@@ -2,17 +2,13 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-
-import static org.mockito.Mockito.when;
 
 public class MealsPresenterTest
 {
@@ -27,16 +23,24 @@ public class MealsPresenterTest
     }
 
     @Test
-    public void testOnNullListName() throws Exception
+    public void testNullListSetName() throws Exception
     {
-        presenter.onBindMealItemAtPosition(0, null);
+        presenter.onBindMealItemAtPosition(0, view);
+        Mockito.verify(view, Mockito.times(0)).setName("test");
+    }
+
+    @Test
+    public void testEmptyListSetName() throws Exception
+    {
+        presenter.setMeals(new ArrayList<>());
+        presenter.onBindMealItemAtPosition(0, view);
         Mockito.verify(view, Mockito.times(0)).setName("test");
     }
 
     @Test
     public void testListName() throws Exception
     {
-        List<Meal> meals = new ArrayList<Meal>();
+        List<Meal> meals = new ArrayList<>();
         Meal meal = Mockito.mock(Meal.class);
         meals.add(meal);
         Mockito.when(meal.getName()).thenReturn("Test meal");
