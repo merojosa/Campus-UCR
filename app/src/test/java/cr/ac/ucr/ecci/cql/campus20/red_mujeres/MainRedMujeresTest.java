@@ -1,9 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -109,6 +111,14 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void updateMyLocation() {
+    void UpdateMyLocation() { // Se prueba que el segundo parametro sea de tipo Double
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        ArgumentCaptor<Double> valueCapture = ArgumentCaptor.forClass(Double.class);
+        doNothing().when(test).UpdateMyLocation(valueCapture.capture(),valueCapture.capture());
+        test.UpdateMyLocation(9.903952,-83.985007);
+
+        assertEquals((Double)(-83.985007),valueCapture.getValue());
     }
+
+
 }
