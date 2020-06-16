@@ -99,8 +99,8 @@ public class MealsActivity extends AppCompatActivity
                                 Float value = ratingBar.getRating();
                                 // SET RATING OF USER FOR THIS SODA WITH FIREBASE
                                 updateFirebaseUserRate("1", (double)value);
-                                // UPDATE TOTAL RATING FOR RSODA
-                                // ...SA
+                                // UPDATE TOTAL RATING FOR SODA
+                                // ...
                                 sodaRatingNum.setText(value.toString());
                                 dialog.dismiss();
                             }

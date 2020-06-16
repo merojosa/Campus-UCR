@@ -1,6 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -76,13 +81,15 @@ public class SodaMapActivity extends AppCompatActivity implements PermissionsLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Mapbox access token is configured here. This needs to be called either in your application
         // object or in the same activity which contains the mapview.
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
 
         // This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_soda_map);
+
+        sodaLat = getIntent().getDoubleExtra("sodaLat", 0.0);
+        sodaLong = getIntent().getDoubleExtra("sodaLong", 0.0);
 
         // Setup the MapView
         mapView = findViewById(R.id.mapView);
@@ -97,21 +104,31 @@ public class SodaMapActivity extends AppCompatActivity implements PermissionsLis
 
                         enableLocationComponent(style);
 
+                        if(locationComponent != null && locationComponent.getLastKnownLocation() != null)
+                        {
+
+                            origin = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                                    locationComponent.getLastKnownLocation().getLatitude());
+                            destination = Point.fromLngLat(sodaLong, sodaLat);
+
+                            initSource(style);
+
+                            initLayers(style);
+
+                            // Get the directions route from the Mapbox Directions API
+                            getRoute(mapboxMap, origin, destination);
+                        }
+                        else
+                        {
+                            Context context = getApplicationContext();
+                            CharSequence text = "GPS desactivado o activandose.";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
 
 
-                        origin = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                                locationComponent.getLastKnownLocation().getLatitude());
 
-                        sodaLat = getIntent().getDoubleExtra("sodaLat", 0.0);
-                        sodaLong = getIntent().getDoubleExtra("sodaLong", 0.0);
-                        destination = Point.fromLngLat(sodaLong, sodaLat);
-
-                        initSource(style);
-
-                        initLayers(style);
-
-                        // Get the directions route from the Mapbox Directions API
-                        getRoute(mapboxMap, origin, destination);
                     }
                 });
             }
@@ -159,30 +176,55 @@ public class SodaMapActivity extends AppCompatActivity implements PermissionsLis
 
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
-        // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(this))
-        {
-            // Get an instance of the component
-            locationComponent = mapboxMap.getLocationComponent();
 
-            // Activate with options
-            locationComponent.activateLocationComponent(
-                    LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-            // Enable to make component visible
-            locationComponent.setLocationComponentEnabled(true);
-
-            // Set the component's camera mode
-            locationComponent.setCameraMode(CameraMode.TRACKING);
-
-            // Set the component's render mode
-            locationComponent.setRenderMode(RenderMode.COMPASS);
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            buildAlertMessageNoGps();
         }
-        else
+
+        if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) )
         {
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(this);
+            // Check if permissions are enabled and if not request
+            if (PermissionsManager.areLocationPermissionsGranted(this))
+            {
+
+                // Get an instance of the component
+                locationComponent = mapboxMap.getLocationComponent();
+
+                if(locationComponent != null)
+                {
+                    // Activate with options
+                    locationComponent.activateLocationComponent(
+                            LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+
+                    // Enable to make component visible
+                    locationComponent.setLocationComponentEnabled(true);
+
+                    // Set the component's camera mode
+                    locationComponent.setCameraMode(CameraMode.TRACKING);
+
+                    // Set the component's render mode
+                    locationComponent.setRenderMode(RenderMode.COMPASS);
+                }
+                else
+                {
+                    Context context = getApplicationContext();
+                    CharSequence text = "GPS desactivado o activandose.";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+
+
+            }
+            else
+            {
+                permissionsManager = new PermissionsManager(this);
+                permissionsManager.requestLocationPermissions(this);
+            }
         }
+
     }
 
     /**
@@ -318,4 +360,22 @@ public class SodaMapActivity extends AppCompatActivity implements PermissionsLis
         super.onLowMemory();
         mapView.onLowMemory();
     }
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 }
