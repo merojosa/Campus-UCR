@@ -10,7 +10,6 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories.PreguntaRepository;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
-
 public class PreguntaViewModel extends AndroidViewModel {
 
     // Definición del Repository y de la lista en LiveData

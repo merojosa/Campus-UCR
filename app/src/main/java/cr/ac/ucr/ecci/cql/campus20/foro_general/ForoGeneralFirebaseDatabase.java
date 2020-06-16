@@ -11,6 +11,7 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
     private static String TEMAS_PATH = "temas";
     private static String FAVORITOS_PATH = "favoritos";
     private static String PREGUNTAS_PATH = "preguntas";
+    private static String RESPUESTAS_PATH = "respuestas";
 
     private DatabaseReference rootReference = null;
     private FirebaseDatabase mDatabase;
@@ -43,5 +44,9 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
 
     // Método que devuelve la referencia al child Preguntas
     public DatabaseReference getPreguntasRef() { return this.rootReference.child(PREGUNTAS_PATH); }
+
+    // Método que devuelve la referencia al child Respuestas
+    public DatabaseReference getRespuestasRef() { return this.rootReference.child(RESPUESTAS_PATH); }
+
 
 }
