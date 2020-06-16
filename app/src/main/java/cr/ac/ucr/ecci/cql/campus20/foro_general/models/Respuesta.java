@@ -7,10 +7,18 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Respuesta",
-        foreignKeys = @ForeignKey(entity = Pregunta.class,
-        parentColumns = "id",
-        childColumns = "preguntaID",
-        onDelete = ForeignKey.RESTRICT))
+        foreignKeys = {
+        @ForeignKey(entity = Pregunta.class,
+                        parentColumns = "id",
+                        childColumns = "preguntaID",
+                        onDelete = ForeignKey.RESTRICT
+        ),
+        @ForeignKey(entity = Tema.class,
+                parentColumns = "id",
+                childColumns = "temaID",
+                onDelete = ForeignKey.RESTRICT
+        )
+        })
 
 public class Respuesta {
     @PrimaryKey(autoGenerate = true)//Auto incremental
