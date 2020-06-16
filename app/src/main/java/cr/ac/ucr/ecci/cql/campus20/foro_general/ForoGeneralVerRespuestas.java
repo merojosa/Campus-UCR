@@ -66,6 +66,11 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         int idPreguntaSeleccionada = preguntaSeleccionada.getId();
         int idTemaSeleccionado = preguntaSeleccionada.getTemaID();
 
+        //sacar los elementos de la vista desde firebase
+        //pasarlos a respuestas
+
+
+
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
 
         recyclerViewRespuestas.setLayoutManager(new LinearLayoutManager(this));
