@@ -237,7 +237,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         getLabs(db);
         getBathrooms(db);
-//        getAsociation(db);
+//        getAsociation();
     }
 
     public void getLabs(FirebaseDB db){
@@ -250,7 +250,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                         laboratoriesList.add(laboratory.getValue(Laboratory.class));
                     }
                 }
-                removeListener();
+                removeListenerLabs();
             }
 
             @Override
@@ -271,7 +271,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                         bathroomsList.add(bathroom.getValue(Bathroom.class));
                     }
                 }
-                removeListener();
+                removeListenerBathrooms();
             }
 
             @Override
@@ -283,6 +283,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     }
 
 //    public void getAsociation(FirebaseDB db){
+//        FirebaseDB db = new FirebaseDB();
 //        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
 //        listenerAsociation = new ValueEventListener() {
 //            @Override
@@ -303,13 +304,17 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 //        refAsociation.addValueEventListener(listenerAsociation);
 //    }
 
-    private void removeListener(){
+    private void removeListenerLabs(){
         if(refLabs != null && listenerLabs != null)
             refLabs.removeEventListener(listenerLabs);
 
+//        if(refAsociation != null && listenerAsociation != null)
+//            refAsociation.removeEventListener(listenerAsociation);
+    }
+
+    private void removeListenerBathrooms(){
         if(refBathrooms != null && listenerBathrooms != null)
             refBathrooms.removeEventListener(listenerBathrooms);
-
 //        if(refAsociation != null && listenerAsociation != null)
 //            refAsociation.removeEventListener(listenerAsociation);
     }
