@@ -1,9 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
