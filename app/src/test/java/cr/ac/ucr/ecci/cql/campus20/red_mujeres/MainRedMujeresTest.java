@@ -11,15 +11,33 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class MainRedMujeresTest {
+
+    @Test
+    void onCreate() {
+    }
+
+    @Test
+    void onMapReady() {
+    }
+
+    @Test
+    void iniciarRuta() {
+    }
 
     @Test
     void panico() {
     }
 
     @Test
-    void popupPanico() {
+    void popupPanicoCallsPanico() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        test.popupPanico();
+        verify(test, times(1)).popupPanico();
     }
 
     @Test
@@ -48,7 +66,6 @@ class MainRedMujeresTest {
 
     @Test
     void onRequestPermissionsResult() {
-
     }
 
     @Test

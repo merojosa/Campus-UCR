@@ -38,26 +38,62 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+
+// Imports especificos de Directions API
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.geojson.FeatureCollection;
+
+import android.os.Handler;
+import android.view.Gravity;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+
+// Clases para calcular una ruta
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import android.util.Log;
+
+// Imports necesarios para la interfaz de usuario de navegacion
+import android.view.View;
+import android.widget.Button;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -71,15 +107,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// Imports especificos de Directions API
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-// Imports especificos de Directions API
-// Clases para calcular una ruta
-// Imports necesarios para la interfaz de usuario de navegacion
-// Imports especificos de Directions API
+// Imports para animación de ruta
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
+import android.view.animation.LinearInterpolator;
+import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.geojson.LineString;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.turf.TurfMeasurement;
+import timber.log.Timber;
+import static com.mapbox.core.constants.Constants.PRECISION_6;
+
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
 
@@ -190,7 +244,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
-                //Botón de visibilidad de la localización del usuario
+                //Botón para compartir ruta
                 FloatingActionButton share = findViewById(R.id.shareTrip);
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,7 +253,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
 
-                //Botón de visibilidad de la localización del usuario
+                //Botón de pánico
                 FloatingActionButton sos = findViewById(R.id.sos);
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -257,6 +311,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
+    //Pop up para obtener confirmación de usuario respecto a si desea compartir su ruta
     public void popupCompartir() {
         // create a dialog with AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
@@ -298,6 +353,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         dialog.show();
     }
 
+    //Método para compartir ruta por medio de WhatsApp
     public void enviarWhatsapp(String message) {
         PackageManager pm = getPackageManager();
         String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
@@ -332,6 +388,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    //Método para compartir ruta por medio de mensajes de texto
     public void enviarSMS(String message) {
         String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -736,6 +793,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
+
+
     }
 
 
