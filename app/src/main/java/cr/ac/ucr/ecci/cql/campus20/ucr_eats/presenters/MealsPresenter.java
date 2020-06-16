@@ -14,21 +14,29 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 public class MealsPresenter
 {
     // Actual meal data
-    private final List<Meal> meals;
+    private List<Meal> meals;
 
     public MealsPresenter(List<Meal> meals)
+    {
+        this.setMeals(meals);
+    }
+
+    public void setMeals(List<Meal> meals)
     {
         this.meals = meals;
     }
 
     public void onBindMealItemAtPosition(int position, MealsItemView mealView)
     {
-        Meal meal = this.meals.get(position);
+        if(this.meals != null && this.meals.size() > 0)
+        {
+            Meal meal = this.meals.get(position);
 
-        mealView.setName(meal.getName());
-        mealView.setPrice(meal.getPrice());
-        mealView.setServings(meal.getAvailableServings(), meal.getMaxServings());
-        mealView.setPicture(meal.getPhoto());
+            mealView.setName(meal.getName());
+            mealView.setPrice(meal.getPrice());
+            mealView.setServings(meal.getAvailableServings(), meal.getMaxServings());
+            mealView.setPicture(meal.getPhoto());
+        }
     }
 
 }

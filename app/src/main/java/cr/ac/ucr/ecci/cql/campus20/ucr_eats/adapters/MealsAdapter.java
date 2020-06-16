@@ -63,6 +63,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealsViewHol
     public void setMeals(List<Meal> meals)
     {
         this.meals = meals;
+        this.presenter.setMeals(meals);
         notifyDataSetChanged();
     }
 
