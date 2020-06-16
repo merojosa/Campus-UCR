@@ -20,7 +20,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,8 +33,6 @@ import androidx.annotation.NonNull;
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
-    private RestaurantViewModel restaurantViewModel;
-
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;

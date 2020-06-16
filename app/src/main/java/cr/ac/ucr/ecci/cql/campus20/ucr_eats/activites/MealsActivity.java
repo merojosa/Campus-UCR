@@ -38,7 +38,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.MealViewModel;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
 public class MealsActivity extends AppCompatActivity
@@ -46,7 +45,6 @@ public class MealsActivity extends AppCompatActivity
     private static final int COLUMNS = 2;
     private RecyclerView recyclerView;
     private MealsAdapter adapter;
-    private MealViewModel viewModel;
     private ImageView sodaRatingStar;
     private TextView sodaRatingNum;
     private List<Meal> meals;
