@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
@@ -58,6 +61,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     ForoGeneralFirebaseDatabase databaseReference;
     DatabaseReference temasDatabaseReference;
     List<Tema> temasLocales;
+    List<Favorito> favoritosLocales;
 
 
     /**
@@ -72,6 +76,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         idList = new ArrayList<>();
 
         temasLocales = new ArrayList<>();
+        favoritosLocales = new ArrayList<>();
 
         // Se instancia el firebaseReference
         databaseReference = new ForoGeneralFirebaseDatabase();
@@ -85,11 +90,11 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     // Esto podría producir NullPointerException
-                    int id = ds.child("id").getValue(Integer.class);
+                    int id = Objects.requireNonNull(ds.child("id").getValue(Integer.class));
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
-                    int contUsers = ds.child("contadorUsuarios").getValue(Integer.class);
-                    int imagen = ds.child("imagen").getValue(Integer.class);
+                    int contUsers = Objects.requireNonNull(ds.child("contadorUsuarios").getValue(Integer.class));
+                    int imagen = Objects.requireNonNull(ds.child("imagen").getValue(Integer.class));
 
                     // Se crea el tema
                     Tema temita = new Tema(id, titulo, description, contUsers, imagen);
@@ -105,6 +110,7 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                 Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
             }
         });
+
 
         busquedaFiltrada();
         iniciarRecycler();
@@ -182,7 +188,40 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
             @Override
             public void onChanged( @Nullable final List<Favorito> favoritos) {
-                adapter.setFavoritos(favoritos);    // Se llama al método del adapter
+                //adapter.setFavoritos(favoritos);    // Se llama al método del adapter
+            }
+        });
+
+        // Prueba con el Favorito -> usuario
+        this.databaseReference.getFavoritosRef().child(this.databaseReference.obtenerUsuario())
+                .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se borra la lista
+                ForoGeneralVerTemas.this.favoritosLocales.clear();
+
+                // Chequea si existe el snapshot y si el usuario tiene favoritos almacenados en Firebase
+                if (dataSnapshot.exists()) //&& dataSnapshot.hasChild(ForoGeneralVerTemas.this.databaseReference.obtenerUsuario()))
+                {
+                    // Se recorre el snapshot para sacar los datos
+                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                        // Esto podría producir NullPointerException
+                        int id = Objects.requireNonNull(ds.child("idTema").getValue(Integer.class));
+                        String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+
+                        // Se crea el tema
+                        Favorito fav = new Favorito(id, nombreUsuario);
+                        ForoGeneralVerTemas.this.favoritosLocales.add(fav);
+                    }
+                    adapter.setFavoritos(ForoGeneralVerTemas.this.favoritosLocales);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Fallo al leer favoritos", databaseError.toException());
             }
         });
     }
@@ -209,15 +248,15 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     idTemaSeleccionado = idList.get(position);
                 }
                 else{
-                    idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                    idTemaSeleccionado = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
                 }
-                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int counter = ForoGeneralVerTemas.this.temasLocales.size();
                 int i = 0 ;
                 int fin = 0;
                 Tema result = new Tema(0 , "", "", 0,0); //tema comodin
                 while (i < counter && fin ==0) {
-                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTemaSeleccionado) {
-                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                    if (ForoGeneralVerTemas.this.temasLocales.get(i).id == idTemaSeleccionado) {
+                        result = ForoGeneralVerTemas.this.temasLocales.get(i);
                         fin = 1;
                     }
                     i++;
@@ -247,15 +286,15 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     idTema = idList.get(position);
                 }
                 else{
-                    idTema = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                    idTema = ForoGeneralVerTemas.this.temasLocales.get(position).getId();
                 }
-                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int counter = ForoGeneralVerTemas.this.temasLocales.size();
                 int i = 0 ;
                 int fin = 0;
                 Tema result = new Tema(0 , "", "", 0,0); //tema comodin
                 while (i < counter && fin ==0) {
-                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTema) {
-                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                    if (ForoGeneralVerTemas.this.temasLocales.get(i).id == idTema) {
+                        result = ForoGeneralVerTemas.this.temasLocales.get(i);
                         fin = 1;
                     }
                     i++;
@@ -275,6 +314,10 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
                     // Se inserta el tema como Favorito
                     añadirTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
+                    // Se inserta el tema como Favorito en Firebase
+                    añadirTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
                 } else {
                     // Se da un mensaje al usuario
                     Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
@@ -282,6 +325,9 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
                     // Se elimina al tema de la lista de Favoritos
                     eliminarTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
+                    // Se elimina el tema como Favorito en Firebase
+                    eliminarTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
         });
@@ -350,6 +396,13 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         mFavoritoViewModel.insert(fav);
     }
 
+
+    public void añadirTemaFavoritoFirebase(int identificadorTema, String nombreUsuario)
+    {
+        Favorito fav = new Favorito(identificadorTema, nombreUsuario);
+        this.databaseReference.getFavoritosRef().child(nombreUsuario).child(Integer.toString(identificadorTema)).setValue(fav);
+    }
+
     /**
      * Método que se encarga de invocar el método para borrado de un tema que está
      * añadido como favorito
@@ -358,6 +411,12 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
     public void eliminarTemaFavorito(int identificadorTema, String nombreUsuario)
     {
         mFavoritoViewModel.deleteOneFavorito(identificadorTema, nombreUsuario);
+    }
+
+
+    public void eliminarTemaFavoritoFirebase(int identificadorTema, String nombreUsuario)
+    {
+        this.databaseReference.getFavoritosRef().child(nombreUsuario).child(Integer.toString(identificadorTema)).setValue(null);
     }
 
     /**
