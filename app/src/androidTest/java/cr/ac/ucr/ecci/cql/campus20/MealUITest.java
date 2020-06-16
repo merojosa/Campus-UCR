@@ -1,8 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
-import android.content.Intent;
-
-
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
@@ -37,9 +36,17 @@ public class MealUITest
             = new ActivityTestRule<>(MainUcrEats.class);
 
     @Test
-    public void testMealsUI() throws InterruptedException
+    public void testMealsUIName() throws InterruptedException
     {
+        // Wait for Firebase read
         lock.await(5000, TimeUnit.MILLISECONDS);
-        onView(withText("Soda la U")).perform(click());
+
+        // Click Soda la U
+        onView(withId(R.id.ucr_eats_rv)).
+                perform(RecyclerViewActions.actionOnItemAtPosition(0, ViewActions.click()));
+
+        // Check name
+        onView(withId(R.id.meal_rest_name)).
+                check(matches(withText("Soda la U")));
     }
 }
