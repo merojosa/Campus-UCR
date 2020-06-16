@@ -83,8 +83,6 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
         this.temasLista = new ArrayList<Tema>();
         // Llamado a base de datos
 
-
-
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

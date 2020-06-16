@@ -42,4 +42,47 @@ public class Pregunta {
         this.contadorLikes = contadorLikes;
         this.contadorDisLikes = contadorDisLikes;
     }
+
+    // Getters y Setters de la clase
+
+    @NonNull
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(@NonNull String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public int getTemaID() {
+        return temaID;
+    }
+
+    public void setTemaID(int temaID) {
+        this.temaID = temaID;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public int getContadorLikes() {
+        return contadorLikes;
+    }
+
+    public void setContadorLikes(int contadorLikes) {
+        this.contadorLikes = contadorLikes;
+    }
+
+    public int getContadorDisLikes() {
+        return contadorDisLikes;
+    }
+
+    public void setContadorDisLikes(int contadorDisLikes) {
+        this.contadorDisLikes = contadorDisLikes;
+    }
 }
