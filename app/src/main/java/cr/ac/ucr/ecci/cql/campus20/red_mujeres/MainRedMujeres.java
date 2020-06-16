@@ -444,6 +444,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         button.setEnabled(true);
         button.setBackgroundResource(R.color.verde_UCR);
         button.setText("Iniciar Viaje");
+        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
     }
 

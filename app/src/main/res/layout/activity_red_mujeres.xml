@@ -21,15 +21,17 @@
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="match_parent"
+            android:layout_width="321dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
             android:layout_margin="32dp"
             android:background="@color/azul_UCR"
             android:cursorVisible="true"
+            android:drawableEnd="@drawable/ic_lugares"
             android:enabled="true"
             android:fontFamily="@font/myriad_pro_regular"
             android:foregroundGravity="top"
+            android:paddingRight="30px"
             android:text="Seleccionar Ubicación en Mapa"
             android:textAlignment="center"
             android:textAllCaps="false"
