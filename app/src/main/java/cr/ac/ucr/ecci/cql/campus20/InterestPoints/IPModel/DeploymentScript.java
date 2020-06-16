@@ -273,29 +273,81 @@ public class DeploymentScript {
 
         Laboratory labQuimica1 = new Laboratory(1, 9, 0, "Lab 101", "Laboratorio de quimica", 1, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica1);
+
         Laboratory labQuimica2 = new Laboratory(2, 9, 0, "Lab 102", "Laboratorio de quimica", 1, 25, false, false, false, true);
         db.insert("Laboratory", labQuimica2);
+
         Laboratory labQuimica3 = new Laboratory(3, 9, 0, "Lab 103", "Laboratorio de quimica", 2, 25, false, false, false, true);
         db.insert("Laboratory", labQuimica3);
+
         Laboratory labQuimica4 = new Laboratory(4, 9, 0, "Lab 205", "Laboratorio de quimica", 2, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica4);
+
         Laboratory labQuimica5 = new Laboratory(5, 9, 0, "Lab 206", "Laboratorio de quimica", 2, 25, true, false, false, true);
         db.insert("Laboratory", labQuimica5);
 
         Laboratory labComputacion1 = new Laboratory(6, 36, 0, "Lab 104", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion1);
+
         Laboratory labComputacion2 = new Laboratory(7, 36, 0, "Lab 105", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion2);
+
         Laboratory labComputacion3 = new Laboratory(8, 36, 0, "Lab 106", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion3);
+
         Laboratory labComputacion4 = new Laboratory(9, 36, 0, "Lab 107", "Laboratorio de computacion", 1, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion4);
+
         Laboratory labComputacion5 = new Laboratory(10, 36, 0, "Lab redes y oper", "Laboratorio exclusivo para estudiantes del " +
                 "proyecto integador de redes y sitemas operativos", 3, 25, true, true, true, false);
         db.insert("Laboratory", labComputacion5);
+
         Laboratory labComputacion6 = new Laboratory(11, 36, 0, "Lab bases e inge", "Laboratorio de exclusivo para estudiantes del " +
                 "proyecto integrador de sistemas operativos y bases de datos", 4, 40, true, true, true, false);
         db.insert("Laboratory", labComputacion6);
+
+        Laboratory  labMicro1 = new Laboratory(12, 47, 0, "Laboratorio 110", "Laboratorio de Microbiología", 1, 30, false, false, false, true );
+        db.insert("Laboratory", labMicro1);
+
+        Laboratory  labMicro2 = new Laboratory(13, 47, 0, "Laboratorio 113", "Laboratorio de Microbiología", 1, 30, false, false, false, true );
+        db.insert("Laboratory", labMicro2);
+
+        Laboratory  labMicro3 = new Laboratory(14, 47, 0, "Laboratorio 115", "Laboratorio de Microbiología", 1, 20, false, false, false, true );
+        db.insert("Laboratory", labMicro3);
+
+        Laboratory  labMicro4 = new Laboratory(15, 47, 0, "Laboratorio 119", "Laboratorio de Microbiología", 1, 20, true, false, true, true );
+        db.insert("Laboratory", labMicro4);
+
+        Laboratory  labMicro5 = new Laboratory(16, 47, 0, "Laboratorio 121", "Laboratorio de Microbiología de Aguas", 1, 15, false, false, false, true );
+        db.insert("Laboratory", labMicro5);
+
+        Laboratory  labMicro6 = new Laboratory(17, 47, 0, "Laboratorio 122", "Laboratorio de Microbiología", 1, 25, false, false, false, true );
+        db.insert("Laboratory", labMicro6);
+
+        Laboratory  labMicro7 = new Laboratory(18, 47, 0, "Laboratorio 125", "Laboratorio para Maestría de Microbiología", 2, 25, true, false, true, true );
+        db.insert("Laboratory", labMicro7);
+
+        Laboratory  labMicro8 = new Laboratory(19, 47, 0, "Laboratorio 130", "Laboratorio para Diplomado de Microbiología", 2, 50, true, false, false, true );
+        db.insert("Laboratory", labMicro8);
+
+        Laboratory labLenguas1 = new Laboratory(20, 41, 0, "Laboratorio 201", "Laboratorio para Ingles Conversacional", 1, 30, true, true, true, false );
+        db.insert("Laboratory", labLenguas1);
+
+        Laboratory labLenguas2 = new Laboratory(21, 41, 0, "Laboratorio 210", "Laboratorio para Francés Conversacional", 1, 30, true, true, false, true);
+        db.insert("Laboratory", labLenguas2);
+
+        Laboratory labLenguas3 = new Laboratory(22, 41, 0, "Laboratorio 215", "Laboratorio para Literatura Inglesa", 1, 35, true, true, true, true);
+        db.insert("Laboratory", labLenguas3);
+
+        Laboratory labLenguas4 = new Laboratory(23, 41, 0, "Laboratorio 230", "Laboratorio para Literatura Francesa", 2, 30, false, false, false, true);
+        db.insert("Laboratory", labLenguas4);
+
+        Laboratory labLenguas5 = new Laboratory(24, 41, 0, "Laboratorio 243", "Laboratorio de Gramática en Inglés", 2, 20, true, true, true, true);
+        db.insert("Laboratory", labLenguas5);
+
+        Laboratory labLenguas6 = new Laboratory(25, 41, 0, "Laboratorio 243", "Laboratorio de Gramática en Francés", 2, 20, true, true, false, true);
+        db.insert("Laboratory", labLenguas6);
+
     }
 
     //verificar más adelante, pues es una asocia por escuela
@@ -305,8 +357,75 @@ public class DeploymentScript {
     }
 
     private void createBathrooms(){
-        Bathroom br1 = new Bathroom(0, 0, 0, "Bañoo", "", 1, true);
+        Bathroom br1 = new Bathroom(0, 0, 0, "Baño de Artes Dramáticas", "", 1, true);
         db.insert("Bathroom", br1);
+
+        Bathroom br2 = new Bathroom(1, 0, 0, "Baño de Artes Dramáticas", "", 2, true);
+        db.insert("Bathroom", br2);
+
+        Bathroom br3 = new Bathroom(2, 0, 0, "Baño de Artes Dramáticas", "", 3, true);
+        db.insert("Bathroom", br3);
+
+        Bathroom br4 = new Bathroom(3, 1, 0, "Baño de Artes Plásticas", "", 1, true);
+        db.insert("Bathroom", br4);
+
+        Bathroom br5 = new Bathroom(4, 1, 0, "Baño de Artes Plásticas", "", 2, false);
+        db.insert("Bathroom", br5);
+
+        Bathroom br6 = new Bathroom(5, 1, 0, "Baño de Artes Plásticas", "", 3, false);
+        db.insert("Bathroom", br6);
+
+        Bathroom br7 = new Bathroom(6, 2, 0, "Baño de Artes Musicales", "", 1, true);
+        db.insert("Bathroom", br7);
+
+        Bathroom br8 = new Bathroom(7, 2, 0, "Baño de Artes Musicales", "", 2, false);
+        db.insert("Bathroom", br8);
+
+        Bathroom br9 = new Bathroom(8, 2, 0, "Baño de Artes Musicales", "", 3, true);
+        db.insert("Bathroom", br9);
+
+        Bathroom br10 = new Bathroom(9, 3, 0, "Baño de Agronomía", "", 1, true);
+        db.insert("Bathroom", br10);
+
+        Bathroom br11 = new Bathroom(10, 3, 0, "Baño de Agronomía", "", 2, false);
+        db.insert("Bathroom", br11);
+
+        Bathroom br12 = new Bathroom(11, 4, 0, "Baño de Zootecnia", "", 1, true);
+        db.insert("Bathroom", br12);
+
+        Bathroom br13 = new Bathroom(12, 4, 0, "Baño de Zootecnia", "", 2, true);
+        db.insert("Bathroom", br13);
+
+        Bathroom br14 = new Bathroom(13, 5, 0, "Baño de Tecnología de Alimentos", "", 1, true);
+        db.insert("Bathroom", br14);
+
+        Bathroom br15 = new Bathroom(14, 5, 0, "Baño de Tecnología de Alimentos", "", 2, false);
+        db.insert("Bathroom", br15);
+
+        Bathroom br16 = new Bathroom(15, 5, 0, "Baño de Tecnología de Alimentos", "", 3, false);
+        db.insert("Bathroom", br16);
+
+        Bathroom br17 = new Bathroom(16, 6, 0, "Baño de Física", "", 1, true);
+        db.insert("Bathroom", br17);
+
+        Bathroom br18 = new Bathroom(17, 6, 0, "Baño de Física", "", 2, true);
+        db.insert("Bathroom", br18);
+
+        Bathroom br19 = new Bathroom(18, 6, 0, "Baño de Física", "", 3, false);
+        db.insert("Bathroom", br19);
+
+        Bathroom br20 = new Bathroom(19, 7, 0, "Baño de Geología", "", 1, true);
+        db.insert("Bathroom", br20);
+
+        Bathroom br21 = new Bathroom(20, 7, 0, "Baño de Geología", "", 2, true);
+        db.insert("Bathroom", br21);
+
+        Bathroom br22 = new Bathroom(21, 8, 0, "Baño de Matemática", "", 1, true);
+        db.insert("Bathroom", br22);
+
+        Bathroom br23 = new Bathroom(22, 8, 0, "Baño de Matemática", "", 2, false);
+        db.insert("Bathroom", br23);
+
 
     }
 
