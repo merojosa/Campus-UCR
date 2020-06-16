@@ -1,18 +1,25 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
+import android.os.Bundle;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import static org.junit.jupiter.api.Assertions.*;
+import cr.ac.ucr.ecci.cql.campus20.R;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
 
 class MainRedMujeresTest {
 
     @Test
     void onCreate() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        Bundle btest = Mockito.mock(Bundle.class);
+        test.onCreate(btest);
+        verify(test, times(1)).onCreate(btest);
     }
 
     @Test
