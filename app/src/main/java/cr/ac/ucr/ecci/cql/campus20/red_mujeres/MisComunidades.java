@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,18 @@ public class MisComunidades extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private String usuarioID;
     private String usuarioNombre;
+    FloatingActionButton fabMain;
+    FloatingActionButton fabJoinCommunity;
+    FloatingActionButton fabCreateCommunity;
+
+    //Variables para el comportamiento de los botones flotantes
+    Float translationY = 100f;
+    Boolean isOpenMenu = false;
+    OvershootInterpolator interpolator = new OvershootInterpolator();
+
+    //Arreglos para el manejo de las comunidades que se reciben por intents
+    ArrayList<String> misComunidades =  new ArrayList<>();
+    ArrayList<String> comunidadesTotales = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +55,8 @@ public class MisComunidades extends AppCompatActivity {
 
         //Se reciben las listas de comunidades a las que pertenece un usuario y a las que puede unirse, a través de Intent
         Intent intent = getIntent();
-        ArrayList<String> misComunidades = intent.getStringArrayListExtra("misComunidades");
-        ArrayList<String> comunidadesTotales = intent.getStringArrayListExtra("comunidadesTotales");
+        misComunidades = intent.getStringArrayListExtra("misComunidades");
+        comunidadesTotales = intent.getStringArrayListExtra("comunidadesTotales");
         usuarioID = intent.getStringExtra("userID");
         usuarioNombre = intent.getStringExtra("userName");
 
@@ -61,19 +75,7 @@ public class MisComunidades extends AppCompatActivity {
             buildRecyclerView();
         }
 
-        //Instanciación del botón flotante para unirse a otra comunidad
-        FloatingActionButton fabJoinCommunity = findViewById(R.id.fabJoinCommunity);
-
-        // Acción al pulsar el botón flotante
-        fabJoinCommunity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                //Llamado a la actividad para desplegar todas las comunidades existentes a las cuales el usuario actual puede unirse
-                startActivity(new Intent(MisComunidades.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
-            }
-        });
-
+        initBotonesFlotantes();
     }
 
     //Método que toma los datos de la BD provenientes del Intent y construye la lista de comunidades
@@ -116,5 +118,64 @@ public class MisComunidades extends AppCompatActivity {
                         .putExtra("usuarioName", usuarioNombre));
             }
         });
+    }
+
+    //Instanciación de los botones flotantes para unirse a otra comunidad o crear una nueva
+    public void initBotonesFlotantes()
+    {
+        fabMain = findViewById(R.id.fabMain);
+        fabJoinCommunity = findViewById(R.id.fabJoinCommunity);
+        fabCreateCommunity = findViewById(R.id.fabCreateCommunity);
+
+        fabJoinCommunity.setAlpha(0f);
+        fabCreateCommunity.setAlpha(0f);
+
+        fabJoinCommunity.setTranslationY(translationY);
+        fabCreateCommunity.setTranslationY(translationY);
+
+        fabMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                if(isOpenMenu)
+                    closeMenu();
+                else
+                    openMenu();
+            }
+        });
+
+        // Acción al pulsar el botón flotante para unirse a una comunidad
+        fabJoinCommunity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                //Llamado a la actividad para desplegar todas las comunidades existentes a las cuales el usuario actual puede unirse
+                startActivity(new Intent(MisComunidades.this, ComunidadesRedMujeres.class).putStringArrayListExtra("comunidadesTotales", comunidadesTotales));
+            }
+        });
+
+        // Acción al pulsar el botón flotante para crear una comunidad
+        fabCreateCommunity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+            }
+        });
+    }
+
+    public void openMenu()
+    {
+        isOpenMenu = !isOpenMenu;
+        fabMain.animate().setInterpolator(interpolator).rotation(45f).setDuration(250).start();
+        fabJoinCommunity.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
+        fabCreateCommunity.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
+    }
+
+    public void closeMenu()
+    {
+        isOpenMenu = !isOpenMenu;
+        fabMain.animate().setInterpolator(interpolator).rotation(0f).setDuration(250).start();
+        fabJoinCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
+        fabCreateCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
     }
 }
