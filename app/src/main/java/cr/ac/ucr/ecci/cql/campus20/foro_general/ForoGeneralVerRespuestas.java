@@ -133,6 +133,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                     adapterRespuesta.setRespuestas(ForoGeneralVerRespuestas.this.respuestasFireBase);
                     //confirmacion temporal para saber cual presentar
                     enNube[0] = true;
+                }else {
+                    tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
                 }
 
             }
@@ -159,9 +161,9 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 public void onChanged(List<Respuesta> respuestas) {
                     if (respuestas.size() > 0) {
                         adapterRespuesta.setRespuestas(respuestas);
-                    } else {
+                    } /*else {
                         tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
-                    }
+                    }*/
                 }
             });
         }
