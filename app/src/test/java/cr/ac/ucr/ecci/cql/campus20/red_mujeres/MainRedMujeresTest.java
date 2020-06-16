@@ -1,9 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -22,11 +24,16 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void panico() {
+    void panico() { //
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
+        doNothing().when(test).panico(valueCapture.capture());
+        test.panico(1);
+        assertEquals( (Object) 1, (Object) valueCapture.getValue());
     }
 
     @Test
-    void popupPanicoCallsPanico() {
+    void popupPanico() {
         MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
         test.popupPanico();
         verify(test, times(1)).popupPanico();
