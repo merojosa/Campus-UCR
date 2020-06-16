@@ -74,7 +74,7 @@ public class FormularioComunidad extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Toast.makeText(context, "Afirmativo" , Toast.LENGTH_SHORT).show();
-                        comunidad.Unirse(context, usuarioID, usuarioNombre, unionMotivo);  //Llamado al método que agrega un usuario a una comunidad
+                        //comunidad.Unirse(context, usuarioID, usuarioNombre, unionMotivo);  //Llamado al método que agrega un usuario a una comunidad
                         enviarSolicitudUnion(usuarioID, usuarioNombre, unionMotivo);
                         //Llamado a la actividad que despliega el mapa
 //                        startActivity(new Intent(FormularioComunidad.this, MainRedMujeres.class)
@@ -113,7 +113,6 @@ public class FormularioComunidad extends AppCompatActivity {
                     toEmailList, //lista de destinatarios
                     asunto, //asunto
                     cuerpo); //mensaje en el cuerpo
-            Toast.makeText(getApplicationContext(), "Correo enviado" , Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.i("Excepcion", e.getMessage());
         }
