@@ -13,13 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
@@ -45,6 +50,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private List<Respuesta> respuestasFireBase;
+    LiveData<List<Respuesta>> temp;
 
 
     ForoGeneralFirebaseDatabase databaseReference;
@@ -66,11 +73,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         int idPreguntaSeleccionada = preguntaSeleccionada.getId();
         int idTemaSeleccionado = preguntaSeleccionada.getTemaID();
 
-        //sacar los elementos de la vista desde firebase
-        //pasarlos a respuestas
-
-
-
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
 
         recyclerViewRespuestas.setLayoutManager(new LinearLayoutManager(this));
@@ -82,22 +84,88 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
+
+
+        //sacar los elementos de la vista desde firebase
+        //pasarlos a respuestas
+        final boolean[] enNube = {false};
+        //obtiene todas las respuestas para el id de la pregunta, pero solo las agrega si el id del tema coincide
+
+        this.respuestasFireBase = new ArrayList<Respuesta>();
+
+        this.databaseReference.getRespuestasRef().child(String.valueOf(idPreguntaSeleccionada)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se recorre el snapshot para sacar los datos
+                ForoGeneralVerRespuestas.this.respuestasFireBase.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    int id = ds.child("id").getValue(Integer.class);
+                    String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+                    int preguntaID = ds.child("preguntaID").getValue(Integer.class);
+                    int temaID = ds.child("temaID").getValue(Integer.class);
+                    String texto = ds.child("texto").getValue(String.class);
+                    int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
+                    int contadorDisLikes = ds.child("contadorDislikes").getValue(Integer.class);
+
+                    // Se crea la respuesta
+                    if(temaID == idTemaSeleccionado){
+                        Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes);
+                        ForoGeneralVerRespuestas.this.respuestasFireBase.add(respuesta);
+
+
+                        //busca si esta en la base local, si no esta lo agrega
+                        /*temp = mRespuestaViewModel.getRespuestaDePreguntaYTema(id, idPreguntaSeleccionada, idTemaSeleccionado);
+                        temp.observe(ForoGeneralVerRespuestas.this, new Observer<List<Respuesta>>() {
+                            @Override
+                            public void onChanged(List<Respuesta> respuestas) {
+                                if (respuestas.size() < 1) {
+                                    //el valor no esta en room, hay que agregarlo
+                                    mRespuestaViewModel.insert(respuesta);
+                                    //adapterRespuesta.setRespuestas(respuestas);
+                                }
+                            }
+                        });*/
+                    }
+
+                }
+                if(ForoGeneralVerRespuestas.this.respuestasFireBase.size()>0){
+                    adapterRespuesta.setRespuestas(ForoGeneralVerRespuestas.this.respuestasFireBase);
+                    //confirmacion temporal para saber cual presentar
+                    enNube[0] = true;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+
         //respuestas = mRespuestaViewModel.getRespuestasDePregunta(idPreguntaSeleccionada);
-        respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
+
 
         tituloPregunta = (TextView) findViewById(R.id.preguntaSeleccionada);
         tituloPregunta.setText(preguntaSeleccionada.getTexto());
 
-        respuestas.observe(this, new Observer<List<Respuesta>>() {
-            @Override
-            public void onChanged(List<Respuesta> respuestas) {
-                if (respuestas.size() > 0) {
-                    adapterRespuesta.setRespuestas(respuestas);
-                } else {
-                    tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
+        if(!enNube[0]){
+            respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
+            respuestas.observe(this, new Observer<List<Respuesta>>() {
+                @Override
+                public void onChanged(List<Respuesta> respuestas) {
+                    if (respuestas.size() > 0) {
+                        adapterRespuesta.setRespuestas(respuestas);
+                    } else {
+                        tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         // Asocia evento clic al boton
         buttonAgregarRespuestas.setOnClickListener(new View.OnClickListener() {
