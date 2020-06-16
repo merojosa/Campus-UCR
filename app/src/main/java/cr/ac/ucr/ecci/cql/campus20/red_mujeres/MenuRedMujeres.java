@@ -27,7 +27,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 4 Julio no validado
     // 5 Claudia no validada
     // 6 Juan no validado
-    private static final String currentUser = "4";
+    private static final String currentUser = "1";
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
@@ -175,6 +175,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                 boolean validado = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Validado").getValue();
                 boolean solicitudEnviada = (boolean) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("SolicitudEnviada").getValue();
                 String genero = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("Género").getValue();
+                String correoUCR = (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUserID).child("CorreoUCR").getValue();
 
                 // Si el usuario aún no ha sido validado y recientemente envió una solicitud
                 if (validado == false) {
@@ -184,7 +185,8 @@ public class MenuRedMujeres extends AppCompatActivity {
                             // Acepta solicitud
                             usuario.child("usuarios_red_mujeres").child(currentUserID).child("Validado").setValue(true);
                             // Enviar confirmación por correo
-                            //TODO:enviar correo aceptación
+                            enviarConfirmacion(true, correoUCR);
+
                         }
                         else{
                             // Rechaza solicitud
@@ -192,7 +194,7 @@ public class MenuRedMujeres extends AppCompatActivity {
                             // el usuario ha sido rechazado
                             usuario.child("usuarios_red_mujeres").child(currentUserID).child("Validado").setValue(false);
                             // Enviar confirmación por correo
-                            //TODO:enviar correo rechazo
+                            enviarConfirmacion(false, correoUCR);
                         }
                     }
                 }
@@ -283,8 +285,9 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     // Envía respuesta de solicitud a ingreso a la comunidad
-    private void enviarConfirmacion(boolean aceptado) {
-        List<String> toEmailList = Arrays.asList(correo); //Lista de remitentes en caso de que se ocupe enviar a un grupo de correos
+    private void enviarConfirmacion(boolean aceptado, String correoUCR) {
+        List<String> toEmailList = new ArrayList<>();
+        toEmailList.add(correoUCR);
 
         String asunto = "";
         String cuerpo = "";
