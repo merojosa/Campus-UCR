@@ -53,7 +53,7 @@ public class TemaDaoTest {
      * @throws InterruptedException que es la excepcion de interrupción
      */
     @Test
-    public void getTemasDatasaseVacia() throws InterruptedException {
+    public void getTemasDatabaseVacia() throws InterruptedException {
         // TEST
         List<Tema> temas = LiveDataTestUtil.getValue(this.database.temaDao().getTemas());
         assertTrue("There is a problema with the list",temas.isEmpty());
