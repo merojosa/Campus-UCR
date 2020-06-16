@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Respuesta",
         foreignKeys = {
-        @ForeignKey(entity = Pregunta.class,
+                @ForeignKey(entity = Pregunta.class,
                         parentColumns = "id",
                         childColumns = "preguntaID",
                         onDelete = ForeignKey.RESTRICT
-        ),
-        @ForeignKey(entity = Tema.class,
-                parentColumns = "id",
-                childColumns = "temaID",
-                onDelete = ForeignKey.RESTRICT
-        )
+                ),
+                @ForeignKey(entity = Tema.class,
+                        parentColumns = "id",
+                        childColumns = "temaID",
+                        onDelete = ForeignKey.RESTRICT
+                )
         })
 
 public class Respuesta {
@@ -45,7 +45,7 @@ public class Respuesta {
     public int contadorDislikes = 0;
 
     public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int temaID, int contadorLikes, int contadorDislikes) {
-    //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
+        //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.texto = texto;
@@ -55,14 +55,10 @@ public class Respuesta {
         this.contadorDislikes = contadorDislikes;
     }
 
+    //getters y setters
 
-    //GETS Y SETS PARA TESTING
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @NonNull
@@ -86,16 +82,8 @@ public class Respuesta {
         return preguntaID;
     }
 
-    public void setPreguntaID(int preguntaID) {
-        this.preguntaID = preguntaID;
-    }
-
     public int getTemaID() {
         return temaID;
-    }
-
-    public void setTemaID(int temaID) {
-        this.temaID = temaID;
     }
 
     public int getContadorLikes() {
