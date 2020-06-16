@@ -202,7 +202,7 @@ public class MealsActivity extends AppCompatActivity
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
         // Para comperar con la codificación de caracteres especiales en Firebase
-        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
 
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
         ref.addValueEventListener(new ValueEventListener() {
@@ -222,17 +222,7 @@ public class MealsActivity extends AppCompatActivity
     }
 
 
-    // Utilizado para transformar todos los carácteres que son válidos para
-    // una dirección
-    private String encodeMailForFirebase(String uncodedMail)
-    {
-        String codedMail = uncodedMail;
-        codedMail = codedMail.replace("@", "<a>");
-        codedMail = codedMail.replace(".", "<dot>");
-        //...
 
-        return codedMail;
-    }
 
     private void updateFirebaseUserRate(String restaurantId, Double value)
     {
@@ -240,7 +230,7 @@ public class MealsActivity extends AppCompatActivity
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
         // Para comperar con la codificación de caracteres especiales en Firebase
-        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
 
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
 
