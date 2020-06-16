@@ -27,7 +27,7 @@
     <string name="negativo_compartir_ruta">No</string>
 
     <!--Marker strings for DirectionsActivity activity-->
-    <string name="directions_activity_toast_message">Route is %1$f meters long.</string>
+    <string name="directions_activity_toast_message">La ruta es de %1$f metros.</string>
 
     <!--Interest Points-->
     <string name="Comentarios">Comentarios</string>
@@ -40,4 +40,7 @@
     <string name="price_placeholder">1000</string>
     <string name="image">image</string>
     <string name="restaurant_placeholder">Restaurant</string>
+    <string name="meals_left_placeholder">Restantes: %1$d de %2$d</string>
+    <string name="capacity_left_placeholder">Capacidad: %1$d de %2$d</string>
+    <string name="servings_placeholder">Porciones: %1$d de %2$d</string>
 </resources>

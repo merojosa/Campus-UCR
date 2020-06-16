@@ -71,12 +71,12 @@ public abstract class UcrEatsDatabase extends RoomDatabase
         mealDao.deleteAll();
         rest.deleteAll();
 
-        Restaurant[] restaurants = {
-                new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 9.934497, -84.051063,
-                        "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21),
-                new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 9.934748, -84.051578,
-                        "Mon-Wed-Thu-Fri", (short)10, (short)20)
-        };
+//        Restaurant[] restaurants = {
+//                new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 9.934497, -84.051063,
+//                        "Mon-Tue-Wed-Thu-Fri-Sat-Sun", (short)8, (short)21),
+//                new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 9.934748, -84.051578,
+//                        "Mon-Wed-Thu-Fri", 10, 20)
+//        };
 
         Meal[] meals = {
                 // Soda la U
@@ -93,26 +93,26 @@ public abstract class UcrEatsDatabase extends RoomDatabase
                         Meal.LUNCH, 2000)
         };
 
-        Rating[] rating = {
-                new Rating(R.drawable.plaza_chou, 3),
-                new Rating(R.drawable.plaza_chou, 5),
-                new Rating(R.drawable.plaza_chou, 5),
-                new Rating(R.drawable.plaza_chou, 4),
-                new Rating(R.drawable.plaza_chou, 5),
-                new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 4),
-                new Rating(R.drawable.la_u, 5),
-                new Rating(R.drawable.la_u, 4),
-                new Rating(R.drawable.la_u, 5),
-        };
+//        Rating[] rating = {
+//                new Rating(R.drawable.plaza_chou, 3),
+//                new Rating(R.drawable.plaza_chou, 5),
+//                new Rating(R.drawable.plaza_chou, 5),
+//                new Rating(R.drawable.plaza_chou, 4),
+//                new Rating(R.drawable.plaza_chou, 5),
+//                new Rating(R.drawable.la_u, 5),
+//                new Rating(R.drawable.la_u, 4),
+//                new Rating(R.drawable.la_u, 5),
+//                new Rating(R.drawable.la_u, 4),
+//                new Rating(R.drawable.la_u, 5),
+//        };
 
-        for(Restaurant restaurant : restaurants)
-            rest.insert(restaurant);
+//        for(Restaurant restaurant : restaurants)
+//            rest.insert(restaurant);
 
         for(Meal meal : meals)
             mealDao.insert(meal);
 
-        for(Rating points : rating)
-            ratingDao.insert(points);
+//        for(Rating points : rating)
+//            ratingDao.insert(points);
     }
 }
