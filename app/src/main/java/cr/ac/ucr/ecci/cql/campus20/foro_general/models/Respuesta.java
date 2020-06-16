@@ -54,4 +54,51 @@ public class Respuesta {
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
     }
+
+    //getters y setters
+
+    public int getId() {
+        return id;
+    }
+
+    @NonNull
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(@NonNull String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public int getPreguntaID() {
+        return preguntaID;
+    }
+
+    public int getTemaID() {
+        return temaID;
+    }
+
+    public int getContadorLikes() {
+        return contadorLikes;
+    }
+
+    public void setContadorLikes(int contadorLikes) {
+        this.contadorLikes = contadorLikes;
+    }
+
+    public int getContadorDislikes() {
+        return contadorDislikes;
+    }
+
+    public void setContadorDislikes(int contadorDislikes) {
+        this.contadorDislikes = contadorDislikes;
+    }
 }
