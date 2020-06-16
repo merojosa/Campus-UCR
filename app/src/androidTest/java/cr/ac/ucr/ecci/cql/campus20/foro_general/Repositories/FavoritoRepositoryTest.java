@@ -129,7 +129,7 @@ public class FavoritoRepositoryTest {
         // Se hace la prueba del delete
         this.repositorio.deleteOneFavorito(FAVORITO_PRUEBA2.getIdTema(), "test");
 
-        Thread.sleep(10);
+        Thread.sleep(100);
 
         // TEST
         List<Favorito> temasFavoritosProbados = LiveDataTestUtil.getValue(this.repositorio.getAllFavoritos());
