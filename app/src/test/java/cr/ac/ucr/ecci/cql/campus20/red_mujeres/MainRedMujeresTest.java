@@ -1,8 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class MainRedMujeresTest {
 
@@ -23,7 +26,10 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void popupPanico() {
+    void popupPanicoCallsPanico() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        test.popupPanico();
+        verify(test, times(1)).popupPanico();
     }
 
     @Test

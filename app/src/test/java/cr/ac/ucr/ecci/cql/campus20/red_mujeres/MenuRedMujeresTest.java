@@ -1,20 +1,39 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-import org.junit.jupiter.api.Test;
+import android.os.Bundle;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 class MenuRedMujeresTest {
 
     @Test
-    void onCreate() {
+    public void onCreate() {
+        MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
+        Bundle btest = Mockito.mock(Bundle.class);
+        test.onCreate(btest);
+        verify(test, times(1)).onCreate(btest);
+
+
     }
 
     @Test
-    void comunidadesUsuario() {
+    public void comunidadesUsuario() {
+
     }
 
     @Test
-    void comunidadesTotales() {
+    public void comunidadesTotales() {
     }
+
+
+
 }
