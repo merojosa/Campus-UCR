@@ -113,6 +113,7 @@ public class FormularioComunidad extends AppCompatActivity {
                     toEmailList, //lista de destinatarios
                     asunto, //asunto
                     cuerpo); //mensaje en el cuerpo
+            Toast.makeText(getApplicationContext(), "Solicitud enviada" , Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.i("Excepcion", e.getMessage());
         }
