@@ -86,6 +86,16 @@ public class MainForoGeneral extends AppCompatActivity {
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
+
+        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+            @Override
+            public void onChanged(List<Tema> temas) {
+                //adapter.setTemas(MainForoGeneral.this.temasLocales);
+                adapter.setTemas(temas);
+                llenarTemasFirebase(temas);
+            }
+        });
+
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -94,7 +104,7 @@ public class MainForoGeneral extends AppCompatActivity {
                 // Se recorre el snapshot para sacar los datos
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    // Esto podría producir NullPointerException
+                    // Esto podrÃ­a producir NullPointerException
                     int id = ds.child("id").getValue(Integer.class);
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
@@ -131,7 +141,7 @@ public class MainForoGeneral extends AppCompatActivity {
                             // Se recorre el snapshot para sacar los datos
                             for (DataSnapshot ds : dataSnapshot.getChildren())
                             {
-                                // Esto podría producir NullPointerException
+                                // Esto podrÃ­a producir NullPointerException
                                 int id = ds.child("idTema").getValue(Integer.class);
                                 String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
 
@@ -189,14 +199,14 @@ public class MainForoGeneral extends AppCompatActivity {
 //                    for (int i = 0; i< count; i++){
 //                        idList.add(i, favoritos.get(i).getIdTema());
 //                    }
-                    Log.d("FIREBASE", "Entró al viejo adapter");
+                    Log.d("FIREBASE", "EntrÃ³ al viejo adapter");
                 }
 
             }
         });
 
 
-        // Recepción de los clicks del adapter
+        // RecepciÃ³n de los clicks del adapter
         adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
 
             @Override
@@ -256,7 +266,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Se lanza cada actividad, dependiendo de la selección del usuario
+        // Se lanza cada actividad, dependiendo de la selecciÃ³n del usuario
         nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -312,6 +322,22 @@ public class MainForoGeneral extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void llenarTemasFirebase(List<Tema> temas)
+    {
+        // FORMA INEFICIENTE DE INSERTAR EN FIREBASE
+        if (onlyOnce == 0)
+        {
+            for (int index = 0; index < temas.size(); ++index)
+            {
+                this.databaseReference.getTemasRef().child(Integer.toString(temas.get(index).getId() - 1)).setValue(temas.get(index));
+            }
+        }
+
+        if (temas.size() != 0)
+            onlyOnce = 1;
+
     }
 
 }
