@@ -26,8 +26,6 @@ class MenuRedMujeresTest {
         Bundle btest = Mockito.mock(Bundle.class);
         test.onCreate(btest);
         verify(test, times(1)).onCreate(btest);
-
-
     }
 
     @Test
@@ -54,6 +52,8 @@ class MenuRedMujeresTest {
 
     }
 
+    //Verifica que los parámetros se captaron y
+    // se reciben correctamente para enviar solicitud a Admin
     @Test
     public void enviarSolicitudAdmin(){
         MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
