@@ -21,8 +21,6 @@ public class RankPreguntaViewModel extends AndroidViewModel {
 
     // Definición del Repository y de la lista en LiveData
     private RankPreguntaRepository mRepository;
-    private LiveData<List<RankPregunta>> mAllLiked;
-    private LiveData<List<RankPregunta>> mAllDisliked;
 
     public RankPreguntaViewModel(Application application)
     {
@@ -30,18 +28,19 @@ public class RankPreguntaViewModel extends AndroidViewModel {
 
         // MODIFICAR PARA QUE USE SOLO 1 BASE DE DATOS
         mRepository = new RankPreguntaRepository(application);
-        mAllLiked = mRepository.getAllLiked();
-        mAllDisliked = mRepository.getAllDisliked();
     }
-
-    public LiveData<List<RankPregunta>> getmAllLiked() { return mAllLiked; }
-    public LiveData<List<RankPregunta>> getmAllDisliked() { return mAllDisliked; }
 
     public void insert(RankPregunta rankPregunta) { mRepository.insert(rankPregunta);}
 
-    public void updateIsLiked(int isLiked, int id) { mRepository.updateIsLiked(isLiked,id);}
+    public void update(RankPregunta rankPregunta) {
+        mRepository.update(rankPregunta);
+    }
 
-    public void deleteRank(int id) { mRepository.deleteRank(id);}
+    public void delete(RankPregunta rankPregunta) {
+        mRepository.delete(rankPregunta);
+    }
 
-    public List<Integer> getRank(int id) { return mRepository.getRank(id);}
+    public RankPregunta getRank(int id, String nombreUsuario) {
+        return mRepository.getRank(id, nombreUsuario);
+    }
 }

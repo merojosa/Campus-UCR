@@ -1,17 +1,22 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.models;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Rank_preguntas")
+@Entity(tableName = "Rank_preguntas", primaryKeys = {"IdPreg","NombreUsuario"})
 public class RankPregunta {
 
-    @PrimaryKey
     @NonNull
     @ColumnInfo(name="IdPreg")
     public int idPreg;
+
+    @NonNull
+    @ColumnInfo(name="NombreUsuario")
+    public String nombreUsuario;
 
     //2 disliked, 1 liked
     @NonNull
@@ -19,9 +24,10 @@ public class RankPregunta {
     public int isLiked;
 
     // Constructor
-    public RankPregunta(@NonNull int idPreg, @NonNull int isLiked)
+    public RankPregunta(@NonNull int idPreg, @NonNull String nombreUsuario, @NonNull int isLiked)
     {
         this.idPreg = idPreg;
+        this.nombreUsuario = nombreUsuario;
         this.isLiked = isLiked;
     }
 
@@ -39,5 +45,14 @@ public class RankPregunta {
 
     public void setIsLiked(int isLiked) {
         this.isLiked = isLiked;
+    }
+
+    @NotNull
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(@NotNull String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 }

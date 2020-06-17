@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -15,73 +16,59 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
 
 public class RankPreguntaRepository {
 
-    // Se define el Dao y las listas a usar
+    // Se define el Dao y el RankPregunta
     private RankPreguntaDao mRankPreguntaDao;
-    private LiveData<List<RankPregunta>> mAllLikedRankedPreg;
-    private LiveData<List<RankPregunta>> mAllDislikedRankedPreg;
-    List<Integer> mRankPregunta;
-
-    /**
-     * Método para obtener todos las preguntas con like
-     * @return mAllLikedRankedPreg, que es una lista en LiveData que contiene las preguntas con like
-     */
+    private RankPregunta mRankPregunta;
 
     // Constructor de la clase
     public RankPreguntaRepository(Application application) {
         // Se obtiene la base de datos y se obtienen los datos pertinentes
         ForoGeneralDatabase db = ForoGeneralDatabase.getDatabase(application);
         mRankPreguntaDao = db.rankPreguntaDao();
-        mAllLikedRankedPreg = mRankPreguntaDao.getAllLiked();
-        mAllDislikedRankedPreg = mRankPreguntaDao.getAllDisliked();
     }
-    public LiveData<List<RankPregunta>> getAllLiked() {
-        return mAllLikedRankedPreg;
-    }
-
-    /**
-     * Método para obtener todos las preguntas con dislike
-     * @return mAllDislikedRankedPreg, que es una lista en LiveData que contiene las preguntas con dislike
-     */
-    public LiveData<List<RankPregunta>> getAllDisliked() { return mAllDislikedRankedPreg; }
 
     /**
      * Insert a la base de datos, para insertar un rankPregunta dentro de la tabla
-     * @param rankPregunta
+     * @param rankPregunta, objeto
      */
     public void insert(RankPregunta rankPregunta) {
+        Log.d("ANDY","Insert de Repository con id: %s" + rankPregunta.idPreg);
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
             mRankPreguntaDao.insert(rankPregunta);
         });
     }
 
     /**
-     * Método que ejecuta el update de un registro de la tabla RankPregunta
-     * @param isLiked, el identificador del status de liked
-     * @param id, el identificador de la pregunta
+     * Update a la base de datos, para actualizar un rankPregunta dentro de la tabla
+     * @param rankPregunta, objeto
      */
-    public void updateIsLiked(int isLiked, int id) {
+    public void update(RankPregunta rankPregunta) {
+        Log.d("ANDY","Update de Repository con id: %s" + rankPregunta.idPreg);
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
-            mRankPreguntaDao.updateIsLiked(isLiked, id);
+            mRankPreguntaDao.update(rankPregunta);
         });
     }
 
     /**
-     * Método que ejecuta el delete del like de la pregunta
-     * @param id, el identificador de la pregunta
+     * Delete a la base de datos, para borrar un rankPregunta de la tabla
+     * @param rankPregunta, objeto
      */
-    public void deleteRank(int id) {
+    public void delete(RankPregunta rankPregunta) {
+        Log.d("ANDY","Delete de Repository con id: %s" + rankPregunta.idPreg);
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
-            mRankPreguntaDao.deleteRank(id);
+            mRankPreguntaDao.delete(rankPregunta);
         });
     }
 
     /**
      * Método que devuelve un RankPregunta de la pregunta
      * @param id, el identificador de la pregunta
+     * @param nombreUsuario, nombre del usuario actual
      */
-    public List<Integer> getRank(int id) {
+    public RankPregunta getRank(int id, String nombreUsuario) {
+        Log.d("ANDY","GetRank de Repository con id: " + id);
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
-            mRankPregunta = mRankPreguntaDao.getRank(id);
+            mRankPregunta = mRankPreguntaDao.getRank(id,nombreUsuario);
         });
         return mRankPregunta;
     }
