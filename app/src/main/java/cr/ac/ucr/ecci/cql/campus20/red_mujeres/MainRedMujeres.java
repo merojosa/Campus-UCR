@@ -334,7 +334,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                             enviarSMS(message);
                         } else {
                             Context context = getApplicationContext();
-                            CharSequence error = "Coordenadas invalidas";
+                            CharSequence error = "Debés seleccionar la ruta antes de compartir.";
                             int duration = Toast.LENGTH_SHORT;
 
                             Toast toast = Toast.makeText(context, error, duration);

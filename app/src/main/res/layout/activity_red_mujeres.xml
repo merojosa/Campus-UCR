@@ -21,8 +21,8 @@
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="321dp"
-            android:layout_height="wrap_content"
+            android:layout_width="331dp"
+            android:layout_height="59dp"
             android:layout_gravity="center_horizontal|top"
             android:layout_margin="32dp"
             android:background="@color/azul_UCR"
@@ -69,16 +69,18 @@
         android:id="@+id/shareTrip"
         android:layout_width="62dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:backgroundTint="@color/azul_UCR"
+        android:clickable="true"
         android:elevation="0dp"
         app:srcCompat="@drawable/share"
-        mapbox:backgroundTint="@color/verde_UCR"
+        mapbox:backgroundTint="@color/white"
         mapbox:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         mapbox:layout_constraintEnd_toEndOf="parent"
-        android:layout_gravity="bottom|end"
         mapbox:maxImageSize="26dp"
         mapbox:rippleColor="@color/blanco_UCR"
-        mapbox:useCompatPadding="true"/>
+        mapbox:useCompatPadding="true"
+        android:focusable="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/sos"
@@ -88,7 +90,7 @@
         android:backgroundTint="#FF3D00"
         android:clickable="true"
         android:elevation="0dp"
-        android:focusable="auto"
+        android:focusable="true"
         mapbox:backgroundTint="@color/verde_UCR"
         mapbox:layout_constraintBottom_toTopOf="@+id/shareTrip"
         mapbox:layout_constraintEnd_toEndOf="@+id/mapView"
