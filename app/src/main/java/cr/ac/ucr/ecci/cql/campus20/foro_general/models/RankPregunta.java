@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Rank_preguntas", primaryKeys = {"IdPreg","NombreUsuario"})
 public class RankPregunta {

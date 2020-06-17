@@ -1,36 +1,22 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,10 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.RankPreguntaDao;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralFirebaseDatabase;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerPreguntas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.PreguntaCard;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankPreguntaViewModel;
@@ -62,7 +45,6 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     private int[] arrayStatusRank;
     private int selectedPosition = -1;
     private String usuarioActual = "";
-    ArrayList<Integer> arrayRanks;
     public int kGlobal = 0;
 
     // Instancia de Firebase para el foro general y sus hijos
@@ -107,17 +89,12 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         arrayDislikes = new int[tam];
         arrayStatusRank = new int[tam];
 
+        //se llenan los arrays que se van a usar para el onClick de iconos
         for(int k = 0; k < tam; k++){
             kGlobal = k;
             arrayLikes[k] = preguntaCards.get(k).getContadorLikes();
             arrayDislikes[k] = preguntaCards.get(k).getContadorDislikes();
             arrayStatusRank[k] = 0;
-
-            /*if(arrayRanks.get(k) != 0){
-                Log.d("ANDY", "NO es 0!!!");
-                arrayStatusRank[k] = arrayRanks.get(k);
-                Log.d("ANDY", "arrayRank[k] = " + arrayStatusRank[k]);
-            }*/
         }
     }
 
@@ -156,7 +133,6 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
     @Override
     public void onBindViewHolder(PreguntaViewHolder preguntaViewHolder, int i)
     {
-        Log.d("ANDY", "-----Entra aca-----");
         preguntaViewHolder.textoPregunta.setText(preguntaCards.get(i).getTexto());
 
         int difRanking = arrayLikes[i] - arrayDislikes[i];
@@ -174,17 +150,14 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         String temaString = String.valueOf(preguntaCards.get(i).getTemaID());
         String idString = String.valueOf(preguntaCards.get(i).getId());
 
-        //this.databaseReference.getRankingsRef().child("preguntas").child(temaString).child(idString).child(usuarioActual).child("isLiked")
-
+        //busca si el usuario tiene likes o dislikes en las preguntas de este tema especifico
         this.databaseReference.getRankingsRef().child("preguntas").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child(temaString).exists()) {
                     if(dataSnapshot.child(temaString).child(idString).exists()){
                         if(dataSnapshot.child(temaString).child(idString).child(usuarioActual).exists()){
-                            Log.d("ANDY", "Firebase isLiked = " + dataSnapshot.child(temaString).child(idString).child(usuarioActual).child("isLiked").getValue(Integer.class));
                             arrayStatusRank[i] = dataSnapshot.child(temaString).child(idString).child(usuarioActual).child("isLiked").getValue(Integer.class);
-                            Log.d("ANDY", "Rank: " + arrayStatusRank[i]);
                             switch (arrayStatusRank[i]) {
                                 case 1:
                                     preguntaViewHolder.iconLike.setImageResource(R.drawable.ic_thumb_up_green_24dp);
@@ -194,17 +167,12 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                                     preguntaViewHolder.iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                                     preguntaViewHolder.iconDislike.setImageResource(R.drawable.ic_thumb_down_red_24dp);
                                     break;
-                                default:
-                                    preguntaViewHolder.iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
-                                    preguntaViewHolder.iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
-                                    break;
                             }
                         }
 
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Failed to read value
@@ -254,7 +222,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int isLikedActual = arrayStatusRank[indexPreg];
                     Pregunta pregTemp;
 
-                    if(isLikedActual == 1){
+                    if(isLikedActual == 1){ //tiene like
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]--;
@@ -266,7 +234,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         mRankPreguntaViewModel.delete(new RankPregunta(idPregTemp,usuarioActual,1));
                         RVAdapterPregunta.this.databaseReference.getRankingsRef().child("preguntas")
                                 .child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp)).child(usuarioActual).removeValue();
-                    }else if(isLikedActual == 2){
+                    }else if(isLikedActual == 2){ //tiene dislike
                         iconLike.setImageResource(R.drawable.ic_thumb_up_green_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]++;
@@ -280,7 +248,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         mRankPreguntaViewModel.update(rankPregunta);
                         RVAdapterPregunta.this.databaseReference.getRankingsRef().child("preguntas")
                                 .child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp)).child(usuarioActual).setValue(rankPregunta);
-                    }else{
+                    }else{ //no tiene nada todavia
                         iconLike.setImageResource(R.drawable.ic_thumb_up_green_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]++;
@@ -318,7 +286,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int isLikedActual = arrayStatusRank[indexPreg];
                     Pregunta pregTemp;
 
-                    if(isLikedActual == 1){
+                    if(isLikedActual == 1){ //tiene like
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_red_24dp);
                         arrayLikes[indexPreg]--;
@@ -332,7 +300,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         arrayStatusRank[indexPreg] = 2;
                         RVAdapterPregunta.this.databaseReference.getRankingsRef().child("preguntas")
                                 .child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp)).child(usuarioActual).setValue(rankPregunta);
-                    }else if(isLikedActual == 2){
+                    }else if(isLikedActual == 2){ //tiene dislike
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayDislikes[indexPreg]--;
@@ -345,7 +313,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         arrayStatusRank[indexPreg] = 0;
                         RVAdapterPregunta.this.databaseReference.getRankingsRef().child("preguntas")
                                 .child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp)).child(usuarioActual).removeValue();
-                    }else{
+                    }else{ //no tiene nada todavia
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_red_24dp);
                         arrayDislikes[indexPreg]++;

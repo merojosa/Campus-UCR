@@ -3,19 +3,9 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
-import java.util.List;
-
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Daos.FavoritoDao;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralDatabase;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories.FavoritoRepository;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Repositories.RankPreguntaRepository;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
-
 
 public class RankPreguntaViewModel extends AndroidViewModel {
 
