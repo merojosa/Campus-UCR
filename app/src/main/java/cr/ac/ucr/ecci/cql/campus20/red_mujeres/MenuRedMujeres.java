@@ -151,7 +151,7 @@ public class MenuRedMujeres extends AppCompatActivity {
 
                 // Vuelve a la pagina principal de UCR Eats,
                 // dado que no existe página inicial per se y la app se inicializa en esta
-                startActivity(new Intent(MenuRedMujeres.this, MainEmptyActivity.class));
+                startActivity(new Intent(MenuRedMujeres.this, InterestPointsActivity.class));
             }
 
             @Override
