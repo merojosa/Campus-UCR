@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +23,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffee;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.R;
@@ -35,22 +40,21 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<GeneralData> temp = new ArrayList<>();
-    private List<Coffe> coffeList;
+    private List<Place> temp = new ArrayList<>();
+    private List<Coffee> coffeeList;
 
     private ProgressBar spinner;
-    private Coffe coffe;
-    private Coordinate coordinate;
+
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coffe_shops);
 
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Cafés");
-            getSupportActionBar().show();
+            setActivityTitle();
         }
 
         spinner = findViewById(R.id.coffeeProgressBar);
@@ -60,16 +64,22 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         mListAdapter = new ListAdapter(this);
         mRecyclerView.setAdapter(mListAdapter);
         temp = new ArrayList<>();
-        coffeList = new ArrayList<>();
+        coffeeList = new ArrayList<>();
         getCoffeeList();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        removeListener();
     }
 
     @Override
     public void onClick(String title) {
         boolean finded = false;
         int index = 0;
-        while (index < coffeList.size() && !finded){
-            if(coffeList.get(index).getTitle().equals(title)){
+        while (index < coffeeList.size() && !finded){
+            if(coffeeList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -78,23 +88,15 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         Intent childActivity = new Intent(CoffeShopsActivity.this, Map.class);
         childActivity.putExtra("typeActivity", 0);
         childActivity.putExtra(Intent.EXTRA_TEXT, title);
-        childActivity.putExtra("attribute", coffeList.get(index).getDescription());
-
+        childActivity.putExtra("attribute", coffeeList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        this.coffe = coffeList.get(index);
-        this.coordinate = new Coordinate();
-        // Estas son coordenadas temporales
-        coordinate.setLatitude(9.911820721309361);
-        coordinate.setLongitude(-84.08615402814974);
-        //getSpecificCoordenates(school.getId());
+        Coffee coffee = coffeeList.get(index);
 
-        childActivity.putExtra("place", coffe);
+        childActivity.putExtra("place", coffee);
         childActivity.putExtra("index", 2);
-        childActivity.putExtra("coordinate", coordinate);
 
         startActivity(childActivity);
-
     }
 
 
@@ -131,28 +133,45 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getCoffeeList(){
-        FirebaseDB db = new FirebaseDB(getApplicationContext());
-        DatabaseReference ref = db.getReference("Coffe");
-        ref.addValueEventListener(new ValueEventListener() {
+        FirebaseDB db = new FirebaseDB();
+        ref = db.getReference(Place.TYPE_COFFEE);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
-                    coffeList.add(coffee.getValue(Coffe.class));
+                    coffeeList.add(coffee.getValue(Coffee.class));
                 }
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
-        temp.addAll(coffeList);
+        temp.addAll(coffeeList);
+    }
+
+    private void setActivityTitle(){
+        ActivityInfoDao activityInfoDao;
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
+        activityInfoDao = roomDatabase.activityInfoDao();
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.COFFEE_SHOPS.ordinal()));
+            getSupportActionBar().show();
+        });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 }

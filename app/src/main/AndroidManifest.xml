@@ -14,6 +14,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".red_mujeres.FormularioComunidad"></activity>
+        <activity android:name=".InterestPoints.Comment.CommentPopUp"></activity>
+        <activity android:name=".red_mujeres.MisComunidades" />
+        <activity android:name=".InterestPoints.Library.LibraryViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity
+            android:name=".InterestPoints.Library.LibraryActivity"
+            android:theme="@style/AppTheme.InterestsTheme"/>
+        <activity
+            android:name=".InterestPoints.Office.OfficeViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"/>
+        <activity
+            android:name=".InterestPoints.Office.OfficeActivity"
+            android:theme="@style/AppTheme.InterestsTheme"/>
+        <activity
+            android:name=".InterestPoints.Photocopier.PhotocopierViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"
+            />
+        <activity
+            android:name=".InterestPoints.Photocopier.PhotocopierActivity"
+            android:theme="@style/AppTheme.InterestsTheme"/>
+        <activity
+            android:name=".InterestPoints.Soda.SodaViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"
+            />
+        <activity
+            android:name=".InterestPoints.Soda.SodaActivity"
+            android:theme="@style/AppTheme.InterestsTheme"
+            />
         <activity
             android:name=".ucr_eats.activites.OrderLocationActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar"
@@ -24,7 +52,6 @@
         <activity
             android:name=".ucr_eats.activites.CompraActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
-        <activity android:name=".red_mujeres.MisComunidades" />
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
@@ -67,6 +94,7 @@
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity android:name=".ucr_eats.activites.SodaMapActivity" />
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
@@ -76,6 +104,7 @@
         <activity
             android:name=".InterestPoints.Mapbox.Map"
             android:theme="@style/AppTheme.InterestsTheme" />
+
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
