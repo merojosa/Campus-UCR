@@ -153,7 +153,13 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void updateMyLocation() {
+    void updateMyLocation() { // Verifica que el segundo parametro sea Double
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        ArgumentCaptor<Double> valueCapture = ArgumentCaptor.forClass(Double.class);
+        doNothing().when(test).UpdateMyLocation(valueCapture.capture(),valueCapture.capture());
+        test.UpdateMyLocation(9.903952,-83.985007);
+
+        assertEquals((Double)(-83.985007),valueCapture.getValue());
     }
 
     @Test
