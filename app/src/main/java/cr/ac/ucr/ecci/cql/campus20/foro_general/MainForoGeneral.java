@@ -86,6 +86,16 @@ public class MainForoGeneral extends AppCompatActivity {
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
+
+//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+//            @Override
+//            public void onChanged(List<Tema> temas) {
+//                //adapter.setTemas(MainForoGeneral.this.temasLocales);
+//                adapter.setTemas(temas);
+//                llenarTemasFirebase(temas);
+//            }
+//        });
+
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -313,5 +323,21 @@ public class MainForoGeneral extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+//    public void llenarTemasFirebase(List<Tema> temas)
+//    {
+//        // FORMA INEFICIENTE DE INSERTAR EN FIREBASE
+//        if (onlyOnce == 0)
+//        {
+//            for (int index = 0; index < temas.size(); ++index)
+//            {
+//                this.databaseReference.getTemasRef().child(Integer.toString(temas.get(index).getId() - 1)).setValue(temas.get(index));
+//            }
+//        }
+//
+//        if (temas.size() != 0)
+//            onlyOnce = 1;
+//
+//    }
 
 }
