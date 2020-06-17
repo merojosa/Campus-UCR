@@ -23,12 +23,12 @@ public class GuardarAppService extends IntentService
 
         if(appId != -1)
         {
-            CampusBD loginBD = new FirebaseBD();
-            String correo = loginBD.obtenerCorreoActual();
+            CampusBD campusBD = new FirebaseBD();
+            String correo = campusBD.obtenerCorreoActual();
             String usuario = correo.substring(0, correo.indexOf('@'));
 
             // Guardar datos
-            loginBD.escribirDatos(PATH_CONFIG + usuario + DESTINO_APP, appId);
+            campusBD.escribirDatos(PATH_CONFIG + usuario + DESTINO_APP, appId);
         }
     }
 }

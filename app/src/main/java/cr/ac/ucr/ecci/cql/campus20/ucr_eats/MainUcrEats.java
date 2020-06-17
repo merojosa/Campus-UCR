@@ -1,37 +1,38 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Rating;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.RestaurantViewModel;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import androidx.annotation.NonNull;
+
 
 // Referencias para crear lista de cards:
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
-    private RestaurantViewModel restaurantViewModel;
-
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;
@@ -41,7 +42,6 @@ public class MainUcrEats extends AppCompatActivity
     private RatingRepository repo;
     private List<Restaurant> restaurantsList = null;
     private List<SodaCard> sodaCards = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,25 +63,58 @@ public class MainUcrEats extends AppCompatActivity
 
         this.noResults = this.findViewById(R.id.noResultsText);
 
-        this.restaurantViewModel = ViewModelProviders.of(this).get(RestaurantViewModel.class);
-        this.restaurantViewModel.getAllRestaurants().observe(this, restaurants -> {
+        this.getFirebaseRestaurant();
+    }
 
-            List<Double> i = new ArrayList<Double>();
-            List<Double> e = new ArrayList<Double>();
-            for (Restaurant x : restaurants)
+
+    private void getFirebaseRestaurant()
+    {
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        DatabaseReference ref = db.getRestaurantsRef();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                if (x.name == "Soda La U")
-                    i.add(repo.getRatingByRestaurant(x.id));
-                else
-                    e.add(repo.getRatingByRestaurant(x.id));
+                // Get all meals/children data from snapshot
+                Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
+                ArrayList<Restaurant> sodas = new ArrayList<>();
+                // Iterate array
+                int id = 1;
+                for(final DataSnapshot soda : sodaData)
+                {
+                    Log.e("Nombre:", ""+soda.getValue());
+                    Restaurant so = soda.getValue(Restaurant.class);
+                    so.setId(id++);
+                    if (so != null)
+                    {
+                        so.setFirebaseId(soda.getKey());
+                        so.setServings(soda);
+                    }
+
+                    if(soda.exists()) {
+                        Log.e("datos", "" + soda.getValue());
+                        sodas.add(so);
+                    }
+                }
+
+                if (sodas.size() > 0)
+                    sodasAdapter.setSodaCard(sodas);
 
             }
 
-
-            sodaCards = sodasAdapter.convertToSodaCards(restaurants, e);
-            sodasAdapter.setSodaCards(restaurants, e);
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", error.toException());
+            }
         });
+
     }
+
+
+
 
     private void setupInputSearch() {
         this.inputSearch = findViewById(R.id.search_filter);
@@ -132,18 +165,5 @@ public class MainUcrEats extends AppCompatActivity
         recyclerViewSodas.setAdapter(sodasAdapter);
     }
 
-    /**
-     * método con fines sólo de prueba de concepto.
-     */
-    private void fillRestaurants() {
-        repository.deleteAll();
-        Restaurant restaurant1 = new Restaurant(R.drawable.la_u, "Soda La U", "la_u", 9.934497, -84.051063,
-                "Mo", (short)0, (short)1000);
-        repository.insert(restaurant1);
-
-        Restaurant restaurant2 = new Restaurant(R.drawable.plaza_chou, "Plaza Chou", "plaza_chou", 9.934748, -84.051578,
-                "Mo", (short)0, (short)1000);
-        repository.insert(restaurant2);
-    }
 
 }

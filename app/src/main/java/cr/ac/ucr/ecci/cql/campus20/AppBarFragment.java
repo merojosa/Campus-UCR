@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
+
 
 public class AppBarFragment extends Fragment
 {
@@ -64,14 +67,29 @@ public class AppBarFragment extends Fragment
                     CampusBD login = new FirebaseBD();
                     login.cerrarSesion();
 
-                    // Matar todas las actividades anteriores y volver al login
-                    ActivityCompat.finishAffinity(getActivity());
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                }
-                return false;
+                // Matar todas las actividades anteriores y volver al login
+                ActivityCompat.finishAffinity(getActivity());
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                return true;
             }
+            else if(item.getItemId() == R.id.ordenesPendientes)
+            {
+                startActivity(new Intent(getActivity(), OrdenesPendientesActivity.class));
+                return true;
+            }
+            return false;
         });
 
         return view;
+    }
+
+    // Mostrar solo si pertenece al modulo de UCR Eats
+    private void mostrarOrdenesPendientes(Toolbar toolbar)
+    {
+        if (getActivity() instanceof MainUcrEats)
+        {
+            MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
+            menuItem.setVisible(true);
+        }
     }
 }

@@ -7,17 +7,19 @@
     tools:context=".ucr_eats.activites.MealsActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/meal_rest_name"
@@ -34,18 +36,65 @@
                 android:id="@+id/meals_rest_img"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:srcCompat="@drawable/soda_placeholder"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/soda_placeholder" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/calification_text"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_marginStart="-5dp"
+                    android:gravity="center_vertical"
+                    android:scaleType="centerCrop"
+                    android:text="Tu calificación:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/rating_num"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_marginStart="-5dp"
+                    android:gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:text="0"/>
+
+                <ImageView
+                    android:id="@+id/rating_star"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    app:srcCompat="@drawable/ic_star" />
+
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/meals_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp" />
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
     </ScrollView>
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
