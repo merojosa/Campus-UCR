@@ -26,6 +26,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.SodaMapActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
@@ -67,8 +68,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 horario = "Abierto";
             }
 
+            int photoid = soda.getId() == 1 ? R.drawable.la_u : R.drawable.plaza_chou;
             cards.add(
-                    new SodaCard(R.drawable.la_u, soda.getFirebaseId(), soda.name, soda.photo,
+                    new SodaCard(photoid, soda.getFirebaseId(), soda.name, soda.photo,
                             horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max,
                             soda.getTotalServings(), soda.getAvailableServings())
             );
@@ -169,8 +171,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
             ubicacionSoda.setOnClickListener(view -> {
                 SodaCard card = sodaCards.get(getAdapterPosition());
-                double latitud = card.getLatitud();
-                irUbicacionSoda(card);
+                irUbicacionSoda(card, view);
+
             });
         }
 
@@ -204,13 +206,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     }
 
     // Ir a la localización de la soda en el mapa
-    private void irUbicacionSoda(SodaCard soda){
+    private void irUbicacionSoda(SodaCard card, View view){
         // Intent para ver la localización en el mapa
-        String url = "geo:" + String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud());
-        String q = "?q="+ String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud()) + "(" + soda.getNombre() + ")";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url + q));
-        intent.setPackage("com.google.android.apps.maps");
-        this.context.startActivity(intent);
+        Intent intent = new Intent(view.getContext(), SodaMapActivity.class);
+        intent.putExtra("sodaLat", card.getLatitud());
+        intent.putExtra("sodaLong", card.getLongitud());
+        view.getContext().startActivity(intent);;
     }
 
     public List<SodaCard> getSodaCards() {

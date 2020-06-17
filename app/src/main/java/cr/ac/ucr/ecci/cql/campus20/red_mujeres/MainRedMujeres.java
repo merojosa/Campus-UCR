@@ -221,10 +221,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+
+
                 button = findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
                         iniciarRuta();
                     }
                 });
@@ -330,7 +334,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                             enviarSMS(message);
                         } else {
                             Context context = getApplicationContext();
-                            CharSequence error = "Coordenadas invalidas";
+                            CharSequence error = "Debés seleccionar la ruta antes de compartir.";
                             int duration = Toast.LENGTH_SHORT;
 
                             Toast toast = Toast.makeText(context, error, duration);
@@ -438,7 +442,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapboxBlue);
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("Iniciar Viaje");
+        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
     }
 
