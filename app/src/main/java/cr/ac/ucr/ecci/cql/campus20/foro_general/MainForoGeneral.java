@@ -90,9 +90,9 @@ public class MainForoGeneral extends AppCompatActivity {
 //        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
 //            @Override
 //            public void onChanged(List<Tema> temas) {
-//                //adapter.setTemas(MainForoGeneral.this.temasLocales);
-//                adapter.setTemas(temas);
-//                llenarTemasFirebase(temas);
+//                adapter.setTemas(MainForoGeneral.this.temasLocales);
+//                //adapter.setTemas(temas);
+//                //llenarTemasFirebase(temas);
 //            }
 //        });
 
@@ -220,15 +220,15 @@ public class MainForoGeneral extends AppCompatActivity {
                     idTemaSeleccionado = idList.get(position);
                 }
                 else{
-                    idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                    idTemaSeleccionado = MainForoGeneral.this.temasLocales.get(position).getId();
                 }
-                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int counter = MainForoGeneral.this.temasLocales.size();
                 int i = 0 ;
                 int fin = 0;
                 Tema result = new Tema(0 , "", "", 0,0); //tema comodin
                 while (i < counter && fin ==0) {
-                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTemaSeleccionado) {
-                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                    if (MainForoGeneral.this.temasLocales.get(i).id == idTemaSeleccionado) {
+                        result = MainForoGeneral.this.temasLocales.get(i);
                         fin = 1;
                     }
                     i++;
