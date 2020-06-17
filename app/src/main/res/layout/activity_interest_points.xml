@@ -22,7 +22,6 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/myriad_pro_bold"
             android:includeFontPadding="false"
-            android:text="Puntos de Interés"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/white"
             android:textSize="34sp"

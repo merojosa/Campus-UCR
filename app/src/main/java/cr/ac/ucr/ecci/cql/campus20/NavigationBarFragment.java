@@ -138,9 +138,9 @@ public class NavigationBarFragment extends android.app.Fragment
 
     private void irActividadElegidaConfirmacion(int actividadId)
     {
-        CampusBD loginBD = new FirebaseBD();
+        CampusBD campusBD = new FirebaseBD();
 
-        String correo = loginBD.obtenerCorreoActual();
+        String correo = campusBD.obtenerCorreoActual();
         String idUsuario = correo.substring(0, correo.indexOf('@'));
 
         AtomicBoolean resultado = new AtomicBoolean(false);
@@ -186,7 +186,7 @@ public class NavigationBarFragment extends android.app.Fragment
 
         if(VerificadorInternet.conexionInternet(getActivity()))
         {
-            loginBD.tareaAppDefaultAsync(idUsuario, listener);
+            campusBD.tareaAppDefaultAsync(idUsuario, listener);
 
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask()
@@ -198,7 +198,7 @@ public class NavigationBarFragment extends android.app.Fragment
                     if (resultado.get() == false)
                     {
                         //  Timeout
-                        loginBD.detenerAppDefaultAsync();
+                        campusBD.detenerAppDefaultAsync();
                     }
                 }
             };

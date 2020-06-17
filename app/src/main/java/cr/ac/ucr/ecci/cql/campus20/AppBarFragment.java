@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
+
 
 public class AppBarFragment extends Fragment
 {
@@ -48,30 +51,45 @@ public class AppBarFragment extends Fragment
         // Cambiar el color de los 3 puntos.
         toolbar.getOverflowIcon().setColorFilter(ContextCompat.getColor(getContext(), R.color.blanco_UCR), PorterDuff.Mode.SRC_ATOP);
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item)
-            {
-                // Si se hizo click a preferencias, se va a la actividad de Configuracion
-                if (item.getItemId() == R.id.itemPreferencias)
-                {
-                    startActivity(new Intent(getActivity(), ConfiguracionActivity.class));
-                    return true;
-                }
-                else if(item.getItemId() == R.id.itemCerrarSesion)
-                {
-                    // Cerrar sesion
-                    CampusBD login = new FirebaseBD();
-                    login.cerrarSesion();
+        mostrarOrdenesPendientes(toolbar);
 
-                    // Matar todas las actividades anteriores y volver al login
-                    ActivityCompat.finishAffinity(getActivity());
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                }
-                return false;
+        toolbar.setOnMenuItemClickListener(item ->
+        {
+            // Si se hizo click a preferencias, se va a la actividad de Configuracion
+            if (item.getItemId() == R.id.itemPreferencias)
+            {
+                startActivity(new Intent(getActivity(), ConfiguracionActivity.class));
+                return true;
             }
+            else if(item.getItemId() == R.id.itemCerrarSesion)
+            {
+                // Cerrar sesion
+                CampusBD login = new FirebaseBD();
+                login.cerrarSesion();
+
+                // Matar todas las actividades anteriores y volver al login
+                ActivityCompat.finishAffinity(getActivity());
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                return true;
+            }
+            else if(item.getItemId() == R.id.ordenesPendientes)
+            {
+                startActivity(new Intent(getActivity(), OrdenesPendientesActivity.class));
+                return true;
+            }
+            return false;
         });
 
         return view;
+    }
+
+    // Mostrar solo si pertenece al modulo de UCR Eats
+    private void mostrarOrdenesPendientes(Toolbar toolbar)
+    {
+        if (getActivity() instanceof MainUcrEats)
+        {
+            MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
+            menuItem.setVisible(true);
+        }
     }
 }
