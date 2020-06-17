@@ -92,6 +92,7 @@ public class MealsActivity extends AppCompatActivity
                         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         layout = inflater.inflate(R.layout.soda_rating_dialog, null);
                         final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                        ratingBar.setStepSize((float)1.0);
                         builder.setTitle("Califica la soda");
                         //builder.setMessage("Thank you for rating us , it will help us to provide you the best service .");
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -201,7 +202,7 @@ public class MealsActivity extends AppCompatActivity
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
         // Para comperar con la codificación de caracteres especiales en Firebase
-        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
 
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
         ref.addValueEventListener(new ValueEventListener() {
@@ -221,17 +222,7 @@ public class MealsActivity extends AppCompatActivity
     }
 
 
-    // Utilizado para transformar todos los carácteres que son válidos para
-    // una dirección
-    private String encodeMailForFirebase(String uncodedMail)
-    {
-        String codedMail = uncodedMail;
-        codedMail = codedMail.replace("@", "<a>");
-        codedMail = codedMail.replace(".", "<dot>");
-        //...
 
-        return codedMail;
-    }
 
     private void updateFirebaseUserRate(String restaurantId, Double value)
     {
@@ -239,7 +230,7 @@ public class MealsActivity extends AppCompatActivity
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
         // Para comperar con la codificación de caracteres especiales en Firebase
-        String encodedMail = encodeMailForFirebase(logged.obtenerCorreoActual());
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
 
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
 

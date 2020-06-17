@@ -22,14 +22,14 @@ public interface FavoritoDao {
     @Query("DELETE FROM Favoritos_table")
     void deleteAll();
 
-    // Extrae todos los temas que están en la tabla
+    // Extrae todos los temas que están en la tabla para un usuario especifico
     // En un LIVEDATA
-    @Query("SELECT * from Favoritos_table")
-    LiveData<List<Favorito>> getAllFavoritos();
+    @Query("SELECT * from Favoritos_table where nombreUsuario = :nombre")
+    LiveData<List<Favorito>> getAllFavoritosUsuario(String nombre);
 
-    // Elimina un tema de la tabla de favoritos
-    @Query("DELETE FROM Favoritos_table WHERE IdTema = :id")
-    void deleteOneFavorito(int id);
+    // Elimina un tema de la tabla de favoritos para un usuario especifico
+    @Query("DELETE FROM Favoritos_table WHERE IdTema = :id and nombreUsuario = :nombre")
+    void deleteOneFavorito(int id, String nombre);
 
     @Query("SELECT * FROM Tema where id = :id")
     Tema getOne(int id);

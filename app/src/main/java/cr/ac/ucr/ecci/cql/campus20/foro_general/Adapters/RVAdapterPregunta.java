@@ -90,7 +90,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
             arrayLikes[k] = preguntaCards.get(k).getContadorLikes();
             arrayDislikes[k] = preguntaCards.get(k).getContadorDislikes();
             List<Integer> mRankPregList = mRankPreguntaViewModel.getRank(preguntaCards.get(k).getId());
-            if(mRankPregList != null){
+            if(mRankPregList != null && mRankPregList.size() > 0){
                 arrayStatusRank[k] = mRankPregList.get(0);
             }
         }
@@ -104,7 +104,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         for(Pregunta pregunta : preguntas)
         {
             cards.add(
-                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisikes)
+                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisLikes)
             );
         }
 

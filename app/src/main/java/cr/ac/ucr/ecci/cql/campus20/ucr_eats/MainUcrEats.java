@@ -101,7 +101,7 @@ public class MainUcrEats extends AppCompatActivity
 
                 if (sodas.size() > 0)
                     sodasAdapter.setSodaCard(sodas);
-
+                    sodaCards = sodasAdapter.getSodaCards();
             }
 
             @Override

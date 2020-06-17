@@ -52,4 +52,28 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
 
     }
 
+    // Utilizado para transformar todos los carácteres que son válidos para
+    // una dirección
+    public static String encodeMailForFirebase(String uncodedMail)
+    {
+        String codedMail = uncodedMail;
+        codedMail = codedMail.replace("@", "<a>");
+        codedMail = codedMail.replace(".", "<dot>");
+        //...
+
+        return codedMail;
+    }
+
+    // Utilizado para transformar todos los carácteres que son válidos para
+    // una dirección
+    public static String decodeMailFromFirebase(String codedMail)
+    {
+        String decodedMail = codedMail;
+        decodedMail = decodedMail.replace("<a>", "@");
+        decodedMail = decodedMail.replace("<dot>", ".");
+        //...
+
+        return decodedMail;
+    }
+
 }
