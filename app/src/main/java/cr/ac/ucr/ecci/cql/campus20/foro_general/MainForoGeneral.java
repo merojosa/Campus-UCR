@@ -174,15 +174,15 @@ public class MainForoGeneral extends AppCompatActivity {
 //            Thread.currentThread().interrupt();
 //        }
 
-        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
-        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-            @Override
-            public void onChanged(List<Tema> temas) {
-                adapter.setTemas(MainForoGeneral.this.temasLocales);
-                //adapter.setTemas(temas);
-                //llenarTemasFirebase(temas);
-            }
-        });
+//        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
+//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+//            @Override
+//            public void onChanged(List<Tema> temas) {
+//                adapter.setTemas(MainForoGeneral.this.temasLocales);
+//                //adapter.setTemas(temas);
+//                //llenarTemasFirebase(temas);
+//            }
+//        });
 
         // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
