@@ -89,7 +89,7 @@ public class Redireccionador
                         //  Timeout
                         campusBD.detenerAppDefaultAsync();
 
-                        Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
                 }
             };

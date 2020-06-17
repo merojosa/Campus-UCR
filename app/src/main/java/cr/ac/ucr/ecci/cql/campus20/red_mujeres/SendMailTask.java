@@ -31,7 +31,7 @@ public class SendMailTask extends AsyncTask {
                     args[1].toString(), (List) args[2], args[3].toString(),
                     args[4].toString()); //Parametros
             androidEmail.createEmailMessage(); //Crear correo
-            publishProgress("Enviando correo de confirmacion"); //Comunicacion con usuario
+            publishProgress("Enviando correo..."); //Comunicacion con usuario
             androidEmail.sendEmail();
             publishProgress("Correo enviado");
         } catch (Exception e) {

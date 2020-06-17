@@ -58,18 +58,55 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_app_bar" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabJoinCommunity"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/azul_UCR"
-        android:src="@drawable/add_icon_foreground"
-        android:textSize="20dp"
-        app:backgroundTint="@color/azul_UCR"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCreateCommunity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:backgroundTint="@color/azul_UCR"
+            app:backgroundTint="@color/azul_UCR"
+            android:src="@drawable/ic_fiber_new_black_24dp"
+            app:fabSize="mini"
+            tools:layout_editor_absoluteX="339dp"
+            tools:layout_editor_absoluteY="581dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabJoinCommunity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:backgroundTint="@color/azul_UCR"
+            app:backgroundTint="@color/azul_UCR"
+            android:src="@drawable/ic_people_white_24dp"
+            app:fabSize="mini"
+            tools:layout_editor_absoluteX="339dp"
+            tools:layout_editor_absoluteY="581dp" />
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="4dp"
+            android:backgroundTint="@color/azul_UCR"
+            android:src="@drawable/add_white"
+            android:textSize="20dp"
+            app:backgroundTint="@color/azul_UCR"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
+            app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_Not_Joined"
