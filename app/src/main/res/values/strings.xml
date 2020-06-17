@@ -27,7 +27,10 @@
     <string name="negativo_compartir_ruta">No</string>
 
     <!--Marker strings for DirectionsActivity activity-->
-    <string name="directions_activity_toast_message">Route is %1$f meters long.</string>
+    <string name="directions_activity_toast_message">La ruta es de %1$f metros.</string>
+
+    <!--Interest Points-->
+    <string name="Comentarios">Comentarios</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

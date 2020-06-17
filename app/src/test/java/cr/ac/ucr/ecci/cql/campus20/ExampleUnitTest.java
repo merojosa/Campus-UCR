@@ -1,6 +1,16 @@
 package cr.ac.ucr.ecci.cql.campus20;
 
+import android.app.Instrumentation;
+import android.content.Context;
+
+import androidx.room.Room;
+
+import org.junit.Assert;
 import org.junit.Test;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +22,6 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+
     }
 }

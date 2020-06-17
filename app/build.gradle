@@ -54,9 +54,15 @@ dependencies {
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    testCompile 'junit:junit:4.12'
 
+    // required if you want to use Mockito for unit tests
+    testCompile 'org.mockito:mockito-core:2.7.22'
+    // required if you want to use Mockito for Android tests
+    androidTestCompile 'org.mockito:mockito-android:2.7.22'
     // Tests
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
@@ -65,6 +71,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.mockito:mockito-core:2.7.22'
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
 
 
     // Room dependencies
@@ -92,4 +102,6 @@ dependencies {
 
     // For LifeCycle extension updated
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

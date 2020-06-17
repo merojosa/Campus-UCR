@@ -2,7 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -22,7 +21,6 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -43,9 +41,11 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolViewActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffe;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coordinate;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierViewActivity;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Soda.SodaViewActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,36 +72,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private NavigationMapRoute navigationMapRoute;
     private TextView TextButtton;
 
-
     //variables para inicializar navegación
     private Button button;
-
-    School school;
-    Coffe coffe;
-    private String nameTemporal = "";
-    Coordinate coordinate;
+    private Place place;
     private Intent details;
-    Double originLatitude = 0.00;
-    Double originLongitude = 0.00;
-    Double destinationLatitude = 0.00;
-    Double destinationLongitude = 0.00;
+    private double destinationLatitude;
+    private double destinationLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token)); //Tomar el token público
 
-        // Relationship with the map view
-        Intent intentItemList = getIntent();
-        // Getting item title information
-        String itemTitle = intentItemList.getStringExtra(Intent.EXTRA_TEXT);
         // Getting the place that the map is showing
-
-        // Getting the Coordinates of the place
-        this.coordinate = getIntent().getParcelableExtra("coordinate");
-        destinationLatitude = coordinate.getLatitude();
-        destinationLongitude = coordinate.getLongitude();
-
+        this.place = getIntent().getParcelableExtra("place");
+        String itemTitle = this.place.getName();
+        this.destinationLatitude = this.place.getLatitude();
+        this.destinationLongitude = this.place.getLongitude();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(itemTitle);
@@ -130,7 +117,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
 
                 //Texto de boton de comienzo de ruteo
                 TextButtton = (TextView)findViewById(R.id.startButton);
-                TextButtton.setText("Ir " + nameTemporal);
+                TextButtton.setText("Ir " + place.getName());
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -170,9 +157,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     }
 
     public void setNavigation() {
-        Point destinationPoint = Point.fromLngLat(destinationLongitude, destinationLatitude);
-        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                locationComponent.getLastKnownLocation().getLatitude());
+
+        Point destinationPoint = Point.fromLngLat(this.destinationLongitude, this.destinationLatitude);
+        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(), locationComponent.getLastKnownLocation().getLatitude());
 
         GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
         if (source != null) {
@@ -233,8 +220,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
+        System.out.print("Holaaaaaaaaaa********************************************************");
         if (PermissionsManager.areLocationPermissionsGranted(this))
         {
+            System.out.print("entré********************************************************");
+
             // Get an instance of the component
             locationComponent = mapboxMap.getLocationComponent();
 
@@ -330,7 +320,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     public boolean onCreateOptionsMenu(Menu menu){
 
         Intent intent = getIntent();
-        int tipo = intent.getExtras().getInt("typeActivity");
+        //int tipo = intent.getExtras().getInt("typeActivity");
 
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
 
@@ -338,13 +328,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // Según tipo de actividad se selecciona el activity correcto
-                if (tipo == 0) {
+                if (place.getType().equals(Place.TYPE_COFFEE)) {
                     details = new Intent(Map.this, CoffeViewActivity.class);
-                }else if(tipo == 1){
+                }else if(place.getType().equals(Place.TYPE_SCHOOL)){
                     details = new Intent(Map.this, SchoolViewActivity.class);
+                    details.putExtra("place", place);
+                } else if (place.getType().equals(Place.TYPE_SODA)) {
+                    details = new Intent(Map.this, SodaViewActivity.class);
+                } else if (place.getType().equals(Place.TYPE_LIBRARY)) {
+                    details = new Intent(Map.this, LibraryViewActivity.class);
+                } else if (place.getType().equals(Place.TYPE_OFFICE)) {
+                    details = new Intent(Map.this, OfficeViewActivity.class);
+                } else { // Fotocopiadoras
+                    details = new Intent(Map.this, PhotocopierViewActivity.class);
                 }
-
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
                 startActivity(details);
                 return true;

@@ -75,42 +75,15 @@ public class ComunidadDetalle extends AppCompatActivity {
             buttonJoinCommunity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    popUpUnirse(getApplicationContext());   //Despliegue del mensaje de confirmación para unirse al grupo seleccionado
+                    //popUpUnirse(getApplicationContext());   //Despliegue del mensaje de confirmación para unirse al grupo seleccionado
+
+                    //Llamado a la actividad que despliega el formulario
+                    startActivity(new Intent(ComunidadDetalle.this, FormularioComunidad.class)
+                            .putExtra("usuarioID", usuarioID)
+                            .putExtra("usuarioName", usuarioNombre)
+                            .putExtra("comunidad", comunidad));
                 }
             });
         }
-    }
-
-    //Método que despliega un popup para determinar si un usuario quiere unirse a una comunidad
-    public void popUpUnirse(Context context)
-    {
-        // Creación del diálogo con AlertDialog builder. Primero se hace el constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(ComunidadDetalle.this, R.style.AppTheme_RedMujeres);
-
-        builder.setTitle("Unirse");
-        builder.setMessage("¿Desea unirse a la comunidad " + comunidad.getCommunityName() + "?");
-
-        String positiveText = "Sí";
-        builder.setPositiveButton(positiveText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Toast.makeText(context, "Afirmativo" , Toast.LENGTH_SHORT).show();
-                        comunidad.Unirse(context);  //Llamado al método que agrega un usuario a una comunidad
-                    }
-                });
-
-        String negativeText = "No";
-        builder.setNegativeButton(negativeText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // Toast.makeText(context, "Negativo" , Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        //Creación y despliegue del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

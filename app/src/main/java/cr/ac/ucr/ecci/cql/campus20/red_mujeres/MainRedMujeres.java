@@ -1,11 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,17 +7,27 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -37,6 +41,7 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -46,6 +51,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 // Imports especificos de Directions API
+import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.geojson.FeatureCollection;
 
 import android.os.Handler;
@@ -53,6 +59,8 @@ import android.view.Gravity;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -60,6 +68,11 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
@@ -70,6 +83,8 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,9 +103,14 @@ import java.util.Map;
 import java.util.Queue;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 // Imports especificos de Directions API
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
@@ -141,7 +161,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
-    private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();
+    private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
 
     private Double lastLatitudeKnown = 0.0;
     private Double lastLongitudeKnown = 0.0;
@@ -201,10 +221,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+
+
                 button = findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
                         iniciarRuta();
                     }
                 });
@@ -270,6 +294,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             startActivity(callIntent);
         }
     }
+
     public void popupPanico() {
         final String [] items = new String[] {"911", "Contacto Emergencia"};
 
@@ -303,9 +328,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO: Refactor
-                        enviarWhatsapp(message);
-                        enviarSMS(message);
+                        boolean valido = coordenadasValidas(latitudOri, longitudOri, latitudDes, longitudDes);
+                        if(valido) {
+                            enviarWhatsapp(message);
+                            enviarSMS(message);
+                        } else {
+                            Context context = getApplicationContext();
+                            CharSequence error = "Debés seleccionar la ruta antes de compartir.";
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, error, duration);
+                            toast.show();
+                        }
                     }
                 });
 
@@ -350,6 +384,14 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    public boolean coordenadasValidas(Double latitudOri, Double longitudOri, Double latitudDes, Double longitudDes) {
+        if(longitudDes == null || latitudDes == null || longitudOri == null || latitudOri == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     //Método para compartir ruta por medio de mensajes de texto
     public void enviarSMS(String message) {
         String text = message + "http://maps.google.com/maps?saddr=" + latitudOri + "," + longitudOri + "&daddr=" + latitudDes + "," + longitudDes;
@@ -383,6 +425,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public boolean onMapClick(@NonNull LatLng point) {
 
+        latitudOri = locationComponent.getLastKnownLocation().getLatitude();
+        longitudOri = locationComponent.getLastKnownLocation().getLongitude();
+        latitudDes = point.getLatitude();
+        longitudDes = point.getLongitude();
         //LocationComponent locationComponent = null;
         Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
@@ -396,7 +442,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapboxBlue);
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("Iniciar Viaje");
+        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
     }
 
