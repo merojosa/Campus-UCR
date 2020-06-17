@@ -61,7 +61,7 @@ public class MisComunidades extends AppCompatActivity {
         usuarioNombre = intent.getStringExtra("userName");
 
         //Se pregunta si la persona pertenece a alguna comunidad
-        if(misComunidades.size()==0)
+        if(misComunidades == null || misComunidades.size()==0)
         {
             TextView textNotJoined = findViewById(R.id.text_Not_Joined);
             textNotJoined.setText("No se ha unido a ningún grupo");
