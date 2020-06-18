@@ -33,6 +33,16 @@ public class PreguntaRepository {
     }
 
     /**
+     * Actualiza a la base de datos, para actualizar una pregunta dentro de la tabla en ejecucion de threads
+     * @param pregunta
+     */
+    public void update(Pregunta pregunta) {
+        ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
+            mPreguntaDao.update(pregunta);
+        });
+    }
+
+    /**
      * Recupera un LiveData (lista que puede cambiar) de preguntas de un tema asociado
      * @param id el id del tema a recuperar
      * @return una lista con las preguntas pde un tema especifico, asociado a un usuario especifico
