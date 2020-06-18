@@ -10,11 +10,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
@@ -70,8 +72,9 @@ public class InterestPointsTests {
         final int NAMES_COUNT = 7;
         String [] names = new String[NAMES_COUNT];
         int i = 0;
-        for(DeploymentScript.ActivityNames activityName : DeploymentScript.ActivityNames.values()){
-            names[i++] = activityInfoDao.getActivityName(activityName.ordinal());
+        List<ActivityInfo> activityInfo = activityInfoDao.getAll();
+        for(ActivityInfo info : activityInfo){
+            names[i++] = info.getName();
         }
         assertArrayEquals(expectedActivityNames, names);
     }
