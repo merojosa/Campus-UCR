@@ -27,6 +27,7 @@ public class Redireccionador
 
     public Redireccionador()
     {
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         campusBD = new FirebaseBD();
     }
@@ -88,7 +89,7 @@ public class Redireccionador
                         //  Timeout
                         campusBD.detenerAppDefaultAsync();
 
-                        Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
                 }
             };

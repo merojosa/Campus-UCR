@@ -1,20 +1,22 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import androidx.appcompat.widget.SearchView;
-
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,10 +25,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -35,23 +41,20 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     private RecyclerView mRecyclerView;
     private ListAdapter mListAdapter;
 
-    private List<GeneralData> temp = new ArrayList<>();
+    private List<Place> temp = new ArrayList<>();
     private List<Faculty> facultiesList;
 
     private ProgressBar spinner;
 
-    private FirebaseDB db;
-
-//    private Faculty faculty;
+    private DatabaseReference ref;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new FirebaseDB(getApplicationContext());
         setContentView(R.layout.activity_faculties);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Facultades");
-            getSupportActionBar().show();
+            setActivityTitle();
         }
 
         spinner = findViewById(R.id.facultyProgressBar);
@@ -64,14 +67,20 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         getFacultiesList();
     }
 
+    public void onPause(){
+        super.onPause();
+        removeListener();
+    }
+
     // el clic en una facultad debe llevarme a la lista de escuelas
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(String title) {
 
         boolean finded = false;
         int index = 0;
         while (index < facultiesList.size() && !finded){
-            if(facultiesList.get(index).getTitle().equals(title)){
+            if(facultiesList.get(index).getName().equals(title)){
                 finded = true;
             }else{
                 ++index;
@@ -115,10 +124,10 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         mRecyclerView.setHasFixedSize(true);
     }
 
-    /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
     private void getFacultiesList(){
-        DatabaseReference ref = db.getReference("Faculty");
-        ref.addValueEventListener(new ValueEventListener() {
+        FirebaseDB db = new FirebaseDB();
+        ref = db.getReference(Place.TYPE_FACULTY);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot faculty : dataSnapshot.getChildren()) {
@@ -128,17 +137,35 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
                 spinner.setVisibility(View.GONE);
+                removeListener();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
             }
-        });
+        };
+
+        ref.addValueEventListener(listener);
     }
 
     public void setDataList(){
         temp.addAll(facultiesList);
+    }
+
+    private void setActivityTitle(){
+        ActivityInfoDao activityInfoDao;
+        IPRoomDatabase roomDatabase = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").build();
+        activityInfoDao = roomDatabase.activityInfoDao();
+        AsyncTask.execute(() -> {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(activityInfoDao.getActivityName(DeploymentScript.ActivityNames.FACULTIES.ordinal()));
+            getSupportActionBar().show();
+        });
+    }
+
+    private void removeListener(){
+        if(ref != null && listener != null)
+            ref.removeEventListener(listener);
     }
 
 }

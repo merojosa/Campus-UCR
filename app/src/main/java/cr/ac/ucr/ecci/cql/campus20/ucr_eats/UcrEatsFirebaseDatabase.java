@@ -1,7 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
@@ -13,6 +18,7 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     private static String RATINGS_PATH = "ratings";
     private static String ORDERS_PATH = "assignedOrders";
 
+    private static String USERS_RATES_PATH = "users_rates";
 
     private DatabaseReference rootReference = null;
 
@@ -41,6 +47,40 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     public DatabaseReference getRestaurantRef(String id)
     {
         return this.rootReference.child(RESTAURANTS_PATH);
+    }
+
+    public DatabaseReference getRestaurantRateByUser(String restaurant_id, String user)
+    {
+        return this.rootReference.child(RESTAURANTS_PATH)
+                                 .child(restaurant_id)
+                                 .child(USERS_RATES_PATH)
+                                 .child(user)
+                                 .child("rate");
+
+    }
+
+    // Utilizado para transformar todos los carácteres que son válidos para
+    // una dirección
+    public static String encodeMailForFirebase(String uncodedMail)
+    {
+        String codedMail = uncodedMail;
+        codedMail = codedMail.replace("@", "<a>");
+        codedMail = codedMail.replace(".", "<dot>");
+        //...
+
+        return codedMail;
+    }
+
+    // Utilizado para transformar todos los carácteres que son válidos para
+    // una dirección
+    public static String decodeMailFromFirebase(String codedMail)
+    {
+        String decodedMail = codedMail;
+        decodedMail = decodedMail.replace("<a>", "@");
+        decodedMail = decodedMail.replace("<dot>", ".");
+        //...
+
+        return decodedMail;
     }
 
 }

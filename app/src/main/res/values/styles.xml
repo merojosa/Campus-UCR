@@ -56,5 +56,15 @@
         <item name="routeShieldColor">@color/mapboxWhite</item>
     </style>
 
+    <!-- Rating Bar Ucr Eats -->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#C0D6E4</item>
+        <item name="colorControlActivated">@color/azul_UCR</item>
+    </style>
+
+    <style name="popup_window_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
 
 </resources>

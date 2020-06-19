@@ -5,11 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,22 +27,26 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.viewmodels.MealViewModel;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
 public class MealsActivity extends AppCompatActivity
 {
     private static final int COLUMNS = 2;
     private RecyclerView recyclerView;
     private MealsAdapter adapter;
-    private MealViewModel viewModel;
+    private ImageView sodaRatingStar;
+    private TextView sodaRatingNum;
     private List<Meal> meals;
 
     private String currentRestaurant;
@@ -42,6 +55,7 @@ public class MealsActivity extends AppCompatActivity
     public final static String MEAL_KEY = "Meals";
     public final static String NOMBRE_SODA_KEY = "Soda";
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,6 +73,55 @@ public class MealsActivity extends AppCompatActivity
             this.setRestaurantImage(card);
             this.currentRestaurant = card.getNombre();
             this.startMealsSync(card.getFirebaseId());
+
+            sodaRatingNum = findViewById(R.id.rating_num);
+
+            // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+            getFirebaseUserRate("1"); // hard coded by now
+
+            sodaRatingStar = findViewById(R.id.rating_star);
+
+
+            sodaRatingStar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MealsActivity.this);
+                        View layout= null;
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        layout = inflater.inflate(R.layout.soda_rating_dialog, null);
+                        final RatingBar ratingBar = (RatingBar)layout.findViewById(R.id.ratingBar);
+                        ratingBar.setStepSize((float)1.0);
+                        builder.setTitle("Califica la soda");
+                        //builder.setMessage("Thank you for rating us , it will help us to provide you the best service .");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Float value = ratingBar.getRating();
+                                // SET RATING OF USER FOR THIS SODA WITH FIREBASE
+                                updateFirebaseUserRate("1", (double)value);
+                                // UPDATE TOTAL RATING FOR SODA
+                                // ...
+                                sodaRatingNum.setText(value.toString());
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setCancelable(false);
+                        builder.setView(layout);
+                        builder.show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
 
         this.setupRecyclerView();
@@ -131,5 +194,49 @@ public class MealsActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void getFirebaseUserRate(String restaurantId)
+    {
+        CampusBD logged = new FirebaseBD();
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        // Para comperar con la codificación de caracteres especiales en Firebase
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
+
+        DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Double rate = dataSnapshot.getValue(Double.class);
+                sodaRatingNum.setText(rate.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+                sodaRatingNum.setText(0);
+            }
+        });
+    }
+
+
+
+
+    private void updateFirebaseUserRate(String restaurantId, Double value)
+    {
+        CampusBD logged = new FirebaseBD();
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+
+        // Para comperar con la codificación de caracteres especiales en Firebase
+        String encodedMail = db.encodeMailForFirebase(logged.obtenerCorreoActual());
+
+        DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rate", value);
+
+        ref.getParent().updateChildren(map);
     }
 }

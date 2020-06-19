@@ -91,6 +91,5 @@ public class AppBarFragment extends Fragment
             MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
             menuItem.setVisible(true);
         }
-
     }
 }
