@@ -85,4 +85,8 @@ public class Pregunta {
     public void setContadorDisLikes(int contadorDisLikes) {
         this.contadorDisLikes = contadorDisLikes;
     }
+
+    public int getRanking(){
+        return this.contadorLikes - this.contadorDisLikes;
+    }
 }
