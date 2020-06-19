@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -84,6 +87,7 @@ public class Soda extends Place implements Parcelable {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public Soda(Parcel in) {
         super(in);
         super.setType(TYPE_SODA);

@@ -100,6 +100,18 @@ public class Place extends GeneralData implements Parcelable {
         this.floor = floor;
     }
 
+    //Para las librerias
+    public Place(int id, String name, String description, int image, String type, boolean wifi) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.image =  image;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.wifi = wifi;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Place(Parcel in) {
         id = in.readInt();

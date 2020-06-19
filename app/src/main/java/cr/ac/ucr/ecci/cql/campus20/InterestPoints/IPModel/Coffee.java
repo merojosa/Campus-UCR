@@ -1,10 +1,14 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Build;
 import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-public class Coffee extends Place {
+public class Coffee extends Place implements Parcelable {
 
     public String horario;
     public String oferta;
@@ -14,6 +18,7 @@ public class Coffee extends Place {
         super.setType(TYPE_COFFEE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public Coffee(Parcel in) {
         super(in);
         super.setType(TYPE_COFFEE);
@@ -56,5 +61,29 @@ public class Coffee extends Place {
 
     public void setOferta(String oferta) {
         this.oferta = oferta;
+    }
+
+    public static final Creator<Soda> CREATOR = new Creator<Soda>() {
+        @Override
+        public Soda createFromParcel(Parcel in) {
+            return new Soda(in);
+        }
+
+        @Override
+        public Soda[] newArray(int size) {
+            return new Soda[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(horario);
+        dest.writeByte((byte) (wifi == null ? 0 : wifi ? 1 : 2));
+        dest.writeString(oferta);
     }
 }

@@ -432,22 +432,22 @@ public class DeploymentScript {
 
     //Creación de las bibliotecas en la base de datos
     private void createLibrary() {
-        Library tinoco = new Library(0,  "Luis Demetrio Tinoco Castro", "", R.drawable.libros, 9.936151, -84.052704);
+        Library tinoco = new Library(0,  "Luis Demetrio Tinoco Castro", "", R.drawable.libros, 9.936151, -84.052704, "9:00 - 16:00", true);
         db.insert("Library", tinoco);
 
-        Library carlos = new Library(1, "Carlos Monge Alfaro", "", R.drawable.libros, 9.936166, -84.051072);
+        Library carlos = new Library(1, "Carlos Monge Alfaro", "", R.drawable.libros, 9.936166, -84.051072, "9:00 - 16:00", true);
         db.insert("Library", carlos);
 
-        Library salud = new Library(2, "Biblioteca Ciencias de la Salud", "", R.drawable.libros,9.938715, -84.051115 );
+        Library salud = new Library(2, "Biblioteca Ciencias de la Salud", "", R.drawable.libros,9.938715, -84.051115, "9:00 - 16:00", true);
         db.insert("Library", salud);
 
-        Library agro = new Library(3, "Biblioteca Ciencias Agroalimentarias", "", R.drawable.libros, 9.939773, -84.047757);
+        Library agro = new Library(3, "Biblioteca Ciencias Agroalimentarias", "", R.drawable.libros, 9.939773, -84.047757, "9:00 - 16:00", true);
         db.insert("Library", agro);
 
-        Library educa = new Library(4, "Biblioteca Facultad de Educación", "", R.drawable.libros, 9.936271, -84.048458);
+        Library educa = new Library(4, "Biblioteca Facultad de Educación", "", R.drawable.libros, 9.936271, -84.048458, "9:00 - 16:00", true);
         db.insert("Library", educa);
 
-        Library derecho = new Library(4, "Biblioteca Facultad de Derecho", "", R.drawable.libros, 9.936271, -84.048458);
+        Library derecho = new Library(4, "Biblioteca Facultad de Derecho", "", R.drawable.libros, 9.936271, -84.048458, "9:00 - 16:00", true);
         db.insert("Library", derecho);
     }
 
