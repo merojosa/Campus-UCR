@@ -22,8 +22,8 @@ public class Coffee extends Place {
         super.setLongitude(longitude);
     }
 
-    public Coffee(int id, String name, String description, int image, double latitude, double longitude) {
-        super(id, name, description, image, TYPE_COFFEE);
+    public Coffee(int id, String name, String description, int image, double latitude, double longitude, String horario, boolean wifi, String oferta) {
+        super(id, name, description, image, TYPE_COFFEE, horario, wifi, oferta);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
     }
