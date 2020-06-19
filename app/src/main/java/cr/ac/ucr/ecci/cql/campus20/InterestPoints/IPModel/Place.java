@@ -18,14 +18,8 @@ public class Place extends GeneralData implements Parcelable {
     public int image;
     public double latitude;
     public double longitude;
+    public Boolean wifi;
 
-    //Cafés
-    public String horario;
-    public String oferta;
-    //Sodas
-    public boolean express;
-
-    private boolean wifi;
     private int capacity;
     private boolean computers;
     private boolean projector;
@@ -76,23 +70,10 @@ public class Place extends GeneralData implements Parcelable {
         this.type = type;
         this.floor = floor;
         this.setCapacity(capacity);
-        this.setWifi(wifi);
         this.setComputers(computers);
         this.setProjector(projector);
         this.setExtintor(extintor);
-
-    }
-
-    //Para los Cafés
-    public Place(int id, String name, String description, int image, String type, String horario, boolean wifi, String oferta) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.type = type;
-        this.setHorario(horario);
         this.setWifi(wifi);
-        this.setOferta(oferta);
     }
 
     //Para los baños
@@ -126,8 +107,7 @@ public class Place extends GeneralData implements Parcelable {
         image = in.readInt();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        horario = in.readString();
-        oferta = in.readString();
+        wifi = in.readBoolean();
         this.comments = in.readArrayList(Comment.class.getClassLoader());
     }
 
@@ -218,14 +198,6 @@ public class Place extends GeneralData implements Parcelable {
         this.longitude = longitude;
     }
 
-    public boolean isWifi() {
-        return wifi;
-    }
-
-    public void setWifi(boolean wifi) {
-        this.wifi = wifi;
-    }
-
     public int getCapacity() {
         return capacity;
     }
@@ -266,17 +238,13 @@ public class Place extends GeneralData implements Parcelable {
         this.comments = comments;
     }
 
-    public String getHorario() { return horario; }
+    public Boolean getWifi() {
+        return wifi;
+    }
 
-    public void setHorario(String horario) { this.horario = horario; }
-
-    public String getOferta() { return oferta; }
-
-    public void setOferta(String oferta) { this.oferta = oferta; }
-
-    public boolean isExpress() { return express; }
-
-    public void setExpress(boolean express) { this.express = express; }
+    public void setWifi(Boolean wifi) {
+        this.wifi = wifi;
+    }
 
     @Override
     public int describeContents() {
@@ -295,8 +263,6 @@ public class Place extends GeneralData implements Parcelable {
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
         dest.writeList(comments);
-        dest.writeString(horario);
-        dest.writeString(oferta);
     }
 
     @Override

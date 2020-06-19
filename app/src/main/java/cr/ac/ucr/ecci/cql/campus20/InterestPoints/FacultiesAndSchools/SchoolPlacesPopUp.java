@@ -50,7 +50,7 @@ public class SchoolPlacesPopUp extends AppCompatActivity {
         capacity.setText(Integer.toString(place.getCapacity()));
 
         wifi.setImageResource(R.drawable.icon_wifi);
-        wifiCheck.setChecked(place.isWifi());
+        wifiCheck.setChecked(place.getWifi());
         wifiCheck.setEnabled(false);
 
         if(place.getType().equals(Place.TYPE_LABORATORY)) {
