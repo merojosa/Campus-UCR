@@ -36,6 +36,7 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
 
     public interface CommentListOnClickHandler{
         void onClick(int position, boolean like);
+        void onClick(Comment comment);
     }
 
     public CommentsList(CommentListOnClickHandler clickHandler) {
@@ -57,6 +58,14 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
             cDislike = (Button) view.findViewById(R.id.cdislike);
             mLike = (TextView) view.findViewById(R.id.no_like);
             mDislike = (TextView) view.findViewById(R.id.no_dislike);
+
+            mComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickHandler.onClick(temp.get(getAdapterPosition()));
+                }
+            });
+
             cLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
