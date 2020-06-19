@@ -51,12 +51,14 @@ public class DeploymentScript {
         createFaculties();
         createPlaces();
         createSchools();
-        createComments();
         createCoffeShops();
         createLibrary();
         createOffice();
         createSoda();
         createPhotocopier();
+        createLaboratory();
+        //createAsociation();
+        createBathrooms();
         /*Saves the activity names in room database.*/
         AsyncTask.execute(new Runnable() {
             @Override
@@ -95,27 +97,31 @@ public class DeploymentScript {
         Log.d("faculties", "Faculties were inserted in database.");
     }
 
+    //Creación de las cafeterías en la base de datos
     private void createCoffeShops() {
-        Coffee angar = new Coffee(0,  "Café Angar", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", angar);
+        Coffee angar = new Coffee(0,  "Café Angar", "", R.drawable.coffeshop512px,9.938051, -84.052969);
+        db.insert("Coffe", angar);
 
-        Coffee noventaYCinco = new Coffee(1, "95 grados", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", noventaYCinco);
+        Coffee noventaYCinco = new Coffee(1, "95 grados", "", R.drawable.coffeshop512px,9.932305, -84.049769);
+        db.insert("Coffe", noventaYCinco);
 
-        Coffee krakovia = new Coffee(2,  "Café Krakovia", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", krakovia);
+        Coffee krakovia = new Coffee(2,  "Café Krakovia", "", R.drawable.coffeshop512px,9.937929, -84.053974);
+        db.insert("Coffe", krakovia);
 
-        Coffee aroma = new Coffee(3, "Aroma y Sabor", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", aroma);
+        Coffee aroma = new Coffee(3, "Aroma y Sabor", "", R.drawable.coffeshop512px,9.935199, -84.051267);
+        db.insert("Coffe", aroma);
 
-        Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "", R.drawable.pan512px,9.9342365, -84.050532);
-        db.insert("Coffee", musmanni);
+        Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "", R.drawable.pan512px,9.931796, -84.052945);
+        db.insert("Coffe", musmanni);
 
-        Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", rincon);
+        Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px,9.931822, -84.052903);
+        db.insert("Coffe", rincon);
 
-        Coffee cafe_cacao = new Coffee(6, "Café & Cacao", "", R.drawable.coffeshop512px,9.9342365, -84.050532);
-        db.insert("Coffee", cafe_cacao);
+        Coffee cafe_esquina = new Coffee(6, "La Cafetería de la Esquina", "", R.drawable.coffeshop512px,9.931693, -84.052243);
+        db.insert("Coffe", cafe_esquina);
+
+        Coffee ruiseñor = new Coffee(7, "Cafetería Ruiseñor", "", R.drawable.coffeshop512px, 9.934383, -84.056577);
+        db.insert("Coffe", ruiseñor);
 
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
@@ -261,49 +267,245 @@ public class DeploymentScript {
         Log.d("places", "Schools were inserted in database.");
     }
 
-    private void createComments() {
-        /*
-        List<Comment> commentList = new ArrayList<>();
-        /*ID's de la EIE y ECCI respectivamente.
-        int[] placesFK = {31, 36};
-        String[] comments = {"La mejor escuela de la universidad.", "No tan buena, creen que son de compu pero no lo son."};
-        for (int i = 0; i < placesFK.length; ++i) {
-            commentList.add(new Comment(i, placesFK[i], Place.TYPE_SCHOOL, comments[i], UtilDates.DateToString(Calendar.getInstance().getTime()), 0, "nada", 0, 0));
-        }
-        for (Comment c : commentList) {
-            db.insert("Comment", c);
-        }
-        Log.d("comments", "Comments were inserted in database.");
-        */
+    private void createLaboratory(){
+        Laboratory labFisica = new Laboratory(0, 6, 0, "Laboratorio de fisica", "Este es el laboratorio de fisica", 1, 25, true, false, false, true);
+        db.insert("Laboratory", labFisica);
+
+        Laboratory labQuimica1 = new Laboratory(1, 9, 0, "Laboratorio 101", "Laboratorio de quimica", 1, 25, true, false, false, true);
+        db.insert("Laboratory", labQuimica1);
+
+        Laboratory labQuimica2 = new Laboratory(2, 9, 0, "Laboratorio 102", "Laboratorio de quimica", 1, 25, false, false, false, true);
+        db.insert("Laboratory", labQuimica2);
+
+        Laboratory labQuimica3 = new Laboratory(3, 9, 0, "Laboratorio 103", "Laboratorio de quimica", 2, 25, false, false, false, true);
+        db.insert("Laboratory", labQuimica3);
+
+        Laboratory labQuimica4 = new Laboratory(4, 9, 0, "Laboratorio 205", "Laboratorio de quimica", 2, 25, true, false, false, true);
+        db.insert("Laboratory", labQuimica4);
+
+        Laboratory labQuimica5 = new Laboratory(5, 9, 0, "Laboratorio 206", "Laboratorio de quimica", 2, 25, true, false, false, true);
+        db.insert("Laboratory", labQuimica5);
+
+        Laboratory labComputacion1 = new Laboratory(6, 36, 0, "Laboratorio 104", "Laboratorio de computacion", 1, 40, true, true, true, false);
+        db.insert("Laboratory", labComputacion1);
+
+        Laboratory labComputacion2 = new Laboratory(7, 36, 0, "Laboratorio 105", "Laboratorio de computacion", 1, 40, true, true, true, false);
+        db.insert("Laboratory", labComputacion2);
+
+        Laboratory labComputacion3 = new Laboratory(8, 36, 0, "Laboratorio 106", "Laboratorio de computacion", 1, 40, true, true, true, false);
+        db.insert("Laboratory", labComputacion3);
+
+        Laboratory labComputacion4 = new Laboratory(9, 36, 0, "Laboratorio 107", "Laboratorio de computacion", 1, 40, true, true, true, false);
+        db.insert("Laboratory", labComputacion4);
+
+        Laboratory labComputacion5 = new Laboratory(10, 36, 0, "Lab redes y oper", "Laboratorio exclusivo para estudiantes del " +
+                "proyecto integador de redes y sitemas operativos", 3, 25, true, true, true, false);
+        db.insert("Laboratory", labComputacion5);
+
+        Laboratory labComputacion6 = new Laboratory(11, 36, 0, "Lab bases e inge", "Laboratorio de exclusivo para estudiantes del " +
+                "proyecto integrador de sistemas operativos y bases de datos", 4, 40, true, true, true, false);
+        db.insert("Laboratory", labComputacion6);
+
+        Laboratory  labMicro1 = new Laboratory(12, 47, 0, "Laboratorio 110", "Laboratorio de Microbiología", 1, 30, false, false, false, true );
+        db.insert("Laboratory", labMicro1);
+
+        Laboratory  labMicro2 = new Laboratory(13, 47, 0, "Laboratorio 113", "Laboratorio de Microbiología", 1, 30, false, false, false, true );
+        db.insert("Laboratory", labMicro2);
+
+        Laboratory  labMicro3 = new Laboratory(14, 47, 0, "Laboratorio 115", "Laboratorio de Microbiología", 1, 20, false, false, false, true );
+        db.insert("Laboratory", labMicro3);
+
+        Laboratory  labMicro4 = new Laboratory(15, 47, 0, "Laboratorio 119", "Laboratorio de Microbiología", 1, 20, true, false, true, true );
+        db.insert("Laboratory", labMicro4);
+
+        Laboratory  labMicro5 = new Laboratory(16, 47, 0, "Laboratorio 121", "Laboratorio de Microbiología de Aguas", 1, 15, false, false, false, true );
+        db.insert("Laboratory", labMicro5);
+
+        Laboratory  labMicro6 = new Laboratory(17, 47, 0, "Laboratorio 122", "Laboratorio de Microbiología", 1, 25, false, false, false, true );
+        db.insert("Laboratory", labMicro6);
+
+        Laboratory  labMicro7 = new Laboratory(18, 47, 0, "Laboratorio 125", "Laboratorio para Maestría de Microbiología", 2, 25, true, false, true, true );
+        db.insert("Laboratory", labMicro7);
+
+        Laboratory  labMicro8 = new Laboratory(19, 47, 0, "Laboratorio 130", "Laboratorio para Diplomado de Microbiología", 2, 50, true, false, false, true );
+        db.insert("Laboratory", labMicro8);
+
+        Laboratory labLenguas1 = new Laboratory(20, 41, 0, "Laboratorio 201", "Laboratorio para Ingles Conversacional", 1, 30, true, true, true, false );
+        db.insert("Laboratory", labLenguas1);
+
+        Laboratory labLenguas2 = new Laboratory(21, 41, 0, "Laboratorio 210", "Laboratorio para Francés Conversacional", 1, 30, true, true, false, true);
+        db.insert("Laboratory", labLenguas2);
+
+        Laboratory labLenguas3 = new Laboratory(22, 41, 0, "Laboratorio 215", "Laboratorio para Literatura Inglesa", 1, 35, true, true, true, true);
+        db.insert("Laboratory", labLenguas3);
+
+        Laboratory labLenguas4 = new Laboratory(23, 41, 0, "Laboratorio 230", "Laboratorio para Literatura Francesa", 2, 30, false, false, false, true);
+        db.insert("Laboratory", labLenguas4);
+
+        Laboratory labLenguas5 = new Laboratory(24, 41, 0, "Laboratorio 243", "Laboratorio de Gramática en Inglés", 2, 20, true, true, true, true);
+        db.insert("Laboratory", labLenguas5);
+
+        Laboratory labLenguas6 = new Laboratory(25, 41, 0, "Laboratorio 243", "Laboratorio de Gramática en Francés", 2, 20, true, true, false, true);
+        db.insert("Laboratory", labLenguas6);
+
     }
 
+    //verificar más adelante, pues es una asocia por escuela
+//    private void createAsociation(){
+//        Asociation asocia0 = new Asociation(0, 0, 0, "Asocia de ", "Asociación de estudiantes de ", 1, 15, true, true, false);
+//        db.insert("Asociation", asocia0);
+//    }
+
+    private void createBathrooms(){
+        Bathroom br1 = new Bathroom(0, 0, 0, "Baño de Artes Dramáticas", "", 1, 3, true);
+        db.insert("Bathroom", br1);
+
+        Bathroom br2 = new Bathroom(1, 0, 0, "Baño de Artes Dramáticas", "", 2, 3, true);
+        db.insert("Bathroom", br2);
+
+        Bathroom br3 = new Bathroom(2, 0, 0, "Baño de Artes Dramáticas", "", 3, 5, true);
+        db.insert("Bathroom", br3);
+
+        Bathroom br4 = new Bathroom(3, 1, 0, "Baño de Artes Plásticas", "", 1, 4, true);
+        db.insert("Bathroom", br4);
+
+        Bathroom br5 = new Bathroom(4, 1, 0, "Baño de Artes Plásticas", "", 2, 3, false);
+        db.insert("Bathroom", br5);
+
+        Bathroom br6 = new Bathroom(5, 1, 0, "Baño de Artes Plásticas", "", 3, 5, false);
+        db.insert("Bathroom", br6);
+
+        Bathroom br7 = new Bathroom(6, 2, 0, "Baño de Artes Musicales", "", 1, 2, true);
+        db.insert("Bathroom", br7);
+
+        Bathroom br8 = new Bathroom(7, 2, 0, "Baño de Artes Musicales", "", 2, 4, false);
+        db.insert("Bathroom", br8);
+
+        Bathroom br9 = new Bathroom(8, 2, 0, "Baño de Artes Musicales", "", 3, 3, true);
+        db.insert("Bathroom", br9);
+
+        Bathroom br10 = new Bathroom(9, 3, 0, "Baño de Agronomía", "", 1, 2, true);
+        db.insert("Bathroom", br10);
+
+        Bathroom br11 = new Bathroom(10, 3, 0, "Baño de Agronomía", "", 2, 2, false);
+        db.insert("Bathroom", br11);
+
+        Bathroom br12 = new Bathroom(11, 4, 0, "Baño de Zootecnia", "", 1, 3, true);
+        db.insert("Bathroom", br12);
+
+        Bathroom br13 = new Bathroom(12, 4, 0, "Baño de Zootecnia", "", 2, 3, true);
+        db.insert("Bathroom", br13);
+
+        Bathroom br14 = new Bathroom(13, 5, 0, "Baño de Tecnología de Alimentos", "", 1, 2, true);
+        db.insert("Bathroom", br14);
+
+        Bathroom br15 = new Bathroom(14, 5, 0, "Baño de Tecnología de Alimentos", "", 2, 2, false);
+        db.insert("Bathroom", br15);
+
+        Bathroom br16 = new Bathroom(15, 5, 0, "Baño de Tecnología de Alimentos", "", 3, 2, false);
+        db.insert("Bathroom", br16);
+
+        Bathroom br17 = new Bathroom(16, 6, 0, "Baño de Física", "", 1, 3,true);
+        db.insert("Bathroom", br17);
+
+        Bathroom br18 = new Bathroom(17, 6, 0, "Baño de Física", "", 2, 5,true);
+        db.insert("Bathroom", br18);
+
+        Bathroom br19 = new Bathroom(18, 6, 0, "Baño de Física", "", 3, 2,false);
+        db.insert("Bathroom", br19);
+
+        Bathroom br20 = new Bathroom(19, 7, 0, "Baño de Geología", "", 1, 1,true);
+        db.insert("Bathroom", br20);
+
+        Bathroom br21 = new Bathroom(20, 7, 0, "Baño de Geología", "", 2, 3, true);
+        db.insert("Bathroom", br21);
+
+        Bathroom br22 = new Bathroom(21, 8, 0, "Baño de Matemática", "", 1, 2,true);
+        db.insert("Bathroom", br22);
+
+        Bathroom br23 = new Bathroom(22, 8, 0, "Baño de Matemática", "", 2, 3,false);
+        db.insert("Bathroom", br23);
+
+
+    }
+
+
+    //Creación de las bibliotecas en la base de datos
     private void createLibrary() {
-        Library tinoco = new Library(0,  "Tinoco", "", R.drawable.libros, 9.943473, -84.0469052);
+        Library tinoco = new Library(0,  "Luis Demetrio Tinoco Castro", "", R.drawable.libros, 9.936151, -84.052704);
         db.insert("Library", tinoco);
 
-        Library carlos = new Library(1, "Carlos Monge", "", R.drawable.libros, 9.943473, -84.0469052);
+        Library carlos = new Library(1, "Carlos Monge Alfaro", "", R.drawable.libros, 9.936166, -84.051072);
         db.insert("Library", carlos);
 
+        Library salud = new Library(2, "Biblioteca Ciencias de la Salud", "", R.drawable.libros,9.938715, -84.051115 );
+        db.insert("Library", salud);
+
+        Library agro = new Library(3, "Biblioteca Ciencias Agroalimentarias", "", R.drawable.libros, 9.939773, -84.047757);
+        db.insert("Library", agro);
+
+        Library educa = new Library(4, "Biblioteca Facultad de Educación", "", R.drawable.libros, 9.936271, -84.048458);
+        db.insert("Library", educa);
+
+        Library derecho = new Library(4, "Biblioteca Facultad de Derecho", "", R.drawable.libros, 9.936271, -84.048458);
+        db.insert("Library", derecho);
     }
 
+    //Creación de las oficinas en la base de datos
     private void createOffice() {
-        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.943473, -84.0469052);
+        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.936313, -84.050436);
         db.insert("Office", oficina1);
 
-        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.943473, -84.0469052);
+        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.938030, -84.052168);
         db.insert("Office", oficina2);
+
+        Office ori = new Office(2, "Oficinas de Registro e Información", "", R.drawable.administracion, 9.937079, -84.051010);
+        db.insert("Office", ori);
+
+        Office becas = new Office(3, "Oficina de Becas y Atención Socioeconomicas", "", R.drawable.administracion, 9.935737, -84.054143);
+        db.insert("Office", becas);
+
+        Office orientacion = new Office(4, "Oficina de Orientación Vocacional", "", R.drawable.administracion,9.937486, -84.053076);
+        db.insert("Office", orientacion);
+
+        Office juridica = new Office(5, "Oficina Jurídica de la UCR","",R.drawable.administracion,9.933635, -84.053301);
+        db.insert("Office", juridica);
+
+        Office ambiente = new Office(6, "Unidad de Gestión Ambiental", "", R.drawable.administracion, 9.933984, -84.052995);
+        db.insert("Office", ambiente);
+
+        Office contra = new Office(7,  "Contraloría Universitaria", "", R.drawable.administracion, 9.935174, -84.054931);
+        db.insert("Office", contra);
+
+        Office obas = new Office(8,  "Oficinas de Bienestar y Salud (OBAS)", "", R.drawable.administracion,9.935477, -84.052358 );
+        db.insert("Office", obas);
 
     }
 
     private void createSoda() {
-        Soda odonto = new Soda(0,  "Soda de Odontología", "", R.drawable.sandwich, 9.9379464, -84.0514961);
-        db.insert("Soda", odonto);
+        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535);
+        db.insert("Soda", farma);
 
-        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.9379464, -84.0514961);
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514);
         db.insert("Soda", generales);
 
-        Soda economicas = new Soda(2,  "Soda de Económicas", "", R.drawable.sandwich, 9.9379464, -84.0514961);
-        db.insert("Soda", economicas);
+        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875);
+        db.insert("Soda", lucy);
+
+        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012);
+        db.insert("Soda", derecho);
+
+        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890);
+        db.insert("Soda", educa);
+
+        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600);
+        db.insert("Soda", comedor);
+
+        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040);
+        db.insert("Soda", sodau);
+
+        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473);
+        db.insert("Soda", agro);
 
     }
 
@@ -311,11 +513,35 @@ public class DeploymentScript {
         Photocopier exactas = new Photocopier(0,  "CopiasExactas", "", R.drawable.impresora, 9.943473, -84.0469052);
         db.insert("Photocopier", exactas);
 
-        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.943473, -84.0469052);
+        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.935302, -84.050955);
         db.insert("Photocopier", millenium);
 
-        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.943473, -84.0469052);
+        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.934919, -84.051658);
         db.insert("Photocopier", misCopias);
+
+        Photocopier kike = new Photocopier(3,  "Copias KIKE", "", R.drawable.impresora,9.935144, -84.051384 );
+        db.insert("Photocopier", kike);
+
+        Photocopier derecho = new Photocopier(4,  "Centro de Fotocopiado Derecho UCR", "", R.drawable.impresora, 9.936306, -84.054077);
+        db.insert("Photocopier", derecho);
+
+        Photocopier activas = new Photocopier(5,  "Copias Activas", "", R.drawable.impresora, 9.932461, -84.051043);
+        db.insert("Photocopier", activas);
+
+        Photocopier sui = new Photocopier(6,  "Fotocopiadora Sui Generis", "", R.drawable.impresora, 9.934026, -84.050932);
+        db.insert("Photocopier", sui);
+
+        Photocopier logo = new Photocopier(7,  "Logo Print", "", R.drawable.impresora,9.935319, -84.050932 );
+        db.insert("Photocopier", logo);
+
+        Photocopier express = new Photocopier(8,  "Kopias Express", "", R.drawable.impresora, 9.935945, -84.057178);
+        db.insert("Photocopier", express);
+
+        Photocopier meju = new Photocopier(9,  "MejuCopi", "", R.drawable.impresora, 9.932985, -84.051620);
+        db.insert("Photocopier", meju);
+
+        Photocopier copicentro = new Photocopier(10, "Copicentro", "", R.drawable.impresora, 9.933344, -84.068378);
+        db.insert("Photocopier", copicentro);
     }
 
 }

@@ -21,20 +21,22 @@
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_width="331dp"
+            android:layout_height="59dp"
             android:layout_gravity="center_horizontal|top"
             android:layout_margin="32dp"
-            android:layout_marginTop="80dp"
-            android:background="@color/blanco_UCR"
+            android:background="@color/azul_UCR"
             android:cursorVisible="true"
-            android:elevation="24dp"
+            android:drawableEnd="@drawable/ic_lugares"
             android:enabled="true"
-            android:paddingLeft="24dp"
-            android:text="Comenzar ruta al destino elegido"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:foregroundGravity="top"
+            android:paddingRight="30px"
+            android:text="Seleccionar Ubicación en Mapa"
+            android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="@color/gris_medio_UCR"
-            android:textSize="14sp" />
+            android:textColor="@color/blanco_UCR"
+            android:textSize="18sp" />
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
@@ -61,6 +63,40 @@
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:maxImageSize="26dp"
         mapbox:rippleColor="@color/blanco_UCR"
+        mapbox:useCompatPadding="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/shareTrip"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/azul_UCR"
+        android:clickable="true"
+        android:elevation="0dp"
+        app:srcCompat="@drawable/share"
+        mapbox:backgroundTint="@color/white"
+        mapbox:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        mapbox:layout_constraintEnd_toEndOf="parent"
+        mapbox:maxImageSize="26dp"
+        mapbox:rippleColor="@color/blanco_UCR"
+        mapbox:useCompatPadding="true"
+        android:focusable="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sos"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="#FF3D00"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:focusable="true"
+        mapbox:backgroundTint="@color/verde_UCR"
+        mapbox:layout_constraintBottom_toTopOf="@+id/shareTrip"
+        mapbox:layout_constraintEnd_toEndOf="@+id/mapView"
+        mapbox:maxImageSize="32dp"
+        mapbox:rippleColor="@color/blanco_UCR"
+        mapbox:srcCompat="@drawable/baseline_report_white_48"
         mapbox:useCompatPadding="true" />
 
 

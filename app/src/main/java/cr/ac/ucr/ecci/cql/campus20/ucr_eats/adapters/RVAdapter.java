@@ -2,14 +2,13 @@ package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,15 +23,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.SodaMapActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.MealsActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import timber.log.Timber;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 {
@@ -50,20 +46,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
                 .build();
     }
 
-
-    public void setSodaCards(List<Restaurant> restaurants, List<Double> i)
+    public void setSodaCard(List<Restaurant> sodas)
     {
-        this.sodaCards = convertToSodaCards(restaurants, i);
-
+        this.sodaCards = convertToSodaCard(sodas);
         notifyDataSetChanged();
     }
 
-    public List<SodaCard> convertToSodaCards(List<Restaurant> restaurants, List<Double> i)
+    public List<SodaCard> convertToSodaCard(List<Restaurant> restaurants)
     {
         List<SodaCard> cards = new ArrayList<SodaCard>();
 
-        int index = 0;
-        for(Restaurant restaurant : restaurants)
+        for(Restaurant soda : restaurants)
         {
             int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             String horario = "Cerrado";
@@ -71,12 +64,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             Date d = new Date();
             String nameDay = (String) android.text.format.DateFormat.format("EEE", d);
 
-            if (hour >= restaurant.openingTime && hour < restaurant.closingTime && restaurant.daysOpen.indexOf(nameDay) != -1) {
+            if (hour >= soda.getOpening_hour() && hour < soda.getClosing_hour() && soda.daysOpen.indexOf(nameDay) != -1) {
                 horario = "Abierto";
             }
 
+            int photoid = soda.getId() == 1 ? R.drawable.la_u : R.drawable.plaza_chou;
             cards.add(
-                new SodaCard(restaurant.id, restaurant.name, restaurant.photo, horario, i.get(index++), restaurant.latitude, restaurant.longitude)
+                    new SodaCard(photoid, soda.getFirebaseId(), soda.name, soda.photo,
+                            horario, soda.rating, soda.latitude, soda.longitude, soda.capacity, soda.capacity_max,
+                            soda.getTotalServings(), soda.getAvailableServings())
             );
         }
 
@@ -105,30 +101,30 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         sodaViewHolder.horarioSoda.setText(sodaCards.get(i).getHorario());
 
 
-        //////////////////////////////////////////////////////////////////////////
-        // acá ocupo obtener el rating de la soda
-        String rating = getRating(sodaCards.get(i).getId());
+        Resources resources = this.context.getResources();
         sodaViewHolder.ratingSoda.setText(Double.toString(sodaCards.get(i).getRating()));
 
-        if (sodaCards.get(i).getHorario() == "Abierto")
-            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
-        else
-            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
+        sodaViewHolder.capacitySoda.setText(
+                String.format(resources.getString(R.string.capacity_left_placeholder),
+                        sodaCards.get(i).getAvailableCapacity(), sodaCards.get(i).getMaxCapacity()));
 
+        sodaViewHolder.servingsText.setText(
+                String.format(resources.getString(R.string.servings_placeholder),
+                        sodaCards.get(i).getAvailableServings(), sodaCards.get(i).getTotalServings())
+        );
+
+        set_schedule(sodaViewHolder, i);
 
         loadCardImage(sodaViewHolder, i);
 
     }
 
-    private String getRating(int id)
-    {
-        //////////////////// acá es donde debería de leer esos datos de la tabla rating
-
-        int random = new Random().nextInt((500 - 100) + 1) + 100;
-        return Integer.toString(random/50%5);
+    private void set_schedule(SodaViewHolder sodaViewHolder, int i) {
+        if (sodaCards.get(i).getHorario() == "Abierto")
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+        else
+            sodaViewHolder.horarioSoda.setTextColor(context.getResources().getColor(R.color.red));
     }
-
-
 
     @Override
     public int getItemCount()
@@ -146,6 +142,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
         ImageView ubicacionSoda;
         TextView ratingSoda;
 
+        TextView capacitySoda;
+
+        TextView servingsText;
+
         public SodaViewHolder(View itemView)
         {
             super(itemView);
@@ -157,6 +157,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
             imagenSoda = itemView.findViewById(R.id.imagen_soda);
             ubicacionSoda = itemView.findViewById(R.id.ubicacion_soda);
             ratingSoda= itemView.findViewById(R.id.rating_soda);
+            capacitySoda= itemView.findViewById(R.id.capacidad_soda);
+            servingsText = itemView.findViewById(R.id.servings_text);
 
             // Opens meals activity when card is clicked
             cardView.setOnClickListener(view -> {
@@ -169,8 +171,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
 
             ubicacionSoda.setOnClickListener(view -> {
                 SodaCard card = sodaCards.get(getAdapterPosition());
-                double latitud = card.getLatitud();
-                irUbicacionSoda(card);
+                irUbicacionSoda(card, view);
+
             });
         }
 
@@ -204,12 +206,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SodaViewHolder>
     }
 
     // Ir a la localización de la soda en el mapa
-    private void irUbicacionSoda(SodaCard soda){
+    private void irUbicacionSoda(SodaCard card, View view){
         // Intent para ver la localización en el mapa
-        String url = "geo:" + String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud());
-        String q = "?q="+ String.valueOf(soda.getLatitud()) + "," + String.valueOf(soda.getLongitud()) + "(" + soda.getNombre() + ")";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url + q));
-        intent.setPackage("com.google.android.apps.maps");
-        this.context.startActivity(intent);
+        Intent intent = new Intent(view.getContext(), SodaMapActivity.class);
+        intent.putExtra("sodaLat", card.getLatitud());
+        intent.putExtra("sodaLong", card.getLongitud());
+        view.getContext().startActivity(intent);;
+    }
+
+    public List<SodaCard> getSodaCards() {
+        return sodaCards;
     }
 }

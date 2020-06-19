@@ -3,8 +3,6 @@ package cr.ac.ucr.ecci.cql.campus20;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
-import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MainRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
@@ -30,6 +27,7 @@ public class Redireccionador
 
     public Redireccionador()
     {
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         campusBD = new FirebaseBD();
     }
@@ -91,7 +89,7 @@ public class Redireccionador
                         //  Timeout
                         campusBD.detenerAppDefaultAsync();
 
-                        Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,"En este momento tenemos errores de conexión con nuestros servidores",Toast.LENGTH_LONG).show();
                     }
                 }
             };

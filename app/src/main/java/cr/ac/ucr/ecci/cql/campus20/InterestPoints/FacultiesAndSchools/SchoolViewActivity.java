@@ -39,6 +39,8 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentsList;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Asociation;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Bathroom;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Laboratory;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
@@ -71,6 +74,20 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private final static String[] listOptions = {"Laboratorios", "Asociacion de estudiantes", "Baños"};
     private List<Place> optionsSchools =  new ArrayList<>();
 
+    private List<Place> laboratoriesList;
+    private List<Place> bathroomsList;
+    private List<Place> asociationList;
+
+
+    private DatabaseReference refLabs;
+    private DatabaseReference refBathrooms;
+    private DatabaseReference refAsociation;
+
+    private ValueEventListener listenerLabs;
+    private ValueEventListener listenerBathrooms;
+    private ValueEventListener listenerAsociation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +103,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
         TextView tittle = findViewById(R.id.schoolName);
 
+        //Para opcines del dropdown
         populateOptionsList();
-
+        getPlacesInSchool();
         listHelper = false;
         listView = (ListView) findViewById(R.id.listSchoolItems);
         setListComponents();
@@ -126,20 +144,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     public void setListComponents(){
 
-        //Para pruebas
-        List<Place> valuesLabs = new ArrayList<>();
-        List<Place> valuesAsc = new ArrayList<>();
-        List<Place> valuesBath = new ArrayList<>();
-
-        String[] valuesLabs1 = new String[] { "Lab1", "Lab2", "Lab3"};
-        String[] valuesAsc1 = new String[] { "Horario: 7:00-19:00"};
-        String[] valuesBath1 = new String[] { "Baño 1er piso", "Baño 2do piso", "Baño 3er piso"};
-
-        auxTest(valuesLabs, valuesLabs1);
-        auxTest(valuesAsc, valuesAsc1);
-        auxTest(valuesBath, valuesBath1);
-        //
-
         //Creacion del adaptador
         SchoolPlacesAdapter adapter = new SchoolPlacesAdapter(optionsSchools, this, listOptions);
 
@@ -155,13 +159,13 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                         //Sacar a metodo aparte
                         List<Place> auxList = new ArrayList<>();
                         if(itemValue.getName() == listOptions[0]){ //Laboratorios
-                            auxList =valuesLabs;
+                            auxList =laboratoriesList;
                             auxLastItemSelected = listOptions[0];
                         }else if(itemValue.getName() == listOptions[1]){ //Asocias
-                            auxList =valuesAsc;
+                            auxList =asociationList;
                             auxLastItemSelected = listOptions[1];
                         }else if(itemValue.getName() == listOptions[2]){ //Baños
-                            auxList =valuesBath;
+                            auxList =bathroomsList;
                             auxLastItemSelected = listOptions[2];
                         }
                         addOptionsOnList(optionsSchools, position, auxList);
@@ -180,14 +184,14 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                             List<Place> auxList = new ArrayList<>();
                             int auxPos = 0;
                             if(itemValue.getName() == listOptions[0]){ //Laboratorios
-                                auxList =valuesLabs;
+                                auxList =laboratoriesList;
                                 auxLastItemSelected = listOptions[0];
                             }else if(itemValue.getName() == listOptions[1]){ //Asocias
-                                auxList =valuesAsc;
+                                auxList =asociationList;
                                 auxLastItemSelected = listOptions[1];
                                 auxPos = 1;
                             }else if(itemValue.getName() == listOptions[2]){ //Baños
-                                auxList =valuesBath;
+                                auxList =bathroomsList;
                                 auxLastItemSelected = listOptions[2];
                                 auxPos = 2;
                             }
@@ -203,6 +207,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                 }else{
                     //cuando se le da click a un item de baño, lab... especifico
                     //Debe levantar el fragmento u otra activity
+
+                    SchoolPlacesPopUp schoolPlacesPopUp = new SchoolPlacesPopUp(view, itemValue);
+
                 }
 
             }
@@ -223,6 +230,96 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
             s.setName(val);
             optionsSchools.add(s);
         }
+    }
+
+    private void getPlacesInSchool(){
+        laboratoriesList = new ArrayList<>();
+        bathroomsList = new ArrayList<>();
+        asociationList = new ArrayList<>();
+
+        FirebaseDB db = new FirebaseDB();
+        getLabs(db);
+        getBathrooms(db);
+//        getAsociation(db);
+    }
+
+    public void getLabs(FirebaseDB db){
+        refLabs = db.getReference(Place.TYPE_LABORATORY);
+        listenerLabs = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot laboratory : dataSnapshot.getChildren()) {
+                    if(laboratory.getValue(Laboratory.class).getId_school_fk() == place.getId()){
+                        laboratoriesList.add(laboratory.getValue(Laboratory.class));
+                    }
+                }
+                removeListenerLabs();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        };
+        refLabs.addValueEventListener(listenerLabs);
+    }
+
+    public void getBathrooms(FirebaseDB db){
+        refBathrooms = db.getReference(Place.TYPE_BATHROOM);
+        listenerBathrooms = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot bathroom : dataSnapshot.getChildren()) {
+                    if(bathroom.getValue(Bathroom.class).getId_school_fk() == place.getId()){
+                        bathroomsList.add(bathroom.getValue(Bathroom.class));
+                    }
+                }
+                removeListenerBathrooms();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        };
+        refBathrooms.addValueEventListener(listenerBathrooms);
+    }
+
+//    public void getAsociation(FirebaseDB db){
+//        FirebaseDB db = new FirebaseDB();
+//        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
+//        listenerAsociation = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot asociation : dataSnapshot.getChildren()) {
+//                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
+//                        asociationList.add(asociation.getValue(Asociation.class));
+//                    }
+//                }
+//                removeListener();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+//            }
+//        };
+//        refAsociation.addValueEventListener(listenerAsociation);
+//    }
+
+    private void removeListenerLabs(){
+        if(refLabs != null && listenerLabs != null)
+            refLabs.removeEventListener(listenerLabs);
+
+//        if(refAsociation != null && listenerAsociation != null)
+//            refAsociation.removeEventListener(listenerAsociation);
+    }
+
+    private void removeListenerBathrooms(){
+        if(refBathrooms != null && listenerBathrooms != null)
+            refBathrooms.removeEventListener(listenerBathrooms);
+//        if(refAsociation != null && listenerAsociation != null)
+//            refAsociation.removeEventListener(listenerAsociation);
     }
 
 }

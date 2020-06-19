@@ -28,6 +28,7 @@
             android:layout_width="38dp"
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
+            android:focusable="false"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_thumb_up_grey_24dp"
             android:gravity="center" />
@@ -47,6 +48,7 @@
             android:layout_width="39dp"
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
+            android:focusable="false"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_thumb_down_grey_24dp"/>
 

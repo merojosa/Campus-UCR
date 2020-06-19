@@ -1,6 +1,8 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -29,35 +33,51 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
 
     private final CommentListOnClickHandler mClickHandler;
 
+
     public interface CommentListOnClickHandler{
-        void onClick(String title);
+        void onClick(int position, boolean like);
     }
 
     public CommentsList(CommentListOnClickHandler clickHandler) {
         this.mClickHandler = clickHandler;
     }
 
-    public class MyViewHolderComments extends RecyclerView.ViewHolder implements View
-            .OnClickListener{
+    public class MyViewHolderComments extends RecyclerView.ViewHolder{
 
         public TextView mComment;
         public TextView mLike;
         public TextView mDislike;
+        public Button cLike;
+        public Button cDislike;
 
         public MyViewHolderComments(View view) {
             super(view);
             mComment = (TextView) view.findViewById(R.id.comment);
+            cLike = (Button) view.findViewById(R.id.clike);
+            cDislike = (Button) view.findViewById(R.id.cdislike);
             mLike = (TextView) view.findViewById(R.id.no_like);
             mDislike = (TextView) view.findViewById(R.id.no_dislike);
-            view.setOnClickListener(this);
+            cLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*Triggers listener to save changes, changes button color and locks button.*/
+                    mClickHandler.onClick(getAdapterPosition(), true);
+                    //DrawableCompat.setTint(cLike.getCompoundDrawables()[0], ContextCompat.getColor(view.getContext(), R.color.verde_UCR));
+                    cLike.setClickable(false);
+                }
+            });
+            cDislike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickHandler.onClick(getAdapterPosition(), false);
+                    //DrawableCompat.setTint(cDislike.getCompoundDrawables()[0], ContextCompat.getColor(view.getContext(), R.color.rojoForo));
+                    cDislike.setClickable(false);
+                }
+            });
+
         }
 
-        @Override
-        public void onClick(View v) {
-            int posicionAdaptador = getAdapterPosition();
-            Comment comment = temp.get(posicionAdaptador);
-            mClickHandler.onClick(comment.getDescription());
-        }
+
     }
 
     @NonNull
