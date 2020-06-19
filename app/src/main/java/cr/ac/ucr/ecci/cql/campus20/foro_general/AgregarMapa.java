@@ -9,11 +9,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mapbox.android.core.location.LocationEngineProvider;
-import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -25,6 +24,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.maps.SupportMapFragment;
+import com.mapbox.mapboxsdk.plugins.markerview.MarkerView;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 //MapboxMap.OnMapClickListener,
-public class AgregarMapa extends AppCompatActivity implements PermissionsListener {
+public class AgregarMapa extends AppCompatActivity implements PermissionsListener, MapboxMap.OnMapClickListener {
 
     private MapboxMap mapboxMap;
     double lat;
@@ -89,8 +89,10 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
                         public void onStyleLoaded(@NonNull Style style) {
                             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
 
-
                             habilitarPermisos(style);
+
+                            AgregarMapa.this.mapboxMap.addOnMapClickListener(AgregarMapa.this);
+
                             FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionRespuestas);
                             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -164,4 +166,20 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
         }
     }
 
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        agregarMarcador(point.getLatitude(), point.getLongitude());
+        return true;
+    }
+
+    private void agregarMarcador(double lat, double lon){
+
+        //TODO: Borrar anteriores
+        mapboxMap.addMarker(new MarkerOptions()
+        .position(new LatLng(lat, lon))
+        .title("Marcador"));
+
+        this.lat = lat;
+        this.lon = lon;
+    }
 }
