@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -124,6 +125,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         /*POPUP*/
     }
 
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
     private void setPhotoListener(){
         Button upload = view.findViewById(R.id.foto);
         upload.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +139,24 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         });
     }
 
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
     private void fileChooser(){
-        Intent intent = new Intent();
+
+        Intent intent = new Intent(view.getContext(), CommentPopUp.class);
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+
+        ((Activity)view.getContext()).startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+
     }
 
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -150,10 +166,18 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         }
     }
 
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
     private void uploadPhoto(Uri uri){
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
     private String getExtension(Uri uri){
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
