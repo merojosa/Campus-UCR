@@ -17,6 +17,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
@@ -58,10 +59,6 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
                         orders.add(assignedOrder);
                     }
                 }
-
-                if (orders.size() > 0)
-
-//                    sodasAdapter.setSodaCard(orders);
 
             }
 
