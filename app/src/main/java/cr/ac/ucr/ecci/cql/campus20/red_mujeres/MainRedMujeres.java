@@ -219,6 +219,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
+                setEmergencyPhone();
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
@@ -708,11 +709,40 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Point.fromLngLat(9.9362323, -84.0493615)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
                 Point.fromLngLat(9.9377568, -84.0487296)));
-        addPhoneMarkers();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9352736, -84.0513553)));
+        addPhoneMarkers(symbolLayerIconFeatureList);
     }
 
-    public void addPhoneMarkers() {
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Aaron, Navigators: Berta, Denisse
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
+    public void addPhoneMarkers(List<Feature> symbolLayerIconFeatureList) {
 
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
+
+                .withImage(ICON_ID, BitmapFactory.decodeResource(
+                        MainRedMujeres.this.getResources(), R.drawable.mapbox_marker_icon_default))
+
+                .withSource(new GeoJsonSource(SOURCE_ID,
+                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+
+
+                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                        .withProperties(
+                                iconImage(ICON_ID),
+                                iconAllowOverlap(true),
+                                iconIgnorePlacement(true),
+                                iconOffset(new Float[] {0f, -9f}))
+                ), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+
+                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
+
+
+            }
+        });
     }
 
     //Recibe mapa que devuelve la base de datos con las posiciones de cada miembro del equipo
