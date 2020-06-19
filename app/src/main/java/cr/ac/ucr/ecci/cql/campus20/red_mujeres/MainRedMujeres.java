@@ -219,7 +219,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
-                setEmergencyPhone();
+                //setEmergencyPhone();
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
@@ -695,23 +695,23 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
     //Participantes: Driver: Denisse, Navigators: Berta, Aaron
     //Agregar coordenadas de telefonos de emergencia de la UCR.
-    public void setEmergencyPhone() {
+    public  List<Feature> setEmergencyPhone() {
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9379798, -84.053143)));
+                Point.fromLngLat(-84.053143, 9.9379798 )));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
                 Point.fromLngLat(9.9365951, -84.052528)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9359527, -84.051744)));
+                Point.fromLngLat(-84.051744, 9.9359527)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9358129, -84.050132)));
+                Point.fromLngLat(-84.050132, 9.9358129)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9362323, -84.0493615)));
+                Point.fromLngLat(-84.0493615, 9.9362323)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9377568, -84.0487296)));
+                Point.fromLngLat(-84.0487296, 9.9377568)));
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(9.9352736, -84.0513553)));
-        addPhoneMarkers(symbolLayerIconFeatureList);
+                Point.fromLngLat(-84.0513553, 9.9352736)));
+        return symbolLayerIconFeatureList;
     }
 
     //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
@@ -749,7 +749,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     // Marca en el mapa las posiciones de estos
     private void addMarkers(List<Map<String,Object>> map){
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-
+        symbolLayerIconFeatureList = setEmergencyPhone();
         for(int i = 0 ; i < map.size() ; ++i){
             symbolLayerIconFeatureList.add(Feature.fromGeometry(
                     Point.fromLngLat( (Double)map.get(i).get("Longitud"), (Double)map.get(i).get("Latitud"))));
