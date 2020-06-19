@@ -5,7 +5,8 @@ import android.os.Parcelable;
 
 public class SodaCard implements Parcelable
 {
-    int id;
+    private int id;
+    private String firebaseId;
     private String nombre;
     private String horario;
     private String foto;
@@ -13,36 +14,60 @@ public class SodaCard implements Parcelable
     private double latitud;
     private double longitud;
 
-    public SodaCard(int id, String nombre, String foto, String horario, double rating, double latitud, double longitud)
+    private int maxCapacity;
+    private int availableCapacity;
+
+    private int totalServings;
+    private int availableServings;
+
+    public SodaCard(int id, String firebaseId, String nombre, String foto, String horario,
+                    double rating, double latitud, double longitud, int capacity, int capacity_max,
+                    int totalServings, int availableServings)
     {
         this.id = id;
+        this.firebaseId = firebaseId;
         this.nombre = nombre;
         this.foto = foto;
         this.horario = horario;
         this.rating = rating;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.availableCapacity = capacity;
+        this.maxCapacity = capacity_max;
+        this.setTotalServings(totalServings);
+        this.setAvailableServings(availableServings);
     }
+
 
     protected SodaCard(Parcel in) {
         id = in.readInt();
+        firebaseId = in.readString();
         nombre = in.readString();
-        foto = in.readString();
         horario = in.readString();
+        foto = in.readString();
         rating = in.readDouble();
         latitud = in.readDouble();
         longitud = in.readDouble();
+        maxCapacity = in.readInt();
+        availableCapacity = in.readInt();
+        totalServings = in.readInt();
+        availableServings = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeString(firebaseId);
         dest.writeString(nombre);
-        dest.writeString(foto);
         dest.writeString(horario);
+        dest.writeString(foto);
         dest.writeDouble(rating);
         dest.writeDouble(latitud);
         dest.writeDouble(longitud);
+        dest.writeInt(maxCapacity);
+        dest.writeInt(availableCapacity);
+        dest.writeInt(totalServings);
+        dest.writeInt(availableServings);
     }
 
     @Override
@@ -103,4 +128,44 @@ public class SodaCard implements Parcelable
     public double getLongitud() { return longitud; }
 
     public void setLongitud(double longitud) { this.longitud = longitud; }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getAvailableCapacity() {
+        return availableCapacity;
+    }
+
+    public void setAvailableCapacity(int availableCapacity) {
+        this.availableCapacity = availableCapacity;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
+    public int getTotalServings() {
+        return totalServings;
+    }
+
+    public void setTotalServings(int totalServings) {
+        this.totalServings = totalServings;
+    }
+
+    public int getAvailableServings() {
+        return availableServings;
+    }
+
+    public void setAvailableServings(int availableServings) {
+        this.availableServings = availableServings;
+    }
 }

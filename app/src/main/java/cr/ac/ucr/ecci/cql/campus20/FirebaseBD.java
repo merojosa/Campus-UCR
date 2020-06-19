@@ -13,14 +13,15 @@ import com.google.firebase.database.ValueEventListener;
 import timber.log.Timber;
 
 // Referencia: https://blog.mindorks.com/firebase-login-and-authentication-android-tutorial
-public class FirebaseBD implements CampusBD
+public class  FirebaseBD implements CampusBD
 {
-    public static boolean isPersistenceEnabled;
-    private FirebaseDatabase mDatabase;
+    private static boolean isPersistenceEnabled;
+    protected FirebaseDatabase mDatabase;
     private FirebaseAuth auth;
 
     private DatabaseReference appInicial;
     private ValueEventListener firebaseListener;
+
 
 
     public FirebaseBD()
@@ -93,5 +94,29 @@ public class FirebaseBD implements CampusBD
         DatabaseReference referencia = mDatabase.getReference(path);
         referencia.setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
     }
+
+    // Inserta el dato con un id generico, asi, ninguno sera igual.
+    @Override
+    public void agregarDatos(String path, Object datos)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.push().setValue(datos).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
+    }
+
+    // Id unico a los que haya en path
+    @Override
+    public String obtenerIdUnicoPath(String path)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        return referencia.push().getKey();
+    }
+
+    @Override
+    public void eliminarDato(String path)
+    {
+        DatabaseReference referencia = mDatabase.getReference(path);
+        referencia.setValue(null).addOnFailureListener(e -> Timber.d(e.getLocalizedMessage()));
+    }
+
 
 }

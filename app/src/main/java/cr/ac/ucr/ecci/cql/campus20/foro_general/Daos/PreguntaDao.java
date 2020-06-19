@@ -20,7 +20,7 @@ public interface PreguntaDao
     void insert(Pregunta pregunta);
 
     // Para actualizar una pregunta
-    @Update(onConflict = OnConflictStrategy.ABORT)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Pregunta pregunta);
 
     // Para eliminar una pregunta
