@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -236,6 +237,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Botón de visibilidad de la localización del usuario
                 FloatingActionButton fab = findViewById(R.id.floatingActionButton);
                 fab.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(View view) {
                         if (locationComponent.isLocationComponentEnabled()) {
@@ -521,6 +523,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
@@ -688,6 +691,27 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         handler.post(runnable);
     }
 
+    public void setEmergencyPhone() {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9379798, -84.053143)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9365951, -84.052528)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9359527, -84.051744)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9358129, -84.050132)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9362323, -84.0493615)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9377568, -84.0487296)));
+        addPhoneMarkers();
+    }
+
+    public void addPhoneMarkers() {
+
+    }
+
     //Recibe mapa que devuelve la base de datos con las posiciones de cada miembro del equipo
     // Marca en el mapa las posiciones de estos
     private void addMarkers(List<Map<String,Object>> map){
@@ -799,9 +823,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
-
-
     }
+
+
 
 
 }
