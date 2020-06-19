@@ -159,7 +159,7 @@ public class MisComunidades extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MisComunidades.this, CrearComunidad.class));
+                startActivity(new Intent(MisComunidades.this, CrearComunidad.class).putExtra("userID",usuarioID));
             }
         });
     }
