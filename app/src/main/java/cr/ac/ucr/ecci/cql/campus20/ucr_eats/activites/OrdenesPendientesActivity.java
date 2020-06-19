@@ -110,8 +110,9 @@ public class OrdenesPendientesActivity extends AppCompatActivity
                                     eventoRepartidor(position);
                                 }
 
-                                db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
-                                        .get(position).getIdOrder());
+                                //db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
+                                //        .get(position).getIdOrder());
+
                                 
                                 listaOrdenes.clear();
                             })
@@ -147,5 +148,14 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         Order pedidoCliente = listaOrdenes.get(posicion);
 
         AssignedOrder assignedOrder = new AssignedOrder(repartidor, pedidoCliente);
+
+        // Agregar orden pendiente a Firebase,
+        db.escribirDatos("ucr_eats/assignedOrders/", assignedOrder);
+
+    }
+
+    private void enviarNotificacion(AssignedOrder assignedOrder)
+    {
+        // ... hacer cambio en Firebase
     }
 }
