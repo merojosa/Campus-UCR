@@ -3,15 +3,19 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +52,7 @@ public class MainForoGeneral extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private ToggleButton boton;
 
     private List<Integer> idList;
 
@@ -80,7 +85,8 @@ public class MainForoGeneral extends AppCompatActivity {
         // Se instancia el RecyclerView
         RecyclerView recyclerView = findViewById(R.id.listaTemasFavoritos);
         final TemasFavoritosAdapter adapter = new TemasFavoritosAdapter(this);
-        recyclerView.setAdapter(adapter);
+        final AdaptadorTemas adaptadorTemas = new AdaptadorTemas(this);
+        recyclerView.setAdapter(adaptadorTemas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
@@ -125,7 +131,7 @@ public class MainForoGeneral extends AppCompatActivity {
             }
         });
 
-        adapter.setTemas(this.temasLocales);
+        adaptadorTemas.setTemas(this.temasLocales);
 
         // Prueba con el Favorito -> usuario
         this.databaseReference.getFavoritosRef().child(this.databaseReference.obtenerUsuario())
@@ -149,7 +155,7 @@ public class MainForoGeneral extends AppCompatActivity {
                                 Favorito fav = new Favorito(id, nombreUsuario);
                                 MainForoGeneral.this.favoritosLocales.add(fav);
                             }
-                            adapter.setFavoritos(MainForoGeneral.this.favoritosLocales);
+                            adaptadorTemas.setFavoritos(MainForoGeneral.this.favoritosLocales);
 
                             int count = MainForoGeneral.this.favoritosLocales.size();
                             for (int i = 0; i< count; i++){
@@ -207,7 +213,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
 
         // Recepción de los clicks del adapter
-        adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
+        adaptadorTemas.setOnItemClickListener(new AdaptadorTemas.OnItemClickListener(){
 
             @Override
             public void onItemClick(View view, int position) {
@@ -243,6 +249,79 @@ public class MainForoGeneral extends AppCompatActivity {
                 intent.putExtra("temaSeleccionado", temaSeleccionado);
                 //intent.putExtra("nombreUsuario", firebase.getNombreUsuario());
                 startActivity(intent);
+            }
+
+//            ID: CI0161-356 - Remover tema favorito desde la pantalla de inicio.
+//            Tarea realizada:
+//                    * Se despliega un mensaje de confirmación a la hora de eliminar uno de los temas de la lista de favoritos.
+//            Participantes:
+//                    * Josué Zeledón: Developer o Driver
+//                    * Esteban González: Navigator
+//                    * Andrés Davidovich: Navigator
+            @Override
+            public void onHeartClick(boolean check, int position){
+                //conseguir id del tema seleccionado
+                int idTema;
+                String nombreTema;
+                if(idList.size() != 0){
+                    idTema = idList.get(position);
+                }
+                else{
+                    idTema = MainForoGeneral.this.temasLocales.get(position).getId();
+                }
+                int counter = MainForoGeneral.this.temasLocales.size();
+                int i = 0 ;
+                int fin = 0;
+                Tema result = new Tema(0 , "", "", 0,0); //tema comodin
+                while (i < counter && fin ==0) {
+                    if (MainForoGeneral.this.temasLocales.get(i).id == idTema) {
+                        result = MainForoGeneral.this.temasLocales.get(i);
+                        fin = 1;
+                    }
+                    i++;
+                }
+                nombreTema = result.getTitulo();
+
+                MainForoGeneral.this.boton = findViewById(R.id.botonFollow);
+
+                if (check) {
+                    // Se da un mensaje al usuario
+//                    Toast.makeText(ForoGeneralVerTemas.this, "Tema " + nombreTema +
+//                            " añadido a Favoritos", Toast.LENGTH_SH
+
+                } else {
+
+                    // Se genera el dialog para la confirmación del borrado
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainForoGeneral.this);
+                    builder.setTitle("Eliminar Tema");
+
+                    // Ask the final question
+                    builder.setMessage("¿Desea eliminar el tema " + nombreTema + " de la lista de Favoritos?");
+
+                    builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Aquí se elimina el tema de la lista de favoritos
+                        }
+                    });
+
+                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainForoGeneral.this.boton.setChecked(true);
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    // Desplega el alert en la pantalla
+                    dialog.show();
+
+                    // Se elimina al tema de la lista de Favoritos
+                    //eliminarTemaFavorito(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+
+                    // Se elimina el tema como Favorito en Firebase
+                    //eliminarTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+                }
             }
         });
 
