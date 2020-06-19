@@ -45,12 +45,19 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private EditText mEditText;
     private TextView titulo;
     private Button btnCrearRespuesta;
+    private Button adjuntarMapa;
+
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
+    private ArrayList<Double> coordenadas;
+    private Double lat;
+    private Double lon;
+
 
     private String nombreUsuario;
     ForoGeneralFirebaseDatabase databaseReference;
@@ -67,6 +74,12 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         // Nombre del usuario actual
         this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
 
+
+        //lat = mIntent.getDoubleExtra("latitud");
+        //lon = mIntent.getDoubleExtra("longitud");
+
+
+
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
 
@@ -80,6 +93,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         gd.setStroke(2, Color.parseColor("#00C0F3"));
         mEditText.setBackground(gd);
 
+
         // Codigo para manejar color del boton y evento de click
         btnCrearRespuesta = (Button) findViewById(R.id.btnCrearRespuesta);
         btnCrearRespuesta.setBackgroundColor(Color.parseColor("#00C0F3"));
@@ -91,6 +105,23 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                 if (verificarRespuesta()) {
                     agregarRespuesta();
                 }
+            }
+        });
+
+
+        //inicializa array de coordenadas
+        coordenadas = new ArrayList<Double>();
+
+        // Codigo para manejar color del boton y evento de click
+        adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);
+        adjuntarMapa.setBackgroundColor(Color.parseColor("#005DA4"));
+        adjuntarMapa.setTextColor(Color.BLACK);
+        adjuntarMapa.setText("Adjuntar un mapa");
+        adjuntarMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //coordenadas = agregarMapa();
+                agregarMapa();
             }
         });
 
@@ -136,6 +167,27 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         });
 
     }
+/*
+    //si se puede hacer con fragmento
+    private ArrayList<Double> agregarMapa(){
+        double lat = 0;
+        double lon = 0;
+
+        //llama fragmento de mapa y obtiene las coordenadas
+
+        ArrayList<Double> resp = new ArrayList<Double>();
+        resp.add(lat);
+        resp.add(lon);
+        return resp;
+    }*/
+
+    //si se hace con una actividad
+    private void agregarMapa(){
+
+        //llama la actividad de mapas
+
+    }
+
 
     /**
      * Este método inserta una nueva respuesta partir de lo que se digite, luego de insertar en
