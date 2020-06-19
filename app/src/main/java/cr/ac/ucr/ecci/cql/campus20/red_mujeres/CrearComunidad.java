@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
@@ -69,8 +70,24 @@ public class CrearComunidad extends AppCompatActivity {
                         escribirComunidadEnBD(usuarioID, nombreGrupo, descripcionGrupo);
                     }
                 });
+
+        String negativeText = "No";
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Toast.makeText(context, "Negativo" , Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        //Creación y despliegue del diálogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void escribirComunidadEnBD(String usuarioID, String nombreGrupo, String descripcionGrupo) {
+        DatabaseReference usuario = mDatabase.getReference();
+        //Falta la lógica para almacenar la BD
+        Toast.makeText(getApplicationContext(), "Comunidad creada" , Toast.LENGTH_SHORT).show();
     }
 }
