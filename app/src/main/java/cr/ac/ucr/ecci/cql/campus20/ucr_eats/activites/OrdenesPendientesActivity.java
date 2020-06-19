@@ -26,12 +26,14 @@ import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.OrdersAdapter;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
 public class OrdenesPendientesActivity extends AppCompatActivity
 {
     private List<Order> listaOrdenes;
     private CampusBD db;
+    private final boolean ROL_REPARTIDOR = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,16 +77,39 @@ public class OrdenesPendientesActivity extends AppCompatActivity
     public void setupRecyclerView()
     {
         RecyclerView recyclerView = findViewById(R.id.ordenes_pendientes_rv);
+        String mensaje = "";
+        String pregunta = "";
+
+        if(ROL_REPARTIDOR == true)
+        {
+            // Repartidor
+            mensaje = "Escoger orden";
+            pregunta = "¿Desea escoger esta orden?";
+        }
+        else
+        {
+            // Usuario
+            mensaje = "Completar orden";
+            pregunta = "¿Desea completar esta orden?";
+        }
+
+        String finalPregunta = pregunta;
+        String finalMensaje = mensaje;
 
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, recyclerView, (view, position) ->
                 {
                     new AlertDialog.Builder(this)
-                            .setTitle("Completar orden")
-                            .setMessage("¿Desea completar esta orden?")
+                            .setTitle("Orden")
+                            .setMessage(finalPregunta)
                             .setIcon(R.drawable.info_personalizado)
-                            .setPositiveButton("Completar orden", (dialog, whichButton) ->
+                            .setPositiveButton(finalMensaje, (dialog, whichButton) ->
                             {
+                                if(ROL_REPARTIDOR == true)
+                                {
+                                    eventoRepartidor(position);
+                                }
+
                                 db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
                                         .get(position).getIdOrder());
                                 
@@ -109,5 +134,18 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 
         RecyclerView.Adapter adapterRV = new OrdersAdapter(listaOrdenes);
         recyclerView.setAdapter(adapterRV);
+    }
+
+    private void eventoUsuario()
+    {
+
+    }
+
+    private void eventoRepartidor(int posicion)
+    {
+        String repartidor = db.obtenerCorreoActual();
+        Order pedidoCliente = listaOrdenes.get(posicion);
+
+        AssignedOrder assignedOrder = new AssignedOrder(repartidor, pedidoCliente);
     }
 }
