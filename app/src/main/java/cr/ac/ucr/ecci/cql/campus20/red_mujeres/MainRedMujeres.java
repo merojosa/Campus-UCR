@@ -691,6 +691,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         handler.post(runnable);
     }
 
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Denisse, Navigators: Berta, Aaron
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
     public void setEmergencyPhone() {
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
