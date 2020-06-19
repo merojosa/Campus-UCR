@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -97,6 +100,7 @@ public class Place extends GeneralData implements Parcelable {
         this.floor = floor;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Place(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -107,11 +111,12 @@ public class Place extends GeneralData implements Parcelable {
         image = in.readInt();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        wifi = in.readBoolean();
+        //wifi = in.readBoolean();
         this.comments = in.readArrayList(Comment.class.getClassLoader());
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public Place createFromParcel(Parcel in) {
             return new Place(in);
