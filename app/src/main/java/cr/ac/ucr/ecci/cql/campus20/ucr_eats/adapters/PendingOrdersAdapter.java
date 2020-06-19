@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersPresenter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersView;
@@ -22,6 +24,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
     private final Context context;
     private List<Order> orders;
     private PendingOrdersPresenter presenter;
+    private String PATH = "ucr_eats/assignedOrders";
 
     public PendingOrdersAdapter(Context context, List<Order> orders)
     {
@@ -58,7 +61,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
         notifyDataSetChanged();
     }
 
-    public static class PendingOrdersViewHolder extends RecyclerView.ViewHolder implements PendingOrdersView
+    public class PendingOrdersViewHolder extends RecyclerView.ViewHolder implements PendingOrdersView
     {
         TextView restaurant;
         TextView meal;
@@ -75,6 +78,20 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
             this.meal = itemView.findViewById(R.id.assign_meal);
             this.date = itemView.findViewById(R.id.assign_date);
             this.assignButton = itemView.findViewById(R.id.assign_order);
+
+            this.assignButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseBD db = new FirebaseBD();
+
+                    String email = db.obtenerCorreoActual();
+
+                    AssignedOrder order = new AssignedOrder(email, orders.get(getAdapterPosition()));
+
+                    String id = db.obtenerIdUnicoPath(PATH);
+                    db.escribirDatos(PATH+"/"+id, order);
+                }
+            });
         }
 
         @Override

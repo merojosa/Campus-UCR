@@ -52,14 +52,13 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
                     Order pendingOrder = order.getValue(Order.class);
 
                     if(order.exists()) {
-                        Log.e("datos", "" + order.getValue());
+                        Log.i("datos", "" + order.getValue());
                         orders.add(pendingOrder);
                     }
-
-                    if(orders.size() > 0)
-                        adapter.setOrders(orders)   ;
                 }
 
+                if(orders.size() > 0)
+                    adapter.setOrders(orders);
             }
 
             @Override
