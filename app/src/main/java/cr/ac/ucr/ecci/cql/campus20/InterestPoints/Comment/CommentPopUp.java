@@ -6,17 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -29,6 +32,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -64,6 +69,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private Button setDislike;
     private int like;
     private int dislike;
+    private Uri imgUrl;
+    private StorageReference mStorageRef;
 
     public CommentPopUp(){}
 
@@ -96,6 +103,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         /*Ratingbar y comentario*/
         setupCommentRating();
         setCommentsListener();
+        setPhotoListener();
        // setupLikesnDislikes
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
@@ -114,6 +122,42 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             }
         });
         /*POPUP*/
+    }
+
+    private void setPhotoListener(){
+        Button upload = view.findViewById(R.id.foto);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileChooser();
+            }
+        });
+    }
+
+    private void fileChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode != 1 && resultCode == RESULT_OK && data.getData() != null){
+            imgUrl = data.getData();
+            uploadPhoto(imgUrl);
+        }
+    }
+
+    private void uploadPhoto(Uri uri){
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+    }
+
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
     private void setupRecyclerView(){
