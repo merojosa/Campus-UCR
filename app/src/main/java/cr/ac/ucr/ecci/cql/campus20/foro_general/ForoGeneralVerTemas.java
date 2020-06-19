@@ -330,6 +330,10 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     eliminarTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
+            @Override
+            public void onLongClick(View view, int position){
+                Toast.makeText(ForoGeneralVerTemas.this, "HIII", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
