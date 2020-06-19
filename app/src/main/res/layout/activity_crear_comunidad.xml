@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gris_claro_UCR"
-    tools:context=".red_mujeres.ComunidadesRedMujeres">
+    tools:context=".red_mujeres.CrearComunidad">
 
     <TextView
         android:id="@+id/text_Activity_Title"
@@ -15,7 +14,7 @@
         android:elevation="10dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="Unirse a una comunidad"
+        android:text="Crear una nueva comunidad"
         android:textAlignment="center"
         android:textColor="@color/azul_UCR"
         android:textSize="24sp"
@@ -33,19 +32,6 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCommunities"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title" />
-
     <fragment
         android:id="@+id/appBar"
         class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
@@ -55,5 +41,6 @@
         android:layout_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_app_bar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
