@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,18 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".red_mujeres.MisComunidades"></activity>
+        <activity android:name=".foro_general.ForoGeneralVerMisPreguntas"></activity>
+        <activity android:name=".red_mujeres.MisComunidades" />
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
 
-
-        <activity android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
+        <activity
+            android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeShopsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
-        <activity android:name=".foro_general.ForoGeneralVerPreguntas"></activity>
+        <activity android:name=".foro_general.ForoGeneralVerPreguntas" />
         <activity android:name=".MainEmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,8 +49,9 @@
             android:name=".foro_general.MainForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity android:name=".ucr_eats.MainUcrEats" />
-        <activity android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
-               android:theme="@style/AppTheme.InterestsThemeNoBar"/>
+        <activity
+            android:name=".InterestPoints.FacultiesAndSchools.SchoolViewActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.FacultiesAndSchools.SchoolsActivity"
             android:theme="@style/AppTheme.InterestsTheme" />
@@ -60,8 +61,9 @@
         <activity
             android:name=".InterestPoints.Mapbox.Map"
             android:theme="@style/AppTheme.InterestsTheme" />
-        <activity android:name=".InterestPoints.InterestPointsActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar"/>
+        <activity
+            android:name=".InterestPoints.InterestPointsActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.MainRedMujeres" />
         <activity android:name=".red_mujeres.MenuRedMujeres" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />

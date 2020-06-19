@@ -270,6 +270,13 @@ public class MainForoGeneral extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(MainForoGeneral.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(MainForoGeneral.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", MainForoGeneral.this.databaseReference.obtenerUsuario());
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
+
                     case R.id.pref_foro:
                         startActivity(new Intent(MainForoGeneral.this, ConfiguracionActivity.class));
                         break;
