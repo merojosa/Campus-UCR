@@ -1,10 +1,12 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,50 +16,48 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.PendingOrdersAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 
 public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
 {
+    private PendingOrdersAdapter adapter;
     private List<Order> listaOrdenes;
-    private CampusBD db;
+    private RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordenes_pendientes_repartidor);
 
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+        DatabaseReference ref = db.getPendingOrdersRef();
 
-        DatabaseReference ref = db.getAssignedOrdersRef();
+        this.setupRecyclerView();
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Iterable<DataSnapshot> sodaData = dataSnapshot.getChildren();
-                ArrayList<AssignedOrder> orders = new ArrayList<>();
+                Iterable<DataSnapshot> orderData = dataSnapshot.getChildren();
+                ArrayList<Order> orders = new ArrayList<>();
+
                 // Iterate array
-                int id = 1;
-                for(final DataSnapshot order : sodaData)
+                for(final DataSnapshot order : orderData)
                 {
                     Log.e("Nombre:", ""+order.getValue());
-                    AssignedOrder assignedOrder = order.getValue(AssignedOrder.class);
-//                    assignedOrder.setId(id++);
-                    if (assignedOrder != null)
-                    {
-//                        assignedOrder.setFirebaseId(order.getKey());
-//                        assignedOrder.setServings(order);
-                    }
+                    Order pendingOrder = order.getValue(Order.class);
 
                     if(order.exists()) {
                         Log.e("datos", "" + order.getValue());
-                        orders.add(assignedOrder);
+                        orders.add(pendingOrder);
                     }
+
+                    if(orders.size() > 0)
+                        adapter.setOrders(orders)   ;
                 }
 
             }
@@ -67,5 +67,16 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    private void setupRecyclerView()
+    {
+        // Create adapter with empty dataset
+        this.adapter = new PendingOrdersAdapter(this, listaOrdenes);
+
+        // Set recycler a 2 column grid and the adapter
+        recyclerView = findViewById(R.id.assigned_orders_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(this.adapter);
     }
 }

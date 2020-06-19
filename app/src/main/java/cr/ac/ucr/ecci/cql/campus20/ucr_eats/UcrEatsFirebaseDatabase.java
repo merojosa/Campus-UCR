@@ -1,12 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
@@ -16,7 +11,8 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     private static String RESTAURANTS_PATH = "restaurant";
     private static String MEALS_PATH = "meals";
     private static String RATINGS_PATH = "ratings";
-    private static String ORDERS_PATH = "assignedOrders";
+    private static String ASSIGNED_ORDERS_PATH = "assignedOrders";
+    private static String PENDING_ORDERS_PATH = "pedidos";
 
     private static String USERS_RATES_PATH = "users_rates";
 
@@ -34,7 +30,12 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
 
     public DatabaseReference getAssignedOrdersRef()
     {
-        return this.rootReference.child(ORDERS_PATH);
+        return this.rootReference.child(ASSIGNED_ORDERS_PATH);
+    }
+
+    public DatabaseReference getPendingOrdersRef()
+    {
+        return this.rootReference.child(PENDING_ORDERS_PATH);
     }
 
     public DatabaseReference getMealsFromRestaurantRef(String id)

@@ -1,6 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters;
 
-public interface AssignedOrdersView
+public interface PendingOrdersView
 {
     void setRestaurant(String restaurant);
     void setMeal(String meal);

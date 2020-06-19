@@ -13,34 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.AssignedOrdersPresenter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.AssignedOrdersView;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersPresenter;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersView;
 
-public class AssignedOrdersAdapter extends RecyclerView.Adapter<AssignedOrdersAdapter.AssignedOrdersViewHolder>
+public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdapter.PendingOrdersViewHolder>
 {
     private final Context context;
-    private List<AssignedOrder> orders;
-    private AssignedOrdersPresenter presenter;
+    private List<Order> orders;
+    private PendingOrdersPresenter presenter;
 
-    public AssignedOrdersAdapter(Context context, List<AssignedOrder> orders)
+    public PendingOrdersAdapter(Context context, List<Order> orders)
     {
         this.context = context;
         this.orders = orders;
-        this.presenter = new AssignedOrdersPresenter(orders);
+        this.presenter = new PendingOrdersPresenter(orders);
     }
 
 
     @NonNull
     @Override
-    public AssignedOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public PendingOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pending_order, parent, false);
-        return new AssignedOrdersViewHolder(v);
+        return new PendingOrdersViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AssignedOrdersViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull PendingOrdersViewHolder holder, int position)
     {
         this.presenter.onBindOrderAtPosition(position, holder);
     }
@@ -51,14 +51,14 @@ public class AssignedOrdersAdapter extends RecyclerView.Adapter<AssignedOrdersAd
         return orders == null ? 0 : orders.size();
     }
 
-    public void setOrders(List<AssignedOrder> orders)
+    public void setOrders(List<Order> orders)
     {
         this.orders = orders;
         this.presenter.setOrders(orders);
         notifyDataSetChanged();
     }
 
-    public static class AssignedOrdersViewHolder extends RecyclerView.ViewHolder implements AssignedOrdersView
+    public static class PendingOrdersViewHolder extends RecyclerView.ViewHolder implements PendingOrdersView
     {
         TextView restaurant;
         TextView meal;
@@ -67,7 +67,7 @@ public class AssignedOrdersAdapter extends RecyclerView.Adapter<AssignedOrdersAd
 
         View itemView;
 
-        public AssignedOrdersViewHolder(View itemView)
+        public PendingOrdersViewHolder(View itemView)
         {
             super(itemView);
             this.itemView = itemView;
