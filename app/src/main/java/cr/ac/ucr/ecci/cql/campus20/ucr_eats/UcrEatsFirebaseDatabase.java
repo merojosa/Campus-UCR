@@ -11,6 +11,8 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     private static String RESTAURANTS_PATH = "restaurant";
     private static String MEALS_PATH = "meals";
     private static String RATINGS_PATH = "ratings";
+    private static String ORDERS_PATH = "assignedOrders";
+
 
     private DatabaseReference rootReference = null;
 
@@ -22,6 +24,11 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     public DatabaseReference getRestaurantsRef()
     {
         return this.rootReference.child(RESTAURANTS_PATH);
+    }
+
+    public DatabaseReference getAssignedOrdersRef()
+    {
+        return this.rootReference.child(ORDERS_PATH);
     }
 
     public DatabaseReference getMealsFromRestaurantRef(String id)
