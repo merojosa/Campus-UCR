@@ -385,8 +385,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
 
     }
 
-    //comentario para poder hacer commit
-
 
     /**
      * Método que se encarga de invocar el método para inserción del ViewModel para

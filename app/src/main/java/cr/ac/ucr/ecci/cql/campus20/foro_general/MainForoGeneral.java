@@ -403,6 +403,10 @@ public class MainForoGeneral extends AppCompatActivity {
 
                 // Se elimina el tema como Favorito en Firebase
                 eliminarTemaFavoritoFirebase(idTema, MainForoGeneral.this.databaseReference.obtenerUsuario());
+
+                // Se da un mensaje al usuario
+                Toast.makeText(MainForoGeneral.this, "Tema " + nombreTema +
+                        " quitado de Favoritos", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -418,17 +422,23 @@ public class MainForoGeneral extends AppCompatActivity {
         dialog.show();
     }
 
+
     /**
      * Método que se encarga de invocar el método para borrado de un tema que está
      * añadido como favorito
      * @param identificadorTema, que es el identificador del tema que se va a eliminar
+     * @param nombreUsuario, que es el nombre del usuario actualmente loggeado
      */
     public void eliminarTemaFavorito(int identificadorTema, String nombreUsuario)
     {
         mFavoritoViewModel.deleteOneFavorito(identificadorTema, nombreUsuario);
     }
 
-
+    /**
+     * Método que se encarga de eliminar el tema de la lista de favoritos del usuario en firebase
+     * @param identificadorTema, que es el identificador del tema que se va a eliminar
+     * @param nombreUsuario, que es el nombre del usuario actualmente loggeado
+     */
     public void eliminarTemaFavoritoFirebase(int identificadorTema, String nombreUsuario)
     {
         this.databaseReference.getFavoritosRef().child(nombreUsuario).child(Integer.toString(identificadorTema)).setValue(null);
