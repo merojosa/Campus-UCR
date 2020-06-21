@@ -49,7 +49,7 @@ public class DeploymentScript {
     public void RunScript(FirebaseDB db, Context context) {
         this.db = db;
         createFaculties();
-        createPlaces();
+        //createPlaces();
         createSchools();
         createCoffeShops();
         createLibrary();
@@ -126,7 +126,7 @@ public class DeploymentScript {
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
 
-    private void createPlaces() {
+    /*private void createPlaces() {
         List<Place> placesList = new ArrayList<>();
         String[] PlaceNames = {"Finca 1", "Finca 2", "Finca 3"};
         String[] PlaceDescriptions = {"Finca principal.", "Ciudad de la Investigación", "Deportivas"};
@@ -140,7 +140,7 @@ public class DeploymentScript {
             db.insert("Place", p);
         }
         Log.d("places", "Places were inserted in database.");
-    }
+    }*/
 
     private void createSchools() {
 

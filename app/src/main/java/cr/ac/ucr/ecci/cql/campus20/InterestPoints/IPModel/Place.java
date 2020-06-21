@@ -10,23 +10,7 @@ import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Place extends GeneralData implements Parcelable {
-
-    public int id;
-    public String name;
-    public String description;
-    public String type;
-    public int rating;
-    public int floor;
-    public int image;
-    public double latitude;
-    public double longitude;
-    public Boolean wifi;
-
-    private int capacity;
-    private boolean computers;
-    private boolean projector;
-    private boolean extintor;
+public class Place extends GeneralData {
 
     public static final String TYPE_COFFEE = "Coffee";
     public static final String TYPE_FACULTY = "Faculty";
@@ -37,25 +21,29 @@ public class Place extends GeneralData implements Parcelable {
     public static final String TYPE_SODA = "Soda";
     public static final String TYPE_PLACE = "Place";
     public static final String TYPE_BATHROOM = "Bathroom";
-    public static final String TYPE_ASOCIATION= "Asociation";
+    public static final String TYPE_ASOCIATION = "Asociation";
     public static final String TYPE_LABORATORY = "Laboratory";
 
+    public int id;
+    public int rating;
+    public int floor;
+    public int image;
+    public Boolean wifi;
+    public Boolean haveComputers;
+    public Boolean haveProjectors;
+    public Boolean haveExtintors;
+    public int capacity;
+    public double latitude;
+    public double longitude;
+    public String name;
+    public String description;
+    public String type;
     public ArrayList<Comment> comments;
 
-    Place() {}
-
-    // Used in the Faculty/DeploymentScript
-    // Used in the Coffe/DeploymentScript
-    // Used in the School
-    public Place(int id, String name, String description, int image, String type, ArrayList<Comment> comments) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.type = type;
-        this.comments = comments;
+    Place() {
     }
 
+    // Constructor de Coffee con Deployment Script
     public Place(int id, String name, String description, int image, String type) {
         this.id = id;
         this.name = name;
@@ -64,69 +52,27 @@ public class Place extends GeneralData implements Parcelable {
         this.type = type;
     }
 
-    //Para los laboratorios
-    public Place(int id, String name, String description, String type, int floor, int capacity,
-                 boolean wifi, boolean computers, boolean projector, boolean extintor) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.floor = floor;
-        this.setCapacity(capacity);
-        this.setComputers(computers);
-        this.setProjector(projector);
-        this.setExtintor(extintor);
-        this.setWifi(wifi);
-    }
-
-    //Para los baños
-    public Place(int id, String name, String description, String type, int floor, int capacity, boolean wifi) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.floor = floor;
-        this.capacity = capacity;
-        this.setWifi(wifi);
-    }
-
-    // Used in the Deployment Script/Fincas/Places
-    public Place(int id, String name, String description, String type, int rating, int floor) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.rating = rating;
-        this.floor = floor;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Place(Parcel in) {
         id = in.readInt();
-        name = in.readString();
-        description = in.readString();
-        type = in.readString();
         rating = in.readInt();
         floor = in.readInt();
         image = in.readInt();
+        byte tmpWifi = in.readByte();
+        wifi = tmpWifi == 0 ? null : tmpWifi == 1;
+        byte tmpHaveComputers = in.readByte();
+        haveComputers = tmpHaveComputers == 0 ? null : tmpHaveComputers == 1;
+        byte tmpHaveProjectors = in.readByte();
+        haveProjectors = tmpHaveProjectors == 0 ? null : tmpHaveProjectors == 1;
+        byte tmpHaveExtintors = in.readByte();
+        haveExtintors = tmpHaveExtintors == 0 ? null : tmpHaveExtintors == 1;
+        capacity = in.readInt();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        //wifi = in.readBoolean();
-        this.comments = in.readArrayList(Comment.class.getClassLoader());
+        name = in.readString();
+        description = in.readString();
+        type = in.readString();
+        comments = in.createTypedArrayList(Comment.CREATOR);
     }
-
-    public static final Creator<Place> CREATOR = new Creator<Place>() {
-        @RequiresApi(api = Build.VERSION_CODES.Q)
-        @Override
-        public Place createFromParcel(Parcel in) {
-            return new Place(in);
-        }
-
-        @Override
-        public Place[] newArray(int size) {
-            return new Place[size];
-        }
-    };
 
     @Override
     public int getId() {
@@ -135,31 +81,6 @@ public class Place extends GeneralData implements Parcelable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getRating() {
@@ -187,6 +108,46 @@ public class Place extends GeneralData implements Parcelable {
         this.image = image;
     }
 
+    public Boolean getWifi() {
+        return wifi;
+    }
+
+    public void setWifi(Boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public Boolean getHaveComputers() {
+        return haveComputers;
+    }
+
+    public void setHaveComputers(Boolean haveComputers) {
+        this.haveComputers = haveComputers;
+    }
+
+    public Boolean getHaveProjectors() {
+        return haveProjectors;
+    }
+
+    public void setHaveProjectors(Boolean haveProjectors) {
+        this.haveProjectors = haveProjectors;
+    }
+
+    public Boolean getHaveExtintors() {
+        return haveExtintors;
+    }
+
+    public void setHaveExtintors(Boolean haveExtintors) {
+        this.haveExtintors = haveExtintors;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -203,36 +164,29 @@ public class Place extends GeneralData implements Parcelable {
         this.longitude = longitude;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getName() {
+        return name;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isComputers() {
-        return computers;
+    @Override
+    public String getDescription() {
+        return description;
     }
 
-    public void setComputers(boolean computers) {
-        this.computers = computers;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public boolean isProjector() {
-        return projector;
+    public String getType() {
+        return type;
     }
 
-    public void setProjector(boolean projector) {
-        this.projector = projector;
-    }
-
-    public boolean isExtintor() {
-        return extintor;
-    }
-
-    public void setExtintor(boolean extintor) {
-        this.extintor = extintor;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public ArrayList<Comment> getComments() {
@@ -243,36 +197,9 @@ public class Place extends GeneralData implements Parcelable {
         this.comments = comments;
     }
 
-    public Boolean getWifi() {
-        return wifi;
-    }
-
-    public void setWifi(Boolean wifi) {
-        this.wifi = wifi;
-    }
-
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(type);
-        dest.writeInt(rating);
-        dest.writeInt(floor);
-        dest.writeInt(image);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
-        dest.writeList(comments);
-    }
-
-    @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Place) {
+    public boolean equals(Object obj) {
+        if (obj instanceof Place) {
             Place other = (Place) obj;
             if (other != null)
                 return this.id == other.id && this.name.equals(other.name) && this.description.equals(other.description)
@@ -281,24 +208,23 @@ public class Place extends GeneralData implements Parcelable {
                         this.areEqualComments(other.comments);
             else
                 return false;
-        }else {
+        } else {
             return false;
         }
     }
 
-    private boolean areEqualComments(ArrayList<Comment> otherComments){
-        if(this.comments == null && otherComments == null)
+    private boolean areEqualComments(ArrayList<Comment> otherComments) {
+        if (this.comments == null && otherComments == null)
             return true;
-        else{
-            if(this.comments.size() != otherComments.size())
+        else {
+            if (this.comments.size() != otherComments.size())
                 return false;
-            for(int i = 0; i < this.comments.size(); ++i){
-                for(int j = 0; j < otherComments.size(); ++j)
-                    if(!this.comments.get(i).equals(otherComments.get(j)))
+            for (int i = 0; i < this.comments.size(); ++i) {
+                for (int j = 0; j < otherComments.size(); ++j)
+                    if (!this.comments.get(i).equals(otherComments.get(j)))
                         return false;
             }
         }
         return true;
     }
-
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Library extends Place {
+public class Library extends Place implements Parcelable {
 
 
     public Library() {
@@ -22,7 +22,8 @@ public class Library extends Place {
     }
 
     public Library(int id, String name, String description, int image, double latitude, double longitude, ArrayList<Comment> comments) {
-        super(id, name, description, image, TYPE_LIBRARY, comments);
+        super(id, name, description, image, TYPE_LIBRARY);
+        super.setComments(comments);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
     }
@@ -34,6 +35,18 @@ public class Library extends Place {
     }
 
 
+    public static final Creator<Library> CREATOR = new Creator<Library>() {
+        @Override
+        public Library createFromParcel(Parcel in) {
+            return new Library(in);
+        }
+
+        @Override
+        public Library[] newArray(int size) {
+            return new Library[size];
+        }
+    };
+
     public String getLibraryName() {
         return super.getName();
     }
@@ -43,4 +56,12 @@ public class Library extends Place {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
 }

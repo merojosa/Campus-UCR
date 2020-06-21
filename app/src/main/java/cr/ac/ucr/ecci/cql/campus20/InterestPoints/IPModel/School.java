@@ -5,15 +5,20 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class School extends Place {
+public class School extends Place implements Parcelable {
 
     private int id_faculty_fk;
     private int id_place_fk;
 
-    public School() { }
+    public School() {
+        super();
+        super.setType(TYPE_SCHOOL);
+    }
 
     public School(int id, int id_faculty_fk, int id_place_fk, String name, String description, int image, double latitude, double longitude, ArrayList<Comment> comments) {
-        super(id, name, description, image, TYPE_SCHOOL, comments);
+        super(id, name, description, image, TYPE_SCHOOL);
+
+        super.setComments(comments);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
         this.id_faculty_fk = id_faculty_fk;
@@ -22,6 +27,7 @@ public class School extends Place {
 
     public School(int id, int id_faculty_fk, int id_place_fk, String name, String description, int image, double latitude, double longitude) {
         super(id, name, description, image, TYPE_SCHOOL);
+
         super.setLatitude(latitude);
         super.setLongitude(longitude);
         this.id_faculty_fk = id_faculty_fk;
@@ -40,6 +46,18 @@ public class School extends Place {
         super.comments = in.readArrayList(Comment.class.getClassLoader());
     }
 
+    public static final Creator<School> CREATOR = new Creator<School>() {
+        @Override
+        public School createFromParcel(Parcel in) {
+            return new School(in);
+        }
+
+        @Override
+        public School[] newArray(int size) {
+            return new School[size];
+        }
+    };
+
     public int getId_faculty_fk() {
         return id_faculty_fk;
     }
@@ -54,5 +72,16 @@ public class School extends Place {
 
     public void setId_place_fk(int id_place_fk) {
         this.id_place_fk = id_place_fk;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id_faculty_fk);
+        dest.writeInt(id_place_fk);
     }
 }

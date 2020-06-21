@@ -1,7 +1,10 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -17,23 +20,26 @@ public class Soda extends Place implements Parcelable {
     }
 
     public Soda(int id, String name, String description, int image, double latitude, double longitude, ArrayList<Comment> comments) {
-        super(id, name, description, image, TYPE_SODA, comments);
+        super(id, name, description, image, TYPE_SODA);
+
+        super.setComments(comments);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
     }
 
     public Soda(int id, String name, String description, int image, double latitude, double longitude) {
         super(id, name, description, image, TYPE_SODA);
+
         super.setLatitude(latitude);
         super.setLongitude(longitude);
     }
 
-    public Soda(int id, String name, String description, int image, double latitude, double longitude, String horario, boolean wifi, String oferta, boolean express) {
+    public Soda(int id, String name, String description, int image, double latitude, double longitude, String horario, Boolean wifi, String oferta, boolean express) {
         super(id, name, description, image, TYPE_SODA);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
+        super.setWifi(wifi);
         setHorario(horario);
-        setWifi(wifi);
         setOferta(oferta);
         setExpress(express);
     }
@@ -73,6 +79,7 @@ public class Soda extends Place implements Parcelable {
     // --------------- Parcelable methods ---------------
 
     public static final Creator<Soda> CREATOR = new Creator<Soda>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public Soda createFromParcel(Parcel in) {
             return new Soda(in);
@@ -84,6 +91,7 @@ public class Soda extends Place implements Parcelable {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public Soda(Parcel in) {
         super(in);
         super.setType(TYPE_SODA);
@@ -94,11 +102,11 @@ public class Soda extends Place implements Parcelable {
         return 0;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(horario);
-        dest.writeByte((byte) (wifi == null ? 0 : wifi ? 1 : 2));
         dest.writeString(oferta);
-        dest.writeByte((byte) (express == null ? 0 : express ? 1 : 2));
+        dest.writeBoolean(express);
     }
 }

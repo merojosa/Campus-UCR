@@ -2,10 +2,11 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
 import android.os.Build;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
-public class Asociation extends Place {
+public class Asociation extends Place implements Parcelable {
     private int id_school_fk;
     private int id_place_fk;
     private int capacity;
@@ -29,18 +30,30 @@ public class Asociation extends Place {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Asociation(Parcel in) {
         super.id = in.readInt();
-        id_school_fk = in.readInt();
-        id_place_fk = in.readInt();
         super.name = in.readString();
         super.setType(TYPE_ASOCIATION);
         super.description = in.readString();
         super.rating = in.readInt();
         super.floor = in.readInt();
+        id_school_fk = in.readInt();
+        id_place_fk = in.readInt();
         capacity = in.readInt();
         wifi = in.readBoolean();
         computers = in.readBoolean();
         extintor = in.readBoolean();
     }
+
+    public static final Creator<Asociation> CREATOR = new Creator<Asociation>() {
+        @Override
+        public Asociation createFromParcel(Parcel in) {
+            return new Asociation(in);
+        }
+
+        @Override
+        public Asociation[] newArray(int size) {
+            return new Asociation[size];
+        }
+    };
 
     public int getId_school_fk() {
         return id_school_fk;
@@ -86,5 +99,20 @@ public class Asociation extends Place {
 
     public void setExtintor(boolean extintor) {
         this.extintor = extintor;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id_school_fk);
+        dest.writeInt(id_place_fk);
+        dest.writeInt(capacity);
+        dest.writeByte((byte) (wifi ? 1 : 0));
+        dest.writeByte((byte) (computers ? 1 : 0));
+        dest.writeByte((byte) (extintor ? 1 : 0));
     }
 }
