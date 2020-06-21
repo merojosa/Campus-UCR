@@ -1,6 +1,9 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
+import android.os.Build;
 import android.os.Parcel;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -14,6 +17,7 @@ public class Coffee extends Place {
         super.setType(TYPE_COFFEE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public Coffee(Parcel in) {
         super(in);
         super.setType(TYPE_COFFEE);
