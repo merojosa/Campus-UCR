@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public class Soda extends Place{
 
+    private String horario;
+    private String ofertas;
+    private boolean express;
+
     public Soda() {
         super();
         super.setType(TYPE_SODA);
@@ -28,6 +32,15 @@ public class Soda extends Place{
         super.setLongitude(longitude);
     }
 
+    public Soda(int id, String name, String description, int image, double latitude, double longitude, String horario, boolean wifi, String ofertas, boolean express) {
+        super(id, name, description, image, TYPE_SODA, wifi);
+        super.setLatitude(latitude);
+        super.setLongitude(longitude);
+        this.setHorario(horario);
+        this.setOfertas(ofertas);
+        this.setExpress(express);
+    }
+
     public String getSodaName() {
         return super.getName();
     }
@@ -36,4 +49,27 @@ public class Soda extends Place{
         super.setName(name);
     }
 
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public String getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(String ofertas) {
+        this.ofertas = ofertas;
+    }
+
+    public boolean isExpress() {
+        return express;
+    }
+
+    public void setExpress(boolean express) {
+        this.express = express;
+    }
 }

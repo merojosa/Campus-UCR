@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 public class Coffee extends Place {
 
+    private String horario;
+    private String oferta;
+
     public Coffee() {
         super();
         super.setType(TYPE_COFFEE);
@@ -23,9 +26,11 @@ public class Coffee extends Place {
     }
 
     public Coffee(int id, String name, String description, int image, double latitude, double longitude, String horario, boolean wifi, String oferta) {
-        super(id, name, description, image, TYPE_COFFEE, horario, wifi, oferta);
+        super(id, name, description, image, TYPE_COFFEE, wifi);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
+        this.setHorario(horario);
+        this.setOferta(oferta);
     }
 
     public String getCoffeName() {
@@ -34,5 +39,21 @@ public class Coffee extends Place {
 
     public void setCoffeName(String name) {
         super.setName(name);
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public String getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(String oferta) {
+        this.oferta = oferta;
     }
 }

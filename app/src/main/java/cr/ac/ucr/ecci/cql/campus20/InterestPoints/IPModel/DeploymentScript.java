@@ -483,28 +483,28 @@ public class DeploymentScript {
     }
 
     private void createSoda() {
-        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535);
+        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535, "7:00 am - 7:00pm", true, "Melcochon: 2x1", false);
         db.insert("Soda", farma);
 
-        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514);
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514, "5:00 am - 5:00pm", false, "Cafe con leche: 5x1", false);
         db.insert("Soda", generales);
 
-        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875);
+        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875, "7:00 am - 7:00pm", true, "Chicky's gratis", true);
         db.insert("Soda", lucy);
 
-        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012);
+        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012, "7:00 am - 3:00pm", false, "Rice and Beans: 2x1", false);
         db.insert("Soda", derecho);
 
-        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890);
+        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890, "9:00 am - 3:30pm", true, "PanBon: 2x1", true);
         db.insert("Soda", educa);
 
-        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600);
+        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600, "10:00 am - 2:00pm", true, "Lasagna: 3000", false);
         db.insert("Soda", comedor);
 
-        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040);
+        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040, "7:00 am - 7:00pm", true, "Empanadas a mil", true);
         db.insert("Soda", sodau);
 
-        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473);
+        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473, "7:00 am - 7:00pm", true, "Elotes frescos a 500", false);
         db.insert("Soda", agro);
 
     }
