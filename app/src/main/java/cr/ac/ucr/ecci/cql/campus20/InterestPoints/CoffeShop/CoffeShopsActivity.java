@@ -48,6 +48,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private DatabaseReference ref;
     private ValueEventListener listener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +136,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private void getCoffeeList(){
         FirebaseDB db = new FirebaseDB();
         ref = db.getReference(Place.TYPE_COFFEE);
+
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

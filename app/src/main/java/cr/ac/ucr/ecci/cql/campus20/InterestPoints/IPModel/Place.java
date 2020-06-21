@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Place extends GeneralData {
+public abstract class Place extends GeneralData implements Parcelable {
 
     public static final String TYPE_COFFEE = "Coffee";
     public static final String TYPE_FACULTY = "Faculty";
@@ -44,12 +44,30 @@ public class Place extends GeneralData {
     }
 
     // Constructor de Coffee con Deployment Script
-    public Place(int id, String name, String description, int image, String type) {
+    protected Place(int id, String name, String description, int image, String type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
         this.type = type;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(rating);
+        dest.writeInt(floor);
+        dest.writeInt(image);
+        dest.writeByte((byte) (wifi == null ? 0 : wifi ? 1 : 2));
+        dest.writeByte((byte) (haveComputers == null ? 0 : haveComputers ? 1 : 2));
+        dest.writeByte((byte) (haveProjectors == null ? 0 : haveProjectors ? 1 : 2));
+        dest.writeByte((byte) (haveExtintors == null ? 0 : haveExtintors ? 1 : 2));
+        dest.writeInt(capacity);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(type);
+        dest.writeTypedList(comments);
     }
 
     protected Place(Parcel in) {
@@ -72,6 +90,11 @@ public class Place extends GeneralData {
         description = in.readString();
         type = in.readString();
         comments = in.createTypedArrayList(Comment.CREATOR);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
