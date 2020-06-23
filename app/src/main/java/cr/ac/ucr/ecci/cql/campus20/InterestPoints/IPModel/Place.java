@@ -109,8 +109,7 @@ public class Place extends GeneralData implements Parcelable {
         image = in.readInt();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        this.comments = new ArrayList<>();
-        in.readList(this.comments, Comment.class.getClassLoader());
+        this.comments = in.readArrayList(Comment.class.getClassLoader());
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
@@ -267,5 +266,35 @@ public class Place extends GeneralData implements Parcelable {
         dest.writeList(comments);
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Place) {
+            Place other = (Place) obj;
+            if (other != null)
+                return this.id == other.id && this.name.equals(other.name) && this.description.equals(other.description)
+                        && this.image == other.image && this.type.equals(other.type) && this.rating == other.rating &&
+                        this.floor == other.floor && this.latitude == other.latitude && this.longitude == other.longitude &&
+                        this.areEqualComments(other.comments);
+            else
+                return false;
+        }else {
+            return false;
+        }
+    }
+
+    private boolean areEqualComments(ArrayList<Comment> otherComments){
+        if(this.comments == null && otherComments == null)
+            return true;
+        else{
+            if(this.comments.size() != otherComments.size())
+                return false;
+            for(int i = 0; i < this.comments.size(); ++i){
+                for(int j = 0; j < otherComments.size(); ++j)
+                    if(!this.comments.get(i).equals(otherComments.get(j)))
+                        return false;
+            }
+        }
+        return true;
+    }
 
 }

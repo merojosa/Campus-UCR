@@ -35,6 +35,12 @@ public class PreguntaViewModel extends AndroidViewModel {
     public void insert(Pregunta pregunta) { mRepository.insert(pregunta);}
 
     /**
+     * Método que actualiza una pregunta
+     * @param pregunta la pregunta a actualizar
+     */
+    public void update(Pregunta pregunta) { mRepository.update(pregunta);}
+
+    /**
      * Método que actualiza los likes de una pregunta
      * @param id el identificador único de la pregunta
      * @param num el número a poner en el contador
