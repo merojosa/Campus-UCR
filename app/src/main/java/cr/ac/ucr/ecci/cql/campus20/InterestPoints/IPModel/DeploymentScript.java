@@ -99,29 +99,30 @@ public class DeploymentScript {
 
     //Creación de las cafeterías en la base de datos
     private void createCoffeShops() {
+
         Coffee angar = new Coffee(0,  "Café Angar", "El cafesito de los de Info", R.drawable.coffeshop512px,9.938051, -84.052969, "9:00 am - 6:00 pm", false, "Capuccino Vainilla");
-        db.insert("Coffe", angar);
+        db.insert(Place.TYPE_COFFEE, angar);
 
         Coffee noventaYCinco = new Coffee(1, "95 grados", "La mejor cafetería de San Pedro", R.drawable.coffeshop512px,9.932305, -84.049769, "10:00 am - 8:00 pm", true, "Moccaccino" );
-        db.insert("Coffe", noventaYCinco);
+        db.insert(Place.TYPE_COFFEE, noventaYCinco);
 
         Coffee krakovia = new Coffee(2,  "Café Krakovia", "El mejor capucciono del país", R.drawable.coffeshop512px,9.937929, -84.053974, "09:00 am - 7:00 pm", true, "Pan Bom con Café");
-        db.insert("Coffe", krakovia);
+        db.insert(Place.TYPE_COFFEE, krakovia);
 
         Coffee aroma = new Coffee(3, "Aroma y Sabor", "Para pasar la tarde", R.drawable.coffeshop512px,9.935199, -84.051267, "11:00 am - 8:00 pm", false, "Sandwich de Pollo");
-        db.insert("Coffe", aroma);
+        db.insert(Place.TYPE_COFFEE, aroma);
 
         Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "A 3 por mil el melcochón", R.drawable.pan512px,9.931796, -84.052945, "11:00 am - 8:00 pm", true, "Sandwich de Pollo");
-        db.insert("Coffe", musmanni);
+        db.insert(Place.TYPE_COFFEE, musmanni);
 
         Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "CAfé para toda la familia", R.drawable.coffeshop512px,9.931822, -84.052903, "09:00 am - 6:00 pm", false, "2x1 Cafés");
-        db.insert("Coffe", rincon);
+        db.insert(Place.TYPE_COFFEE, rincon);
 
         Coffee cafe_esquina = new Coffee(6, "La Cafetería de la Esquina", "La esquinita de San Peter ", R.drawable.coffeshop512px,9.931693, -84.052243, "10:00 am - 6:00 pm", true, "Café con Empanada");
-        db.insert("Coffe", cafe_esquina);
+        db.insert(Place.TYPE_COFFEE, cafe_esquina);
 
         Coffee ruiseñor = new Coffee(7, "Cafetería Ruiseñor", "Viva la liga...", R.drawable.coffeshop512px, 9.934383, -84.056577, "07:00 am - 5:00 pm", true, "Pie de Limón");
-        db.insert("Coffe", ruiseñor);
+        db.insert(Place.TYPE_COFFEE, ruiseñor);
 
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
