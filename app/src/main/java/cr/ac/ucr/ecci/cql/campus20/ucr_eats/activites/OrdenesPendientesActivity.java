@@ -9,18 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +26,6 @@ import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.OrdersAdapter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
 public class OrdenesPendientesActivity extends AppCompatActivity
@@ -39,6 +33,8 @@ public class OrdenesPendientesActivity extends AppCompatActivity
     private List<Order> listaOrdenes;
     private CampusBD db;
     private final boolean ROL_REPARTIDOR = true;
+    private boolean ordenEscogida = false;
+    private RecyclerView.OnItemTouchListener listener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,8 +84,20 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         if(ROL_REPARTIDOR == true)
         {
             // Repartidor
-            mensaje = "Escoger orden";
-            pregunta = "¿Desea escoger esta orden?";
+
+            if(ordenEscogida == true)
+            {
+                // Recogiendo el pedido
+                mensaje = "Recoger pedido";
+                pregunta = "¿Ya llegó a la soda para recoger el pedido?";
+            }
+            else
+            {
+                // Eligiendo el pedido
+                mensaje = "Escoger orden";
+                pregunta = "¿Desea escoger esta orden?";
+            }
+
         }
         else
         {
@@ -101,30 +109,40 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         String finalPregunta = pregunta;
         String finalMensaje = mensaje;
 
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerView, (view, position) ->
-                {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Orden")
-                            .setMessage(finalPregunta)
-                            .setIcon(R.drawable.info_personalizado)
-                            .setPositiveButton(finalMensaje, (dialog, whichButton) ->
+        // Eliminar el listener previo
+        if(listener != null)
+            recyclerView.removeOnItemTouchListener(listener);
+
+        listener = new RecyclerItemClickListener(this, recyclerView, (view, position) ->
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Orden")
+                    .setMessage(finalPregunta)
+                    .setIcon(R.drawable.info_personalizado)
+                    .setPositiveButton(finalMensaje, (dialog, whichButton) ->
+                    {
+                        if(ROL_REPARTIDOR == true)
+                        {
+                            if(ordenEscogida == true)
                             {
-                                if(ROL_REPARTIDOR == true)
-                                {
-                                    eventoRepartidor(position);
-                                }
+                                eventoRecogerOrderRepartidor(position);
+                            }
+                            else
+                            {
+                                eventoElegirOrderRepartidor(position);
+                            }
+                        }
 
-                                //db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
-                                //        .get(position).getIdOrder());
+                        db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
+                                .get(position).getIdOrder());
 
-                                
-                                listaOrdenes.clear();
-                            })
-                            .setNegativeButton("Cancelar", (dialog, which) ->
-                            {}).show();
-                })
-        );
+                        listaOrdenes.clear();
+                    })
+                    .setNegativeButton("Cancelar", (dialog, which) ->
+                    {}).show();
+        });
+
+        recyclerView.addOnItemTouchListener(listener);
 
         // Performance
         recyclerView.setHasFixedSize(true);
@@ -147,20 +165,14 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 
     }
 
-    private void eventoRepartidor(int posicion)
+    private void eventoElegirOrderRepartidor(int posicion)
     {
-        String repartidor = db.obtenerCorreoActual();
-        Order pedidoCliente = listaOrdenes.get(posicion);
-
-        AssignedOrder assignedOrder = new AssignedOrder(repartidor, pedidoCliente);
-
-        // Agregar orden pendiente a Firebase,
-        db.escribirDatos("ucr_eats/assignedOrders/", assignedOrder);
-
+        // Se necesita saber cuando el repartidor escogio una orden
+        ordenEscogida = true;
     }
 
-    private void enviarNotificacion(AssignedOrder assignedOrder)
+    private void eventoRecogerOrderRepartidor(int posicion)
     {
-        // ... hacer cambio en Firebase
+
     }
 }
