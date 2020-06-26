@@ -1,9 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,21 +9,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.SodaMapActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
 
 
 // Referencias para crear lista de cards:
@@ -64,6 +66,14 @@ public class MainUcrEats extends AppCompatActivity
         this.noResults = this.findViewById(R.id.noResultsText);
 
         this.getFirebaseRestaurant();
+
+        findViewById(R.id.repartidor_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), OrdenesPendientesRepartidorActivity.class);
+                view.getContext().startActivity(intent);;
+            }
+        });
     }
 
 
