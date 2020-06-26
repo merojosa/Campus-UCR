@@ -43,4 +43,6 @@
     <string name="meals_left_placeholder">Restantes: %1$d de %2$d</string>
     <string name="capacity_left_placeholder">Capacidad: %1$d de %2$d</string>
     <string name="servings_placeholder">Porciones: %1$d de %2$d</string>
+    <string name="default_role_text">Elige tu rol predeterminado antes de comenzar</string>
+    <string name="default_role_menu">Rol predeterminado</string>
 </resources>

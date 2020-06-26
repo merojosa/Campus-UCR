@@ -3,16 +3,15 @@ package cr.ac.ucr.ecci.cql.campus20;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
@@ -90,6 +89,9 @@ public class AppBarFragment extends Fragment
         {
             MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
             menuItem.setVisible(true);
+
+            MenuItem roleItem = toolbar.getMenu().findItem(R.id.defaultUcrEatsRole);
+            roleItem.setVisible(true);
         }
     }
 }

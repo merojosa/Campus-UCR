@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.SodaMapActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
@@ -67,12 +66,9 @@ public class MainUcrEats extends AppCompatActivity
 
         this.getFirebaseRestaurant();
 
-        findViewById(R.id.repartidor_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), OrdenesPendientesRepartidorActivity.class);
-                view.getContext().startActivity(intent);;
-            }
+        findViewById(R.id.repartidor_button).setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), RoleActivity.class);
+            view.getContext().startActivity(intent);
         });
     }
 
@@ -155,14 +151,18 @@ public class MainUcrEats extends AppCompatActivity
 
         ArrayList<SodaCard> filtrarLista = new ArrayList<>();
 
-        for(SodaCard usuario : sodaCards) {
-            if(usuario.getNombre().toLowerCase().contains(texto.toLowerCase())) {
-                filtrarLista.add(usuario);
+        if(sodaCards != null)
+        {
+            for(SodaCard usuario : sodaCards) {
+                if(usuario.getNombre().toLowerCase().contains(texto.toLowerCase())) {
+                    filtrarLista.add(usuario);
+                }
             }
         }
 
-        if(filtrarLista.isEmpty())
+        if(filtrarLista.isEmpty()) {
             this.noResults.setVisibility(View.VISIBLE);
+        }
         else
             this.noResults.setVisibility(View.GONE);
 
