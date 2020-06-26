@@ -26,7 +26,6 @@ import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.OrdersAdapter;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 
 public class OrdenesPendientesActivity extends AppCompatActivity
@@ -124,7 +123,14 @@ public class OrdenesPendientesActivity extends AppCompatActivity
                     {
                         if(ROL_REPARTIDOR == true)
                         {
-                            eventoRepartidor(position);
+                            if(ordenEscogida == true)
+                            {
+                                eventoRecogerOrderRepartidor(position);
+                            }
+                            else
+                            {
+                                eventoElegirOrderRepartidor(position);
+                            }
                         }
 
                         db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
@@ -159,14 +165,14 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 
     }
 
-    private void eventoRepartidor(int posicion)
+    private void eventoElegirOrderRepartidor(int posicion)
     {
         // Se necesita saber cuando el repartidor escogio una orden
         ordenEscogida = true;
+    }
 
-        String repartidor = db.obtenerCorreoActual();
-        Order pedidoCliente = listaOrdenes.get(posicion);
+    private void eventoRecogerOrderRepartidor(int posicion)
+    {
 
-        AssignedOrder assignedOrder = new AssignedOrder(repartidor, pedidoCliente);
     }
 }
