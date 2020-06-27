@@ -1,5 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -15,14 +17,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 
 public class RoleActivity extends AppCompatActivity
 {
-    private final int NONE = 0, CLIENTE = 1, REPARTIDOR = 2;
+    private final static int NONE = 0, CLIENTE = 1, REPARTIDOR = 2;
     private final String[] ROLES = {"Elegir rol", "Cliente", "Repartidor"};
     private Spinner roleSpinner;
     private Button okButton;
@@ -48,34 +49,45 @@ public class RoleActivity extends AppCompatActivity
 
     }
 
-    public static Class getDefaultActivity()
+    public static void startDefaultActivity(Context context)
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
         DatabaseReference config = db.getRoleReference();
 
-        final Class[] act = new Class[1];
-
-        FirebaseListener listener = new FirebaseListener()
+        config.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
-            public void exito(DataSnapshot dataSnapshot) {
-                Integer role = dataSnapshot.getValue(Integer.class);
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Integer role = NONE;
+                if(dataSnapshot.exists())
+                    role = dataSnapshot.getValue(Integer.class);
 
-                if(role == 1)
-                    act[0] = MainUcrEats.class;
-                else if(role == 2)
-                    act[0] = OrdenesPendientesRepartidorActivity.class;
-                else
-                    act[0] = RoleActivity.class;
+                if(role == null) role = 0;
+
+                Intent intent = new Intent(context, getMappedIndexToClass(role));
+
+                // Close current activity and open the selected one
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
             }
 
             @Override
-            public void fallo(DatabaseError databaseError) {
-                act[0] = RoleActivity.class;
+            public void onCancelled(DatabaseError databaseError)
+            {
             }
-        };
+        });
 
-        return act[0];
+    }
+
+    private static Class getMappedIndexToClass(int index)
+    {
+        if(index == CLIENTE)
+            return MainUcrEats.class;
+        else if(index == REPARTIDOR)
+            return OrdenesPendientesRepartidorActivity.class;
+        else
+            return RoleActivity.class;
     }
 
     private void initRoleSpinner()
@@ -95,14 +107,14 @@ public class RoleActivity extends AppCompatActivity
 
         this.okButton.setOnClickListener( view ->
         {
-            Class test = getDefaultActivity();
-
             int role = roleSpinner.getSelectedItemPosition();
 
             if(role > 0)
             {
                 saveDefaultRole(role);
                 Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
+                startDefaultActivity(this);
+                finishAffinity();
             }
             else
             {

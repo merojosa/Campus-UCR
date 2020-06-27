@@ -47,12 +47,6 @@
             android:text="Sin resultados"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/repartidor_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Repartidor" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ucr_eats_rv"
             android:layout_width="match_parent"

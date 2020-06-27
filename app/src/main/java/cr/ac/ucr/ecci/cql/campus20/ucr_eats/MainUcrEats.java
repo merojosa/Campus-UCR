@@ -1,6 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
@@ -65,11 +63,6 @@ public class MainUcrEats extends AppCompatActivity
         this.noResults = this.findViewById(R.id.noResultsText);
 
         this.getFirebaseRestaurant();
-
-        findViewById(R.id.repartidor_button).setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), OrdenesPendientesRepartidorActivity.class);
-            view.getContext().startActivity(intent);
-        });
     }
 
 

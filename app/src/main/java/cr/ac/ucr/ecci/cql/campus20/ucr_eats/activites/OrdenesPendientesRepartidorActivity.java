@@ -33,6 +33,14 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordenes_pendientes_repartidor);
 
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
+        this.loadPendingMeals();
+    }
+
+    private void loadPendingMeals()
+    {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
         DatabaseReference ref = db.getPendingOrdersRef();
 

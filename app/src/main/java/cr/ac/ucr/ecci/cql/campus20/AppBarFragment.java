@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 
 
@@ -96,7 +97,11 @@ public class AppBarFragment extends Fragment
         {
             MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
             menuItem.setVisible(true);
+        }
 
+        if(getActivity() instanceof  MainUcrEats ||
+           getActivity() instanceof OrdenesPendientesRepartidorActivity)
+        {
             MenuItem roleItem = toolbar.getMenu().findItem(R.id.defaultUcrEatsRole);
             roleItem.setVisible(true);
         }
