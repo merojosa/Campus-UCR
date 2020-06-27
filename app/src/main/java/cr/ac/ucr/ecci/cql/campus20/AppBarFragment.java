@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 
 
 public class AppBarFragment extends Fragment
@@ -75,6 +76,12 @@ public class AppBarFragment extends Fragment
             {
                 startActivity(new Intent(getActivity(), OrdenesPendientesActivity.class));
                 return true;
+            }
+            else if (item.getItemId() == R.id.defaultUcrEatsRole)
+            {
+                Intent intent = new Intent(getActivity(), RoleActivity.class);
+                intent.putExtra("NO_REDIRECT", true);
+                startActivity(intent);
             }
             return false;
         });

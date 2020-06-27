@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
@@ -67,7 +67,7 @@ public class MainUcrEats extends AppCompatActivity
         this.getFirebaseRestaurant();
 
         findViewById(R.id.repartidor_button).setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), RoleActivity.class);
+            Intent intent = new Intent(view.getContext(), OrdenesPendientesRepartidorActivity.class);
             view.getContext().startActivity(intent);
         });
     }

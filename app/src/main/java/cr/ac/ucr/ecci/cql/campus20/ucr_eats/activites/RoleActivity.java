@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -14,7 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 
 public class RoleActivity extends AppCompatActivity
@@ -30,9 +33,49 @@ public class RoleActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role);
 
+        try
+        {
+            boolean stayInActivity = getIntent().getExtras().getBoolean("NO_REDIRECT");
+            Log.d("REDIRECT", "STAY");
+        }
+        catch (NullPointerException e)
+        {
+            Log.d("REDIRECT", "REDIRECT");
+        }
+
         this.initRoleSpinner();
         this.initButton();
 
+    }
+
+    public static Class getDefaultActivity()
+    {
+        UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
+        DatabaseReference config = db.getRoleReference();
+
+        final Class[] act = new Class[1];
+
+        FirebaseListener listener = new FirebaseListener()
+        {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                Integer role = dataSnapshot.getValue(Integer.class);
+
+                if(role == 1)
+                    act[0] = MainUcrEats.class;
+                else if(role == 2)
+                    act[0] = OrdenesPendientesRepartidorActivity.class;
+                else
+                    act[0] = RoleActivity.class;
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {
+                act[0] = RoleActivity.class;
+            }
+        };
+
+        return act[0];
     }
 
     private void initRoleSpinner()
@@ -52,11 +95,13 @@ public class RoleActivity extends AppCompatActivity
 
         this.okButton.setOnClickListener( view ->
         {
+            Class test = getDefaultActivity();
+
             int role = roleSpinner.getSelectedItemPosition();
 
             if(role > 0)
             {
-                saveDefaultRole(ROLES[role]);
+                saveDefaultRole(role);
                 Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
             }
             else
@@ -69,10 +114,6 @@ public class RoleActivity extends AppCompatActivity
     private void getDefaultRole()
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
-
-        final String[] role = new String[1];
-        role[0] = "";
-
         DatabaseReference config = db.getRoleReference();
 
         config.addListenerForSingleValueEvent(new ValueEventListener()
@@ -80,19 +121,18 @@ public class RoleActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                int spinnerIndex = 0;
+                int spinnerIndex = NONE;
 
                 if(dataSnapshot.exists())
                 {
-                    String role = dataSnapshot.getValue(String.class);
+                    Integer role = dataSnapshot.getValue(Integer.class);
 
-                    if(role.equals(ROLES[CLIENTE]))
-                        spinnerIndex = CLIENTE;
-                    else if(role.equals(ROLES[REPARTIDOR]))
-                        spinnerIndex = REPARTIDOR;
-                    else
-                        spinnerIndex = NONE;
+                    if(role != null && role > NONE)
+                        spinnerIndex = role;
                 }
+
+                // Validation in case the value goes out of bounds
+                if( spinnerIndex > ROLES.length - 1) spinnerIndex = NONE;
 
                 roleSpinner.setSelection(spinnerIndex);
             }
@@ -105,7 +145,7 @@ public class RoleActivity extends AppCompatActivity
         });
     }
 
-    private void saveDefaultRole(String role)
+    private void saveDefaultRole(int role)
     {
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 

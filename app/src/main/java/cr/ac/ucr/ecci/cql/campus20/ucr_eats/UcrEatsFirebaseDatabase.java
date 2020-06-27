@@ -95,7 +95,7 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
                 .child(user).child(DEFAULT_ROLE);
     }
 
-    public void saveDefaultRole(String role)
+    public void saveDefaultRole(int role)
     {
         String user = super.obtenerCorreoActual();
         user = user.substring(0, user.indexOf('@'));
