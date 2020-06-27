@@ -82,6 +82,9 @@
             android:name=".foro_general.CrearRespuestaForoGeneral"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
+            android:name=".foro_general.ForoGeneralVerMisPreguntas"
+            android:theme="@style/AppTheme.ForoGeneral" />
+        <activity
             android:name=".foro_general.ForoGeneralVerTemas"
             android:theme="@style/AppTheme.ForoGeneral" />
         <activity
