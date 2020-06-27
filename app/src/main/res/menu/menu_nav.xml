@@ -8,6 +8,11 @@
         <item android:id="@+id/temas_foro"
             android:icon="@drawable/ic_foro_temas"
             android:title="Temas"/>
+        <item
+            android:id="@+id/mis_preguntas_foro"
+            android:icon="@drawable/ic_mis_preguntas_foro"
+            android:title="Mis preguntas">
+        </item>
     </group>
 
     <item android:title="">
