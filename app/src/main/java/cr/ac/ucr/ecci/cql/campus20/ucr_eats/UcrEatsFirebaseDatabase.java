@@ -13,8 +13,11 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     private static String RATINGS_PATH = "ratings";
     private static String ASSIGNED_ORDERS_PATH = "assignedOrders";
     private static String PENDING_ORDERS_PATH = "pedidos";
-
+    private static String USER_CONFIG_PATH = "config_usuarios";
     private static String USERS_RATES_PATH = "users_rates";
+
+    private static String DEFAULT_ROLE = "default_role";
+
 
     private DatabaseReference rootReference = null;
 
@@ -57,7 +60,6 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
                                  .child(USERS_RATES_PATH)
                                  .child(user)
                                  .child("rate");
-
     }
 
     // Utilizado para transformar todos los carácteres que son válidos para
@@ -82,6 +84,23 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
         //...
 
         return decodedMail;
+    }
+
+    public DatabaseReference getRoleReference()
+    {
+        String user = super.obtenerCorreoActual();
+        user = user.substring(0, user.indexOf('@'));
+
+        return super.mDatabase.getReference(USER_CONFIG_PATH)
+                .child(user).child(DEFAULT_ROLE);
+    }
+
+    public void saveDefaultRole(String role)
+    {
+        String user = super.obtenerCorreoActual();
+        user = user.substring(0, user.indexOf('@'));
+
+        super.escribirDatos(USER_CONFIG_PATH + "/" + user + "/" + DEFAULT_ROLE, role);
     }
 
 }
