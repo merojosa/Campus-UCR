@@ -74,6 +74,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
         // Boton flotante de Agregar Respuestas
         buttonAgregarRespuestas = findViewById(R.id.buttonAgregarRespuestas);
+        buttonAgregarRespuestas.setVisibility(View.VISIBLE);
 
         PreguntaCard preguntaSeleccionada = mIntent.getParcelableExtra("preguntaSeleccionada");
         //busca usuario actual
@@ -85,17 +86,21 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         int cerrada = preguntaSeleccionada.getResuelta();
 
 
-
+        //valores de cerrada
+        //0 para abierta
+        //1 para resuelta
 
         //boton para marcar como resuelto
         marcarResuelto = findViewById(R.id.marcarResuelto);
 
         if (cerrada == 1){//la pregunta ha sido cerrada
             marcarResuelto.setChecked(true);
+            buttonAgregarRespuestas.setVisibility(View.INVISIBLE);
         }
         else{
             marcarResuelto.setChecked(false);
             marcarResuelto.setText("Marcar como resuelta");
+            buttonAgregarRespuestas.setVisibility(View.VISIBLE);
         }
 
         // Asocia evento clic al boton
@@ -112,6 +117,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                         //reporta que se cerro la pregunta
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Puede cerrarla ", Toast.LENGTH_SHORT).show();
                         marcarResuelto.setText("Resuelto");
+                        //invisible para agregar respuestas
+                        buttonAgregarRespuestas.setVisibility(View.INVISIBLE);
                     }
                     else{
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede cerrarla ", Toast.LENGTH_SHORT).show();
@@ -127,6 +134,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                         //reporta que se cerro la pregunta
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Puede reabrirla ", Toast.LENGTH_SHORT).show();
                         marcarResuelto.setText("Marcar como resuelta");
+                        //visible para agregar respuestas
+                        buttonAgregarRespuestas.setVisibility(View.VISIBLE);
                     }
                     else{
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede reabrirla ", Toast.LENGTH_SHORT).show();
@@ -325,6 +334,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
      * @param accion 1 para reabrir, 0 para cerrar
      */
     public void cerrarReabrirPregunta(PreguntaCard pregunta, int accion){
-
+        //llamar query sql con id de pregunta y accion como parametros
     }
 }
