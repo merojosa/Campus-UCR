@@ -27,6 +27,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,9 @@ import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterRespuesta;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 
 public class ForoGeneralVerRespuestas extends AppCompatActivity {
@@ -60,6 +64,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     LiveData<List<Respuesta>> temp;
     String nombreUsuario;
 
+    private PreguntaViewModel mPreguntaViewModel;
+
 
     ForoGeneralFirebaseDatabase databaseReference;
 
@@ -68,6 +74,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general_ver_respuestas);
         Intent mIntent = getIntent();
+
+        mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
 
         // Se instancia el firebaseReference
         this.databaseReference = new ForoGeneralFirebaseDatabase();
@@ -331,9 +339,14 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     /**
      * Modifica la pregunta en la base de datos, ya sea marcandola o desmarcadola como resuelta
      * @param pregunta pregunta a modificar
-     * @param accion 1 para reabrir, 0 para cerrar
+     * @param accion 0 para reabrir, 1 para cerrar
      */
-    public void cerrarReabrirPregunta(PreguntaCard pregunta, int accion){
+    public void cerrarReabrirPregunta(@NotNull PreguntaCard pregunta, int accion){
         //llamar query sql con id de pregunta y accion como parametros
+        Pregunta preguntaTemp = new Pregunta(pregunta.getId(), pregunta.getNombreUsuario(), pregunta.getTemaID(), pregunta.getTexto(), pregunta.getContadorLikes(), pregunta.getContadorDislikes());
+        preguntaTemp.setResuelta(accion);
+        mPreguntaViewModel.update(preguntaTemp);
+        //actualiza el valor tambien en firebase
+        ForoGeneralVerRespuestas.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.getTemaID())).child(Integer.toString(pregunta.getId())).child("resuelta").setValue(accion);
     }
 }
