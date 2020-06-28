@@ -170,6 +170,12 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", CrearPreguntaForoGeneral.this.nombreUsuario);
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
                         break;
@@ -213,7 +219,6 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
-
         String texto = mEditText.getText().toString();
         Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
         mPreguntaViewModel.insert(pregunta);

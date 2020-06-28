@@ -138,6 +138,12 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     case R.id.temas_foro:
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(ForoGeneralVerPreguntas.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", ForoGeneralVerPreguntas.this.databaseReference.obtenerUsuario());
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ConfiguracionActivity.class));
                         break;

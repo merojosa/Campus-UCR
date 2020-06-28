@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".red_mujeres.FormularioComunidad">
+
+
+    <TextView
+        android:id="@+id/text_Community_Name_Form"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blanco_UCR"
+        android:elevation="10dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Nombre de la comunidad"
+        android:textAlignment="center"
+        android:textColor="@color/azul_UCR"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+    <TextView
+        android:id="@+id/text_Justificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:text="¿Por qué te querés unir a esta comunidad?"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_Community_Name_Form" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutContentCD"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar" >
+
+        <Button
+            android:id="@+id/button_Join_Community_Form"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:background="@color/azul_UCR"
+            android:elevation="8dp"
+            android:layout_margin="8dp"
+            android:text="Enviar solicitud"
+            android:textAppearance="@style/AppTheme.RedMujeres"
+            android:textColor="@color/gris_claro_UCR"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="631dp" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/EditTextJustificacion"
+        android:layout_width="0dp"
+        android:layout_height="204dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="top|left"
+        android:hint="Escribí acá la razón..."
+        android:singleLine="false"
+        android:textColorHighlight="@color/celeste_UCR"
+        android:textColorLink="@color/azul_UCR"
+        android:textCursorDrawable="@color/azul_UCR"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_Justificacion"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

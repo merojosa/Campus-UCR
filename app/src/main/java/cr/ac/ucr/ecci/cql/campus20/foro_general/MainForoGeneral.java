@@ -87,14 +87,14 @@ public class MainForoGeneral extends AppCompatActivity {
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
 
-        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-            @Override
-            public void onChanged(List<Tema> temas) {
-                //adapter.setTemas(MainForoGeneral.this.temasLocales);
-                adapter.setTemas(temas);
-                llenarTemasFirebase(temas);
-            }
-        });
+//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+//            @Override
+//            public void onChanged(List<Tema> temas) {
+//                adapter.setTemas(MainForoGeneral.this.temasLocales);
+//                //adapter.setTemas(temas);
+//                //llenarTemasFirebase(temas);
+//            }
+//        });
 
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,7 +104,7 @@ public class MainForoGeneral extends AppCompatActivity {
                 // Se recorre el snapshot para sacar los datos
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    // Esto podrÃ­a producir NullPointerException
+                    // Esto podría producir NullPointerException
                     int id = ds.child("id").getValue(Integer.class);
                     String titulo = ds.child("titulo").getValue(String.class);
                     String description = ds.child("description").getValue(String.class);
@@ -141,7 +141,7 @@ public class MainForoGeneral extends AppCompatActivity {
                             // Se recorre el snapshot para sacar los datos
                             for (DataSnapshot ds : dataSnapshot.getChildren())
                             {
-                                // Esto podrÃ­a producir NullPointerException
+                                // Esto podría producir NullPointerException
                                 int id = ds.child("idTema").getValue(Integer.class);
                                 String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
 
@@ -174,15 +174,15 @@ public class MainForoGeneral extends AppCompatActivity {
 //            Thread.currentThread().interrupt();
 //        }
 
-        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
-        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-            @Override
-            public void onChanged(List<Tema> temas) {
-                adapter.setTemas(MainForoGeneral.this.temasLocales);
-                //adapter.setTemas(temas);
-                //llenarTemasFirebase(temas);
-            }
-        });
+//        // Obtiene el cambio en la lista de temas, directo desde el ViewModel
+//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
+//            @Override
+//            public void onChanged(List<Tema> temas) {
+//                adapter.setTemas(MainForoGeneral.this.temasLocales);
+//                //adapter.setTemas(temas);
+//                //llenarTemasFirebase(temas);
+//            }
+//        });
 
         // Obtiene el cambio en la lista de favoritos, directo desde el ViewModel
         mFavoritoViewModel.getAllFavoritos().observe(this, new Observer<List<Favorito>>() {
@@ -199,14 +199,14 @@ public class MainForoGeneral extends AppCompatActivity {
 //                    for (int i = 0; i< count; i++){
 //                        idList.add(i, favoritos.get(i).getIdTema());
 //                    }
-                    Log.d("FIREBASE", "EntrÃ³ al viejo adapter");
+                    Log.d("FIREBASE", "Entró al viejo adapter");
                 }
 
             }
         });
 
 
-        // RecepciÃ³n de los clicks del adapter
+        // Recepción de los clicks del adapter
         adapter.setOnItemClickListener(new TemasFavoritosAdapter.OnItemClickListener(){
 
             @Override
@@ -220,15 +220,15 @@ public class MainForoGeneral extends AppCompatActivity {
                     idTemaSeleccionado = idList.get(position);
                 }
                 else{
-                    idTemaSeleccionado = mTemaViewModel.getAllTemas().getValue().get(position).getId();
+                    idTemaSeleccionado = MainForoGeneral.this.temasLocales.get(position).getId();
                 }
-                int counter = mTemaViewModel.getAllTemas().getValue().size();
+                int counter = MainForoGeneral.this.temasLocales.size();
                 int i = 0 ;
                 int fin = 0;
                 Tema result = new Tema(0 , "", "", 0,0); //tema comodin
                 while (i < counter && fin ==0) {
-                    if (mTemaViewModel.getAllTemas().getValue().get(i).id == idTemaSeleccionado) {
-                        result = mTemaViewModel.getAllTemas().getValue().get(i);
+                    if (MainForoGeneral.this.temasLocales.get(i).id == idTemaSeleccionado) {
+                        result = MainForoGeneral.this.temasLocales.get(i);
                         fin = 1;
                     }
                     i++;
@@ -266,7 +266,7 @@ public class MainForoGeneral extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Se lanza cada actividad, dependiendo de la selecciÃ³n del usuario
+        // Se lanza cada actividad, dependiendo de la selección del usuario
         nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -280,6 +280,13 @@ public class MainForoGeneral extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(MainForoGeneral.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(MainForoGeneral.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", MainForoGeneral.this.databaseReference.obtenerUsuario());
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
+
                     case R.id.pref_foro:
                         startActivity(new Intent(MainForoGeneral.this, ConfiguracionActivity.class));
                         break;
@@ -324,20 +331,20 @@ public class MainForoGeneral extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void llenarTemasFirebase(List<Tema> temas)
-    {
-        // FORMA INEFICIENTE DE INSERTAR EN FIREBASE
-        if (onlyOnce == 0)
-        {
-            for (int index = 0; index < temas.size(); ++index)
-            {
-                this.databaseReference.getTemasRef().child(Integer.toString(temas.get(index).getId() - 1)).setValue(temas.get(index));
-            }
-        }
-
-        if (temas.size() != 0)
-            onlyOnce = 1;
-
-    }
+//    public void llenarTemasFirebase(List<Tema> temas)
+//    {
+//        // FORMA INEFICIENTE DE INSERTAR EN FIREBASE
+//        if (onlyOnce == 0)
+//        {
+//            for (int index = 0; index < temas.size(); ++index)
+//            {
+//                this.databaseReference.getTemasRef().child(Integer.toString(temas.get(index).getId() - 1)).setValue(temas.get(index));
+//            }
+//        }
+//
+//        if (temas.size() != 0)
+//            onlyOnce = 1;
+//
+//    }
 
 }

@@ -20,14 +20,14 @@ public interface PreguntaDao
     void insert(Pregunta pregunta);
 
     // Para actualizar una pregunta
-    @Update(onConflict = OnConflictStrategy.ABORT)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Pregunta pregunta);
 
     // Para eliminar una pregunta
     @Delete
     void delete(Pregunta pregunta);
 
-    // Recuperar el ID, basándose por el texto de la pregunta y el nombre del usuario que la escribió
+    // Recuperar pregunta, basándose por el texto de la pregunta y el nombre del usuario que la escribió
     @Query("SELECT * FROM Pregunta WHERE texto =:texto AND nombreUsuario =:nombreUsuario")
     LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario);
 
