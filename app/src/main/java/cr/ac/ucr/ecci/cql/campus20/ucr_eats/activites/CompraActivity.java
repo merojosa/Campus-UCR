@@ -38,6 +38,7 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.services.NotificacionPedidoService;
 
 public class CompraActivity extends AppCompatActivity implements PermissionsListener
 {
@@ -151,8 +152,14 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
         campusBD.escribirDatos(PATH_PEDIDOS + "/" + orderId, order);
 
         Toast.makeText(this, "Se realizó el pedido exitosamente", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainUcrEats.class);
-        startActivity(intent);
+
+        // Servicio para detectar el estado de la orden
+        Intent servicioIntent = new Intent(this, NotificacionPedidoService.class);
+        servicioIntent.putExtra(NotificacionPedidoService.LLAVE_ID_ORDEN, order.getIdOrder());
+        startService(servicioIntent);
+
+        Intent actividadIntent = new Intent(this, MainUcrEats.class);
+        startActivity(actividadIntent);
         finish();
 
     }

@@ -169,6 +169,8 @@ public class OrdenesPendientesActivity extends AppCompatActivity
     {
         // Se necesita saber cuando el repartidor escogio una orden
         ordenEscogida = true;
+
+        // Cambio el estatus de esa orden a elegida.
     }
 
     private void eventoRecogerOrderRepartidor(int posicion)
