@@ -47,19 +47,18 @@ public class PendingOrdersPresenter
          double orderLatitude = order.getLatitude();
          double orderLongitude = order.getLongitude();
 
-        Location loc1 = new Location("");
-        loc1.setLatitude(orderLatitude);
-        loc1.setLongitude(orderLongitude);
+        Location locationRest = new Location("");
+        locationRest.setLatitude(order.getRestLatitude());
+        locationRest.setLongitude(order.getRestLongitude());
 
-        Location loc2 = new Location("");
-        loc2.setLatitude(order.getRestLatitude());
-        loc2.setLongitude(order.getRestLongitude());
+        Location locationUser = new Location("");
+        locationUser.setLatitude(orderLatitude);
+        locationUser.setLongitude(orderLongitude);
 
-        double distance = loc1.distanceTo(loc2)/1000;
+        double distance = locationUser.distanceTo(locationRest)/1000;
 
-
-        String s = String.format("Distancia: %.2fkm", distance);
-        return s;
+        String distanceString = String.format("Distancia: %.2fkm", distance);
+        return distanceString;
 
     }
 }
