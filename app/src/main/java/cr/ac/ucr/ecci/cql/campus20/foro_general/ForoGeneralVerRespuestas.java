@@ -93,18 +93,25 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         if (cerrada == 1){//la pregunta ha sido cerrada
             marcarResuelto.setChecked(true);
         }
+        else{
+            marcarResuelto.setChecked(false);
+            marcarResuelto.setText("Marcar como resuelta");
+        }
 
         // Asocia evento clic al boton
         marcarResuelto.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 //primero verifica que la pregunta este abierta
+                String creador = preguntaSeleccionada.getNombreUsuario();
                 if(cerrada != 1){
-                    //luego verifica si el usuario es el creador de la pregunta\
-                    String creador = preguntaSeleccionada.getNombreUsuario();
+                    //luego verifica si el usuario es el creador de la pregunta
                     if(nombreUsuario.compareTo(creador) == 0){
-                        Toast.makeText(ForoGeneralVerRespuestas.this, "Puede cerrarla ", Toast.LENGTH_SHORT).show();
                         //llama al metodo para cerrar la pregunta
+                        cerrarReabrirPregunta(preguntaSeleccionada, 1);
+                        //reporta que se cerro la pregunta
+                        Toast.makeText(ForoGeneralVerRespuestas.this, "Puede cerrarla ", Toast.LENGTH_SHORT).show();
+                        marcarResuelto.setText("Resuelto");
                     }
                     else{
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede cerrarla ", Toast.LENGTH_SHORT).show();
@@ -114,25 +121,22 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 else //reabrir pregunta
                 {
                     //luego verifica si el usuario es el creador de la pregunta
-                    Toast.makeText(ForoGeneralVerRespuestas.this, "Probando listener ", Toast.LENGTH_SHORT).show();
-
+                    if(nombreUsuario.compareTo(creador) == 0){
+                        //llama al metodo para cerrar la pregunta
+                        cerrarReabrirPregunta(preguntaSeleccionada, 0);
+                        //reporta que se cerro la pregunta
+                        Toast.makeText(ForoGeneralVerRespuestas.this, "Puede reabrirla ", Toast.LENGTH_SHORT).show();
+                        marcarResuelto.setText("Marcar como resuelta");
+                    }
+                    else{
+                        Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede reabrirla ", Toast.LENGTH_SHORT).show();
+                        marcarResuelto.setChecked(true);
+                    }
                 }
 
 
             }
         });
-
-        /*buttonAgregarRespuestas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                crearRespuesta(preguntaSeleccionada);
-            }
-        });*/
-
-
-
-
-
 
 
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
@@ -313,5 +317,14 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Modifica la pregunta en la base de datos, ya sea marcandola o desmarcadola como resuelta
+     * @param pregunta pregunta a modificar
+     * @param accion 1 para reabrir, 0 para cerrar
+     */
+    public void cerrarReabrirPregunta(PreguntaCard pregunta, int accion){
+
     }
 }
