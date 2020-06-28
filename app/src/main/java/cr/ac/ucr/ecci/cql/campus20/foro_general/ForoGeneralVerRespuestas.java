@@ -16,7 +16,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -47,11 +50,15 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private List<Respuesta> listaRespuestas;
     FloatingActionButton buttonAgregarRespuestas;
 
+    //boton para marcar como resuelto
+    CheckBox marcarResuelto;
+
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private List<Respuesta> respuestasFireBase;
     LiveData<List<Respuesta>> temp;
+    String nombreUsuario;
 
 
     ForoGeneralFirebaseDatabase databaseReference;
@@ -69,9 +76,64 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         buttonAgregarRespuestas = findViewById(R.id.buttonAgregarRespuestas);
 
         PreguntaCard preguntaSeleccionada = mIntent.getParcelableExtra("preguntaSeleccionada");
+        //busca usuario actual
+        this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
 
         int idPreguntaSeleccionada = preguntaSeleccionada.getId();
         int idTemaSeleccionado = preguntaSeleccionada.getTemaID();
+        //revisa si esta resuelta
+        int cerrada = preguntaSeleccionada.getResuelta();
+
+
+
+
+        //boton para marcar como resuelto
+        marcarResuelto = findViewById(R.id.marcarResuelto);
+
+        if (cerrada == 1){//la pregunta ha sido cerrada
+            marcarResuelto.setChecked(true);
+        }
+
+        // Asocia evento clic al boton
+        marcarResuelto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //primero verifica que la pregunta este abierta
+                if(cerrada != 1){
+                    //luego verifica si el usuario es el creador de la pregunta\
+                    String creador = preguntaSeleccionada.getNombreUsuario();
+                    if(nombreUsuario.compareTo(creador) == 0){
+                        Toast.makeText(ForoGeneralVerRespuestas.this, "Puede cerrarla ", Toast.LENGTH_SHORT).show();
+                        //llama al metodo para cerrar la pregunta
+                    }
+                    else{
+                        Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede cerrarla ", Toast.LENGTH_SHORT).show();
+                        marcarResuelto.setChecked(false);
+                    }
+                }
+                else //reabrir pregunta
+                {
+                    //luego verifica si el usuario es el creador de la pregunta
+                    Toast.makeText(ForoGeneralVerRespuestas.this, "Probando listener ", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        });
+
+        /*buttonAgregarRespuestas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearRespuesta(preguntaSeleccionada);
+            }
+        });*/
+
+
+
+
+
+
 
         recyclerViewRespuestas = (RecyclerView) findViewById(R.id.verRespuestasRV);
 

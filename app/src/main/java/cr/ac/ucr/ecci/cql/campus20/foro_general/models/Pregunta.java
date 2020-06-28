@@ -34,6 +34,9 @@ public class Pregunta {
     @ColumnInfo(name = "contadorDisLikes")
     public int contadorDisLikes = 0;
 
+    @ColumnInfo(name = "resuelta")
+    public int resuelta = 0;
+
     public Pregunta(int id, String nombreUsuario, int temaID, String texto, int contadorLikes, int contadorDisLikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
@@ -84,5 +87,13 @@ public class Pregunta {
 
     public void setContadorDisLikes(int contadorDisLikes) {
         this.contadorDisLikes = contadorDisLikes;
+    }
+
+    public int getResuelta() {
+        return resuelta;
+    }
+
+    public void setResuelta(int resuelta) {
+        this.resuelta = resuelta;
     }
 }

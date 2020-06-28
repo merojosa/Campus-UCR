@@ -188,7 +188,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
 
         Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
         intent.putExtra("preguntaSeleccionada", preguntaSeleccionada);
-        //intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
+        intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
         startActivity(intent);
     }
 }
