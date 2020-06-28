@@ -1,9 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +26,6 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import androidx.annotation.NonNull;
 
 
 // Referencias para crear lista de cards:
@@ -145,14 +144,18 @@ public class MainUcrEats extends AppCompatActivity
 
         ArrayList<SodaCard> filtrarLista = new ArrayList<>();
 
-        for(SodaCard usuario : sodaCards) {
-            if(usuario.getNombre().toLowerCase().contains(texto.toLowerCase())) {
-                filtrarLista.add(usuario);
+        if(sodaCards != null)
+        {
+            for(SodaCard usuario : sodaCards) {
+                if(usuario.getNombre().toLowerCase().contains(texto.toLowerCase())) {
+                    filtrarLista.add(usuario);
+                }
             }
         }
 
-        if(filtrarLista.isEmpty())
+        if(filtrarLista.isEmpty()) {
             this.noResults.setVisibility(View.VISIBLE);
+        }
         else
             this.noResults.setVisibility(View.GONE);
 

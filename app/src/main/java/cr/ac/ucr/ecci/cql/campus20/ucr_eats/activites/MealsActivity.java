@@ -51,9 +51,31 @@ public class MealsActivity extends AppCompatActivity
 
     private String currentRestaurant;
 
+    public String getRestLatitude() {
+        return restLatitude;
+    }
+
+    public void setRestLatitude(String restLatitude) {
+        this.restLatitude = restLatitude;
+    }
+
+    public String getRestLongitude() {
+        return restLongitude;
+    }
+
+    public void setRestLongitude(String restLongitude) {
+        this.restLongitude = restLongitude;
+    }
+
+    private String restLatitude;
+    private String restLongitude;
+
+
     private static String FIREBASE_PATH = "ucr_eats";
     public final static String MEAL_KEY = "Meals";
     public final static String NOMBRE_SODA_KEY = "Soda";
+    public final static String LATITUDE_SODA_KEY = "0";
+    public final static String LONGITUDE_SODA_KEY = "1";
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -72,6 +94,9 @@ public class MealsActivity extends AppCompatActivity
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
             this.currentRestaurant = card.getNombre();
+            this.restLatitude = String.valueOf(card.getLatitud());
+            this.restLongitude = String.valueOf(card.getLongitud());
+
             this.startMealsSync(card.getFirebaseId());
 
             sodaRatingNum = findViewById(R.id.rating_num);
@@ -145,7 +170,9 @@ public class MealsActivity extends AppCompatActivity
                 {
                     // Go checkout
                     Intent intent = new Intent(this, CompraActivity.class);
+                    intent.putExtra(LONGITUDE_SODA_KEY, restLongitude);
                     intent.putExtra(NOMBRE_SODA_KEY, currentRestaurant);
+                    intent.putExtra(LATITUDE_SODA_KEY, restLatitude);
                     intent.putExtra(MEAL_KEY, adapter.getMeals().get(position));
                     startActivity(intent);
                 })

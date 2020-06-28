@@ -6,6 +6,8 @@ public class Order
 {
     private String username;
     private String restaurant;
+    private double restLatitude;
+    private double restLongitude;
     private String idOrder;
     private Meal meal;
     private Date date;
@@ -15,15 +17,28 @@ public class Order
     // Si se borra esto, se cae la compra jeje
     public Order(){}
 
-    public Order(String username, Meal meal, String restaurant, Date date, double latitude, double longitude)
+//    public Order(String username, Meal meal, String restaurant, Date date, double latitude, double longitude)
+//    {
+//        this.username = username;
+//        this.meal = meal;
+//        this.restaurant = restaurant;
+//        this.date = date;
+//        this.latitude = latitude;
+//        this.longitude = longitude;
+//    }
+
+    public Order(String username, Meal meal, String restaurant, double rlatitude, double rlongitude, Date date, double latitude, double longitude)
     {
         this.username = username;
         this.meal = meal;
         this.restaurant = restaurant;
+        this.restLatitude = rlatitude;
+        this.restLongitude = rlongitude;
         this.date = date;
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
 
     public Date getDate()
     {
@@ -83,5 +98,21 @@ public class Order
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getRestLatitude() {
+        return restLatitude;
+    }
+
+    public void setRestLatitude(double restLatitude) {
+        this.restLatitude = restLatitude;
+    }
+
+    public double getRestLongitude() {
+        return restLongitude;
+    }
+
+    public void setRestLongitude(double restLongitude) {
+        this.restLongitude = restLongitude;
     }
 }

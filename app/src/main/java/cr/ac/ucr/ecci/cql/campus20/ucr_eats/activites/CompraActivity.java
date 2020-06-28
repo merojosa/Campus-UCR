@@ -45,6 +45,9 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
     private Meal meal;
     public static final String PATH_PEDIDOS = "ucr_eats/pedidos";
     private String currentRestaurant;
+    private String restLatitude;
+    private String restLongitude;
+
     private double latitude = 0.0;
     private double longitude = 0.0;
 
@@ -69,7 +72,8 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
 
         meal = getIntent().getParcelableExtra(MealsActivity.MEAL_KEY);
         currentRestaurant = getIntent().getStringExtra(MealsActivity.NOMBRE_SODA_KEY);
-
+        restLatitude = getIntent().getStringExtra(MealsActivity.LATITUDE_SODA_KEY);
+        restLongitude = getIntent().getStringExtra(MealsActivity.LONGITUDE_SODA_KEY);
         TextView restaurant = findViewById(R.id.tituloCompra);
         restaurant.setText(currentRestaurant);
 
@@ -145,7 +149,7 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
             }
         }
 
-        Order order = new Order(username, meal, currentRestaurant, Calendar.getInstance().getTime(), latitude, longitude);
+        Order order = new Order(username, meal, currentRestaurant,Double.valueOf(restLatitude),Double.valueOf(restLongitude), Calendar.getInstance().getTime(), latitude, longitude);
         String orderId = campusBD.obtenerIdUnicoPath(PATH_PEDIDOS);
         order.setIdOrder(orderId);
 
