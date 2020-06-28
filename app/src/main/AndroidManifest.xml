@@ -55,6 +55,8 @@
 
         <service android:name=".GuardarAppService" />
 
+        <service android:name=".ucr_eats.services.NotificacionPedidoService" />
+
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
