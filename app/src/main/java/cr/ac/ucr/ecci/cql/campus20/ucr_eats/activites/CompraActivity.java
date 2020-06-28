@@ -38,6 +38,7 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.OrderStatus;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.services.NotificacionPedidoService;
 
 public class CompraActivity extends AppCompatActivity implements PermissionsListener
@@ -149,7 +150,7 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
             }
         }
 
-        Order order = new Order(username, meal, currentRestaurant,Double.valueOf(restLatitude),Double.valueOf(restLongitude), Calendar.getInstance().getTime(), latitude, longitude);
+        Order order = new Order(username, meal, currentRestaurant,Double.valueOf(restLatitude),Double.valueOf(restLongitude), Calendar.getInstance().getTime(), latitude, longitude, OrderStatus.PENDIENTE);
         String orderId = campusBD.obtenerIdUnicoPath(PATH_PEDIDOS);
         order.setIdOrder(orderId);
 

@@ -13,6 +13,7 @@ public class Order
     private Date date;
     private double latitude;
     private double longitude;
+    private OrderStatus estatus;
 
     // Si se borra esto, se cae la compra jeje
     public Order(){}
@@ -27,7 +28,7 @@ public class Order
 //        this.longitude = longitude;
 //    }
 
-    public Order(String username, Meal meal, String restaurant, double rlatitude, double rlongitude, Date date, double latitude, double longitude)
+    public Order(String username, Meal meal, String restaurant, double rlatitude, double rlongitude, Date date, double latitude, double longitude, OrderStatus estatus)
     {
         this.username = username;
         this.meal = meal;
@@ -37,6 +38,7 @@ public class Order
         this.date = date;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.estatus = estatus;
     }
 
 
@@ -114,5 +116,13 @@ public class Order
 
     public void setRestLongitude(double restLongitude) {
         this.restLongitude = restLongitude;
+    }
+
+    public OrderStatus getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(OrderStatus estatus) {
+        this.estatus = estatus;
     }
 }
