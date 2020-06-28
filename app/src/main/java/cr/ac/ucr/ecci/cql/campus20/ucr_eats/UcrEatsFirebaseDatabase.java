@@ -48,6 +48,20 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
                                  .child(MEALS_PATH); // Get restaurant's meals
     }
 
+    public DatabaseReference getRestaurantLatitudeByName(String name)
+    {
+        String id = name == "Soda la U" ? "1" : "2";
+        return this.rootReference.child(RESTAURANTS_PATH) // get Restaurants
+                                 .child(id)
+                                 .child("latitude");   // get restaurant by id
+    }
+
+    public DatabaseReference getRestaurantLongitudeById(String id)
+    {
+        return this.rootReference.child(RESTAURANTS_PATH) // get Restaurants
+                .child(id);   // get restaurant by id
+    }
+
     public DatabaseReference getRestaurantRef(String id)
     {
         return this.rootReference.child(RESTAURANTS_PATH);

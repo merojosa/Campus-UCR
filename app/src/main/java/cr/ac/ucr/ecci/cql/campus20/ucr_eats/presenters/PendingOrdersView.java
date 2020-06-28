@@ -5,4 +5,5 @@ public interface PendingOrdersView
     void setRestaurant(String restaurant);
     void setMeal(String meal);
     void setDate(String date);
+    void setDistance(String distance);
 }

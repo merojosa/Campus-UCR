@@ -67,6 +67,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
         TextView meal;
         TextView date;
         Button assignButton;
+        TextView distance;
 
         View itemView;
 
@@ -77,6 +78,8 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
             this.restaurant = itemView.findViewById(R.id.assign_soda);
             this.meal = itemView.findViewById(R.id.assign_meal);
             this.date = itemView.findViewById(R.id.assign_date);
+            this.distance = itemView.findViewById(R.id.distance);
+
             this.assignButton = itemView.findViewById(R.id.assign_order);
 
             this.assignButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +110,11 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
         @Override
         public void setDate(String date) {
             this.date.setText(date);
+        }
+
+        @Override
+        public void setDistance(String distance) {
+            this.distance.setText(distance);
         }
     }
 }

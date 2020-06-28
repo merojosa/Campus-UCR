@@ -32,6 +32,14 @@
             android:textColor="#000000"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/distance"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/assign_order"
             android:layout_width="match_parent"
