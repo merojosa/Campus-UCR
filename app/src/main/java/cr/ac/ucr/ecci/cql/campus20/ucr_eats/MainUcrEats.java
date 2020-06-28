@@ -26,15 +26,12 @@ import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Restaurant;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RatingRepository;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.repositories.RestaurantRepository;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.services.UcrEatsNotificacionServiceFieldTest;
 
 
 // Referencias para crear lista de cards:
 // https://github.com/tutsplus/Android-CardViewRecyclerView
 public class MainUcrEats extends AppCompatActivity
 {
-    UcrEatsNotificacionServiceFieldTest ft;
-
     private EditText inputSearch;
     private RVAdapter sodasAdapter;
     private RecyclerView recyclerViewSodas;
@@ -67,8 +64,6 @@ public class MainUcrEats extends AppCompatActivity
 
         this.getFirebaseRestaurant();
 
-        ft = new UcrEatsNotificacionServiceFieldTest(this);
-        ft.setOrderNotificacionListener("-MAwHc2J6BiymzoAbipa");
     }
 
 
