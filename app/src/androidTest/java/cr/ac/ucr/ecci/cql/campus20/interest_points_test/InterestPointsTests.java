@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.interest_points_test;
 
 import android.content.Context;
 
@@ -10,27 +10,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeShopsActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.DeploymentScript;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierActivity;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertArrayEquals;
 
 /**
@@ -41,6 +38,15 @@ import static org.junit.Assert.assertArrayEquals;
 @RunWith(AndroidJUnit4.class)
 public class InterestPointsTests {
 
+    /*Se usa para esperar a que carguen los datos de los Recycler Views antes de realizar las pruebas.*/
+    private CountDownLatch lock;
+    
+    private final int TIMEOUT = 2000;
+
+    public InterestPointsTests(){
+        lock = new CountDownLatch(1);
+    }
+
     @Rule
     public ActivityScenarioRule<InterestPointsActivity> activityActivityScenarioRule =
             new ActivityScenarioRule<>(InterestPointsActivity.class);
@@ -48,6 +54,10 @@ public class InterestPointsTests {
     private void initDb(Context context){
         FirebaseDB db = new FirebaseDB();
         new DeploymentScript().RunScript(db, context);
+    }
+
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
     }
 
     /**
@@ -59,12 +69,13 @@ public class InterestPointsTests {
         IPRoomDatabase db = Room.databaseBuilder(getApplicationContext(), IPRoomDatabase.class, "IPRoomDatabase").allowMainThreadQueries().build();
         ActivityInfoDao activityInfoDao = db.activityInfoDao();
         String[] expectedActivityNames = {"Puntos de interés", "Cafeterías", "Sodas", "Fotocopiadoras", "Facultades", "Bibliotecas", "Oficinas"};
-        String [] names = new String[7];
+        final int NAMES_COUNT = 7;
+        String [] names = new String[NAMES_COUNT];
         int i = 0;
-        for(DeploymentScript.ActivityNames activityName : DeploymentScript.ActivityNames.values()){
-            names[i++] = activityInfoDao.getActivityName(activityName.ordinal());
+        List<ActivityInfo> activityInfo = activityInfoDao.getAll();
+        for(ActivityInfo info : activityInfo){
+            names[i++] = info.getName();
         }
-
         assertArrayEquals(expectedActivityNames, names);
     }
 
@@ -72,44 +83,55 @@ public class InterestPointsTests {
      * Entra a InterestPointsActivity, hace click en Fotocopiadoras y revisa que exista la entrada "Mis Copias".
      * */
     @Test
-    public void testInterestPointsIndex(){
+    public void testInterestPointsPhotocopiers() throws InterruptedException{
         onView(withText("Fotocopias")).perform(click());
-        onData(allOf(is(instanceOf(PhotocopierActivity.class)), hasEntry(equalTo("Mis Copias"), is("Mis Copias"))));
+        lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(2))
+                .check(matches(hasDescendant(withText("Mis Copias"))));
     }
+
 
     /**
      * Entra a InterestPointsActivity, hace click en Bibliotecas y revisa que exista la entrada "Carlos Monge Alfaro".
      * */
     @Test
-    public void testInterestPointsBibliotecas(){
+    public void testInterestPointsBibliotecas() throws InterruptedException{
         onView(withText("Bibliotecas")).perform(click());
-        onData(allOf(is(instanceOf(LibraryActivity.class)), hasEntry(equalTo("Carlos Monge Alfaro"), is("Carlos Monge Alfaro"))));
+        lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(1))
+                .check(matches(hasDescendant(withText("Carlos Monge Alfaro"))));
     }
 
     /**
      * Entra a InterestPointsActivity, hace click en Oficinas y revisa que exista la entrada "OCCI".
      * */
     @Test
-    public void testInterestPointsOficinas(){
+    public void testInterestPointsOficinas() throws InterruptedException{
         onView(withText(" Oficinas")).perform(click());
-        onData(allOf(is(instanceOf(OfficeActivity.class)), hasEntry(equalTo("OCCI"), is("OCCI"))));
+        lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(1))
+                .check(matches(hasDescendant(withText("OCCI"))));
     }
 
     /**
      * Entra a InterestPointsActivity, hace click en Facultades y revisa que exista la entrada "Artes".
      * */
     @Test
-    public void testInterestPointsFaculties(){
+    public void testInterestPointsFaculties() throws InterruptedException{
         onView(withText("Facultades")).perform(click());
-        onData(allOf(is(instanceOf(FacultiesActivity.class)), hasEntry(equalTo("Artes"), is("Artes"))));
+        lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(0))
+                .check(matches(hasDescendant(withText("Artes"))));
     }
 
     /**
      * Entra a InterestPointsActivity, hace click en Cafeterías y revisa que exista la entrada "95 grados".
      * */
     @Test
-    public void testInterestPointsCofeeShops(){
+    public void testInterestPointsCofeeShops() throws InterruptedException{
         onView(withText("Cafeterías")).perform(click());
-        onData(allOf(is(instanceOf(CoffeShopsActivity.class)), hasEntry(equalTo("95 grados"), is("95 grados"))));
+        lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(6))
+                .check(matches(hasDescendant(withText("Café & Cacao"))));
     }
 }
