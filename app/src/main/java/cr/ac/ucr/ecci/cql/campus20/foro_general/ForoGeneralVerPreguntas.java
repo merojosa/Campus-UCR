@@ -77,9 +77,10 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     String texto = ds.child("texto").getValue(String.class);
                     int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
                     int contadorDisLikes = ds.child("contadorDisLikes").getValue(Integer.class);
+                    int resuelta = ds.child("resuelta").getValue(Integer.class);
 
                     // Se crea la pregunta
-                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes);
+                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes, resuelta);
                     ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
                 }
 

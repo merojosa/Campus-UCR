@@ -36,7 +36,7 @@ public class Pregunta {
 
     @ColumnInfo(name = "resuelta")
     public int resuelta = 0;
-
+/*
     public Pregunta(int id, String nombreUsuario, int temaID, String texto, int contadorLikes, int contadorDisLikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
@@ -44,6 +44,16 @@ public class Pregunta {
         this.texto = texto;
         this.contadorLikes = contadorLikes;
         this.contadorDisLikes = contadorDisLikes;
+    }*/
+
+    public Pregunta(int id, String nombreUsuario, int temaID, String texto, int contadorLikes, int contadorDisLikes, int resuelta) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.temaID = temaID;
+        this.texto = texto;
+        this.contadorLikes = contadorLikes;
+        this.contadorDisLikes = contadorDisLikes;
+        this.resuelta = resuelta;
     }
 
     // Getters y Setters de la clase

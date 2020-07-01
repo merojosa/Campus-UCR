@@ -220,7 +220,7 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
 
     private void agregarPregunta() {
         String texto = mEditText.getText().toString();
-        Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
+        Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0,0);
         mPreguntaViewModel.insert(pregunta);
 
         // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
