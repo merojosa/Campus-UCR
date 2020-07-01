@@ -111,8 +111,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
             buttonAgregarRespuestas.setVisibility(View.VISIBLE);
         }
 
-        //LiveData<List<Pregunta>> lista = mPreguntaViewModel.getPreguntasTema(preguntaSeleccionada.getId());
-        //List<Pregunta> probando = lista.getValue();
         // Asocia evento clic al boton
         marcarResuelto.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -349,7 +347,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         //llamar query sql con id de pregunta y accion como parametros
         //Pregunta preguntaTemp = new Pregunta(pregunta.getId(), pregunta.getNombreUsuario(), pregunta.getTemaID(), pregunta.getTexto(), pregunta.getContadorLikes(), pregunta.getContadorDislikes());
         //preguntaTemp.setResuelta(accion);
-        //mPreguntaViewModel.updateResuelta(pregunta.getId(), accion);
+        mPreguntaViewModel.updateResuelta(pregunta.getId(), accion);
         //actualiza el valor tambien en firebase
         ForoGeneralVerRespuestas.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.getTemaID())).child(Integer.toString(pregunta.getId())).child("resuelta").setValue(accion);
     }
