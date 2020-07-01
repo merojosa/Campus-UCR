@@ -25,13 +25,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
-import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterRespuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
@@ -51,7 +51,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private List<Respuesta> respuestasFireBase;
-    LiveData<List<Respuesta>> temp;
 
 
     ForoGeneralFirebaseDatabase databaseReference;
@@ -127,8 +126,9 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                             }
                         });*/
                     }
-
                 }
+                ordenarRespuestasPorRanking(ForoGeneralVerRespuestas.this.respuestasFireBase);
+
                 if(ForoGeneralVerRespuestas.this.respuestasFireBase.size()>0){
                     adapterRespuesta.setRespuestas(ForoGeneralVerRespuestas.this.respuestasFireBase);
                     //confirmacion temporal para saber cual presentar
@@ -136,7 +136,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 }else {
                     tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
                 }
-
             }
 
             @Override
@@ -221,6 +220,21 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 }
                 return true;
 
+            }
+        });
+    }
+
+    public void ordenarRespuestasPorRanking(List<Respuesta> firebaseRespuestas){
+
+        firebaseRespuestas.sort(new Comparator<Respuesta>() {
+            @Override
+            public int compare(Respuesta resp1, Respuesta resp2) {
+                if(resp1.getRanking() == resp2.getRanking()){
+                    return 0;
+                }else if(resp1.getRanking() > resp2.getRanking()){
+                    return -1;
+                }
+                return 1;
             }
         });
     }

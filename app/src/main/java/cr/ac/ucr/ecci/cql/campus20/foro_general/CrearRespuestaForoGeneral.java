@@ -164,9 +164,9 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             public void onChanged(List<Respuesta> respuestas) {
                 int idGenerado = 0;
                 List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
-                for (Respuesta respuesta : respuestas) {
-                    idGenerado = respuesta.id;
-                    respuestaRoom.add(respuesta);
+                for (Respuesta respuestaTemp : respuestas) {
+                    idGenerado = respuestaTemp.getId();
+                    respuestaRoom.add(respuestaTemp);
                 }
 
                 // Inserta en Firebase tambien

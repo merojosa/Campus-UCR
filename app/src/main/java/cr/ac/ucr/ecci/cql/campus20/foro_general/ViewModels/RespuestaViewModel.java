@@ -48,6 +48,14 @@ public class RespuestaViewModel extends AndroidViewModel {
     }
 
     /**
+     * Método que actualiza una respuesta
+     * @param respuesta la pregunta a actualizar
+     */
+    public void update(Respuesta respuesta) {
+        mRepository.update(respuesta);
+    }
+
+    /**
      * Método que actualiza los likes de una respuesta
      * @param id el identificador único de la respuesta
      * @param num el número a poner en el contador

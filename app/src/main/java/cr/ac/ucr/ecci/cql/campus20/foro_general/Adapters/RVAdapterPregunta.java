@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -138,11 +139,11 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         int difRanking = arrayLikes[i] - arrayDislikes[i];
         preguntaViewHolder.contadorLikes.setText(String.valueOf(difRanking));
         if (difRanking > 0) {
-            preguntaViewHolder.contadorLikes.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+            preguntaViewHolder.contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.verde_UCR));
         } else if (difRanking < 0) {
-            preguntaViewHolder.contadorLikes.setTextColor(context.getResources().getColor(R.color.rojoForo));
+            preguntaViewHolder.contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.rojoForo));
         } else {
-            preguntaViewHolder.contadorLikes.setTextColor(context.getResources().getColor(R.color.gris_medio_UCR));
+            preguntaViewHolder.contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.gris_medio_UCR));
         }
         preguntaViewHolder.iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
         preguntaViewHolder.iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
@@ -265,11 +266,11 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int difRanking = arrayLikes[indexPreg]-arrayDislikes[indexPreg];
                     contadorLikes.setText(String.valueOf(difRanking));
                     if(difRanking==0){
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.gris_medio_UCR));
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.gris_medio_UCR));
                     }else if(difRanking>0){
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.verde_UCR));
                     }else{
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.rojoForo));
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.rojoForo));
                     }
                 }
             });
@@ -330,11 +331,11 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int difRanking = arrayLikes[indexPreg]-arrayDislikes[indexPreg];
                     contadorLikes.setText(String.valueOf(difRanking));
                     if(difRanking==0){
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.gris_medio_UCR));
-                    }else if(difRanking<0){
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.rojoForo));
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.gris_medio_UCR));
+                    }else if(difRanking>0){
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.verde_UCR));
                     }else{
-                        contadorLikes.setTextColor(context.getResources().getColor(R.color.verde_UCR));
+                        contadorLikes.setTextColor(ContextCompat.getColor(context, R.color.rojoForo));
                     }
                 }
             });
