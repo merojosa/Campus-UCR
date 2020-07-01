@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
@@ -83,6 +87,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes, resuelta);
                     ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
                 }
+                ordenarPreguntasPorRanking(ForoGeneralVerPreguntas.this.preguntasFireBase);
 
                 // Setear el view para las preguntas
                 recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
@@ -163,6 +168,21 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
             }
         });
 
+    }
+
+    public void ordenarPreguntasPorRanking(List<Pregunta> firebasePreguntas){
+
+        firebasePreguntas.sort(new Comparator<Pregunta>() {
+            @Override
+            public int compare(Pregunta preg1, Pregunta preg2) {
+                if(preg1.getRanking() == preg2.getRanking()){
+                    return 0;
+                }else if(preg1.getRanking() > preg2.getRanking()){
+                    return -1;
+                }
+                return 1;
+            }
+        });
     }
 
     /**

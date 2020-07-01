@@ -99,6 +99,10 @@ public class Pregunta {
         this.contadorDisLikes = contadorDisLikes;
     }
 
+    public int getRanking(){
+        return this.contadorLikes - this.contadorDisLikes;
+    }
+
     public int getResuelta() {
         return resuelta;
     }
