@@ -31,6 +31,8 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralVerTemas;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 
 // Se importan las actividades principales que estarán disponibles desde el fragmento
 
@@ -95,8 +97,7 @@ public class NavigationBarFragment extends android.app.Fragment
         // marcar ese ícono como seleccionado
         if (getActivity() instanceof LoginActivity)
             navegacion.getMenu().getItem(0).setChecked(false);
-
-        if (getActivity() instanceof MainUcrEats)
+        else if (getActivity() instanceof MainUcrEats || getActivity() instanceof OrdenesPendientesRepartidorActivity)
             // Ícono del módulo de ucr eats
             navegacion.getMenu().getItem(0).setChecked(true);
         else
@@ -243,8 +244,8 @@ public class NavigationBarFragment extends android.app.Fragment
         {
 
             case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
-                Intent intentUCREats = new Intent(getActivity(), MainUcrEats.class);
-                startActivity(intentUCREats);
+                RoleActivity.startDefaultActivity(getActivity().getApplicationContext());
+                getActivity().finishAffinity();
                 return true;
 
             case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro

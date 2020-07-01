@@ -68,7 +68,7 @@ public class RoleActivity extends AppCompatActivity
                 Intent intent = new Intent(context, getMappedIndexToClass(role));
 
                 // Close current activity and open the selected one
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 context.startActivity(intent);
             }
 
