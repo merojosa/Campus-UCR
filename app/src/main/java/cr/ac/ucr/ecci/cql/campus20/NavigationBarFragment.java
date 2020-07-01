@@ -244,8 +244,12 @@ public class NavigationBarFragment extends android.app.Fragment
         {
 
             case R.id.ucreats:  // En caso de que se haya seleccionado el ícono de UcrEats
-                RoleActivity.startDefaultActivity(getActivity().getApplicationContext());
-                getActivity().finishAffinity();
+                // Prevents reanimating and reopening the same activity
+                if(!(getActivity() instanceof MainUcrEats || getActivity() instanceof OrdenesPendientesRepartidorActivity))
+                {
+                    RoleActivity.startDefaultActivity(getActivity().getApplicationContext());
+                    getActivity().finishAffinity();
+                }
                 return true;
 
             case R.id.foro:     // En caso de que se haya seleccionado el ícono de Foro
