@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Favorito;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
@@ -24,31 +26,53 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
     // Define el listener interface para ponerlo en cada item del RecyclewView
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
+
+        void onHeartClick(boolean check, int position);
     }
+
 
     // Define el método que permite a la actividad o fragmento llamar al listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
+
     // Definición del ViewHolder
-    public class FavoritoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class FavoritoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener /*View.OnLongClickListener*/{
 
         private final TextView favoritoNombreView;
         private final TextView favoritoDescritionView;
         private final ImageView favoritoImagen;
+        private final ToggleButton favoritoBoton;
 
         // Constructor
         public FavoritoViewHolder(View itemView)
         {
             super(itemView);
             // Se obtienen los widgets
-            favoritoNombreView = itemView.findViewById(R.id.nameTema);
-            favoritoDescritionView = itemView.findViewById(R.id.description);
-            favoritoImagen = itemView.findViewById(R.id.img);
+            favoritoNombreView = itemView.findViewById(R.id.nombreTema);
+            favoritoDescritionView = itemView.findViewById(R.id.descripcionTema);
+            favoritoImagen = itemView.findViewById(R.id.imagenTema);
+            favoritoBoton = itemView.findViewById(R.id.botonFollow);
 
             // Setup the click listener
             itemView.setOnClickListener(this);
+
+            favoritoBoton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean botonChequeado = favoritoBoton.isChecked();
+                    favoritoBoton.setChecked(true);
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            // Invoca al onHeartClick del botón de favorito
+                            listener.onHeartClick(botonChequeado, position);
+                        }
+                    }
+                }
+            });
         }
 
         // Se sobre escribe el metodo onClick, para el evento de captura del Toggle
@@ -62,6 +86,19 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
                 }
             }
         }
+
+//
+//        @Override
+//        public boolean onLongClick(View v){
+//            // Triggers click upwards to the adapter on click
+//            if (listener != null) {
+//                int position = getAdapterPosition();
+//                if (position != RecyclerView.NO_POSITION) {
+//                    listener.onItemLongPressed(itemView, position);
+//                }
+//            }
+//            return true;
+//        }
     }
 
     // Definición del Inflater y de la lista de Temas Favoritos
@@ -75,7 +112,7 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
 
     @Override
     public FavoritoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.item_tema, parent, false);
+        View itemView = mInflater.inflate(R.layout.item_follow_tema, parent, false);
         return new FavoritoViewHolder(itemView);
     }
 
@@ -96,6 +133,7 @@ public class TemasFavoritosAdapter extends RecyclerView.Adapter<TemasFavoritosAd
                 holder.favoritoNombreView.setText(mTemas.get(posTema).getTitulo());
                 holder.favoritoDescritionView.setText(mTemas.get(posTema).getDescription());
                 holder.favoritoImagen.setImageResource(mTemas.get(posTema).getImagen());
+                holder.favoritoBoton.setChecked(true);
             }
 
         }
