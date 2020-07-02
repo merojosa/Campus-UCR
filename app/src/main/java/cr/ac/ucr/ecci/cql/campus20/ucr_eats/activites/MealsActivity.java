@@ -1,10 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,12 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,12 +31,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
 public class MealsActivity extends AppCompatActivity
 {
@@ -234,9 +232,18 @@ public class MealsActivity extends AppCompatActivity
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Double rate = dataSnapshot.getValue(Double.class);
-                sodaRatingNum.setText(rate.toString());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.exists())
+                {
+                    Double rate = dataSnapshot.getValue(Double.class);
+                    if(rate != null)
+                        sodaRatingNum.setText(rate.toString());
+                }
+                else
+                {
+                    sodaRatingNum.setText("Sin calificación");
+                }
             }
 
             @Override
