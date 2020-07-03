@@ -20,6 +20,7 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.PendingOrdersAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.OrderStatus;
 
 public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
 {
@@ -56,12 +57,13 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
                 // Iterate array
                 for(final DataSnapshot order : orderData)
                 {
-                    Log.e("Nombre:", ""+order.getValue());
                     Order pendingOrder = order.getValue(Order.class);
 
-                    if(order.exists()) {
-                        Log.i("datos", "" + order.getValue());
-                        orders.add(pendingOrder);
+                    if(order.exists())
+                    {
+                        // Mostrar solo los pendientes
+                        if(pendingOrder.getStatus() == OrderStatus.PENDIENTE)
+                            orders.add(pendingOrder);
                     }
                 }
 
