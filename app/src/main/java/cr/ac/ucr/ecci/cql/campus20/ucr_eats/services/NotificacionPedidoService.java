@@ -61,7 +61,7 @@ public class NotificacionPedidoService extends Service
         createNotificationChannel();
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
-        DatabaseReference ref = db.getPendingOrdersRef().child(orderId).child("estatus");
+        DatabaseReference ref = db.getPendingOrdersRef().child(orderId).child("status");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override

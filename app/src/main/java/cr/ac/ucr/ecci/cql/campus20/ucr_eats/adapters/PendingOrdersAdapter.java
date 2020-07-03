@@ -14,8 +14,10 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.CompraActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.OrderStatus;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersPresenter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.presenters.PendingOrdersView;
 
@@ -89,10 +91,15 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
 
                     String email = db.obtenerCorreoActual();
 
-                    AssignedOrder order = new AssignedOrder(email, orders.get(getAdapterPosition()));
+                    Order order = orders.get(getAdapterPosition());
+                    // Repartidor ya escogio, se dirige hacia la soda
+                    order.setStatus(OrderStatus.HACIA_SODA);
+                    AssignedOrder assignedOrder = new AssignedOrder(email, order);
 
                     String id = db.obtenerIdUnicoPath(PATH);
-                    db.escribirDatos(PATH+"/"+id, order);
+                    db.escribirDatos(PATH+"/"+id, assignedOrder);
+                    // Actualizo la orden con el nuevo estatus
+                    db.escribirDatos(CompraActivity.PATH_PEDIDOS + "/" + order.getIdOrder(), order);
                 }
             });
         }
