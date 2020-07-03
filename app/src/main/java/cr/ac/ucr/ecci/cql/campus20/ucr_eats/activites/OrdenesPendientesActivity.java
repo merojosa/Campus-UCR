@@ -32,7 +32,6 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 {
     private List<Order> listaOrdenes;
     private CampusBD db;
-    private final boolean ROL_REPARTIDOR = true;
     private boolean ordenEscogida = false;
     private RecyclerView.OnItemTouchListener listener = null;
 
@@ -78,36 +77,6 @@ public class OrdenesPendientesActivity extends AppCompatActivity
     public void setupRecyclerView()
     {
         RecyclerView recyclerView = findViewById(R.id.ordenes_pendientes_rv);
-        String mensaje = "";
-        String pregunta = "";
-
-        if(ROL_REPARTIDOR == true)
-        {
-            // Repartidor
-
-            if(ordenEscogida == true)
-            {
-                // Recogiendo el pedido
-                mensaje = "Recoger pedido";
-                pregunta = "¿Ya llegó a la soda para recoger el pedido?";
-            }
-            else
-            {
-                // Eligiendo el pedido
-                mensaje = "Escoger orden";
-                pregunta = "¿Desea escoger esta orden?";
-            }
-
-        }
-        else
-        {
-            // Usuario
-            mensaje = "Completar orden";
-            pregunta = "¿Desea completar esta orden?";
-        }
-
-        String finalPregunta = pregunta;
-        String finalMensaje = mensaje;
 
         // Eliminar el listener previo
         if(listener != null)
@@ -117,22 +86,10 @@ public class OrdenesPendientesActivity extends AppCompatActivity
         {
             new AlertDialog.Builder(this)
                     .setTitle("Orden")
-                    .setMessage(finalPregunta)
+                    .setMessage("Completar orden")
                     .setIcon(R.drawable.info_personalizado)
-                    .setPositiveButton(finalMensaje, (dialog, whichButton) ->
+                    .setPositiveButton("¿Desea completar esta orden?", (dialog, whichButton) ->
                     {
-                        if(ROL_REPARTIDOR == true)
-                        {
-                            if(ordenEscogida == true)
-                            {
-                                eventoRecogerOrderRepartidor(position);
-                            }
-                            else
-                            {
-                                eventoElegirOrderRepartidor(position);
-                            }
-                        }
-
                         db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
                                 .get(position).getIdOrder());
 
@@ -158,23 +115,5 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 
         RecyclerView.Adapter adapterRV = new OrdersAdapter(listaOrdenes);
         recyclerView.setAdapter(adapterRV);
-    }
-
-    private void eventoUsuario()
-    {
-
-    }
-
-    private void eventoElegirOrderRepartidor(int posicion)
-    {
-        // Se necesita saber cuando el repartidor escogio una orden
-        ordenEscogida = true;
-
-        // Cambio el estatus de esa orden a elegida.
-    }
-
-    private void eventoRecogerOrderRepartidor(int posicion)
-    {
-
     }
 }
