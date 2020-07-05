@@ -648,7 +648,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Double latitude = result.getLastLocation().getLatitude();
                 Double longitude  = result.getLastLocation().getLongitude();
                 //si la obicacion cambio tanto en latitud o longitud, actualizamos en la DB la informacion
-                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLatitudeKnown) != 0) {
+                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLongitudeKnown) != 0) {
                     System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
                     UpdateMyLocation(latitude, longitude);
                 }

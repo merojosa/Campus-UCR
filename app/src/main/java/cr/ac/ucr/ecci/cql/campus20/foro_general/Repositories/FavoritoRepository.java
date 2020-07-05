@@ -16,13 +16,15 @@ public class FavoritoRepository {
     // Se define el Dao y la lista a usar
     private FavoritoDao mFavoritoDao;
     private LiveData<List<Favorito>> mAllFavoritos;
+    private String nombreUsuario;
 
     // Constructor de la clase
-    public FavoritoRepository(Application application) {
+    public FavoritoRepository(Application application, String nombreUsuario) {
         // Se obtiene la base de datos y se obtienen los datos pertinentes
         ForoGeneralDatabase db = ForoGeneralDatabase.getDatabase(application);
+        this.nombreUsuario = nombreUsuario;
         mFavoritoDao = db.favoritoDao();
-        mAllFavoritos = mFavoritoDao.getAllFavoritos();
+        mAllFavoritos = mFavoritoDao.getAllFavoritosUsuario(nombreUsuario);
     }
 
     /**
@@ -30,6 +32,7 @@ public class FavoritoRepository {
      * @return mAllFavoritos, que es una lista en LiveData que contiene los temas favoritos
      */
     public LiveData<List<Favorito>> getAllFavoritos() {
+        mAllFavoritos = mFavoritoDao.getAllFavoritosUsuario(nombreUsuario);
         return mAllFavoritos;
     }
 
@@ -47,9 +50,9 @@ public class FavoritoRepository {
      * Método que ejecuta el delete de un registro de la tabla Favorito
      * @param favoritoID, el identificador del tema favorito a eliminar
      */
-    public void deleteOneFavorito(int favoritoID) {
+    public void deleteOneFavorito(int favoritoID, String nombreUsuario) {
         ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
-            mFavoritoDao.deleteOneFavorito(favoritoID);
+            mFavoritoDao.deleteOneFavorito(favoritoID, nombreUsuario);
         });
     }
 }
