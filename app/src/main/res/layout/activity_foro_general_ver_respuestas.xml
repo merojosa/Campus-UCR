@@ -60,6 +60,16 @@
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <CheckBox
+            android:id="@+id/marcarResuelto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Resuelto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/preguntaSeleccionada" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->

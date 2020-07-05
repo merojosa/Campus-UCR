@@ -75,8 +75,9 @@ public class ForoGeneralVerMisPreguntas extends AppCompatActivity implements RVA
                         String texto = child.child("texto").getValue(String.class);
                         int contadorLikes = child.child("contadorLikes").getValue(Integer.class);
                         int contadorDisLikes = child.child("contadorDisLikes").getValue(Integer.class);
+                        int resuelta = child.child("resuelta").getValue(Integer.class);
                         if(nombreUsuario.equals(ForoGeneralVerMisPreguntas.this.nombreUsuario)){
-                            ForoGeneralVerMisPreguntas.this.preguntasFireBase.add(new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes));
+                            ForoGeneralVerMisPreguntas.this.preguntasFireBase.add(new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes,resuelta));
                         }
                     }
                 }

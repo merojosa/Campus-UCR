@@ -107,7 +107,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
         for(Pregunta pregunta : preguntas)
         {
             cards.add(
-                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisLikes)
+                    new PreguntaCard(pregunta.temaID, pregunta.id, pregunta.nombreUsuario,pregunta.texto, pregunta.contadorLikes, pregunta.contadorDisLikes, pregunta.resuelta)
             );
         }
 
@@ -221,13 +221,15 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int likesTemp = preguntaCards.get(indexPreg).getContadorLikes();
                     int dislikesTemp = preguntaCards.get(indexPreg).getContadorDislikes();
                     int isLikedActual = arrayStatusRank[indexPreg];
+
+                    int resueltaTemp = preguntaCards.get(indexPreg).getResuelta();
                     Pregunta pregTemp;
 
                     if(isLikedActual == 1){ //tiene like
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]--;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp-1,dislikesTemp);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp-1,dislikesTemp,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);
@@ -240,7 +242,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]++;
                         arrayDislikes[indexPreg]--;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp+1,dislikesTemp-1);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp+1,dislikesTemp-1,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);
@@ -253,7 +255,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         iconLike.setImageResource(R.drawable.ic_thumb_up_green_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayLikes[indexPreg]++;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp+1,dislikesTemp);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp+1,dislikesTemp,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);
@@ -285,6 +287,8 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                     int likesTemp = preguntaCards.get(indexPreg).getContadorLikes();
                     int dislikesTemp = preguntaCards.get(indexPreg).getContadorDislikes();
                     int isLikedActual = arrayStatusRank[indexPreg];
+
+                    int resueltaTemp = preguntaCards.get(indexPreg).getResuelta();
                     Pregunta pregTemp;
 
                     if(isLikedActual == 1){ //tiene like
@@ -292,7 +296,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_red_24dp);
                         arrayLikes[indexPreg]--;
                         arrayDislikes[indexPreg]++;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp-1,dislikesTemp+1);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp-1,dislikesTemp+1,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);
@@ -305,7 +309,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_grey_24dp);
                         arrayDislikes[indexPreg]--;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp,dislikesTemp-1);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp,dislikesTemp-1,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);
@@ -318,7 +322,7 @@ public class RVAdapterPregunta extends RecyclerView.Adapter<RVAdapterPregunta.Pr
                         iconLike.setImageResource(R.drawable.ic_thumb_up_grey_24dp);
                         iconDislike.setImageResource(R.drawable.ic_thumb_down_red_24dp);
                         arrayDislikes[indexPreg]++;
-                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp,dislikesTemp+1);
+                        pregTemp = new Pregunta(idPregTemp,usuarioActual,idTemaTemp,textoTemp,likesTemp,dislikesTemp+1,resueltaTemp);
                         mPreguntaViewModel.update(pregTemp);
                         RVAdapterPregunta.this.databaseReference.getPreguntasRef().child(Integer.toString(idTemaTemp)).child(Integer.toString(idPregTemp))
                                 .setValue(pregTemp);

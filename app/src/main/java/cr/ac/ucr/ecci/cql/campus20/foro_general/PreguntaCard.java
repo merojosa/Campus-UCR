@@ -7,34 +7,42 @@ public class PreguntaCard implements Parcelable
 {
     private int id;
     private int temaID;
+    private String nombreUsuario;
     private String texto;
     private int contadorLikes;
     private int contadorDislikes;
+    private int resuelta;
 
-    public PreguntaCard(int temaID, int id, String texto, int contadorLikes, int contadorDislikes)
+    public PreguntaCard(int temaID, int id, String nombreUsuario, String texto, int contadorLikes, int contadorDislikes, int resuelta)
     {
         this.temaID = temaID;
         this.id = id;
+        this.nombreUsuario = nombreUsuario;
         this.texto = texto;
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
+        this.resuelta = resuelta;
     }
 
     protected PreguntaCard(Parcel in) {
         id = in.readInt();
         temaID = in.readInt();
+        nombreUsuario = in.readString();
         texto = in.readString();
         contadorLikes = in.readInt();
         contadorDislikes = in.readInt();
+        resuelta = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeInt(temaID);
+        dest.writeString(nombreUsuario);
         dest.writeString(texto);
         dest.writeInt(contadorLikes);
         dest.writeInt(contadorDislikes);
+        dest.writeInt(resuelta);
     }
 
     @Override
@@ -62,6 +70,10 @@ public class PreguntaCard implements Parcelable
         return temaID;
     }
 
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
     public String getTexto() {
         return texto;
     }
@@ -72,5 +84,9 @@ public class PreguntaCard implements Parcelable
 
     public int getContadorDislikes() {
         return contadorDislikes;
+    }
+
+    public int getResuelta() {
+        return resuelta;
     }
 }
