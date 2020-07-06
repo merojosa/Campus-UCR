@@ -48,6 +48,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private DatabaseReference ref;
     private ValueEventListener listener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,9 +133,10 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     }
 
     /*Reads the list from Firebase RTD and updates the UI when the list fetch is completed asynchronously.*/
-    private void getCoffeeList(){
+    private void getCoffeeList() {
         FirebaseDB db = new FirebaseDB();
-        ref = db.getReference(Place.TYPE_COFFEE);
+        ref = db.getReference(Place.TYPE_COFFEE); // Place.TYPE_COFFEE
+
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

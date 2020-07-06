@@ -55,13 +55,13 @@ public class SchoolPlacesPopUp extends AppCompatActivity {
 
         if(place.getType().equals(Place.TYPE_LABORATORY)) {
             computers.setImageResource(R.drawable.icon_pc);
-            computersCheck.setChecked(place.isComputers());
+            computersCheck.setChecked(place.getHaveComputers());
             computersCheck.setEnabled(false);
             projector.setImageResource(R.drawable.icon_projector);
-            projectorCheck.setChecked(place.isComputers());
+            projectorCheck.setChecked(place.getHaveComputers());
             projectorCheck.setEnabled(false);
             extintor.setImageResource(R.drawable.icon_ext);
-            extintorCheck.setChecked(place.isComputers());
+            extintorCheck.setChecked(place.getHaveComputers());
             extintorCheck.setEnabled(false);
         }else {
             computers.setVisibility(View.GONE);
