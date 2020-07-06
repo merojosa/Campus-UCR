@@ -484,28 +484,28 @@ public class DeploymentScript {
     }
 
     private void createSoda() {
-        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535, true,"7:00 am - 7:00pm", "Melcochon: 2x1", false);
+        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535, true,"7:00 am - 7:00pm", "Melcochon: 2x1", 0);
         db.insert("Soda", farma);
 
-        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514, false, "5:00 am - 5:00pm", "Cafe con leche: 5x1", false);
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514, false, "5:00 am - 5:00pm", "Cafe con leche: 5x1", 1);
         db.insert("Soda", generales);
 
-        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875, true, "7:00 am - 7:00pm", "Chicky's gratis", true);
+        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875, true, "7:00 am - 7:00pm", "Chicky's gratis", 0);
         db.insert("Soda", lucy);
 
-        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012, false, "7:00 am - 3:00pm",  "Rice and Beans: 2x1", false);
+        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012, false, "7:00 am - 3:00pm",  "Rice and Beans: 2x1", 1);
         db.insert("Soda", derecho);
 
-        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890, true, "9:00 am - 3:30pm",  "PanBon: 2x1", true);
+        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890, true, "9:00 am - 3:30pm",  "PanBon: 2x1", 1);
         db.insert("Soda", educa);
 
-        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600, true, "10:00 am - 2:00pm",  "Lasagna: 3000", false);
+        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600, true, "10:00 am - 2:00pm",  "Lasagna: 3000", 0);
         db.insert("Soda", comedor);
 
-        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040, true, "7:00 am - 7:00pm",  "Empanadas a mil", true);
+        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040, true, "7:00 am - 7:00pm",  "Empanadas a mil", 1);
         db.insert("Soda", sodau);
 
-        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473, true,"7:00 am - 7:00pm", "Elotes frescos a 500", false);
+        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473, true,"7:00 am - 7:00pm", "Elotes frescos a 500", 0);
         db.insert("Soda", agro);
 
     }

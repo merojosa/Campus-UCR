@@ -1,13 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.RequiresApi;
-
-import java.util.ArrayList;
 
 public class Coffee extends Place {
 
