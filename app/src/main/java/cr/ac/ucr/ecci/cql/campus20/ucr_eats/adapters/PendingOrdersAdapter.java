@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,22 +112,32 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
         }
 
         @Override
-        public void setRestaurant(String restaurant) {
-            this.restaurant.setText(restaurant);
+        public void setRestaurant(String restaurant)
+        {
+            Resources resources = this.itemView.getContext().getResources();
+            String format = resources.getString(R.string.restaurant_name);
+            this.restaurant.setText(String.format(format, restaurant));
         }
 
         @Override
-        public void setMeal(String meal) {
-            this.meal.setText(meal);
+        public void setMeal(String meal)
+        {
+            Resources resources = this.itemView.getContext().getResources();
+            String format = resources.getString(R.string.meal_name);
+            this.meal.setText(String.format(format, meal));
         }
 
         @Override
-        public void setDate(String date) {
-            this.date.setText(date);
+        public void setDate(String date)
+        {
+            Resources resources = this.itemView.getContext().getResources();
+            String format = resources.getString(R.string.order_date);
+            this.date.setText(String.format(format, date));
         }
 
         @Override
-        public void setDistance(String distance) {
+        public void setDistance(String distance)
+        {
             this.distance.setText(distance);
         }
     }
