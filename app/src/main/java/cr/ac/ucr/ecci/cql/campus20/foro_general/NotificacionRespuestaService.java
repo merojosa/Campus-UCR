@@ -27,6 +27,11 @@ public class NotificacionRespuestaService extends Service {
         return START_STICKY;
     }
 
+    public void setRespuestaNotificacionListener()
+    {
+
+    }
+
     private void createNotificationChannel()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
