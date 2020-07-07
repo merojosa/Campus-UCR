@@ -29,7 +29,6 @@ import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
 public class ForoGeneralVerMisPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {

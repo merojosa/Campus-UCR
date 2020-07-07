@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_foro_general">
 
     <group android:checkableBehavior="single">
         <item android:id="@+id/home_foro"
@@ -10,8 +12,7 @@
             android:title="Temas"/>
         <item
             android:id="@+id/mis_preguntas_foro"
-            android:icon="@drawable/ic_mis_preguntas_foro"
-            android:title="Mis preguntas">
+            android:icon="@drawable/ic_mis_preguntas_foro"            android:title="Mis preguntas">
         </item>
     </group>
 
