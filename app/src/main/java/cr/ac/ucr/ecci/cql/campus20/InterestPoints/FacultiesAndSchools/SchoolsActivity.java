@@ -40,7 +40,6 @@ public class SchoolsActivity extends AppCompatActivity implements ListAdapter.Li
     private DatabaseReference ref;
     private ValueEventListener listener;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

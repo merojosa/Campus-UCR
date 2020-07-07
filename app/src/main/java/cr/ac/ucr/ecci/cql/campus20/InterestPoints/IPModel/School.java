@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class School extends Place implements Parcelable {
+public class School extends Place {
 
     private int id_faculty_fk;
     private int id_place_fk;
@@ -35,24 +35,25 @@ public class School extends Place implements Parcelable {
     }
 
     protected School(Parcel in) {
-        super.id = in.readInt();
+        super(in);
+        //super.id = in.readInt();
         id_faculty_fk = in.readInt();
         id_place_fk = in.readInt();
-        super.name = in.readString();
-        super.description = in.readString();
-        super.image = in.readInt();
-        super.latitude = in.readDouble();
-        super.longitude = in.readDouble();
-        super.comments = in.readArrayList(Comment.class.getClassLoader());
+        super.setType(TYPE_SCHOOL);
+
+        //super.name = in.readString();
+        //super.description = in.readString();
+        //super.image = in.readInt();
+        //super.latitude = in.readDouble();
+        //super.longitude = in.readDouble();
+        //super.comments = in.readArrayList(Comment.class.getClassLoader());
     }
 
-    public static final Creator<School> CREATOR = new Creator<School>() {
-        @Override
+    public static final Parcelable.Creator<School> CREATOR = new Parcelable.Creator<School>() {
         public School createFromParcel(Parcel in) {
             return new School(in);
         }
 
-        @Override
         public School[] newArray(int size) {
             return new School[size];
         }
@@ -74,13 +75,8 @@ public class School extends Place implements Parcelable {
         this.id_place_fk = id_place_fk;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeInt(id_faculty_fk);
         dest.writeInt(id_place_fk);
     }

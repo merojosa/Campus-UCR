@@ -133,14 +133,14 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     }
 
-    //Para hacer pruebas
+    /*//Para hacer pruebas
     public void auxTest(List<Place> list, String[] array){
         for (String val:array) {
             School s =  new School();
             s.setName(val);
             list.add(s);
         }
-    }
+    }*/
 
     public void setListComponents(){
 
