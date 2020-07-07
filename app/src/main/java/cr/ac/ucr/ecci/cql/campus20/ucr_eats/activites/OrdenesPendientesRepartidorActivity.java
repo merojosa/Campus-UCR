@@ -1,7 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +46,8 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
 
         this.setupRecyclerView();
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener()
+        {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -57,12 +57,11 @@ public class OrdenesPendientesRepartidorActivity extends AppCompatActivity
                 // Iterate array
                 for(final DataSnapshot order : orderData)
                 {
-                    Order pendingOrder = order.getValue(Order.class);
-
                     if(order.exists())
                     {
+                        Order pendingOrder = order.getValue(Order.class);
                         // Mostrar solo los pendientes
-                        if(pendingOrder.getStatus() == OrderStatus.PENDIENTE)
+                        if(pendingOrder != null && pendingOrder.getStatus() == OrderStatus.PENDIENTE)
                             orders.add(pendingOrder);
                     }
                 }

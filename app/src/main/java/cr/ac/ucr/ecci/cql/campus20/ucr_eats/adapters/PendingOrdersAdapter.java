@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
     public PendingOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pending_order, parent, false);
-        return new PendingOrdersViewHolder(v);
+        return new PendingOrdersViewHolder(v, this.context);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
 
         View itemView;
 
-        public PendingOrdersViewHolder(View itemView)
+        public PendingOrdersViewHolder(View itemView, Context context)
         {
             super(itemView);
             this.itemView = itemView;
@@ -84,23 +85,28 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
 
             this.assignButton = itemView.findViewById(R.id.assign_order);
 
-            this.assignButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseBD db = new FirebaseBD();
+            this.assignButton.setOnClickListener(v ->
+            {
+                FirebaseBD db = new FirebaseBD();
 
-                    String email = db.obtenerCorreoActual();
+                String email = db.obtenerCorreoActual();
 
-                    Order order = orders.get(getAdapterPosition());
-                    // Repartidor ya escogio, se dirige hacia la soda
-                    order.setStatus(OrderStatus.HACIA_SODA);
-                    AssignedOrder assignedOrder = new AssignedOrder(email, order);
+                Order order = orders.get(getAdapterPosition());
+                // Repartidor ya escogio, se dirige hacia la soda
+                order.setStatus(OrderStatus.HACIA_SODA);
+                AssignedOrder assignedOrder = new AssignedOrder(email, order);
 
-                    String id = db.obtenerIdUnicoPath(PATH);
-                    db.escribirDatos(PATH+"/"+id, assignedOrder);
-                    // Actualizo la orden con el nuevo estatus
-                    db.escribirDatos(CompraActivity.PATH_PEDIDOS + "/" + order.getIdOrder(), order);
-                }
+                String id = db.obtenerIdUnicoPath(PATH);
+
+                db.escribirDatos(PATH + "/" + id, assignedOrder);
+
+                // Actualizo la orden con el nuevo estado
+                db.escribirDatos(CompraActivity.PATH_PEDIDOS + "/" + order.getIdOrder(), order);
+
+                Toast.makeText(context, "Listo, ahora puede recoger el pedido", Toast.LENGTH_LONG).show();
+
+                orders.remove(getAdapterPosition());
+                notifyDataSetChanged();
             });
         }
 
