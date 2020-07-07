@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.UI;
 
 import android.view.Gravity;
+import android.view.MotionEvent;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -36,9 +37,4 @@ public class MainActivityForoGeneralTest {
      * Método que verifica que el hacer click en el botón de agregar pregunta lo redirige a la actividad de
      * CrearPregunta del foro
      */
-    @Test
-    public void testBotonAgregarPreguntas(){
-        onView(withId(R.id.buttonAgregarPreguntas)).perform(click());
-        intended(hasComponent(CrearPreguntaForoGeneral.class.getName()));
-    }
 }

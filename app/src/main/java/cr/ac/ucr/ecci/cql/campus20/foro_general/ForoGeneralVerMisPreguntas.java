@@ -34,7 +34,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 public class ForoGeneralVerMisPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
     private LiveData<List<Pregunta>> preguntas;
     private List<Pregunta> preguntasFireBase;
-    ForoGeneralFirebaseDatabase databaseReference;
+    private ForoGeneralFirebaseDatabase databaseReference;
     private TextView tituloTema;
     private RecyclerView recyclerViewPreguntas;
     private RVAdapterPregunta preguntasAdapter;
