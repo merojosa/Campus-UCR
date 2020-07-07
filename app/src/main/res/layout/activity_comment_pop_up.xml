@@ -19,6 +19,12 @@
         android:textColor="@color/blanco_UCR"
         android:textSize="20dp" />
 
+    <Button
+        android:id="@+id/sortRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ordernar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
         android:layout_width="match_parent"

@@ -64,6 +64,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private Button setDislike;
     private int like;
     private int dislike;
+    private Button sortRating;
+    private boolean auxSorting;
 
     public CommentPopUp(){}
 
@@ -97,6 +99,17 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         setupCommentRating();
         setCommentsListener();
        // setupLikesnDislikes
+
+        //Para ordenar por rating
+        auxSorting = true; //true para ascendente, false para descendente
+        sortRating = this.view.findViewById(R.id.sortRating);
+        sortRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListAdapter.orderByRating(auxSorting);
+                auxSorting = !auxSorting;
+            }
+        });
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.setAnimationStyle(R.style.popup_window_animation);
