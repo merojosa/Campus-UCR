@@ -46,5 +46,10 @@ public interface PreguntaDao
     // Disminuye los likes
     @Query("UPDATE Pregunta SET contadorDisLikes = contadorDisLikes + :num WHERE id = :id")
     void updateDislikes(int id,int num);
+
+
+    // Para cerrar o reabrir la pregunta
+    @Query("UPDATE Pregunta SET resuelta = :num WHERE id = :id")
+    void updateResuelta(int id,int num);
 }
 

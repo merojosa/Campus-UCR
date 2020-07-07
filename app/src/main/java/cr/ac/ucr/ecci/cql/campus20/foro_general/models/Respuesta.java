@@ -101,4 +101,8 @@ public class Respuesta {
     public void setContadorDislikes(int contadorDislikes) {
         this.contadorDislikes = contadorDislikes;
     }
+
+    public int getRanking(){
+        return this.contadorLikes - this.contadorDislikes;
+    }
 }
