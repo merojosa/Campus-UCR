@@ -17,7 +17,8 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
  * */
 public class FirebaseDB extends FirebaseBD {
 
-    private static String PATH_PREFIX = "interest_points";
+    public static String PATH_PREFIX = "interest_points";
+    public static String CLOUDSTORE_PREFIX = "IPFiles";
 
     public FirebaseDB(){
         super();

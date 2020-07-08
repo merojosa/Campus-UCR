@@ -2,18 +2,23 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,12 +33,15 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +63,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private DatabaseReference ref;
     private ValueEventListener listener;
     private View view;
+    private Activity activity;
     private RatingBar rt;
     private EditText editComment;
     private Button getRating;
@@ -67,6 +76,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private StorageReference mStorageRef;
     private ImageButton sortRating;
     private boolean auxSorting;
+    private boolean isPhotoLoaded;
 
     public CommentPopUp(){}
 
@@ -74,9 +84,12 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Crea lo necesario para levantar el popup
      * @param view
      */
-    public CommentPopUp(final View view, Place place) {
+    public CommentPopUp(final View view, Activity activity, Place place) {
         db = new FirebaseDB();
+        mStorageRef = FirebaseStorage.getInstance().getReference(FirebaseDB.CLOUDSTORE_PREFIX);
         this.place = place;
+        this.activity = activity;
+
     /*Popup*/
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
@@ -155,34 +168,41 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
     private void fileChooser(){
-
-        Intent intent = new Intent(view.getContext(), CommentPopUp.class);
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        ((Activity)view.getContext()).startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-
-    }
-
-    /*
-     * MPS4 - 02 Foto en el comentario
-     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode != 1 && resultCode == RESULT_OK && data.getData() != null){
-            imgUrl = data.getData();
-            uploadPhoto(imgUrl);
+        //((Activity)view.getContext()).startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), 1);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(view.getContext().getPackageManager()) != null) {
+            activity.startActivityForResult(intent, 1);
         }
     }
 
+    public void setImg(Uri uri){
+        imgUrl = uri;
+        isPhotoLoaded = true;
+    }
+
     /*
      * MPS4 - 02 Foto en el comentario
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
-    private void uploadPhoto(Uri uri){
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+    private void uploadPhoto(Comment comment){
+        String filename = getExtension(imgUrl) + System.currentTimeMillis();
+        comment.setPhotoPath(filename);
+        StorageReference photoRef = mStorageRef.child(filename);
+        photoRef.putFile(imgUrl)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(view.getContext(), "El comentario ha sido guardado.", Toast.LENGTH_LONG);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                    // ...
+                    Toast.makeText(view.getContext(), "No se pudo guardar la imagen.", Toast.LENGTH_LONG);
+                }
+            });
     }
 
     /*
@@ -190,9 +210,12 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
     private String getExtension(Uri uri){
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(uri));
+        if(uri != null) {
+            ContentResolver cr = view.getContext().getContentResolver();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            return mime.getExtensionFromMimeType(cr.getType(uri));
+        }
+        return "";
     }
 
     private void setupRecyclerView(){
@@ -244,6 +267,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                     comment.setRating(rate);// Repensar
                 }
                 //inserta en firebase
+                if(isPhotoLoaded){
+                    uploadPhoto(comment);
+                }
                 ref.child(Integer.toString(comment.getId())).setValue(comment);
             }
         });
