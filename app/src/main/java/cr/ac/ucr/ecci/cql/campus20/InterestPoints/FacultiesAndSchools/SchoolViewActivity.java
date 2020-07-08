@@ -133,15 +133,6 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
 
     }
 
-    //Para hacer pruebas
-    public void auxTest(List<Place> list, String[] array){
-        for (String val:array) {
-            School s =  new School();
-            s.setName(val);
-            list.add(s);
-        }
-    }
-
     public void setListComponents(){
 
         //Creacion del adaptador
@@ -285,41 +276,15 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         refBathrooms.addValueEventListener(listenerBathrooms);
     }
 
-//    public void getAsociation(FirebaseDB db){
-//        FirebaseDB db = new FirebaseDB();
-//        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
-//        listenerAsociation = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot asociation : dataSnapshot.getChildren()) {
-//                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
-//                        asociationList.add(asociation.getValue(Asociation.class));
-//                    }
-//                }
-//                removeListener();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
-//            }
-//        };
-//        refAsociation.addValueEventListener(listenerAsociation);
-//    }
 
     private void removeListenerLabs(){
         if(refLabs != null && listenerLabs != null)
             refLabs.removeEventListener(listenerLabs);
-
-//        if(refAsociation != null && listenerAsociation != null)
-//            refAsociation.removeEventListener(listenerAsociation);
     }
 
     private void removeListenerBathrooms(){
         if(refBathrooms != null && listenerBathrooms != null)
             refBathrooms.removeEventListener(listenerBathrooms);
-//        if(refAsociation != null && listenerAsociation != null)
-//            refAsociation.removeEventListener(listenerAsociation);
     }
 
 }

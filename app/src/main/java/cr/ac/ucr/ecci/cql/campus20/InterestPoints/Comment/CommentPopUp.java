@@ -1,7 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +22,12 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,19 +35,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -72,6 +65,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private int dislike;
     private Uri imgUrl;
     private StorageReference mStorageRef;
+    private ImageButton sortRating;
+    private boolean auxSorting;
 
     public CommentPopUp(){}
 
@@ -106,6 +101,22 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         setCommentsListener();
         setPhotoListener();
        // setupLikesnDislikes
+
+        //Para ordenar por rating
+        auxSorting = true; //true para ascendente, false para descendente
+        sortRating = this.view.findViewById(R.id.sortRating);
+        sortRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListAdapter.orderByRating(auxSorting);
+                auxSorting = !auxSorting;
+                if(auxSorting){
+                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_asc));
+                }else{
+                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_des));
+                }
+            }
+        });
 
         final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
         popComments.setAnimationStyle(R.style.popup_window_animation);

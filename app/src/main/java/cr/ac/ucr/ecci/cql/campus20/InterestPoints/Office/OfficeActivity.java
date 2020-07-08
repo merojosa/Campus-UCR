@@ -10,6 +10,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,7 +96,7 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
         // Setting school and coordinate objects
         Office office = officeList.get(index);
 
-        childActivity.putExtra("place", office);
+        childActivity.putExtra("place", (Parcelable) office);
         childActivity.putExtra("index", 2);
 
         startActivity(childActivity);

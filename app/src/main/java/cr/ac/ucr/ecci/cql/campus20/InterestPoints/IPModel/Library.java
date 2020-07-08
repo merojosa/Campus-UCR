@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 
-public class Library extends Place {
+public class Library extends Place implements Parcelable {
 
+    public String horario;
 
     public Library() {
         super();
@@ -18,29 +19,45 @@ public class Library extends Place {
 
     protected Library(Parcel in) {
         super(in);
+        horario =  in.readString();
         super.setType(TYPE_LIBRARY);
     }
 
-    public Library(int id, String name, String description, int image, double latitude, double longitude, ArrayList<Comment> comments) {
-        super(id, name, description, image, TYPE_LIBRARY, comments);
+/*    public Library(int id, String name, String description, int image, double latitude, double longitude, ArrayList<Comment> comments) {
+        super(id, name, description, image, TYPE_LIBRARY);
+        super.setComments(comments);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
-    }
+    }*/
 
-    public Library(int id, String name, String description, int image, double latitude, double longitude) {
+    public Library(int id, String name, String description, int image, double latitude, double longitude, String horary, boolean wifi) {
         super(id, name, description, image, TYPE_LIBRARY);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
+        super.setWifi(wifi);
+        this.horario = horary;
     }
 
 
-    public String getLibraryName() {
-        return super.getName();
+    public static final Creator<Library> CREATOR = new Creator<Library>() {
+        public Library createFromParcel(Parcel in) {
+            return new Library(in);
+        }
+
+        public Library[] newArray(int size) {
+            return new Library[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setLibraryName(String name) {
-        super.setName(name);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(horario);
     }
-
-
 }

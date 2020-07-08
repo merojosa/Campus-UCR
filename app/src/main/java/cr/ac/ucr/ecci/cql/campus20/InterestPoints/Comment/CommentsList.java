@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
@@ -110,5 +112,19 @@ public class CommentsList extends RecyclerView.Adapter<CommentsList.MyViewHolder
         temp = comments;
         originalData = temp;
         notifyDataSetChanged();
+    }
+
+    public void orderByRating(boolean asc){
+        Collections.sort(temp, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                if(asc){
+                    return Float.compare(o1.getRating(), o2.getRating());
+                }else{
+                    return Float.compare(o2.getRating(), o1.getRating());
+                }
+            }
+        });
+        this.notifyDataSetChanged();
     }
 }
