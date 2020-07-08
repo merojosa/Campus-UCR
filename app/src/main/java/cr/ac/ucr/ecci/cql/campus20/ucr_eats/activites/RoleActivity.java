@@ -105,6 +105,8 @@ public class RoleActivity extends AppCompatActivity
                 if(order != null)
                 {
                     intent = new Intent(context, RecogerOrdenActivity.class);
+                    intent.putExtra("Soda", order.getRestaurant());
+                    intent.putExtra("IdOrder", order.getIdOrder());
                 }
                 else
                 {
