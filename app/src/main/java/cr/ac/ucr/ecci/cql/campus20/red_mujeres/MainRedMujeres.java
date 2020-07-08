@@ -156,6 +156,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
 
+    // Trazado de ruta
+    private static final String DOT_SOURCE_ID = "dot-source-id";
+    private static final String LINE_SOURCE_ID = "line-source-id";
+
     private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
     private LocationEngine locationEngine;
@@ -172,7 +176,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     ArrayList<Map<String, Object>> usersLocations;
 
     String userID =  null;
-    private Queue<Map<String, Object>> locationsQueue;
 
     //Instancia de compartir
     private String message = "Hola! Te comparto la ruta que planeo seguir. ";
@@ -182,12 +185,19 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private Double longitudOri;
 
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
-//    // Builder para cambiar perfil de navegacion
-//    private MapboxDirections mapboxDirections;
-//    private MapboxDirections.Builder directionsBuilder;
 
     // Botón para inicializar navegación
-    private Button button;
+    //private Button button;
+
+    // Trazado de rutas
+    private GeoJsonSource pointSource;
+    private GeoJsonSource lineSource;
+    private List<Point> routeCoordinateList;
+    private List<Point> markerLinePointList = new ArrayList<>();
+    private int routeIndex;
+    private Animator currentAnimator;
+    public Point originPoint;
+    public Point destinationPoint;
 
     // Despliegue mapa al llamar a la actividad
     @Override
@@ -213,9 +223,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         MainRedMujeres.this.mapboxMap = mapboxMap;
+
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
@@ -223,16 +235,13 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
 
-
-                button = findViewById(R.id.startButton);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-
-                        iniciarRuta();
-                    }
-                });
+//                button = findViewById(R.id.startButton);
+//                button.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        iniciarRuta();
+//                    }
+//                });
 
                 //Botón de visibilidad de la localización del usuario
                 FloatingActionButton fab = findViewById(R.id.floatingActionButton);
@@ -272,15 +281,15 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    public void iniciarRuta() {
-        boolean simulateRoute = false; //Simulación de ruta para testing
-        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                .directionsRoute(currentRoute)
-                .shouldSimulateRoute(simulateRoute)
-                .build();
-
-        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
-    }
+//    public void iniciarRuta() {
+//        boolean simulateRoute = false; //Simulación de ruta para testing
+//        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+//                .directionsRoute(currentRoute)
+//                .shouldSimulateRoute(simulateRoute)
+//                .build();
+//
+//        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
+//    }
 
     public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
@@ -443,10 +452,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
-        button.setEnabled(true);
-        button.setBackgroundResource(R.color.verde_UCR);
-        button.setText("Iniciar Viaje");
-        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
+//        button.setEnabled(true);
+//        button.setBackgroundResource(R.color.verde_UCR);
+//        button.setText("Iniciar Viaje");
+//        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
     }
 
