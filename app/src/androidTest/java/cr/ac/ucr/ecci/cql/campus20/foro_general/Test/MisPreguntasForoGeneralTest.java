@@ -21,12 +21,12 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MisPreguntasForoGeneralTest {
     private final String USUARIO_TEST = "test";
-    private final String TEXTO_PREGUNTA = "A qué hora llega?";
-    private final int ID = 2;
+    private final String TEXTO_PREGUNTA = "Cuándo comienza el segundo semestre?";
+    private final int ID = 1;
     private final int CONTADOR_LIKES = 0;
     private final int CONTADOR_DISLIKES = 0;
     private final int RESUELTA = 0;
-    private final int TEMA_ID = 6;
+    private final int TEMA_ID = 1;
 
 
     /**
@@ -36,7 +36,7 @@ public class MisPreguntasForoGeneralTest {
     @Test
     public void preguntaFireBaseUsuarioTest(){
         ForoGeneralFirebaseDatabase databaseReference = new ForoGeneralFirebaseDatabase();
-        databaseReference.getPreguntasRef().child("6").child("2").addValueEventListener(new ValueEventListener() {
+        databaseReference.getPreguntasRef().child("1").child("1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int id = dataSnapshot.child("id").getValue(Integer.class);
