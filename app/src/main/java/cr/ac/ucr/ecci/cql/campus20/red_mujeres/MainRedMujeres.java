@@ -113,6 +113,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
@@ -196,8 +197,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private List<Point> markerLinePointList = new ArrayList<>();
     private int routeIndex;
     private Animator currentAnimator;
-    public Point originPoint;
-    public Point destinationPoint;
+//    public Point originPoint;
+//    public Point destinationPoint;
 
     // Despliegue mapa al llamar a la actividad
     @Override
@@ -461,45 +462,159 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     // Calculo de ruta entre dos puntos
     private void getRoute(Point origin, Point destination) {
-        NavigationRoute.builder(this)
-                .accessToken(Mapbox.getAccessToken())
-                .profile(DirectionsCriteria.PROFILE_WALKING)
+        MapboxDirections client = MapboxDirections.builder()
                 .origin(origin)
                 .destination(destination)
-                .build()
-                .getRoute(new Callback<DirectionsResponse>() {
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
+                .profile(DirectionsCriteria.PROFILE_WALKING)
+                .accessToken(Mapbox.getAccessToken())
+                .build();
+
+        client.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                System.out.println(call.request().url().toString());
+
+                // You can get the generic HTTP info about the response
+                Timber.d("Response code: %s", response.code());
+                if (response.body() == null) {
+                    Timber.e("No routes found, make sure you set the right user and access token.");
+                    return;
+                } else if (response.body().routes().size() < 1) {
+                    Timber.e("No routes found");
+                    return;
+                }
+
+                // Get the directions route
+                DirectionsRoute currentRoute = response.body().routes().get(0);
+                mapboxMap.getStyle(new Style.OnStyleLoaded() {
                     @Override
-                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                        // You can get the generic HTTP info about the response
-                        Log.d(TAG, "Response code: " + response.code());
-                        if (response.body() == null) {
-                            Log.e(TAG, "No routes found, make sure you set the right user and access token.");
-                            return;
-                        } else if (response.body().routes().size() < 1) {
-                            Log.e(TAG, "No routes found");
-                            return;
-                        }
+                    public void onStyleLoaded(@NonNull Style style) {
+                        mapboxMap.easeCamera(CameraUpdateFactory.newLatLngBounds(
+                                new LatLngBounds.Builder()
+                                        .include(new LatLng(origin.latitude(), origin.longitude()))
+                                        .include(new LatLng(destination.latitude(), destination.longitude()))
+                                        .build(), 50), 5000);
 
-                        currentRoute = response.body().routes().get(0);
-
-                        // Draw the route on the map
-                        if (navigationMapRoute != null) {
-                            //navigationMapRoute.removeRoute(); //Deprecated
-                            navigationMapRoute.updateRouteVisibilityTo(false);
-                            navigationMapRoute.updateRouteArrowVisibilityTo(false);
-                        } else {
-                            navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap, R.style.NavigationMapRoute);
-                        }
-                        navigationMapRoute.addRoute(currentRoute);
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                        Log.e(TAG, "Error: " + throwable.getMessage());
+                        initData(style,FeatureCollection.fromFeature(
+                                Feature.fromGeometry(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6))));
                     }
                 });
+
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                Timber.e("Error: %s", throwable.getMessage());
+                Toast.makeText(MainRedMujeres.this, "Error: " + throwable.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    // Métodos de graficación para trazado de rutas
+    /**
+     * Add data to the map once the GeoJSON has been loaded
+     *
+     * @param featureCollection returned GeoJSON FeatureCollection from the Directions API route request
+     */
+    private void initData(Style fullyLoadedStyle, @NonNull FeatureCollection featureCollection) {
+        if (featureCollection.features() != null) {
+            LineString lineString = ((LineString) featureCollection.features().get(0).geometry());
+            if (lineString != null) {
+                routeCoordinateList = lineString.coordinates();
+                initSources(fullyLoadedStyle, featureCollection);
+                initSymbolLayer(fullyLoadedStyle);
+                initDotLinePath(fullyLoadedStyle);
+                animate();
+            }
+        }
+    }
+
+    /**
+     * Set up the repeat logic for moving the icon along the route.
+     */
+    private void animate() {
+        // Check if we are at the end of the points list
+        if ((routeCoordinateList.size() - 1 > routeIndex)) {
+            Point indexPoint = routeCoordinateList.get(routeIndex);
+            Point newPoint = Point.fromLngLat(indexPoint.longitude(), indexPoint.latitude());
+            currentAnimator = createLatLngAnimator(indexPoint, newPoint);
+            currentAnimator.start();
+            routeIndex++;
+        }
+    }
+
+    private static class PointEvaluator implements TypeEvaluator<Point> {
+
+        @Override
+        public Point evaluate(float fraction, Point startValue, Point endValue) {
+            return Point.fromLngLat(
+                    startValue.longitude() + ((endValue.longitude() - startValue.longitude()) * fraction),
+                    startValue.latitude() + ((endValue.latitude() - startValue.latitude()) * fraction)
+            );
+        }
+    }
+
+    private Animator createLatLngAnimator(Point currentPosition, Point targetPosition) {
+        ValueAnimator latLngAnimator = ValueAnimator.ofObject(new PointEvaluator(), currentPosition, targetPosition);
+        latLngAnimator.setDuration((long) TurfMeasurement.distance(currentPosition, targetPosition, "meters"));
+        latLngAnimator.setInterpolator(new LinearInterpolator());
+        latLngAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animate();
+            }
+        });
+        latLngAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Point point = (Point) animation.getAnimatedValue();
+                pointSource.setGeoJson(point);
+                markerLinePointList.add(point);
+                lineSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(markerLinePointList)));
+            }
+        });
+
+        return latLngAnimator;
+    }
+
+    /**
+     * Add various sources to the map.
+     */
+    private void initSources(@NonNull Style loadedMapStyle, @NonNull FeatureCollection featureCollection) {
+        loadedMapStyle.addSource(pointSource = new GeoJsonSource(DOT_SOURCE_ID, featureCollection));
+        loadedMapStyle.addSource(lineSource = new GeoJsonSource(LINE_SOURCE_ID));
+    }
+
+    /**
+     * Add the marker icon SymbolLayer.
+     */
+    private void initSymbolLayer(@NonNull Style loadedMapStyle) {
+        loadedMapStyle.addImage("moving-red-marker", BitmapFactory.decodeResource(
+                getResources(), R.drawable.mapbox_marker_icon_default));
+        loadedMapStyle.addLayer(new SymbolLayer("symbol-layer-id", DOT_SOURCE_ID).withProperties(
+                iconImage("moving-red-marker"),
+                iconSize(1f),
+                iconOffset(new Float[] {5f, 0f}),
+                iconIgnorePlacement(true),
+                iconAllowOverlap(true)
+        ));
+    }
+
+    /**
+     * Add the LineLayer for the marker icon's travel route. Adding it under the "road-label" layer, so that the
+     * this LineLayer doesn't block the street name.
+     */
+    private void initDotLinePath(@NonNull Style loadedMapStyle) {
+        loadedMapStyle.addLayerBelow(new LineLayer("line-layer-id", LINE_SOURCE_ID).withProperties(
+                lineColor(Color.parseColor("#F13C6E")),
+                lineCap(Property.LINE_CAP_ROUND),
+                lineJoin(Property.LINE_JOIN_ROUND),
+                lineWidth(4f)), "road-label");
+    }
+
 
 
     // Manejo de permisos para location services
