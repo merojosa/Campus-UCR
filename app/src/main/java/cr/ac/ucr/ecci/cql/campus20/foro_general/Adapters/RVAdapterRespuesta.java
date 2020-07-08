@@ -15,7 +15,8 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 
-public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.RespuestaViewHolder> {
+public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.RespuestaViewHolder>
+{
     private final Activity context;
     List<Respuesta> respuestas;
 

@@ -12,20 +12,20 @@ public class Comment extends GeneralData implements Parcelable {
     private String type;
     private String description;
     private String date;
-    private float Rating;
+    private float rating;
     private String photo_path;
     private int like;
     private int dislike;
 
     public Comment() {}
 
-    public Comment(int id, int id_place_fk, String type, String description, String date, float Rating, String photo_path, int like, int dislike) {
+    public Comment(int id, int id_place_fk, String type, String description, String date, float rating, String photo_path, int like, int dislike) {
         this.id = id;
         this.id_place_fk = id_place_fk;
         this.type = type;
         this.description = description;
         this.date = date;
-        this.Rating = Rating;
+        this.rating = rating;
         this.photo_path = photo_path;
         this.like = like;
         this.dislike = dislike;
@@ -37,7 +37,7 @@ public class Comment extends GeneralData implements Parcelable {
         type = in.readString();
         description = in.readString();
         date = in.readString();
-        Rating = in.readFloat();
+        rating = in.readFloat();
         photo_path = in.readString();
         like = in.readInt();
         dislike = in.readInt();
@@ -96,12 +96,12 @@ public class Comment extends GeneralData implements Parcelable {
         this.date = date;
     }
 
-    public float getcRating() {
-        return Rating;
+    public float getRating() {
+        return rating;
     }
 
-    public void setRating(float Rating) {
-        this.Rating = Rating;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public String getPhotoPath() { return photo_path; }
@@ -130,10 +130,18 @@ public class Comment extends GeneralData implements Parcelable {
         dest.writeString(type);
         dest.writeString(description);
         dest.writeString(date);
-        dest.writeFloat(Rating);
+        dest.writeFloat(rating);
         dest.writeString(photo_path);
         dest.writeInt(like);
         dest.writeInt(dislike);
+    }
+
+    @Override
+    public boolean equals(Object otherComment){
+        Comment other = (Comment) otherComment;
+        return this.id == other.id && this.id_place_fk == other.id_place_fk && this.type == other.type &&
+                this.description == other.description && this.date == other.date && this.rating == other.rating &&
+                this.photo_path == other.photo_path && this.like == other.like && this.dislike == other.dislike;
     }
 
 }
