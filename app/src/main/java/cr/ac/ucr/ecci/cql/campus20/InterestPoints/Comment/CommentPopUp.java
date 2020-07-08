@@ -1,48 +1,34 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.FacultiesActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.FacultiesAndSchools.SchoolsActivity;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.GeneralData;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Faculty;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -64,7 +50,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private Button setDislike;
     private int like;
     private int dislike;
-    private Button sortRating;
+    private ImageButton sortRating;
     private boolean auxSorting;
 
     public CommentPopUp(){}
@@ -108,6 +94,11 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             public void onClick(View v) {
                 mListAdapter.orderByRating(auxSorting);
                 auxSorting = !auxSorting;
+                if(auxSorting){
+                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_asc));
+                }else{
+                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_des));
+                }
             }
         });
 
