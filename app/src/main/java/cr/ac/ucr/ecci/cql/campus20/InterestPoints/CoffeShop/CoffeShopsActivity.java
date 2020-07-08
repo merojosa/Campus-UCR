@@ -33,6 +33,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -41,7 +42,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Coffee> coffeeList;
+    private List<Place> coffeeList;
 
     private ProgressBar spinner;
 
@@ -92,7 +93,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         childActivity.putExtra("attribute", coffeeList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        Coffee coffee = coffeeList.get(index);
+        Place coffee = coffeeList.get(index);
 
         childActivity.putExtra("place", coffee);
         childActivity.putExtra("index", 2);
@@ -143,6 +144,10 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
                     coffeeList.add(coffee.getValue(Coffee.class));
                 }
+                //MapaUtils mapaUtils = new MapaUtils(currentLatitude, currentLongitude);
+                MapUtilities mapaUtils = new MapUtilities(13.55, 15.456);
+                // Ordering the places from closest to farthest
+                coffeeList = mapaUtils.orderByDistance(coffeeList);
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
