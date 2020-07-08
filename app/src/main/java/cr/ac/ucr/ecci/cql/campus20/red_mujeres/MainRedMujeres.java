@@ -40,7 +40,6 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
@@ -51,17 +50,10 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
-// Imports especificos de Directions API
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.geojson.FeatureCollection;
-
-import android.os.Handler;
 import android.view.Gravity;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
+
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -69,11 +61,6 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
@@ -84,17 +71,11 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.util.Log;
 
-// Imports necesarios para la interfaz de usuario de navegacion
-import android.view.View;
-import android.widget.Button;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -104,14 +85,9 @@ import java.util.Map;
 import java.util.Queue;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 // Imports especificos de Directions API
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
@@ -136,12 +112,15 @@ import com.mapbox.turf.TurfMeasurement;
 import timber.log.Timber;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 
+public class MainRedMujeres extends AppCompatActivity implements MapboxMap.OnMapClickListener,  PermissionsListener {
 
-public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener {
+    // Trazado de ruta
+    private static final String DOT_SOURCE_ID = "dot-source-id";
+    private static final String LINE_SOURCE_ID = "line-source-id";
 
     // Variables para agregar el mapa y la capa de localizacion
-    private MapboxMap mapboxMap;
     private MapView mapView;
+    private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
 
@@ -156,10 +135,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
-
-    // Trazado de ruta
-    private static final String DOT_SOURCE_ID = "dot-source-id";
-    private static final String LINE_SOURCE_ID = "line-source-id";
 
     private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
@@ -197,8 +172,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private List<Point> markerLinePointList = new ArrayList<>();
     private int routeIndex;
     private Animator currentAnimator;
-//    public Point originPoint;
-//    public Point destinationPoint;
 
     // Despliegue mapa al llamar a la actividad
     @Override
@@ -211,78 +184,129 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN)); //Tomar el token
         setContentView(R.layout.activity_red_mujeres);
-        mapView = (MapView) findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
 
-        //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
+        // Initialize the mapboxMap view
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                MainRedMujeres.this.mapboxMap = mapboxMap;
+
+                mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+
+                        //Estilo cargado y mapa está listo
+                        enableLocationComponent(style);
+
+                        // Listener para obtener punto de destino fijado por usuario
+                        mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+
+                        //Botón de visibilidad de la localización del usuario
+                        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @SuppressLint("MissingPermission")
+                            @Override
+                            public void onClick(View view) {
+                                if (locationComponent.isLocationComponentEnabled()) {
+                                    locationComponent.setLocationComponentEnabled(false);
+                                    fab.setImageResource(R.drawable.closed);
+                                } else {
+                                    locationComponent.setLocationComponentEnabled(true);
+                                    fab.setImageResource(R.drawable.open);
+                                }
+                            }
+                        });
+
+                        //Botón para compartir ruta
+                        FloatingActionButton share = findViewById(R.id.shareTrip);
+                        share.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                popupCompartir();
+                            }
+                        });
+
+                        //Botón de pánico
+                        FloatingActionButton sos = findViewById(R.id.sos);
+                        sos.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                popupPanico();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     // Determinar estilo de mapa y como reacciona a interacciones con el usuario
     // En este caso, si el usuario hace tap en un punto del mapa se despliegan
     // funcionalidades del Navigation API, trazando una ruta sugerida al destino desde el punto actual.
-    @Override
-    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-        MainRedMujeres.this.mapboxMap = mapboxMap;
-
-        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-
-                //Estilo cargado y mapa está listo
-                enableLocationComponent(style);
-                //addDestinationIconSymbolLayer(style);
-                //getGroupMembersPositions();
-
-                // Listener para obtener punto de destino fijado por usuario
-                // al hacer click en mapa
-                mapboxMap.addOnMapClickListener(MainRedMujeres.this);
-
-//                button = findViewById(R.id.startButton);
-//                button.setOnClickListener(new View.OnClickListener() {
+//    @Override
+//    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+//        MainRedMujeres.this.mapboxMap = mapboxMap;
+//
+//        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11"), new Style.OnStyleLoaded() {
+//            @Override
+//            public void onStyleLoaded(@NonNull Style style) {
+//
+//                //Estilo cargado y mapa está listo
+//                enableLocationComponent(style);
+//                //addDestinationIconSymbolLayer(style);
+//                //getGroupMembersPositions();
+//
+//                // Listener para obtener punto de destino fijado por usuario
+//                // al hacer click en mapa
+//                mapboxMap.addOnMapClickListener(MainRedMujeres.this);
+//
+////                button = findViewById(R.id.startButton);
+////                button.setOnClickListener(new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View v) {
+////                        iniciarRuta();
+////                    }
+////                });
+//
+//                //Botón de visibilidad de la localización del usuario
+//                FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+//                fab.setOnClickListener(new View.OnClickListener() {
+//                    @SuppressLint("MissingPermission")
 //                    @Override
-//                    public void onClick(View v) {
-//                        iniciarRuta();
+//                    public void onClick(View view) {
+//                        if (locationComponent.isLocationComponentEnabled()) {
+//                            locationComponent.setLocationComponentEnabled(false);
+//                            fab.setImageResource(R.drawable.closed);
+//                        } else {
+//                            locationComponent.setLocationComponentEnabled(true);
+//                            fab.setImageResource(R.drawable.open);
+//                        }
 //                    }
 //                });
-
-                //Botón de visibilidad de la localización del usuario
-                FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onClick(View view) {
-                        if (locationComponent.isLocationComponentEnabled()) {
-                            locationComponent.setLocationComponentEnabled(false);
-                            fab.setImageResource(R.drawable.closed);
-                        } else {
-                            locationComponent.setLocationComponentEnabled(true);
-                            fab.setImageResource(R.drawable.open);
-                        }
-                    }
-                });
-
-                //Botón para compartir ruta
-                FloatingActionButton share = findViewById(R.id.shareTrip);
-                share.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popupCompartir();
-                    }
-                });
-
-                //Botón de pánico
-                FloatingActionButton sos = findViewById(R.id.sos);
-                sos.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popupPanico();
-                    }
-                });
-
-            }
-        });
-    }
+//
+//                //Botón para compartir ruta
+//                FloatingActionButton share = findViewById(R.id.shareTrip);
+//                share.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        popupCompartir();
+//                    }
+//                });
+//
+//                //Botón de pánico
+//                FloatingActionButton sos = findViewById(R.id.sos);
+//                sos.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        popupPanico();
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
 
 //    public void iniciarRuta() {
 //        boolean simulateRoute = false; //Simulación de ruta para testing
@@ -462,58 +486,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         return true;
     }
 
-    // Calculo de ruta entre dos puntos
-    private void getRoute(Point origin, Point destination) {
-        MapboxDirections client = MapboxDirections.builder()
-                .origin(origin)
-                .destination(destination)
-                .overview(DirectionsCriteria.OVERVIEW_FULL)
-                .profile(DirectionsCriteria.PROFILE_WALKING)
-                .accessToken(Mapbox.getAccessToken())
-                .build();
-
-        client.enqueueCall(new Callback<DirectionsResponse>() {
-            @Override
-            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                System.out.println(call.request().url().toString());
-
-                // You can get the generic HTTP info about the response
-                Timber.d("Response code: %s", response.code());
-                if (response.body() == null) {
-                    Timber.e("No routes found, make sure you set the right user and access token.");
-                    return;
-                } else if (response.body().routes().size() < 1) {
-                    Timber.e("No routes found");
-                    return;
-                }
-
-                // Get the directions route
-                DirectionsRoute currentRoute = response.body().routes().get(0);
-                mapboxMap.getStyle(new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        mapboxMap.easeCamera(CameraUpdateFactory.newLatLngBounds(
-                                new LatLngBounds.Builder()
-                                        .include(new LatLng(origin.latitude(), origin.longitude()))
-                                        .include(new LatLng(destination.latitude(), destination.longitude()))
-                                        .build(), 50), 5000);
-
-                        initData(style,FeatureCollection.fromFeature(
-                                Feature.fromGeometry(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6))));
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-                Timber.e("Error: %s", throwable.getMessage());
-                Toast.makeText(MainRedMujeres.this, "Error: " + throwable.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     // Métodos de graficación para trazado de rutas
     /**
      * Add data to the map once the GeoJSON has been loaded
@@ -580,6 +552,58 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         });
 
         return latLngAnimator;
+    }
+
+    // Calculo de ruta entre dos puntos
+    private void getRoute(Point origin, Point destination) {
+        MapboxDirections client = MapboxDirections.builder()
+                .origin(origin)
+                .destination(destination)
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
+                .profile(DirectionsCriteria.PROFILE_WALKING)
+                .accessToken(Mapbox.getAccessToken())
+                .build();
+
+        client.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                System.out.println(call.request().url().toString());
+
+                // You can get the generic HTTP info about the response
+                Timber.d("Response code: %s", response.code());
+                if (response.body() == null) {
+                    Timber.e("No routes found, make sure you set the right user and access token.");
+                    return;
+                } else if (response.body().routes().size() < 1) {
+                    Timber.e("No routes found");
+                    return;
+                }
+
+                // Get the directions route
+                DirectionsRoute currentRoute = response.body().routes().get(0);
+                mapboxMap.getStyle(new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        mapboxMap.easeCamera(CameraUpdateFactory.newLatLngBounds(
+                                new LatLngBounds.Builder()
+                                        .include(new LatLng(origin.latitude(), origin.longitude()))
+                                        .include(new LatLng(destination.latitude(), destination.longitude()))
+                                        .build(), 50), 5000);
+
+                        initData(style,FeatureCollection.fromFeature(
+                                Feature.fromGeometry(LineString.fromPolyline(currentRoute.geometry(), PRECISION_6))));
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                Timber.e("Error: %s", throwable.getMessage());
+                Toast.makeText(MainRedMujeres.this, "Error: " + throwable.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -727,6 +751,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
+
     // clase interna para poder escuchar los cambios de posicion en el telefono
     private class MainActivityLocationCallback
             implements LocationEngineCallback<LocationEngineResult> {
