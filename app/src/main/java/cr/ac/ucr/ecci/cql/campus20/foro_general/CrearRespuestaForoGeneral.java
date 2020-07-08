@@ -169,14 +169,23 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                     respuestaRoom.add(respuestaTemp);
                 }
 
-                // Inserta en Firebase tambien
-                CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
+                if (respuestaRoom.size() > 0)
+                {
+                    // Inserta en Firebase tambien
+                    CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
 
+                    // Servicio para detectar el estado de la orden (falta probar)
+                    Intent servicioIntent = new Intent(CrearRespuestaForoGeneral.this, NotificacionRespuestaService.class);
+                    servicioIntent.putExtra("llave_pregunta", Integer.toString(pregunta.getId()));
+                    //servicioIntent.putExtra("llave_tema", pregunta.temaID);
+                    startService(servicioIntent);
 
-                //Luego de insertar volver a vista previa
-                Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
-                intent.putExtra("preguntaSeleccionada", pregunta);
-                startActivity(intent);
+                    //Luego de insertar volver a vista previa
+                    Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
+                    intent.putExtra("preguntaSeleccionada", pregunta);
+                    startActivity(intent);
+                }
+
             }
         });
     }

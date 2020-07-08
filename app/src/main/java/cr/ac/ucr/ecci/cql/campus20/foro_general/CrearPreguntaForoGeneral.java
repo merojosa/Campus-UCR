@@ -234,14 +234,19 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     preguntaRoom.add(pregunta);
                 }
 
-                // Inserta en Firebase tambien
-                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(preguntaRoom.get(0));
+                if (preguntaRoom.size() > 0)
+                {
+                    // Inserta en Firebase tambien
+                    CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(preguntaRoom.get(0));
 
-                Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerPreguntas.class);
-                // Llamada a la actividad de ver respuestas
-                intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
-                intent.putExtra("temaSeleccionado", temaSeleccionado);
-                startActivity(intent);
+
+                    Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerPreguntas.class);
+                    // Llamada a la actividad de ver respuestas
+                    intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
+                    intent.putExtra("temaSeleccionado", temaSeleccionado);
+                    startActivity(intent);
+                }
+
             }
         });
     }
