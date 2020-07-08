@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ucr_eats.activites.RoleActivity"></activity>
+        <activity android:name=".ucr_eats.activites.RoleActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
         <activity android:name=".red_mujeres.MisComunidades" />
