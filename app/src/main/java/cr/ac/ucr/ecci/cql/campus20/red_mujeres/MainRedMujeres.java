@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -236,6 +237,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Botón de visibilidad de la localización del usuario
                 FloatingActionButton fab = findViewById(R.id.floatingActionButton);
                 fab.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(View view) {
                         if (locationComponent.isLocationComponentEnabled()) {
@@ -521,6 +523,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
@@ -644,7 +647,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Double latitude = result.getLastLocation().getLatitude();
                 Double longitude  = result.getLastLocation().getLongitude();
                 //si la obicacion cambio tanto en latitud o longitud, actualizamos en la DB la informacion
-                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLatitudeKnown) != 0) {
+                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLongitudeKnown) != 0) {
                     System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
                     UpdateMyLocation(latitude, longitude);
                 }
