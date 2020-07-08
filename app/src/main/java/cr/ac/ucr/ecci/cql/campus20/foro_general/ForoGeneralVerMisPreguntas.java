@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +31,6 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters.RVAdapterPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
 public class ForoGeneralVerMisPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
-    private LiveData<List<Pregunta>> preguntas;
     private List<Pregunta> preguntasFireBase;
     private ForoGeneralFirebaseDatabase databaseReference;
     private TextView tituloTema;
