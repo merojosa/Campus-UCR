@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
@@ -38,5 +39,6 @@ public class RecogerOrdenActivity extends AppCompatActivity
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
         db.escribirDatos(CompraActivity.PATH_PEDIDOS + "/" + idOrden + "/status", OrderStatus.HACIA_CASA);
         db.eliminarDato(PendingOrdersAdapter.PATH_REPARTIDORES + "/" + repartidor);
+        Toast.makeText(this, "El cliente ha sido notificado", Toast.LENGTH_LONG).show();
     }
 }
