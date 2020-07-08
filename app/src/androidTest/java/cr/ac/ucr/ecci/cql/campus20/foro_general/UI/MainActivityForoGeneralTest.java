@@ -37,4 +37,9 @@ public class MainActivityForoGeneralTest {
      * Método que verifica que el hacer click en el botón de agregar pregunta lo redirige a la actividad de
      * CrearPregunta del foro
      */
+    @Test
+    public void testBotonAgregarPreguntas(){
+        onView(withId(R.id.buttonAgregarPreguntas)).perform(click());
+        intended(hasComponent(CrearPreguntaForoGeneral.class.getName()));
+   }
 }
