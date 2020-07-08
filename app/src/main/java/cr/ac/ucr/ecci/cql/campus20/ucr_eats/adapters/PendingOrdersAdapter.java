@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.CompraActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RecogerOrdenActivity;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.AssignedOrder;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.OrderStatus;
@@ -109,10 +111,16 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
                 String usuario = email.substring(0, email.indexOf('@'));
                 db.escribirDatos(PATH_REPARTIDORES + "/" + usuario, order);
 
-                Toast.makeText(context, "Listo, ahora puede recoger el pedido", Toast.LENGTH_LONG).show();
-
                 orders.remove(getAdapterPosition());
                 notifyDataSetChanged();
+
+                Intent intent = new Intent();
+                intent = new Intent(context, RecogerOrdenActivity.class);
+                intent.putExtra("Soda", order.getRestaurant());
+                intent.putExtra("IdOrder", order.getIdOrder());
+                intent.putExtra("Repartidor", order.getUsername());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                context.startActivity(intent);
             });
         }
 
