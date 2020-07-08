@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ucr_eats.activites.RoleActivity"
+        <activity android:name=".ucr_eats.activites.RecogerOrdenActivity"></activity>
+        <activity
+            android:name=".ucr_eats.activites.RoleActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
@@ -55,7 +57,6 @@
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
-
         <service android:name=".ucr_eats.services.NotificacionPedidoService" />
 
         <activity

@@ -27,6 +27,7 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     private static String USERS_RATES_PATH = "users_rates";
 
     private static String DEFAULT_ROLE = "default_role";
+    private static String DELIVERYMAN_PATH = "repartidores_estatus";
 
 
     private DatabaseReference rootReference = null;
@@ -75,6 +76,11 @@ public class UcrEatsFirebaseDatabase extends FirebaseBD
     public DatabaseReference getRestaurantRef(String id)
     {
         return this.rootReference.child(RESTAURANTS_PATH);
+    }
+
+    public DatabaseReference getDeliverymanOrder(String user)
+    {
+        return this.rootReference.child(DELIVERYMAN_PATH).child(user);
     }
 
     public DatabaseReference getRestaurantRateByUser(String restaurant_id, String user)

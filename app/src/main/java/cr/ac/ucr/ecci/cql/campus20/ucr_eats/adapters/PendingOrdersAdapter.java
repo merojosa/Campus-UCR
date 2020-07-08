@@ -29,6 +29,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
     private List<Order> orders;
     private PendingOrdersPresenter presenter;
     private String PATH = "ucr_eats/assignedOrders";
+    public static final String PATH_REPARTIDORES = "ucr_eats/repartidores_estatus";
 
     public PendingOrdersAdapter(Context context, List<Order> orders)
     {
@@ -103,6 +104,10 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
 
                 // Actualizo la orden con el nuevo estado
                 db.escribirDatos(CompraActivity.PATH_PEDIDOS + "/" + order.getIdOrder(), order);
+
+                // Actualizar el estatus del repartidor
+                String usuario = email.substring(0, email.indexOf('@'));
+                db.escribirDatos(PATH_REPARTIDORES + "/" + usuario, order);
 
                 Toast.makeText(context, "Listo, ahora puede recoger el pedido", Toast.LENGTH_LONG).show();
 
