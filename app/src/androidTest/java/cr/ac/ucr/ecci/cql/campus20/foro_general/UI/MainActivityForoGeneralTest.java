@@ -2,7 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general.UI;
 
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,5 +31,5 @@ public class MainActivityForoGeneralTest {
     public void testBotonAgregarPreguntas(){
         onView(withId(R.id.buttonAgregarPreguntas)).perform(click());
         intended(hasComponent(CrearPreguntaForoGeneral.class.getName()));
-    }
+   }
 }
