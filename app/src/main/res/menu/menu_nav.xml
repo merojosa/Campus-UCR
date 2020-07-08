@@ -12,7 +12,8 @@
             android:title="Temas"/>
         <item
             android:id="@+id/mis_preguntas_foro"
-            android:icon="@drawable/ic_mis_preguntas_foro"            android:title="Mis preguntas">
+            android:icon="@drawable/ic_mis_preguntas_foro"
+            android:title="@string/mis_preguntas">
         </item>
     </group>
 
