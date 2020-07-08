@@ -137,7 +137,7 @@ import timber.log.Timber;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 
 
-public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
+public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener {
 
     // Variables para agregar el mapa y la capa de localizacion
     private MapboxMap mapboxMap;
@@ -146,9 +146,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private LocationComponent locationComponent;
 
     // Variables para calcular y dibujar una ruta
-    private DirectionsRoute currentRoute;
-    private static final String TAG = "DirectionsActivity";
-    private NavigationMapRoute navigationMapRoute;
+    //private DirectionsRoute currentRoute;
+    //private static final String TAG = "DirectionsActivity";
+    //private NavigationMapRoute navigationMapRoute;
 
     private Handler handler;
     private Runnable runnable;
@@ -231,9 +231,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
-                addDestinationIconSymbolLayer(style);
-                getGroupMembersPositions();
+                //addDestinationIconSymbolLayer(style);
+                //getGroupMembersPositions();
 
+                // Listener para obtener punto de destino fijado por usuario
+                // al hacer click en mapa
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
 
 //                button = findViewById(R.id.startButton);
@@ -416,20 +418,20 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    // Iconos de navegacion
-    private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
-        loadedMapStyle.addImage("destination-icon-id",
-                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
-        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
-        loadedMapStyle.addSource(geoJsonSource);
-        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
-        destinationSymbolLayer.withProperties(
-                iconImage("destination-icon-id"),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        );
-        loadedMapStyle.addLayer(destinationSymbolLayer);
-    }
+//    // Iconos de navegacion
+//    private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
+//        loadedMapStyle.addImage("destination-icon-id",
+//                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
+//        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
+//        loadedMapStyle.addSource(geoJsonSource);
+//        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
+//        destinationSymbolLayer.withProperties(
+//                iconImage("destination-icon-id"),
+//                iconAllowOverlap(true),
+//                iconIgnorePlacement(true)
+//        );
+//        loadedMapStyle.addLayer(destinationSymbolLayer);
+//    }
 
     // Se determina un punto de origen y destino para navegacion
     // a partir de interaccion de usuario con el mapa
@@ -615,8 +617,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 lineWidth(4f)), "road-label");
     }
 
-
-
     // Manejo de permisos para location services
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
@@ -683,25 +683,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onCancelNavigation() {
-        Toast.makeText(this, "So you gonna cancel this whole thing?", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNavigationFinished() {
-        Toast.makeText(this, "And we're done!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNavigationRunning() {
-        // Pregunta a usuario si desea compartir ruta con personas de confianza
-        FragmentManager fm = getSupportFragmentManager();
-        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
-        alertDialog.show(fm, "fragment_compartir_ruta");
-    }
-
-
-    @Override
     @SuppressWarnings( {"MissingPermission"})
     protected void onStart() {
         super.onStart();
@@ -735,6 +716,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (currentAnimator != null) {
+            currentAnimator.cancel();
+        }
         mapView.onDestroy();
     }
 
@@ -829,6 +813,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
                 .withImage(ICON_ID, BitmapFactory.decodeResource(
                         MainRedMujeres.this.getResources(), R.drawable.mapbox_marker_icon_default))
+
 
                 .withSource(new GeoJsonSource(SOURCE_ID,
                         FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
