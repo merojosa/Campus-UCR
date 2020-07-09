@@ -119,13 +119,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="42dp"
         android:backgroundTint="@color/gris_medio_UCR"
         android:src="@drawable/ic_foro_pref"
         android:textSize="20dp"
         app:backgroundTint="@color/azul_UCR"
         app:fabSize="normal"
-        app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities"
-        tools:layout_editor_absoluteY="582dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMyCommunities"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities" />
 
     <TextView
         android:id="@+id/text_Not_Joined"

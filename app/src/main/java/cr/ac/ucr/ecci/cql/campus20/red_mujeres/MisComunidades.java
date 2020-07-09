@@ -34,6 +34,7 @@ public class MisComunidades extends AppCompatActivity {
     FloatingActionButton fabMain;
     FloatingActionButton fabJoinCommunity;
     FloatingActionButton fabCreateCommunity;
+    FloatingActionButton share;
 
     //Variables para el comportamiento de los botones flotantes
     Float translationY = 100f;
@@ -126,6 +127,7 @@ public class MisComunidades extends AppCompatActivity {
         fabMain = findViewById(R.id.fabMain);
         fabJoinCommunity = findViewById(R.id.fabJoinCommunity);
         fabCreateCommunity = findViewById(R.id.fabCreateCommunity);
+        share = findViewById(R.id.config);
 
         fabJoinCommunity.setAlpha(0f);
         fabCreateCommunity.setAlpha(0f);
@@ -161,6 +163,13 @@ public class MisComunidades extends AppCompatActivity {
             {
             }
         });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuConfig();
+            }
+        });
     }
 
     public void openMenu()
@@ -177,5 +186,9 @@ public class MisComunidades extends AppCompatActivity {
         fabMain.animate().setInterpolator(interpolator).rotation(0f).setDuration(250).start();
         fabJoinCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
         fabCreateCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
+    }
+
+    public void menuConfig() {
+        startActivity(new Intent(MisComunidades.this, Settings.class));
     }
 }
