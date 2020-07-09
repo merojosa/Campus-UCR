@@ -1,19 +1,17 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.net.Uri;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -32,6 +30,7 @@ public class CommentDetail extends AppCompatActivity {
     private TextView dislike;
     private ImageView photo;
     private Button goBack;
+    private ProgressBar spinner;
     private FirebaseDB db;
     private StorageReference mStorageRef;
 
@@ -39,6 +38,7 @@ public class CommentDetail extends AppCompatActivity {
     * MPS4-01 Detalle de comentarios
     * D: Luis Carvajal N: Sebastián Cruz
     * */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = new FirebaseDB();
@@ -54,27 +54,27 @@ public class CommentDetail extends AppCompatActivity {
         dislike = findViewById(R.id.no_dislike_detail);
         photo = findViewById(R.id.commentPhoto);
         goBack = findViewById(R.id.commentGoBack);
+        spinner = findViewById(R.id.commentPhotoProgressBar);
+
+        if(comment == null)
+            return;
 
         commentDescription.setText(comment.getDescription());
         date.setText(comment.getDate());
         like.setText(Integer.toString(comment.getLike()));
         dislike.setText(Integer.toString(comment.getDislike()));
 
-        if(comment != null && comment.getPhotoPath() != null) {
-            mStorageRef.child(comment.getPhotoPath()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri).into(photo);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
+        if(comment.getPhotoPath() != null) {
+            spinner.setVisibility(View.VISIBLE);
+            mStorageRef.child(comment.getPhotoPath()).getDownloadUrl().addOnSuccessListener(uri -> {
+                Picasso.get()
+                        .load(uri)
+                        .into(photo);
+                spinner.setVisibility(View.GONE);
+            }).addOnFailureListener(exception -> {
+                spinner.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Error: no se pudo cargar la imagen.", Toast.LENGTH_LONG).show();
             });
         }
-
-        Log.d("Comment", comment.getDescription());
-
     }
 }

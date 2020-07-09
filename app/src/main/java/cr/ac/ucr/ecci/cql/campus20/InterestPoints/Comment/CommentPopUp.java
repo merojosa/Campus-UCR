@@ -1,48 +1,19 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.util.Log;
-
-import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -53,15 +24,20 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,8 +51,6 @@ import cr.ac.ucr.ecci.cql.campus20.BuildConfig;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -95,10 +69,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private EditText editComment;
     private Button getRating;
     private Place place;
-    private Button setLike;
-    private Button setDislike;
-    private int like;
-    private int dislike;
     private Uri imgUrl;
     private StorageReference mStorageRef;
     private ImageButton sortRating;
@@ -107,7 +77,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private File imageFile;
     private String cameraFilePath;
 
-    private static int GALLERY_REQUEST_CODE = 20, CAMERA_REQUEST_CODE = 21, CAMERA_PERMISSION_REQUEST = 22, STORAGE_PERMISSION_REQUEST = 23;
+    private static int CAMERA_REQUEST_CODE = 21;
+    private static int CAMERA_PERMISSION_REQUEST = 22;
+    private static int STORAGE_PERMISSION_REQUEST = 23;
 
     public CommentPopUp(){}
 
@@ -115,6 +87,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * Crea lo necesario para levantar el popup
      * @param view
      */
+    @SuppressLint("ClickableViewAccessibility")
     public CommentPopUp(final View view, Activity activity, Place place) {
         db = new FirebaseDB();
         mStorageRef = FirebaseStorage.getInstance().getReference(FirebaseDB.CLOUDSTORE_PREFIX);
@@ -124,13 +97,13 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     /*Popup*/
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
+        assert inflater != null;
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
         int width = LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; //Para la parte de atrás
         this.view = popupView;
         Comentarios = place.comments != null? place.comments : new ArrayList<>();
-        tmp = new ArrayList<Comment>();
+        tmp = new ArrayList<>();
 
         /*Lista*/
         setupRecyclerView();
@@ -149,33 +122,26 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         //Para ordenar por rating
         auxSorting = true; //true para ascendente, false para descendente
         sortRating = this.view.findViewById(R.id.sortRating);
-        sortRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListAdapter.orderByRating(auxSorting);
-                auxSorting = !auxSorting;
-                if(auxSorting){
-                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_asc));
-                }else{
-                    sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_des));
-                }
+        sortRating.setOnClickListener(v -> {
+            mListAdapter.orderByRating(auxSorting);
+            auxSorting = !auxSorting;
+            if(auxSorting){
+                sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_asc));
+            }else{
+                sortRating.setBackground(view.getContext().getResources().getDrawable(R.drawable.sort_rating_des));
             }
         });
 
-        final PopupWindow popComments = new PopupWindow(popupView, width, height, focusable);
+        final PopupWindow popComments = new PopupWindow(popupView, width, height, true);
         popComments.setAnimationStyle(R.style.popup_window_animation);
         popComments.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         //Para salir tocar afuera
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                //Close the window when clicked
-                popComments.dismiss();
-                ref.removeEventListener(listener);
-                return true;
-            }
+        popupView.setOnTouchListener((v, event) -> {
+            //Close the window when clicked
+            popComments.dismiss();
+            ref.removeEventListener(listener);
+            return true;
         });
         /*POPUP*/
 
@@ -187,12 +153,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      */
     private void setPhotoListener(){
         Button upload = view.findViewById(R.id.foto);
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+        upload.setOnClickListener(v -> selectImage());
     }
 
     private void selectImage() {
@@ -201,20 +162,16 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Subir una foto");
 
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+        builder.setItems(options, (dialog, item) -> {
 
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
+            if (options[item].equals("Tomar foto")) {
+                takePicture();
 
-                if (options[item].equals("Tomar foto")) {
-                    takePicture();
+            } else if (options[item].equals("Seleccionar imagen")) {
+                pickFromGallery();
 
-                } else if (options[item].equals("Seleccionar imagen")) {
-                    pickFromGallery();
-
-                } else if (options[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
+            } else if (options[item].equals("Cancelar")) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -229,7 +186,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         String[] mimeTypes = {"image/jpeg", "image/png"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
         // Launching the Intent
-        activity.startActivityForResult(intent,GALLERY_REQUEST_CODE);
+        int GALLERY_REQUEST_CODE = 20;
+        activity.startActivityForResult(intent, GALLERY_REQUEST_CODE);
 
     }
 
@@ -254,7 +212,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         //This is the directory in which the file will be created. This is the default location of Camera photos
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
@@ -283,21 +241,20 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      */
     private void uploadPhoto(String filename){
         StorageReference photoRef = mStorageRef.child(filename);
+        /*File compressed = null;
+        try {
+            compressed = new Compressor(view.getContext()).compressToFile(new File(imgUrl.toString()));
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }*/
+
         photoRef.putFile(imgUrl)
-            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(view.getContext(), "El comentario ha sido guardado.", Toast.LENGTH_LONG);
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    // ...
-                    Toast.makeText(view.getContext(), "No se pudo guardar la imagen.", Toast.LENGTH_LONG);
-                }
-            });
+        .addOnSuccessListener(taskSnapshot -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show())
+        .addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            // ...
+            Toast.makeText(view.getContext(), "No se pudo subir la imagen.", Toast.LENGTH_LONG).show();
+        });
     }
 
     /*
@@ -342,41 +299,31 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         rt = view.findViewById(R.id.ratingBar);
         getRating = view.findViewById(R.id.enviar_c_r);
 
-        getRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Construcción del comentario*/
-                Comment comment;
-                //Si no hay comentarios agrega uno con ID 0
-                if (Comentarios.isEmpty()){
-                    comment = new Comment();
-                    comment.setId(0);
-                    comment.setId_place_fk(place.getId());
-                    comment.setType(Place.TYPE_SCHOOL);
-                    comment.setDescription(editComment.getText().toString());
-                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
-                    float rate = rt.getRating();
-                    comment.setRating(rate); // Repensar
-                    Comentarios.add(comment);
-                }else { //Si si hay agreguea uno más
-                    comment = Comentarios.get(Comentarios.size()-1);
-                    comment.setId(comment.getId() + 1);
-                    comment.setId_place_fk(place.getId());
-                    comment.setType(Place.TYPE_SCHOOL);
-                    comment.setDescription(editComment.getText().toString());
-                    comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
-                    float rate = rt.getRating();
-                    comment.setRating(rate);// Repensar
-                }
-                //inserta en firebase
-                if(isPhotoLoaded){
-                    String filename = getExtension(imgUrl) + System.currentTimeMillis();
-                    uploadPhoto(filename);
-                    comment.setPhotoPath(filename);
-                }
-                ref.child(Integer.toString(comment.getId())).setValue(comment);
-                clearComment();
+        getRating.setOnClickListener(v -> {
+            /*Construcción del comentario*/
+            Comment comment = new Comment();
+
+            //Si no hay comentarios agrega uno con ID 0
+            if (Comentarios.isEmpty()){
+                comment.setId(0);
+            }else { //Si si hay agreguea uno más
+                comment.setId(Comentarios.get(Comentarios.size() - 1).getId() + 1);
             }
+            //inserta en firebase
+            if(isPhotoLoaded){
+                String filename = getExtension(imgUrl) + System.currentTimeMillis();
+                uploadPhoto(filename);
+                comment.setPhotoPath(filename);
+            }
+            comment.setId_place_fk(place.getId());
+            comment.setType(Place.TYPE_SCHOOL);
+            comment.setDescription(editComment.getText().toString());
+            comment.setDate(UtilDates.DateToString(Calendar.getInstance().getTime()));
+            float rate = rt.getRating();
+            comment.setRating(rate); // Repensar
+
+            ref.child(Integer.toString(comment.getId())).setValue(comment).addOnSuccessListener(aVoid -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show()).addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario..", Toast.LENGTH_LONG).show());
+            clearComment();
         });
 
         editComment.addTextChangedListener(new TextWatcher() {
@@ -431,6 +378,8 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 setDataList();
                 mListAdapter.setListData(tmp);
                 mListAdapter.notifyDataSetChanged();
+                if(Comentarios.size() > 0)
+                    mRecyclerView.smoothScrollToPosition(Comentarios.size() - 1);
             }
 
             @Override
