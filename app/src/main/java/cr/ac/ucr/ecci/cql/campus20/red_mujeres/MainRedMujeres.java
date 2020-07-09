@@ -288,12 +288,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String contanctoNum = sharedPreferences.getString("contactoNum", "Número No Establecido");
-
-        String num="911";
-        if (truePanic>0){
-            num = "12345678";
+        String num = sharedPreferences.getString("contactoNum", "Número No Establecido");
+        if (truePanic==0){
+            num="911";
         }
+
         callIntent.setData(Uri.parse("tel:"+num));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -307,7 +306,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String name = sharedPreferences.getString("contactoNom", "Contacto No Establecido");
 
-        final String [] items = new String[] {"911", "Contacto"};
+        final String [] items = new String[] {"911", name};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
         builder.setTitle("¡EMERGENCIA!");
