@@ -8,6 +8,38 @@
     tools:context=".InterestPoints.CoffeShop.CoffeViewActivity">
 
     <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text=" Oferta de la Semana "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="46dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:srcCompat="@drawable/sale" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="46dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:srcCompat="@drawable/sale" />
+
+    <TextView
         android:id="@+id/coffeName"
         android:layout_width="327dp"
         android:layout_height="117dp"
@@ -26,39 +58,90 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <!-- Inclusión de la barra de navegación general-->
+
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="97dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="142dp"
-        android:layout_marginEnd="265dp"
-        android:layout_marginBottom="355dp"
-        android:fontFamily="@font/myriad_pro_semi"
+        android:id="@+id/descripcion"
+        android:layout_width="239dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="384dp"
+        android:fontFamily="sans-serif-black"
         android:text="Aquí iría toda la info "
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schoolName" />
+        app:layout_constraintTop_toBottomOf="@+id/coffeName" />
 
-    <!-- Inclusión de la barra de navegación general-->
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="186dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcion">
+
+        <ImageView
+            android:id="@+id/imageWiFi"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="25dp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkboxWiFi"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:buttonTint="@color/gris_medio_UCR"
+            android:padding="25dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/oferta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="68dp"
+        android:text="Horario: "
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <TextView
+        android:id="@+id/horario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
     <fragment
         android:id="@+id/NavigationBar"
         class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/schoolImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/color_cursor"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="463dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

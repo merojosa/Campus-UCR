@@ -1,17 +1,21 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffee;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
     String coffeName;
+    Coffee coffe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +25,31 @@ public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.
         Intent intentCoffe = getIntent();
         coffeName = intentCoffe.getStringExtra(Intent.EXTRA_TEXT);
 
+        coffe = intentCoffe.getParcelableExtra("place");
+
         TextView tittle = findViewById(R.id.coffeName);
         tittle.setText(coffeName);
 
+        TextView desc = findViewById(R.id.descripcion);
+        desc.setText(coffe.description);
+
+        TextView horario = findViewById(R.id.horario);
+        horario.setText(coffe.horario);
+
+        TextView oferta = findViewById(R.id.oferta);
+        oferta.setText(coffe.oferta);
+
+        ImageView wifi = findViewById(R.id.imageWiFi);
+        AppCompatCheckBox wifiCheck = findViewById(R.id.checkboxWiFi);
+
+        wifi.setImageResource(R.drawable.icon_wifi);
+        wifiCheck.setChecked(coffe.wifi);
+        wifiCheck.setEnabled(false);
+
+
+
     }
 
-//     * EFE: send the user to the location in maps
-//     * REQ:
-//     * view: send by the button that calls this method
-//     * latitude : latitude of the point that the user wants to go.
-//     * longitude: longitude of the point that the user wants to go.
-//     * MOD: ---
-//     * */
-//    public void goTo(View view) {
-//        Intent intent = new Intent(this, Map.class);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onClick(String title) {
