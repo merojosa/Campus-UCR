@@ -17,39 +17,39 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".red_mujeres.FormularioComunidad"></activity>
-        <activity android:name=".InterestPoints.Comment.CommentPopUp"></activity>
+        <activity
+            android:name=".InterestPoints.Comment.CommentDetail"
+            android:theme="@style/AppTheme.InterestsTheme"/>
+        <activity android:name=".red_mujeres.FormularioComunidad" />
+        <activity android:name=".InterestPoints.Comment.CommentPopUp" />
         <activity android:name=".red_mujeres.MisComunidades" />
-        <activity android:name=".InterestPoints.Library.LibraryViewActivity"
+        <activity
+            android:name=".InterestPoints.Library.LibraryViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Library.LibraryActivity"
-            android:theme="@style/AppTheme.InterestsTheme"/>
+            android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".InterestPoints.Office.OfficeViewActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar"/>
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Office.OfficeActivity"
-            android:theme="@style/AppTheme.InterestsTheme"/>
+            android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".InterestPoints.Photocopier.PhotocopierViewActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar"
-            />
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Photocopier.PhotocopierActivity"
-            android:theme="@style/AppTheme.InterestsTheme"/>
+            android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".InterestPoints.Soda.SodaViewActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar"
-            />
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".InterestPoints.Soda.SodaActivity"
-            android:theme="@style/AppTheme.InterestsTheme"
-            />
+            android:theme="@style/AppTheme.InterestsTheme" />
         <activity
             android:name=".ucr_eats.activites.OrderLocationActivity"
-            android:theme="@style/AppTheme.InterestsThemeNoBar"
-            />
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".ucr_eats.activites.OrdenesPendientesActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
@@ -72,6 +72,7 @@
             android:theme="@style/AppTheme.InterestsThemeNoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -108,15 +109,16 @@
         <activity
             android:name=".InterestPoints.Mapbox.Map"
             android:theme="@style/AppTheme.InterestsTheme" />
-
         <activity
             android:name=".InterestPoints.InterestPointsActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
-
-        <activity android:name=".red_mujeres.MainRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
-        <activity android:name=".red_mujeres.MenuRedMujeres"  android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity
+            android:name=".red_mujeres.MainRedMujeres"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity
+            android:name=".red_mujeres.MenuRedMujeres"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity android:name=".red_mujeres.ComunidadesRedMujeres" />
-
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="locked"
