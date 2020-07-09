@@ -34,6 +34,8 @@ public class MisComunidades extends AppCompatActivity {
     FloatingActionButton fabMain;
     FloatingActionButton fabJoinCommunity;
     FloatingActionButton fabCreateCommunity;
+    TextView fabLabelCreate;
+    TextView fabLabelJoin;
 
     //Variables para el comportamiento de los botones flotantes
     Float translationY = 100f;
@@ -126,12 +128,18 @@ public class MisComunidades extends AppCompatActivity {
         fabMain = findViewById(R.id.fabMain);
         fabJoinCommunity = findViewById(R.id.fabJoinCommunity);
         fabCreateCommunity = findViewById(R.id.fabCreateCommunity);
+        fabLabelCreate = findViewById(R.id.fabLabelCreateCommunity);
+        fabLabelJoin = findViewById(R.id.fabLabelJoinCommunity);
 
         fabJoinCommunity.setAlpha(0f);
         fabCreateCommunity.setAlpha(0f);
+        fabLabelCreate.setAlpha(0f);
+        fabLabelJoin.setAlpha(0f);
 
         fabJoinCommunity.setTranslationY(translationY);
         fabCreateCommunity.setTranslationY(translationY);
+        fabLabelCreate.setTranslationY(translationY);
+        fabLabelJoin.setTranslationY(translationY);
 
         fabMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +178,8 @@ public class MisComunidades extends AppCompatActivity {
         fabMain.animate().setInterpolator(interpolator).rotation(45f).setDuration(250).start();
         fabJoinCommunity.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
         fabCreateCommunity.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
+        fabLabelJoin.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
+        fabLabelCreate.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(275).start();
     }
 
     public void closeMenu()
@@ -178,5 +188,7 @@ public class MisComunidades extends AppCompatActivity {
         fabMain.animate().setInterpolator(interpolator).rotation(0f).setDuration(250).start();
         fabJoinCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
         fabCreateCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
+        fabLabelJoin.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
+        fabLabelCreate.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
     }
 }

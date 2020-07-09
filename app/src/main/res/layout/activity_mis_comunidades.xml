@@ -37,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <fragment
         android:id="@+id/NavigationBar"
@@ -62,36 +62,79 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints"
         android:gravity="center_horizontal">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabCreateCommunity"
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fabLabelCreateCommunity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Crear"
+                android:background="@drawable/rounded_corner_fab_labels"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_margin="6dp"
+                android:textColor="@color/blanco_UCR" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCreateCommunity"
+                android:layout_width="138dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|right"
+                android:layout_margin="2dp"
+                android:backgroundTint="@color/azul_UCR"
+                android:src="@drawable/ic_fiber_new_black_24dp"
+                app:backgroundTint="@color/azul_UCR"
+                app:fabSize="mini"
+                tools:layout_editor_absoluteX="339dp"
+                tools:layout_editor_absoluteY="581dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:backgroundTint="@color/azul_UCR"
-            app:backgroundTint="@color/azul_UCR"
-            android:src="@drawable/ic_fiber_new_black_24dp"
-            app:fabSize="mini"
-            tools:layout_editor_absoluteX="339dp"
-            tools:layout_editor_absoluteY="581dp" />
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginRight="5dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabJoinCommunity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:backgroundTint="@color/azul_UCR"
-            app:backgroundTint="@color/azul_UCR"
-            android:src="@drawable/ic_people_white_24dp"
-            app:fabSize="mini"
-            tools:layout_editor_absoluteX="339dp"
-            tools:layout_editor_absoluteY="581dp" />
+            <TextView
+                android:id="@+id/fabLabelJoinCommunity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_corner_fab_labels"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_margin="5dp"
+                android:text="Unirse"
+                android:textColor="@color/blanco_UCR" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabJoinCommunity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:backgroundTint="@color/azul_UCR"
+                android:src="@drawable/ic_people_white_24dp"
+                app:backgroundTint="@color/azul_UCR"
+                app:fabSize="mini"
 
+                tools:layout_editor_absoluteX="339dp"
+                tools:layout_editor_absoluteY="581dp" />
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabMain"
