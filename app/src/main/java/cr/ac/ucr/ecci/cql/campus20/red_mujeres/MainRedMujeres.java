@@ -112,8 +112,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
 
-    private Double lastLatitudeKnown = 0.0;
-    private Double lastLongitudeKnown = 0.0;
+    public  Double lastLatitudeKnown = 0.0;
+    public Double lastLongitudeKnown = 0.0;
 
     ArrayList<Map<String, Object>> userArr;
     ArrayList<Map<String, Object>> groupArr;
@@ -129,6 +129,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private Double latitudOri;
     private Double longitudOri;
 
+    private Double userLat = 0.0;
+    private Double userLong = 0.0;
+
+    int posiciones = 0;
+
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
@@ -141,6 +146,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
+        deleteCoordinates();
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -599,6 +605,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLongitudeKnown) != 0) {
                     System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
                     UpdateMyLocation(latitude, longitude);
+                    userLat = latitude;
+                    userLong = longitude;
                 }
 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
@@ -675,6 +683,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             symbolLayerIconFeatureList.add(Feature.fromGeometry(
                     Point.fromLngLat( (Double)map.get(i).get("Longitud"), (Double)map.get(i).get("Latitud"))));
         }
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat( userLong, userLong)));
 
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
 
@@ -758,12 +768,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         usuarios.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    //interfaz para trajar datos fuera del contexto del OnChangeData
-    public interface FirebaseCallBack {
 
-        void onCallBack(ArrayList<Map<String, Object>> list);
-
-    }
 
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
@@ -777,6 +782,25 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
+        ref.child(this.userID).child("coordenadas").push().setValue(new LatLng(laititude,longitude));
+    }
+
+    private void deleteCoordinates(){
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres").child(this.userID).child("coordenadas");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    snapshot.getRef().setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
