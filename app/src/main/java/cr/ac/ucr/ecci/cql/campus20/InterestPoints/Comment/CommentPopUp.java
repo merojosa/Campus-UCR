@@ -2,8 +2,15 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,14 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,10 +55,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cr.ac.ucr.ecci.cql.campus20.BuildConfig;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
@@ -77,6 +91,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private ImageButton sortRating;
     private boolean auxSorting;
     private boolean isPhotoLoaded;
+    private File imageFile;
+    private String filename;
+
+    private static int GALLERY_REQUEST_CODE = 20, CAMERA_REQUEST_CODE = 21, CAMERA_PERMISSION_REQUEST = 22, STORAGE_PERMISSION_REQUEST = 23;
 
     public CommentPopUp(){}
 
@@ -147,6 +165,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             }
         });
         /*POPUP*/
+
     }
 
     /*
@@ -158,20 +177,63 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fileChooser();
+                selectImage();
             }
         });
     }
 
-    /*
-     * MPS4 - 02 Foto en el comentario
-     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
-     */
-    private void fileChooser(){
-        //((Activity)view.getContext()).startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), 1);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(view.getContext().getPackageManager()) != null) {
-            activity.startActivityForResult(intent, 1);
+    private void selectImage() {
+        final CharSequence[] options = { "Tomar foto", "Seleccionar imagen","Cancelar" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setTitle("Subir una foto");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Tomar foto")) {
+                    takePicture();
+
+                } else if (options[item].equals("Seleccionar imagen")) {
+                    pickFromGallery();
+
+                } else if (options[item].equals("Cancelar")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void pickFromGallery(){
+        //Create an Intent with action as ACTION_PICK
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        // Sets the type as image/*. This ensures only components of type image are selected
+        intent.setType("image/*");
+        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        // Launching the Intent
+        activity.startActivityForResult(intent,GALLERY_REQUEST_CODE);
+
+    }
+
+    public void takePicture(){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+        } else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
+        }else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            String path = "fname_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+            imageFile = new File(Environment.getExternalStorageDirectory(), path);
+            imgUrl = FileProvider.getUriForFile(activity.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
+
+            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imgUrl);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
         }
     }
 
@@ -180,13 +242,15 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         isPhotoLoaded = true;
     }
 
+    public void notifyPhotoTaken(){
+        isPhotoLoaded = true;
+    }
+
     /*
      * MPS4 - 02 Foto en el comentario
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
-    private void uploadPhoto(Comment comment){
-        String filename = getExtension(imgUrl) + System.currentTimeMillis();
-        comment.setPhotoPath(filename);
+    private void uploadPhoto(String filename){
         StorageReference photoRef = mStorageRef.child(filename);
         photoRef.putFile(imgUrl)
             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -268,11 +332,45 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 }
                 //inserta en firebase
                 if(isPhotoLoaded){
-                    uploadPhoto(comment);
+                    String filename = getExtension(imgUrl) + System.currentTimeMillis();
+                    uploadPhoto(filename);
+                    comment.setPhotoPath(filename);
                 }
                 ref.child(Integer.toString(comment.getId())).setValue(comment);
+                clearComment();
             }
         });
+
+        editComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().trim().length()==0){
+                    getRating.setEnabled(false);
+                } else {
+                    getRating.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        getRating.setEnabled(false);
+
+    }
+
+    private void clearComment(){
+        imgUrl = null;
+        editComment = view.findViewById(R.id.comentario);
+        editComment.setText("");
     }
 
     public void setDataList(){
