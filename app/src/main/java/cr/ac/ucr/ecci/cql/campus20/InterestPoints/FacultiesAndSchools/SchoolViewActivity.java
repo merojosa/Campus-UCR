@@ -278,8 +278,30 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         FirebaseDB db = new FirebaseDB();
         getLabs(db);
         getBathrooms(db);
-//        getAsociation(db);
+        getAsociation(db);
     }
+
+    public void getAsociation(FirebaseDB db){
+        refAsociation = db.getReference(Place.TYPE_ASOCIATION);
+        listenerAsociation = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot asociation : dataSnapshot.getChildren()) {
+                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
+                        asociationList.add(asociation.getValue(Laboratory.class));
+                    }
+                    removeListenerAsociations();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "No se pudo cargar la lista.", Toast.LENGTH_LONG).show();
+            }
+        };
+        refAsociation.addValueEventListener(listenerAsociation);
+    }
+
 
     public void getLabs(FirebaseDB db){
         refLabs = db.getReference(Place.TYPE_LABORATORY);
@@ -332,6 +354,11 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private void removeListenerBathrooms(){
         if(refBathrooms != null && listenerBathrooms != null)
             refBathrooms.removeEventListener(listenerBathrooms);
+    }
+
+    private void removeListenerAsociations(){
+        if(refAsociation != null && listenerAsociation != null)
+            refAsociation.removeEventListener(listenerAsociation);
     }
 
 }

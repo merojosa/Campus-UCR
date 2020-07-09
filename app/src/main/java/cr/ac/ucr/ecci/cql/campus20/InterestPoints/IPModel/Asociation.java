@@ -9,23 +9,19 @@ import androidx.annotation.RequiresApi;
 public class Asociation extends Place implements Parcelable {
     private int id_school_fk;
     private int id_place_fk;
-    private int capacity;
-    private boolean wifi;
-    private boolean computers;
-    private boolean extintor;
 
     public Asociation() { }
 
-//    public Asociation(int id, int id_school_fk, int id_place_fk, String name, String description,
-//                      int floor, int capacity, boolean wifi, boolean computers, boolean extintor) {
-//        super(id, name, description, TYPE_ASOCIATION, floor);
-//        this.id_school_fk = id_school_fk;
-//        this.id_place_fk = id_place_fk;
-//        this.capacity = capacity;
-//        this.wifi = wifi;
-//        this.computers = computers;
-//        this.extintor = extintor;
-//    }
+    public Asociation(int id, int id_school_fk, int id_place_fk, String name, String description,
+                      int floor, int capacity, boolean wifi, boolean computers) {
+        super(id, name, description, -1, TYPE_ASOCIATION);
+        this.id_school_fk = id_school_fk;
+        this.id_place_fk = id_place_fk;
+        super.setFloor(floor);
+        super.setCapacity(capacity);
+        super.setWifi(wifi);
+        super.setHaveComputers(computers);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Asociation(Parcel in) {
@@ -37,10 +33,10 @@ public class Asociation extends Place implements Parcelable {
         super.floor = in.readInt();
         id_school_fk = in.readInt();
         id_place_fk = in.readInt();
-        capacity = in.readInt();
-        wifi = in.readBoolean();
-        computers = in.readBoolean();
-        extintor = in.readBoolean();
+        super.floor = in.readInt();
+        super.capacity = in.readInt();
+        super.setWifi(in.readBoolean());
+        super.setHaveComputers(in.readBoolean());
     }
 
     public static final Creator<Asociation> CREATOR = new Creator<Asociation>() {
@@ -85,21 +81,7 @@ public class Asociation extends Place implements Parcelable {
         this.capacity = capacity;
     }
 
-    public boolean getComputers() {
-        return computers;
-    }
 
-    public void setComputers(boolean computers) {
-        this.computers = computers;
-    }
-
-    public boolean getExtintor() {
-        return extintor;
-    }
-
-    public void setExtintor(boolean extintor) {
-        this.extintor = extintor;
-    }
 
     @Override
     public int describeContents() {
@@ -110,9 +92,6 @@ public class Asociation extends Place implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id_school_fk);
         dest.writeInt(id_place_fk);
-        dest.writeInt(capacity);
-        dest.writeByte((byte) (wifi ? 1 : 0));
-        dest.writeByte((byte) (computers ? 1 : 0));
-        dest.writeByte((byte) (extintor ? 1 : 0));
+
     }
 }
