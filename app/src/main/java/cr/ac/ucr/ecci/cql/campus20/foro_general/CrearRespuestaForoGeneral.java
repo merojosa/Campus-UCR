@@ -45,19 +45,12 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private EditText mEditText;
     private TextView titulo;
     private Button btnCrearRespuesta;
-    private Button adjuntarMapa;
-
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
-
-    private ArrayList<Double> coordenadas;
-    private Double lat;
-    private Double lon;
-
 
     private String nombreUsuario;
     ForoGeneralFirebaseDatabase databaseReference;
@@ -74,11 +67,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         // Nombre del usuario actual
         this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
 
-
-        lat = mIntent.getDoubleExtra("latitud", 0.0);
-        lon = mIntent.getDoubleExtra("longitud", 0.0);
-
-
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
 
@@ -91,7 +79,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         gd.setColor(Color.parseColor("#00ffffff"));
         gd.setStroke(2, Color.parseColor("#00C0F3"));
         mEditText.setBackground(gd);
-
 
         // Codigo para manejar color del boton y evento de click
         btnCrearRespuesta = (Button) findViewById(R.id.btnCrearRespuesta);
@@ -107,25 +94,8 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             }
         });
 
-
-        //inicializa array de coordenadas
-        coordenadas = new ArrayList<Double>();
-
-        // Codigo para manejar color del boton y evento de click
-        adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);
-        adjuntarMapa.setBackgroundColor(Color.parseColor("#005DA4"));
-        adjuntarMapa.setTextColor(Color.BLACK);
-        adjuntarMapa.setText("Adjuntar un mapa");
-        adjuntarMapa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //coordenadas = agregarMapa();
-                agregarMapa();
-            }
-        });
-
         //Codigo que maneja la navegacion de izquierda a derecha
-        dl = (DrawerLayout) findViewById(R.id.activity_main_crear_respuesta);
+        dl = (DrawerLayout)findViewById(R.id.activity_main_crear_respuesta);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
@@ -134,12 +104,13 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Se lanza cada actividad, dependiendo de la selección del usuario
-        nv = (NavigationView) findViewById(R.id.nv_foro);
+        nv = (NavigationView)findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch (id) {
+                switch(id)
+                {
                     case R.id.home_foro:
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, MainForoGeneral.class));
                         break;
@@ -171,29 +142,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         });
 
     }
-/*
-    //si se puede hacer con fragmento
-    private ArrayList<Double> agregarMapa(){
-        double lat = 0;
-        double lon = 0;
-
-        //llama fragmento de mapa y obtiene las coordenadas
-
-        ArrayList<Double> resp = new ArrayList<Double>();
-        resp.add(lat);
-        resp.add(lon);
-        return resp;
-    }*/
-
-    //si se hace con una actividad
-    private void agregarMapa() {
-        Intent intent = new Intent(this, AgregarMapa.class);
-        //AGREGAR DATOS
-        startActivity(intent);
-        //llama la actividad de mapas
-
-    }
-
 
     /**
      * Este método inserta una nueva respuesta partir de lo que se digite, luego de insertar en
@@ -235,7 +183,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Verifica si el contenido de respuesta no es vacio
-     *
      * @return boolean
      */
     private boolean verificarRespuesta() {
@@ -248,14 +195,13 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
-     *
      * @param item funciona para indicar el objeto de la lista que se selecionó
      * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (t.onOptionsItemSelected(item))
+        if(t.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
