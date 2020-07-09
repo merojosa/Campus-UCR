@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +41,10 @@ public class NotificacionPedidoService extends Service
     private static String HACIA_SODA_MESSAGE = "Un repartidor se dirige a la soda a recoger tu pedido";
     private static String HACIA_CASA_MESSAGE = "El repartidor va rumbo a entregarte el pedido";
 
+    private String idOrden;
+    DatabaseReference ref;
+    ValueEventListener listener;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent)
@@ -51,8 +56,10 @@ public class NotificacionPedidoService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        String idOrden = intent.getStringExtra(LLAVE_ID_ORDEN);
+        super.onStartCommand(intent, flags, startId);
+        this.idOrden = intent.getStringExtra(LLAVE_ID_ORDEN);
         setOrderNotificacionListener(idOrden);
+        System.out.println("Iniciando servicio................................................"+idOrden);
         return START_STICKY;
     }
 
@@ -61,9 +68,10 @@ public class NotificacionPedidoService extends Service
         createNotificationChannel();
         UcrEatsFirebaseDatabase db = new UcrEatsFirebaseDatabase();
 
-        DatabaseReference ref = db.getPendingOrdersRef().child(orderId).child("status");
+        ref = db.getPendingOrdersRef().child(orderId).child("status");
 
-        ref.addValueEventListener(new ValueEventListener() {
+
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 OrderStatus status = OrderStatus.PENDIENTE;
@@ -115,7 +123,9 @@ public class NotificacionPedidoService extends Service
                 // Failed to read value
                 Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
             }
-        });
+        };
+        Toast.makeText(this, db.toString()+ " " + ref.toString() + " " + listener.toString(), Toast.LENGTH_LONG).show();
+        ref.addValueEventListener(listener);
     }
     // Parar el id de la notificación ( la precisión usada será suficiente puesto que los chances de recibir
     // varias notificaciones en el mismo segundo son muy bajos)
@@ -142,4 +152,31 @@ public class NotificacionPedidoService extends Service
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+       // Toast.makeText(this, "Reiniciando servicio...", Toast.LENGTH_SHORT).show();
+        //Intent broadcastIntent = new Intent();
+        //broadcastIntent.putExtra("idOrden", idOrden);
+        //broadcastIntent.setAction("restartservice");
+        //broadcastIntent.setClass(this, Restarter.class);
+        //this.sendBroadcast(broadcastIntent);
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        //System.out.println("onTaskRemoved called");
+        super.onTaskRemoved(rootIntent);
+        ref.removeEventListener(listener);
+        Toast.makeText(this, "Reiniciando servicio...", Toast.LENGTH_SHORT).show();
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.putExtra("idOrden", idOrden);
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter.class);
+        this.sendBroadcast(broadcastIntent);
+
+        this.stopSelf();
+    }
+
 }

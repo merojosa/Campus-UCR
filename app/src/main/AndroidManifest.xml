@@ -58,7 +58,19 @@
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
-        <service android:name=".ucr_eats.services.NotificacionPedidoService" />
+
+
+        <service android:name=".ucr_eats.services.NotificacionPedidoService"
+                 android:enabled="true"
+                 android:stopWithTask="false"/>
+        <receiver
+            android:name=".ucr_eats.services.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeViewActivity"

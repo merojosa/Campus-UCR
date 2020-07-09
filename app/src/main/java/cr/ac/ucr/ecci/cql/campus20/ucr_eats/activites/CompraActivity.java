@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +63,9 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
     private boolean customLocation = false;
 
     private static final int CODIGO_RESULTADO = 0;
+
+    private NotificacionPedidoService mService;
+    Intent servicioIntent;
 
 
     @Override
@@ -159,14 +165,29 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
         Toast.makeText(this, "Se realizó el pedido exitosamente", Toast.LENGTH_LONG).show();
 
         // Servicio para detectar el estado de la orden
-        Intent servicioIntent = new Intent(this, NotificacionPedidoService.class);
+        mService = new NotificacionPedidoService();
+        servicioIntent = new Intent(this, NotificacionPedidoService.class);
         servicioIntent.putExtra(NotificacionPedidoService.LLAVE_ID_ORDEN, order.getIdOrder());
-        startService(servicioIntent);
+        if (!isMyServiceRunning(mService.getClass())) {
+            startService(servicioIntent);
+        }
 
         Intent actividadIntent = new Intent(this, MainUcrEats.class);
         startActivity(actividadIntent);
         finish();
+    }
 
+    private boolean isMyServiceRunning(Class<?> serviceClass)
+    {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("Service status", "Running");
+                return true;
+            }
+        }
+        Log.i ("Service status", "Not running");
+        return false;
     }
 
     @SuppressWarnings( {"MissingPermission"})
@@ -246,6 +267,12 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
             customLocation = true;
             Toast.makeText(this, "Ubicación personalizada guardada", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        //stopService(servicioIntent);
+        super.onDestroy();
     }
 
 }
