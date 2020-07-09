@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -285,6 +287,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String contanctoNum = sharedPreferences.getString("contactoNum", "Número No Establecido");
+
         String num="911";
         if (truePanic>0){
             num = "12345678";
@@ -299,7 +304,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void popupPanico() {
-        final String [] items = new String[] {"911", "Contacto Emergencia"};
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String name = sharedPreferences.getString("contactoNom", "Contacto No Establecido");
+
+        final String [] items = new String[] {"911", "Contacto"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
         builder.setTitle("¡EMERGENCIA!");
