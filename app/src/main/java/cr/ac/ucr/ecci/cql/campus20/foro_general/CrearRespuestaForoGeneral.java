@@ -174,12 +174,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                 // Inserta en Firebase tambien
                 CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(id)).setValue(respuesta);
 
-                // Servicio para detectar el estado de la orden (falta probar)
-                Intent servicioIntent = new Intent(CrearRespuestaForoGeneral.this, NotificacionRespuestaService.class);
-                servicioIntent.putExtra("llave_pregunta", Integer.toString(pregunta.getId()));
-                //servicioIntent.putExtra("llave_tema", pregunta.temaID);
-                startService(servicioIntent);
-
                 //Luego de insertar volver a vista previa
                 Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
                 intent.putExtra("preguntaSeleccionada", pregunta);
