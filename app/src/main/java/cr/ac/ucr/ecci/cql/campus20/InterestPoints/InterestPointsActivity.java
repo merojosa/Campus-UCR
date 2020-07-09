@@ -10,12 +10,24 @@ import android.util.Log;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+
+import java.util.List;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeShopsActivity;
@@ -26,6 +38,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library.LibraryActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office.OfficeActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier.PhotocopierActivity;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Soda.SodaActivity;
@@ -38,6 +51,8 @@ public class InterestPointsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private Double currentLatitude;
     private Double currentLongitude;
+    private MapboxMap mapboxMap;
+    private PermissionsManager permissionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,7 @@ public class InterestPointsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interest_points);
 
         FirebaseDB db = new FirebaseDB();
+        this.callLocation();
 
         new DeploymentScript().RunScript(db, getApplicationContext());
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
@@ -57,8 +73,10 @@ public class InterestPointsActivity extends AppCompatActivity {
     }
 
     private void callLocation() {
-        currentLatitude = 9.654;
-        currentLongitude = 10.25;
+        MapUtilities utilities = new MapUtilities(this.currentLatitude, this.currentLongitude);
+        Double[] par = utilities.requestForUpdates();
+        this.currentLatitude = par[0];
+        this.currentLongitude = par[1];
     }
 
     private void setActivityTitle(){
@@ -77,8 +95,8 @@ public class InterestPointsActivity extends AppCompatActivity {
             final int finalI = i;
 
             Bundle params = new Bundle();
-            params.putDouble("currentLatitude", 12.34);
-            params.putDouble("currentLongitude", 56.78);
+            params.putDouble("currentLatitude", this.currentLatitude);
+            params.putDouble("currentLongitude", this.currentLongitude);
 
             cardView.setOnClickListener(view -> {
 
