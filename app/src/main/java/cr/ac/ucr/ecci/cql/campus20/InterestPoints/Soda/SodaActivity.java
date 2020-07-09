@@ -33,6 +33,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDataba
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Soda;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class SodaActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -41,12 +42,13 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Soda> sodaList;
+    private List<Place> sodaList;
 
     private ProgressBar spinner;
 
     private DatabaseReference ref;
     private ValueEventListener listener;
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,19 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
         if (getSupportActionBar() != null) {
             setActivityTitle();
         }
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.sodasProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -91,7 +106,7 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
         childActivity.putExtra("attribute", sodaList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        Soda soda = sodaList.get(index);
+        Place soda = sodaList.get(index);
 
         childActivity.putExtra("place", soda);
         childActivity.putExtra("index", 2);
@@ -140,6 +155,10 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
                 for(DataSnapshot soda : dataSnapshot.getChildren()){
                     sodaList.add(soda.getValue(Soda.class));
                 }
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities();
+                sodaList = mapUtilities.orderByDistance(sodaList);
+                //**********************************************************************************
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
