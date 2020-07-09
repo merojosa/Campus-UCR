@@ -56,6 +56,7 @@ public class CrearComunidad extends AppCompatActivity {
         });
     }
 
+    //Popup para la confirmar la creación de la nueva comunidad
     public void popUpCrear(Context context, String nombreGrupo, String descripcionGrupo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearComunidad.this, R.style.AppTheme_RedMujeres);
 
@@ -85,9 +86,21 @@ public class CrearComunidad extends AppCompatActivity {
         dialog.show();
     }
 
+    //Método para almacenar la nueva comunidad en la base de datos
     private void escribirComunidadEnBD(String usuarioID, String nombreGrupo, String descripcionGrupo) {
-        DatabaseReference usuario = mDatabase.getReference();
-        //Falta la lógica para almacenar la BD
-        Toast.makeText(getApplicationContext(), "Comunidad creada" , Toast.LENGTH_SHORT).show();
+        DatabaseReference ref = mDatabase.getReference("Comunidades");
+
+        //Almacenamiento de los detalles del grupo en la base de datos
+        ref.child(nombreGrupo).setValue(nombreGrupo);
+        ref.child(nombreGrupo).child("Admin").setValue(Integer.parseInt(usuarioID));
+        ref.child(nombreGrupo).child("Descripcion").setValue(descripcionGrupo);
+        ref.child(nombreGrupo).child("IDusuarios").push().setValue(Integer.parseInt(usuarioID));
+        ref.child(nombreGrupo).child("Nombre").setValue(nombreGrupo);
+
+        //Se guarda la nueva comunidad como parte de las que ya pertenece el usuario
+        ref = mDatabase.getReference("usuarios_red_mujeres");
+        ref.child(usuarioID).child("Grupos").push().setValue(nombreGrupo);
+
+        Toast.makeText(getApplicationContext(), "Comunidad "+ nombreGrupo + " creada" , Toast.LENGTH_SHORT).show();
     }
 }
