@@ -35,8 +35,11 @@
 
     <ImageView
         android:id="@+id/commentPhoto"
-        android:layout_width="146dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:background="#00FFFFFF"
         tools:srcCompat="@tools:sample/avatars" />
