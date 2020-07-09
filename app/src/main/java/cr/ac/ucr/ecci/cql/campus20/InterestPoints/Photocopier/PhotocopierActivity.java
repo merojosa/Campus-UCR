@@ -158,7 +158,7 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
                     photocopierList.add(photocopier.getValue(Photocopier.class));
                 }
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 photocopierList = mapUtilities.orderByDistance(photocopierList);
                 //**********************************************************************************
                 setDataList();

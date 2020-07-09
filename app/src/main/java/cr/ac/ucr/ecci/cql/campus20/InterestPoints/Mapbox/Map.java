@@ -85,6 +85,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private Button button;
     private Place place;
     private Intent details;
+
     private double destinationLatitude;
     private double destinationLongitude;
 
@@ -165,13 +166,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                 iconIgnorePlacement(true)
         );
         loadedMapStyle.addLayer(destinationSymbolLayer);
-    }
-
-    public Double[] getCurrentLocation() {
-        Double[] arr = new Double[2];
-        arr[0] = locationComponent.getLastKnownLocation().getLatitude();
-        arr[1] = locationComponent.getLastKnownLocation().getLongitude();
-        return arr;
     }
 
     public void setNavigation() {

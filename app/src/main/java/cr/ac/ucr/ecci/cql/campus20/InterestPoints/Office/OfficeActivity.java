@@ -159,7 +159,7 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
                     officeList.add(office.getValue(Office.class));
                 }
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 officeList = mapUtilities.orderByDistance(officeList);
                 //**********************************************************************************
                 setDataList();

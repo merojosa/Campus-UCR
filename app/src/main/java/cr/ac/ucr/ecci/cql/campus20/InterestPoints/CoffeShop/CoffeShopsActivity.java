@@ -161,10 +161,12 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
                     coffeeList.add(coffee.getValue(Coffee.class));
                 }
 
+                //printCoffes();
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 coffeeList = mapUtilities.orderByDistance(coffeeList);
                 //**********************************************************************************
+                //printCoffes();
 
                 setDataList();
                 mListAdapter.setListData(temp);
@@ -180,6 +182,13 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         };
         ref.addValueEventListener(listener);
     }
+
+    private void printCoffes() {
+        for(int i = 0; i < this.coffeeList.size(); ++i) {
+            Log.d("Cafeteria", " " + coffeeList.get(i).name);
+        }
+    }
+
 
     public void setDataList(){
         temp.addAll(coffeeList);

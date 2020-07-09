@@ -48,8 +48,8 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 
 public class MapUtilities extends Context implements LocationListener {
-    private Double currentLatitude;
-    private Double currentLongitude;
+    private Double currentLatitude = 12.34;
+    private Double currentLongitude = 56.78;
     final long MIN_TIME_INTERVAL = 60 * 1000L;
     private boolean isGPSEnabled = false;
     private boolean isNetworkEnabled = false;
@@ -63,11 +63,8 @@ public class MapUtilities extends Context implements LocationListener {
     // To get the user location
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
 
-    public MapUtilities(Double currentLatitude, Double currentLongitude) {
-        this.currentLongitude = currentLongitude;
-        this.currentLatitude = currentLatitude;
+    public MapUtilities() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Log.d(this.currentLatitude + "", this.currentLongitude + "");
     }
 
     public List orderByDistance(List<Place> places) {
@@ -142,8 +139,8 @@ public class MapUtilities extends Context implements LocationListener {
     public Double[] requestForUpdates() {
 
         Double[] par = new Double[2];
-        par[0] = 12.23;
-        par[1] = 45.67;
+        par[0] = currentLatitude;
+        par[1] = currentLongitude;
 
         if (locationManager == null) {
             return par;

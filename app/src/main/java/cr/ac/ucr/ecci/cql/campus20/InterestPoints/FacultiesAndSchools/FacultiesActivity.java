@@ -149,7 +149,7 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                     facultiesList.add(faculty.getValue(Faculty.class));
                 }
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 facultiesList = mapUtilities.orderByDistance(facultiesList);
                 //**********************************************************************************
                 setDataList();

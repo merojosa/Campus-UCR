@@ -158,7 +158,7 @@ public class LibraryActivity extends AppCompatActivity implements ListAdapter.Li
                     libraryList.add(library.getValue(Library.class));
                 }
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 libraryList = mapUtilities.orderByDistance(libraryList);
                 //**********************************************************************************
                 setDataList();

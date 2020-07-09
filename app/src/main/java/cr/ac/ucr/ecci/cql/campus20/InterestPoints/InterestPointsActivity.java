@@ -73,7 +73,7 @@ public class InterestPointsActivity extends AppCompatActivity {
     }
 
     private void callLocation() {
-        MapUtilities utilities = new MapUtilities(this.currentLatitude, this.currentLongitude);
+        MapUtilities utilities = new MapUtilities();
         Double[] par = utilities.requestForUpdates();
         this.currentLatitude = par[0];
         this.currentLongitude = par[1];

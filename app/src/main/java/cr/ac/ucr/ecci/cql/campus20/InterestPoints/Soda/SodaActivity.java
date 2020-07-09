@@ -156,7 +156,7 @@ public class SodaActivity extends AppCompatActivity implements ListAdapter.ListA
                     sodaList.add(soda.getValue(Soda.class));
                 }
                 //**********************************************************************************
-                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                MapUtilities mapUtilities = new MapUtilities();
                 sodaList = mapUtilities.orderByDistance(sodaList);
                 //**********************************************************************************
                 setDataList();
