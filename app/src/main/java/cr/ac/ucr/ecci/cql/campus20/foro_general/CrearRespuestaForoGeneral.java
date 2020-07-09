@@ -47,10 +47,16 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private Button btnCrearRespuesta;
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
+    private Button adjuntarMapa;
+
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
+    private ArrayList<Double> coordenadas;
+    private Double lat;
+    private Double lon;
 
     private String nombreUsuario;
     ForoGeneralFirebaseDatabase databaseReference;
@@ -68,6 +74,22 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         this.nombreUsuario = mIntent.getStringExtra("nombreUsuario");
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
+
+        lat = mIntent.getDoubleExtra("latitud", 0.0);
+        lon = mIntent.getDoubleExtra("longitud", 0.0);
+
+        // Codigo para manejar color del boton y evento de click
+        adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);
+        adjuntarMapa.setBackgroundColor(Color.parseColor("#005DA4"));
+        adjuntarMapa.setTextColor(Color.BLACK);
+        adjuntarMapa.setText("Adjuntar un mapa");
+        adjuntarMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //coordenadas = agregarMapa();
+                agregarMapa();
+            }
+        });
 
 
         // Se instancia el firebaseReference
@@ -95,7 +117,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         });
 
         //Codigo que maneja la navegacion de izquierda a derecha
-        dl = (DrawerLayout)findViewById(R.id.activity_main_crear_respuesta);
+        dl = (DrawerLayout) findViewById(R.id.activity_main_crear_respuesta);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
@@ -104,13 +126,12 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Se lanza cada actividad, dependiendo de la selección del usuario
-        nv = (NavigationView)findViewById(R.id.nv_foro);
+        nv = (NavigationView) findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch(id)
-                {
+                switch (id) {
                     case R.id.home_foro:
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, MainForoGeneral.class));
                         break;
@@ -140,6 +161,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void agregarMapa() {
+        Intent intent = new Intent(this, AgregarMapa.class);
+        //AGREGAR DATOS
+        startActivity(intent);
+        //llama la actividad de mapas
 
     }
 
@@ -183,6 +212,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Verifica si el contenido de respuesta no es vacio
+     *
      * @return boolean
      */
     private boolean verificarRespuesta() {
@@ -195,13 +225,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     *
      * @param item funciona para indicar el objeto de la lista que se selecionó
      * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(t.onOptionsItemSelected(item))
+        if (t.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
