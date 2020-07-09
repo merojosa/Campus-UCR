@@ -3,8 +3,10 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -38,6 +41,7 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
@@ -62,6 +66,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private MapView mapView;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
+
+    private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+    private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
@@ -79,6 +87,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private Intent details;
     private double destinationLatitude;
     private double destinationLongitude;
+
+    private LocationEngine locationEngine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +167,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
         loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
+    public Double[] getCurrentLocation() {
+        Double[] arr = new Double[2];
+        arr[0] = locationComponent.getLastKnownLocation().getLatitude();
+        arr[1] = locationComponent.getLastKnownLocation().getLongitude();
+        return arr;
+    }
+
     public void setNavigation() {
 
         Point destinationPoint = Point.fromLngLat(this.destinationLongitude, this.destinationLatitude);
@@ -221,11 +238,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
-        System.out.print("Holaaaaaaaaaa********************************************************");
         if (PermissionsManager.areLocationPermissionsGranted(this))
         {
-            System.out.print("entré********************************************************");
-
             // Get an instance of the component
             locationComponent = mapboxMap.getLocationComponent();
 

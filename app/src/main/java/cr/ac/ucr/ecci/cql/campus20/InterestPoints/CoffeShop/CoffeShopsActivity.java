@@ -10,6 +10,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
 
     private DatabaseReference ref;
     private ValueEventListener listener;
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
 
     @Override
@@ -58,6 +60,20 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         if(getSupportActionBar() != null){
             setActivityTitle();
         }
+
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.coffeeProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -144,10 +160,12 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
                     coffeeList.add(coffee.getValue(Coffee.class));
                 }
-                //MapaUtils mapaUtils = new MapaUtils(currentLatitude, currentLongitude);
-                MapUtilities mapaUtils = new MapUtilities(13.55, 15.456);
-                // Ordering the places from closest to farthest
-                coffeeList = mapaUtils.orderByDistance(coffeeList);
+
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities(currentLatitude, currentLongitude);
+                coffeeList = mapUtilities.orderByDistance(coffeeList);
+                //**********************************************************************************
+
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();

@@ -22,7 +22,7 @@ public class MapUtilities {
     public MapUtilities(Double currentLatitude, Double currentLongitude) {
         this.currentLongitude = currentLongitude;
         this.currentLatitude = currentLatitude;
-        //Log.d(this.currentLatitude + "", this.currentLongitude + "");
+        Log.d(this.currentLatitude + "", this.currentLongitude + "");
     }
 
     public List orderByDistance(List<Place> places) {
