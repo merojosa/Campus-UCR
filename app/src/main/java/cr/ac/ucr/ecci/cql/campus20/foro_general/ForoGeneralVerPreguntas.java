@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
@@ -35,6 +36,8 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 
 public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdapterPregunta.OnPreguntaListener {
     private LiveData<List<Pregunta>> preguntas;
+    private List<Pregunta> preguntasFireBase;
+    ForoGeneralFirebaseDatabase databaseReference;
     private PreguntaViewModel mPreguntaViewModel;
     private TextView tituloTema;
     private RecyclerView recyclerViewPreguntas;
@@ -56,33 +59,58 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
         int idTemaSeleccionado = mIntent.getIntExtra("idTemaSeleccionado", 0);
         String temaSeleccionado = mIntent.getStringExtra("temaSeleccionado");
 
-        // Setear el view para las preguntas
-        recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
-        recyclerViewPreguntas.setLayoutManager(new LinearLayoutManager(this));
-        // Si no se cambia el tamanno, hacer esto mejora el performance
-        recyclerViewPreguntas.setHasFixedSize(true);
+        this.preguntasFireBase = new ArrayList<Pregunta>();
 
-        // Setear el adaptador para las preguntas
-        this.preguntasAdapter = new RVAdapterPregunta(this, preguntaCards, this);
-        recyclerViewPreguntas.setAdapter(preguntasAdapter);
+        // Se instancia el firebaseReference
+        this.databaseReference = new ForoGeneralFirebaseDatabase();
 
-        // Instancia el viewModel para recuperar la lista asincrónicamente
-        mPreguntaViewModel = new ViewModelProvider(this).get(PreguntaViewModel.class);
-        preguntas = mPreguntaViewModel.getPreguntasTema(idTemaSeleccionado);
-        // Setea el titulo del tema seleccionado en la pantalla de ver preguntas
-        tituloTema = (TextView) findViewById(R.id.temaSeleccionado);
-        tituloTema.setText(temaSeleccionado);
-        preguntas.observe(this, new Observer<List<Pregunta>>() {
+        this.databaseReference.getPreguntasRef().child(String.valueOf(idTemaSeleccionado)).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChanged(List<Pregunta> preguntas) {
-                // Si la lista tiene preguntas agrega las preguntas
-                if(preguntas.size() > 0){
-                    preguntaCards = preguntasAdapter.convertToPreguntaCards(preguntas);
-                    preguntasAdapter.setPreguntaCards(preguntas);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Se recorre el snapshot para sacar los datos
+                ForoGeneralVerPreguntas.this.preguntasFireBase.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    int id = ds.child("id").getValue(Integer.class);
+                    String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
+                    int temaID = ds.child("temaID").getValue(Integer.class);
+                    String texto = ds.child("texto").getValue(String.class);
+                    int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
+                    int contadorDisLikes = ds.child("contadorDisLikes").getValue(Integer.class);
+
+                    // Se crea la pregunta
+                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes);
+                    ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
+                }
+
+                // Setear el view para las preguntas
+                recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
+                recyclerViewPreguntas.setLayoutManager(new LinearLayoutManager(ForoGeneralVerPreguntas.this));
+                // Si no se cambia el tamanno, hacer esto mejora el performance
+                recyclerViewPreguntas.setHasFixedSize(true);
+
+                // Setear el adaptador para las preguntas
+                ForoGeneralVerPreguntas.this.preguntasAdapter = new RVAdapterPregunta(ForoGeneralVerPreguntas.this, preguntaCards, ForoGeneralVerPreguntas.this);
+                recyclerViewPreguntas.setAdapter(preguntasAdapter);
+
+                // Setea el titulo del tema seleccionado en la pantalla de ver preguntas
+                tituloTema = (TextView) findViewById(R.id.temaSeleccionado);
+                tituloTema.setText(temaSeleccionado);
+
+                if(ForoGeneralVerPreguntas.this.preguntasFireBase.size() > 0){
+                    preguntaCards = preguntasAdapter.convertToPreguntaCards(ForoGeneralVerPreguntas.this.preguntasFireBase);
+                    preguntasAdapter.setPreguntaCards(ForoGeneralVerPreguntas.this.preguntasFireBase);
                 }else{
                     tituloTema.setText(temaSeleccionado + ": No tiene preguntas!");
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+            }
+
         });
 
         // Este código debería ser una llamado y no el código en sí
@@ -154,7 +182,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
 
         Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
         intent.putExtra("preguntaSeleccionada", preguntaSeleccionada);
-
+        //intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
         startActivity(intent);
     }
 }

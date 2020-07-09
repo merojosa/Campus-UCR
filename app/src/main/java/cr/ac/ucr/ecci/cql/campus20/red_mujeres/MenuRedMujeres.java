@@ -1,23 +1,27 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import cr.ac.ucr.ecci.cql.campus20.MainEmptyActivity;
-import cr.ac.ucr.ecci.cql.campus20.R;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class MenuRedMujeres extends AppCompatActivity {
 
@@ -27,7 +31,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 4 Julio no validado
     // 5 Claudia no validada
     // 6 Juan no validado
-    private static final String currentUser = "1";
+    private static String currentUser;
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
@@ -57,8 +61,29 @@ public class MenuRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mDatabase = FirebaseDatabase.getInstance();
-        recuperarDatos(currentUser);
+        recuperarId();
+    }
 
+    private void recuperarId() {
+        DatabaseReference root = mDatabase.getReference();
+
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                int i = 1; //Id del current user
+                String correoMujeres;
+                for (DataSnapshot snapshot : dataSnapshot.child("usuarios_red_mujeres").getChildren()) {
+                    correoMujeres = (String) snapshot.child("CorreoUCR").getValue(); //Correo bd red mujeres
+                    if (correoMujeres.equals(correo)) { //Correo de logueo
+                        currentUser = Integer.toString(i);
+                    }
+                    i += 1;
+                }
+                recuperarDatos(currentUser); //Validacion
+            }
+            @Override
+            public void fallo(DatabaseError databaseError) {}
+        });
     }
 
     private void recuperarDatos(String currentUserID) {

@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -163,8 +164,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
 
-    private Double lastLatitudeKnown = 0.0;
-    private Double lastLongitudeKnown = 0.0;
+    public  Double lastLatitudeKnown = 0.0;
+    public Double lastLongitudeKnown = 0.0;
 
     ArrayList<Map<String, Object>> userArr;
     ArrayList<Map<String, Object>> groupArr;
@@ -180,6 +181,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private Double latitudOri;
     private Double longitudOri;
 
+    private Double userLat = 0.0;
+    private Double userLong = 0.0;
+
+    int posiciones = 0;
+
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
 //    // Builder para cambiar perfil de navegacion
 //    private MapboxDirections mapboxDirections;
@@ -192,6 +198,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
+        deleteCoordinates();
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -218,6 +225,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
+                //setEmergencyPhone();
                 getGroupMembersPositions();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
@@ -236,6 +244,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Botón de visibilidad de la localización del usuario
                 FloatingActionButton fab = findViewById(R.id.floatingActionButton);
                 fab.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(View view) {
                         if (locationComponent.isLocationComponentEnabled()) {
@@ -521,6 +530,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
@@ -644,9 +654,11 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Double latitude = result.getLastLocation().getLatitude();
                 Double longitude  = result.getLastLocation().getLongitude();
                 //si la obicacion cambio tanto en latitud o longitud, actualizamos en la DB la informacion
-                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLatitudeKnown) != 0) {
+                if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLongitudeKnown) != 0) {
                     System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
                     UpdateMyLocation(latitude, longitude);
+                    userLat = latitude;
+                    userLong = longitude;
                 }
 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
@@ -688,15 +700,43 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         handler.post(runnable);
     }
 
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Denisse, Navigators: Berta, Aaron
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
+    public  List<Feature> setEmergencyPhone() {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.053143, 9.9379798 )));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9365951, -84.052528)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.051744, 9.9359527)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.050132, 9.9358129)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0493615, 9.9362323)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0487296, 9.9377568)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0513553, 9.9352736)));
+        return symbolLayerIconFeatureList;
+    }
+
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Aaron, Navigators: Berta, Denisse
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
+
     //Recibe mapa que devuelve la base de datos con las posiciones de cada miembro del equipo
     // Marca en el mapa las posiciones de estos
     private void addMarkers(List<Map<String,Object>> map){
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-
+        symbolLayerIconFeatureList = setEmergencyPhone();
         for(int i = 0 ; i < map.size() ; ++i){
             symbolLayerIconFeatureList.add(Feature.fromGeometry(
                     Point.fromLngLat( (Double)map.get(i).get("Longitud"), (Double)map.get(i).get("Latitud"))));
         }
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat( userLong, userLong)));
 
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
 
@@ -780,12 +820,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         usuarios.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    //interfaz para trajar datos fuera del contexto del OnChangeData
-    public interface FirebaseCallBack {
 
-        void onCallBack(ArrayList<Map<String, Object>> list);
-
-    }
 
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
@@ -799,9 +834,28 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
-
-
+        ref.child(this.userID).child("coordenadas").push().setValue(new LatLng(laititude,longitude));
     }
+
+    private void deleteCoordinates(){
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres").child(this.userID).child("coordenadas");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    snapshot.getRef().setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
 
 }
