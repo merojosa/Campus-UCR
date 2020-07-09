@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +28,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 
 public class NotificacionRespuestaService extends Service {
 
@@ -93,10 +90,10 @@ public class NotificacionRespuestaService extends Service {
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
                         // Se extrae cada uno de los datos necesarios
-                        id = ds.child("id").getValue(Integer.class);
-                        temaID = ds.child("temaID").getValue(Integer.class);
-                        preguntaID = ds.child("preguntaID").getValue(Integer.class);
-                        respuestaNotificada = ds.child("notificada").getValue(Integer.class);
+                        id = Objects.requireNonNull(ds.child("id").getValue(Integer.class));
+                        temaID = Objects.requireNonNull(ds.child("temaID").getValue(Integer.class));
+                        preguntaID = Objects.requireNonNull(ds.child("preguntaID").getValue(Integer.class));
+                        respuestaNotificada = Objects.requireNonNull(ds.child("notificada").getValue(Integer.class));
                         nombreUsuarioRespuesta = ds.child("nombreUsuario").getValue(String.class);
 
                         // Verifica si la respuesta ya fue notificada al usuario de interés
@@ -144,67 +141,74 @@ public class NotificacionRespuestaService extends Service {
         }
     }
 
-
-    // Método que obtiene el Card necesario para que la actividad de visualizar las preguntas se despliegue
+    /**
+     * Método que se encarga de obtener la referencia a la pregunta contestada y si se puede, notificarle
+     * al usuario apropiado la respuesta que otro usuario posteó en su pregunta.
+     * @param idFirebase, que es el id del campo de firebase de referencia de la respuesta, para modificar su estado de notificación
+     * @param temaID que es el id del tema al que hace referencia la respuesta
+     * @param preguntaID que es el id de la pregunta a la que hace referencia la respuesta
+     */
     private void getPreguntaReferencia(int idFirebase, int temaID, int preguntaID)
     {
         DatabaseReference ref = db.getPreguntasRef();
-            ref.child(Integer.toString(temaID)).child(Integer.toString(preguntaID)).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        ref.child(Integer.toString(temaID)).child(Integer.toString(preguntaID)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    // Extrae el nombre de usuario de la respuesta contestada
-                    String nombreUsuario = dataSnapshot.child("nombreUsuario").getValue(String.class);
-                    String texto = dataSnapshot.child("texto").getValue(String.class);
-                    int contadorLikes = dataSnapshot.child("contadorLikes").getValue(Integer.class);
-                    int contadorDislikes = dataSnapshot.child("contadorDisLikes").getValue(Integer.class);
-                    int resuelta = dataSnapshot.child("resuelta").getValue(Integer.class);
+                // Extrae el nombre de usuario de la respuesta contestada
+                String nombreUsuario = dataSnapshot.child("nombreUsuario").getValue(String.class);
+                String texto = dataSnapshot.child("texto").getValue(String.class);
+                int contadorLikes = Objects.requireNonNull(dataSnapshot.child("contadorLikes").getValue(Integer.class));
+                int contadorDislikes = Objects.requireNonNull(dataSnapshot.child("contadorDisLikes").getValue(Integer.class));
+                int resuelta = Objects.requireNonNull(dataSnapshot.child("resuelta").getValue(Integer.class));
 
-                    // Chequea si el nombre del usuario dueño de la pregunta contestada soy yo
-                    if (nombreUsuario.equals(miNombreUsuario) && (!nombreUsuario.equals(nombreUsuarioRespuesta)))
-                    {
-                        // Solo hasta que el usuario reciba la notificación de la respuesta a su pregunta
-                        // se le puede cambiar el estado de la misma a notificada
-                        db.getRespuestasRef().child(Objects.requireNonNull(Integer.toString(idFirebase))).child("notificada").setValue(1);
+                // Chequea si el nombre del usuario dueño de la pregunta contestada soy yo
+                // Además chequea si el dueño de la pregunta está loggeado, para enviarle la notificación
+                if (nombreUsuario.equals(miNombreUsuario) && (!nombreUsuario.equals(nombreUsuarioRespuesta)))
+                {
+                    // Solo hasta que el usuario reciba la notificación de la respuesta a su pregunta
+                    // se le puede cambiar el estado de la misma a notificada
+                    db.getRespuestasRef().child(Objects.requireNonNull(Integer.toString(idFirebase))).child("notificada").setValue(1);
 
-                        // Se crea la preguntaCard
-                        preguntaCard = new PreguntaCard(temaID, preguntaID, nombreUsuario, texto, contadorLikes, contadorDislikes, resuelta);
+                    // Se crea la preguntaCard
+                    preguntaCard = new PreguntaCard(temaID, preguntaID, nombreUsuario, texto, contadorLikes, contadorDislikes, resuelta);
 
-                        String notificationMessage = RESPUESTA_MESSAGE + preguntaCard.getTexto(); // Integer.toString(temaID) + Integer.toString(preguntaID);
+                    String notificationMessage = RESPUESTA_MESSAGE + preguntaCard.getTexto(); // Integer.toString(temaID) + Integer.toString(preguntaID);
 
-                        // Se crea el intent para la actividad en la app
-                        Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
+                    // Se crea el intent para la actividad en la app
+                    Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
 
-                        // Se le agregan los parámetros extra al intent
-                        intent.putExtra("preguntaSeleccionada", preguntaCard);
-                        intent.putExtra("nombreUsuario", nombreUsuario);
+                    // Se le agregan los parámetros extra al intent
+                    intent.putExtra("preguntaSeleccionada", preguntaCard);
+                    intent.putExtra("nombreUsuario", nombreUsuario);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                                .setSmallIcon(R.drawable.ic_foro)
-                                .setContentTitle("ForoGeneral")
-                                .setContentText(notificationMessage)
-                                .setStyle(new NotificationCompat.BigTextStyle()
-                                        .bigText(notificationMessage))
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                .setVibrate(new long[] { 1000, 1000})
-                                // Setea el intent que se ejecutará al seleccionar la notificación
-                                .setContentIntent(pendingIntent)
-                                .setAutoCancel(true);
+                    // Se arma la notificación
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_foro)
+                            .setContentTitle("ForoGeneral")
+                            .setContentText(notificationMessage)
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(notificationMessage))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setVibrate(new long[] { 1000, 1000})
+                            // Setea el intent que se ejecutará al seleccionar la notificación
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true);
 
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                        // notificationId is a unique int for each notification that you must define
-                        notificationManager.notify(createID(), builder.build());
-                    }
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                    // notificationId is a unique int for each notification that you must define
+                    notificationManager.notify(createID(), builder.build());
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
+            }
+        });
     }
 }

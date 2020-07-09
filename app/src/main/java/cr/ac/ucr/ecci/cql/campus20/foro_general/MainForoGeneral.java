@@ -103,24 +103,14 @@ public class MainForoGeneral extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
+                // Se manda a correr el servicio
                 startService(servicioIntent);
-                //pregunto cada 5 segundos
+                // Se pregunta cada 20 segundos por alguna nueva respuesta
                 handler.postDelayed(this, 20000);
             }
         };
         // The first time this runs we don't need a delay so we immediately post.
         handler.post(runnable);
-
-
-
-//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-//            @Override
-//            public void onChanged(List<Tema> temas) {
-//                adapter.setTemas(MainForoGeneral.this.temasLocales);
-//                //adapter.setTemas(temas);
-//                //llenarTemasFirebase(temas);
-//            }
-//        });
 
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override
