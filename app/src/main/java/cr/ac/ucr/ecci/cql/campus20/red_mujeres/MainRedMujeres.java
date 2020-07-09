@@ -96,6 +96,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
 
+    private String targerUser = null;
+    private String targerUserName = null;
+    List<String> params;
+
     // Variables para calcular y dibujar una ruta
     private DirectionsRoute currentRoute;
     private static final String TAG = "DirectionsActivity";
@@ -149,6 +153,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
         //deleteCoordinates();
+        setUrlParameters();
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -161,6 +166,17 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         mapView.getMapAsync(this);
 
         //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
+    }
+
+    private void setUrlParameters(){
+        //extraemos los parametros de con la informacion de quien nos compartio el viaje
+        Uri uri = getIntent().getData();
+        if(uri!= null){
+            params = uri.getPathSegments();
+            targerUser = params.get(0);//id
+            targerUserName = params.get(1);//nombre
+
+        }
     }
 
     // Determinar estilo de mapa y como reacciona a interacciones con el usuario
@@ -265,7 +281,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    
+
     public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         String num="911";
@@ -733,9 +749,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 ), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
-
-                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
-
+                if(targerUser!=null) {//Solo pasa si nos compartieron la ruta
+                    //Se dibuja la ruta a quien me compartio el viaje
+                    Point destinationPoint = Point.fromLngLat((Double)map.get(0).get("longDestino"), (Double)map.get(0).get("latDestino"));
+                    Point originPoint = Point.fromLngLat((Double)map.get(0).get("Longitud"),(Double) map.get(0).get("Latitud"));;
+                    getRoute(originPoint,destinationPoint);
+                }
 
             }
         });
@@ -753,13 +772,16 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Map<String,Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
                 ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
 
-                for(int i = 0 ; i< users.size();++i){
-                    //Recuperamos la informacion de los integrantes del grupo
-                    readGroupUsersData(""+users.get(i));
-                };
+                if(targerUser != null) {//Filtro por si es una persona especifica que nos compartio el viaje
+                    readGroupUsersData(targerUser);
+                }else {
+                    for (int i = 0; i < users.size(); ++i) {
+                        //Recuperamos la informacion de los integrantes del grupo
+                        readGroupUsersData("" + users.get(i));
+                    }
+                }
 
                 if(!usersLocations.equals(userArr)){
-                    System.out.println("Entreeeeeeee");
                     addMarkers(userArr);
                     usersLocations = new ArrayList<>(userArr);
                     userArr = new ArrayList<>();
@@ -811,7 +833,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
-        ref.child(this.userID).child("coordenadas").push().setValue(new LatLng(laititude,longitude));
+        //ref.child(this.userID).child("coordenadas").push().setValue(new LatLng(laititude,longitude));
     }
 
     private void deleteCoordinates(){
