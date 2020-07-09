@@ -108,6 +108,7 @@ public class RoleActivity extends AppCompatActivity
                     intent.putExtra("Soda", order.getRestaurant());
                     intent.putExtra("IdOrder", order.getIdOrder());
                     intent.putExtra("Repartidor", order.getUsername());
+                    intent.putExtra("Platillo", order.getMeal().getName());
                 }
                 else
                 {
