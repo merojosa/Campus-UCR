@@ -5,6 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +37,8 @@ import java.util.List;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Comment;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -135,6 +145,13 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             else
                 ref.child(Integer.toString(comment.getId())).child("dislike").setValue(comment.getDislike() + 1);
         }
+    }
+
+    @Override
+    public void onClick(Comment comment){
+        Intent childActivity = new Intent(view.getContext(), CommentDetail.class);
+        childActivity.putExtra("comment", comment);
+        ((Activity)view.getContext()).startActivity(childActivity);
     }
 
     private void setupCommentRating() {
