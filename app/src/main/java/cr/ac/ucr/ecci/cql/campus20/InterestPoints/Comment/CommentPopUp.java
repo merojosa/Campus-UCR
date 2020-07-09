@@ -56,8 +56,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.BuildConfig;
@@ -92,7 +95,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private boolean auxSorting;
     private boolean isPhotoLoaded;
     private File imageFile;
-    private String filename;
+    private String cameraFilePath;
 
     private static int GALLERY_REQUEST_CODE = 20, CAMERA_REQUEST_CODE = 21, CAMERA_PERMISSION_REQUEST = 22, STORAGE_PERMISSION_REQUEST = 23;
 
@@ -223,18 +226,36 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     public void takePicture(){
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-        } else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
+        } else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
         }else {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            String path = "fname_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-            imageFile = new File(Environment.getExternalStorageDirectory(), path);
-            imgUrl = FileProvider.getUriForFile(activity.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
-
-            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imgUrl);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+            imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
+            //imgUrl = FileProvider.getUriForFile(activity.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
+            try {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", createImageFile()));
+                //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        //This is the directory in which the file will be created. This is the default location of Camera photos
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for using again
+        cameraFilePath = "file://" + image.getAbsolutePath();
+        return image;
     }
 
     public void setImg(Uri uri){
@@ -371,6 +392,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         imgUrl = null;
         editComment = view.findViewById(R.id.comentario);
         editComment.setText("");
+        isPhotoLoaded = false;
     }
 
     public void setDataList(){
@@ -402,5 +424,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
         ref = db.getReference(place.getType()).child(Integer.toString(place.getId())).child("comments");
         ref.addValueEventListener(listener);
+    }
+
+    public String getCameraFilePath(){
+        return cameraFilePath;
     }
 }

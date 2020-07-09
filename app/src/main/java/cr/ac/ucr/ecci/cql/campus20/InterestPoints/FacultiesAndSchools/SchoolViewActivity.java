@@ -147,7 +147,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        //if (resultCode == Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case GALLERY_REQUEST_CODE:
                     //data.getData returns the content URI for the selected Image
@@ -155,6 +155,7 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
                     commentPopUp.setImg(selectedImage);
                     break;
                 case CAMERA_REQUEST_CODE:
+                    commentPopUp.setImg(Uri.parse(commentPopUp.getCameraFilePath()));
                     commentPopUp.notifyPhotoTaken();
             }
     }
