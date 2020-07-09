@@ -131,7 +131,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayLikes[indexPreg]--;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp-1,dislikesTemp);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         arrayStatusRank[indexPreg] = 0;
                         mRankRespuestaViewModel.delete(new RankRespuesta(idPregTemp,usuarioActual,1));
@@ -144,7 +144,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayDislikes[indexPreg]--;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp+1,dislikesTemp-1);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         arrayStatusRank[indexPreg] = 1;
                         RankRespuesta rankRespuesta = new RankRespuesta(idRespTemp,usuarioActual,1);
@@ -157,7 +157,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayLikes[indexPreg]++;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp+1,dislikesTemp);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         RankRespuesta rankRespuesta = new RankRespuesta(idRespTemp,usuarioActual,1);
                         mRankRespuestaViewModel.insert(rankRespuesta);
@@ -197,7 +197,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayDislikes[indexPreg]++;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp-1,dislikesTemp+1);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         RankRespuesta rankRespuesta = new RankRespuesta(idRespTemp,usuarioActual,2);
                         mRankRespuestaViewModel.update(rankRespuesta);
@@ -210,7 +210,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayDislikes[indexPreg]--;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp,dislikesTemp-1);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         RankRespuesta rankRespuesta = new RankRespuesta(idRespTemp,usuarioActual,2);
                         mRankRespuestaViewModel.delete(rankRespuesta);
@@ -223,7 +223,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
                         arrayDislikes[indexPreg]++;
                         respTemp = new Respuesta(idRespTemp,usuarioActual,textoTemp,idPregTemp,idTemaTemp,likesTemp,dislikesTemp+1);
                         mRespuestaViewModel.update(respTemp);
-                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idPregTemp)).child(Integer.toString(idRespTemp))
+                        RVAdapterRespuesta.this.databaseReference.getRespuestasRef().child(Integer.toString(idRespTemp))
                                 .setValue(respTemp);
                         RankRespuesta rankRespuesta = new RankRespuesta(idRespTemp,usuarioActual,2);
                         mRankRespuestaViewModel.insert(rankRespuesta);
