@@ -1,17 +1,21 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Photocopier;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Photocopier;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class PhotocopierViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
 
     String photocopierName;
+    Photocopier fotocopias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,24 @@ public class PhotocopierViewActivity extends AppCompatActivity implements ListAd
 
         TextView tittle = findViewById(R.id.photocopierName);
         tittle.setText(photocopierName);
+
+        fotocopias = intentPhotocopier.getParcelableExtra("place");
+
+        TextView desc = findViewById(R.id.descripcion);
+        desc.setText(fotocopias.description);
+
+        TextView horario = findViewById(R.id.horario);
+        horario.setText(fotocopias.horario);
+
+        TextView copias = findViewById(R.id.copias);
+        copias.setText(fotocopias.precioHoja);
+
+        ImageView wifi = findViewById(R.id.imageWiFi);
+        AppCompatCheckBox wifiCheck = findViewById(R.id.checkboxWiFi);
+
+        wifi.setImageResource(R.drawable.icon_wifi);
+        wifiCheck.setChecked(fotocopias.wifi);
+        wifiCheck.setEnabled(false);
 
     }
 

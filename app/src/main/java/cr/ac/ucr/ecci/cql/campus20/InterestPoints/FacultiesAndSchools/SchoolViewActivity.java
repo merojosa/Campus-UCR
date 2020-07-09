@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -86,6 +89,9 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     private ValueEventListener listenerLabs;
     private ValueEventListener listenerBathrooms;
     private ValueEventListener listenerAsociation;
+    private CommentPopUp commentPopUp;
+
+    private final int GALLERY_REQUEST_CODE = 20, CAMERA_REQUEST_CODE = 21, CAMERA_PERMISSION_REQUEST = 22, STORAGE_PERMISSION_REQUEST = 23;
 
 
     @Override
@@ -111,12 +117,13 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
         setListComponents();
 
         tittle.setText(placeName);
+        Activity activity = this;
         /*POPUP*/
         Button popButton = findViewById(R.id.comments);
         popButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommentPopUp commentPopUp = new CommentPopUp(view, place);
+                commentPopUp = new CommentPopUp(view, activity, place);
             }
         });
         /*POPUP*/
@@ -131,6 +138,46 @@ public class SchoolViewActivity extends AppCompatActivity implements ListAdapter
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    /*
+     * MPS4 - 02 Foto en el comentario
+     * Participantes: D: Sebastián Cruz, N: Luis Carvajal
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode){
+                case GALLERY_REQUEST_CODE:
+                    //data.getData returns the content URI for the selected Image
+                    Uri selectedImage = data.getData();
+                    commentPopUp.setImg(selectedImage);
+                    break;
+                case CAMERA_REQUEST_CODE:
+                    commentPopUp.setImg(Uri.parse(commentPopUp.getCameraFilePath()));
+                    commentPopUp.notifyPhotoTaken();
+            }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case STORAGE_PERMISSION_REQUEST:
+            case CAMERA_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    commentPopUp.takePicture();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
     public void setListComponents(){

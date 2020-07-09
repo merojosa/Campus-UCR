@@ -5,16 +5,16 @@ import android.os.Parcelable;
 
 public class Soda extends Place implements Parcelable {
 
-    private String horario;
-    private String oferta;
-    private int express;
+    public String horario;
+    public String oferta;
+    public boolean express;
 
     public Soda() {
         super();
         super.setType(TYPE_SODA);
     }
 
-    public Soda(int id, String name, String description, int image, double latitude, double longitude, Boolean wifi, String horario, String oferta, int express) {
+    public Soda(int id, String name, String description, int image, double latitude, double longitude, Boolean wifi, String horario, String oferta, boolean express) {
         super(id, name, description, image, TYPE_SODA);
         super.setLatitude(latitude);
         super.setLongitude(longitude);
@@ -39,7 +39,6 @@ public class Soda extends Place implements Parcelable {
         super(in);
         horario = in.readString();
         oferta = in.readString();
-        express = in.readInt();
         super.setType(TYPE_SODA);
     }
 
@@ -53,6 +52,5 @@ public class Soda extends Place implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(horario);
         dest.writeString(oferta);
-        dest.writeInt(express);
     }
 }

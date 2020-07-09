@@ -328,7 +328,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
         //int tipo = intent.getExtras().getInt("typeActivity");
 
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
@@ -341,7 +341,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, CoffeViewActivity.class);
                 }else if(place.getType().equals(Place.TYPE_SCHOOL)){
                     details = new Intent(Map.this, SchoolViewActivity.class);
-                    details.putExtra("place", (Parcelable) place);
                 } else if (place.getType().equals(Place.TYPE_SODA)) {
                     details = new Intent(Map.this, SodaViewActivity.class);
                 } else if (place.getType().equals(Place.TYPE_LIBRARY)) {
@@ -352,6 +351,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, PhotocopierViewActivity.class);
                 }
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                details.putExtra("place", place);
                 startActivity(details);
                 return true;
             }
