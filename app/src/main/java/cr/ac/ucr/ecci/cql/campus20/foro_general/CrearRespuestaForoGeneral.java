@@ -29,6 +29,7 @@ import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 
 
@@ -153,41 +154,72 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         int idTema = pregunta.getTemaID();
 
         //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
-        Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
-        mRespuestaViewModel.insert(respuesta);
+        //Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
+        //mRespuestaViewModel.insert(respuesta);
 
         //insertar en firebase
 
-        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
-        mRespuestaViewModel.getIDPorTextoYUsuario(respuesta.texto, respuesta.nombreUsuario).observe(this, new Observer<List<Respuesta>>() {
+        databaseReference.getRespuestasRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChanged(List<Respuesta> respuestas) {
-                int idGenerado = 0;
-                List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
-                for (Respuesta respuestaTemp : respuestas) {
-                    idGenerado = respuestaTemp.getId();
-                    respuestaRoom.add(respuestaTemp);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int id;
+                if(dataSnapshot.getValue() == null){
+                    id = 1;
+                }else{
+                    id = (int) dataSnapshot.getChildrenCount() + 1;
                 }
+                String texto = mEditText.getText().toString();
+                Respuesta respuesta = new Respuesta(id, nombreUsuario, textoRespuesta, idPregunta, idTema, 0,0);
 
-                if (respuestaRoom.size() > 0)
-                {
-                    // Inserta en Firebase tambien
-                    CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
+                // Inserta en Firebase tambien
+                CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(id)).setValue(respuesta);
 
-                    // Servicio para detectar el estado de la orden (falta probar)
-                    Intent servicioIntent = new Intent(CrearRespuestaForoGeneral.this, NotificacionRespuestaService.class);
-                    servicioIntent.putExtra("llave_pregunta", Integer.toString(pregunta.getId()));
-                    //servicioIntent.putExtra("llave_tema", pregunta.temaID);
-                    startService(servicioIntent);
+                // Servicio para detectar el estado de la orden (falta probar)
+                Intent servicioIntent = new Intent(CrearRespuestaForoGeneral.this, NotificacionRespuestaService.class);
+                servicioIntent.putExtra("llave_pregunta", Integer.toString(pregunta.getId()));
+                //servicioIntent.putExtra("llave_tema", pregunta.temaID);
+                startService(servicioIntent);
 
-                    //Luego de insertar volver a vista previa
-                    Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
-                    intent.putExtra("preguntaSeleccionada", pregunta);
-                    startActivity(intent);
-                }
+                //Luego de insertar volver a vista previa
+                Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
+                intent.putExtra("preguntaSeleccionada", pregunta);
+                startActivity(intent);
 
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+
+//        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
+//        mRespuestaViewModel.getIDPorTextoYUsuario(respuesta.texto, respuesta.nombreUsuario).observe(this, new Observer<List<Respuesta>>() {
+//            @Override
+//            public void onChanged(List<Respuesta> respuestas) {
+//                int idGenerado = 0;
+//                List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
+//                for (Respuesta respuestaTemp : respuestas) {
+//                    idGenerado = respuestaTemp.getId();
+//                    respuestaRoom.add(respuestaTemp);
+//                }
+//
+//                if (respuestaRoom.size() > 0)
+//                {
+//                    // Inserta en Firebase tambien
+//                    CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(pregunta.getId())).child(Integer.toString(idGenerado)).setValue(respuestaRoom.get(0));
+//
+//                    // Servicio para detectar el estado de la orden (falta probar)
+//                    Intent servicioIntent = new Intent(CrearRespuestaForoGeneral.this, NotificacionRespuestaService.class);
+//                    servicioIntent.putExtra("llave_pregunta", Integer.toString(pregunta.getId()));
+//                    //servicioIntent.putExtra("llave_tema", pregunta.temaID);
+//                    startService(servicioIntent);
+//
+//                    //Luego de insertar volver a vista previa
+//                    Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerRespuestas.class);
+//                    intent.putExtra("preguntaSeleccionada", pregunta);
+//                    startActivity(intent);
+//                }
+//
+//            }
+//        });
     }
 
     /**
