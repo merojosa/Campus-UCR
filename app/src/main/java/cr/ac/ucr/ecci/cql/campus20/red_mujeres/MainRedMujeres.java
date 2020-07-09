@@ -67,6 +67,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,18 +139,16 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     int posiciones = 0;
 
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
-//    // Builder para cambiar perfil de navegacion
-//    private MapboxDirections mapboxDirections;
-//    private MapboxDirections.Builder directionsBuilder;
 
     // Botón para inicializar navegación
     private Button button;
+    private FireBaseRedMujeres bd = new FireBaseRedMujeres();
 
     // Despliegue mapa al llamar a la actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
-        deleteCoordinates();
+        //deleteCoordinates();
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -183,9 +185,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
-                        iniciarRuta();
+                        popupRutaComunidades();
                     }
                 });
 
@@ -237,6 +237,35 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
     }
 
+    public void popupRutaComunidades() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
+
+        builder.setTitle("Enviar ruta a la comunidad");
+        builder.setMessage("¿Desea que las personas de la comunidad puedan unirse a su ruta?");
+
+        String positiveText = "Sí";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        //No se desea compartir el viaje, cerramos el pop up
+        String negativeText = "No";
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        iniciarRuta();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
     public void panico(int truePanic) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         String num="911";
