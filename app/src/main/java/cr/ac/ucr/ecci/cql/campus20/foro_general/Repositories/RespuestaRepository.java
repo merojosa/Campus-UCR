@@ -34,6 +34,17 @@ public class RespuestaRepository {
     }
 
     /**
+     * Update a la base de datos, para actualizar una respuesta dentro de la tabla
+     *
+     * @param respuesta la respuesta a actualizar
+     */
+    public void update(Respuesta respuesta) {
+        ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
+            mRespuestaDao.update(respuesta);
+        });
+    }
+
+    /**
      * Recupera un LiveData (lista que puede cambiar) de respuestas de una pregunta asociado
      * @param id Identificar de la pregunta
      * @return

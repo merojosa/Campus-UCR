@@ -43,4 +43,7 @@
     <string name="meals_left_placeholder">Restantes: %1$d de %2$d</string>
     <string name="capacity_left_placeholder">Capacidad: %1$d de %2$d</string>
     <string name="servings_placeholder">Porciones: %1$d de %2$d</string>
+
+    <!-- Foro General-->
+    <string name="mis_preguntas">Mis preguntas</string>
 </resources>

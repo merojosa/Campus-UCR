@@ -146,6 +146,12 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(CrearRespuestaForoGeneral.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", CrearRespuestaForoGeneral.this.nombreUsuario);
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, ConfiguracionActivity.class));
                         break;
@@ -210,9 +216,9 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             public void onChanged(List<Respuesta> respuestas) {
                 int idGenerado = 0;
                 List<Respuesta> respuestaRoom = new ArrayList<Respuesta>();
-                for (Respuesta respuesta : respuestas) {
-                    idGenerado = respuesta.id;
-                    respuestaRoom.add(respuesta);
+                for (Respuesta respuestaTemp : respuestas) {
+                    idGenerado = respuestaTemp.getId();
+                    respuestaRoom.add(respuestaTemp);
                 }
 
                 // Inserta en Firebase tambien

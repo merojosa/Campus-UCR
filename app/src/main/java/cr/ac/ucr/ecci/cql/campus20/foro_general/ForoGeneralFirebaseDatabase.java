@@ -13,6 +13,7 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
     private static String PREGUNTAS_PATH = "preguntas";
     private static String RESPUESTAS_PATH = "respuestas";
     private static String RANKINGS_PATH = "rankings";
+    private static String PREGUNTAS_ID = "preguntas_id";
 
     private DatabaseReference rootReference = null;
     private FirebaseDatabase mDatabase;
@@ -26,6 +27,7 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
         this.rootReference.child(PREGUNTAS_PATH).keepSynced(true);
         this.rootReference.child(RESPUESTAS_PATH).keepSynced(true);
         this.rootReference.child(RANKINGS_PATH).keepSynced(true);
+        this.rootReference.child(PREGUNTAS_ID).keepSynced(true);
     }
 
     public String obtenerUsuario()
@@ -55,6 +57,6 @@ public class ForoGeneralFirebaseDatabase extends FirebaseBD
     // Método que devuelve la referencia al child Rankings
     public DatabaseReference getRankingsRef() { return this.rootReference.child(RANKINGS_PATH); }
 
-
-
+    // Método que devuelve la referencia al child Rankings
+    public DatabaseReference getPreguntasIDRef() { return this.rootReference.child(PREGUNTAS_ID); }
 }

@@ -170,6 +170,12 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", CrearPreguntaForoGeneral.this.nombreUsuario);
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(CrearPreguntaForoGeneral.this, ConfiguracionActivity.class));
                         break;
@@ -213,30 +219,27 @@ public class CrearPreguntaForoGeneral extends AppCompatActivity {
     }
 
     private void agregarPregunta() {
-        String texto = mEditText.getText().toString();
-        Pregunta pregunta = new Pregunta(0, nombreUsuario, idTemaSeleccionado, texto, 0, 0);
-        mPreguntaViewModel.insert(pregunta);
-
-        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
-        mPreguntaViewModel.getIDPorTextoYUsuario(pregunta.texto, pregunta.nombreUsuario).observe(this, new Observer<List<Pregunta>>() {
+        databaseReference.getPreguntasIDRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChanged(List<Pregunta> preguntas) {
-                int idGenerado = 0;
-                List<Pregunta> preguntaRoom = new ArrayList<Pregunta>();
-                for(Pregunta pregunta : preguntas){
-                    idGenerado = pregunta.id;
-                    preguntaRoom.add(pregunta);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int id;
+                if(dataSnapshot.getValue() == null){
+                    id = 1;
+                }else{
+                    id = dataSnapshot.getValue(Integer.class) + 1;
                 }
-
-                // Inserta en Firebase tambien
-                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(idGenerado)).setValue(preguntaRoom.get(0));
-
+                String texto = mEditText.getText().toString();
+                Pregunta pregunta = new Pregunta(id, nombreUsuario, idTemaSeleccionado, texto, 0, 0,0);
+                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasRef().child(Integer.toString(pregunta.temaID)).child(Integer.toString(id)).setValue(pregunta);
+                CrearPreguntaForoGeneral.this.databaseReference.getPreguntasIDRef().setValue(id);
                 Intent intent = new Intent(CrearPreguntaForoGeneral.this, ForoGeneralVerPreguntas.class);
                 // Llamada a la actividad de ver respuestas
                 intent.putExtra("idTemaSeleccionado", idTemaSeleccionado);
                 intent.putExtra("temaSeleccionado", temaSeleccionado);
                 startActivity(intent);
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 }
