@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -39,13 +39,19 @@
         <item name="android:dropDownVerticalOffset">4.0dip</item>
     </style>
 
-    <style name="AppTheme.RedMujeres" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.RedMujeres" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/celeste_UCR</item>
         <item name="colorPrimaryVariant">@color/azul_UCR</item>
         <item name="colorOnPrimary">@color/blanco_UCR</item>
         <item name="colorSecondary">@color/verde_UCR</item>
         <item name="colorSecondaryVariant">@color/amarillo_UCR</item>
         <item name="colorOnSecondary">@color/gris_oscuro_UCR</item>
+        <item name="android:fontFamily">@font/myriad_pro_semi</item>
+
+
+
+
+
     </style>
 
     <style name="NavigationMapRoute">

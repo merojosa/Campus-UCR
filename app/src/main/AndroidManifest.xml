@@ -15,7 +15,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".red_mujeres.Settings"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.RedMujeres">
+
+        </activity>
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
         <activity android:name=".red_mujeres.MisComunidades" />
