@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -332,7 +333,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, CoffeViewActivity.class);
                 }else if(place.getType().equals(Place.TYPE_SCHOOL)){
                     details = new Intent(Map.this, SchoolViewActivity.class);
-                    details.putExtra("place", place);
+                    details.putExtra("place", (Parcelable) place);
                 } else if (place.getType().equals(Place.TYPE_SODA)) {
                     details = new Intent(Map.this, SodaViewActivity.class);
                 } else if (place.getType().equals(Place.TYPE_LIBRARY)) {

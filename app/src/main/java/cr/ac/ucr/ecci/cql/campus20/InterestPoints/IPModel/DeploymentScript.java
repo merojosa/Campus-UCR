@@ -49,7 +49,7 @@ public class DeploymentScript {
     public void RunScript(FirebaseDB db, Context context) {
         this.db = db;
         createFaculties();
-        createPlaces();
+        //createPlaces();
         createSchools();
         createCoffeShops();
         createLibrary();
@@ -99,34 +99,35 @@ public class DeploymentScript {
 
     //Creación de las cafeterías en la base de datos
     private void createCoffeShops() {
-        Coffee angar = new Coffee(0,  "Café Angar", "", R.drawable.coffeshop512px,9.938051, -84.052969);
-        db.insert("Coffe", angar);
 
-        Coffee noventaYCinco = new Coffee(1, "95 grados", "", R.drawable.coffeshop512px,9.932305, -84.049769);
-        db.insert("Coffe", noventaYCinco);
+        Coffee angar = new Coffee(0,  "Café Angar", "El cafesito de los de Info", R.drawable.coffeshop512px,9.938051, -84.052969, "9:00 am - 6:00 pm", false, "Capuccino Vainilla");
+        db.insert(Place.TYPE_COFFEE, angar);
 
-        Coffee krakovia = new Coffee(2,  "Café Krakovia", "", R.drawable.coffeshop512px,9.937929, -84.053974);
-        db.insert("Coffe", krakovia);
+        Coffee noventaYCinco = new Coffee(1, "95 grados", "La mejor cafetería de San Pedro", R.drawable.coffeshop512px,9.932305, -84.049769, "10:00 am - 8:00 pm", true, "Moccaccino" );
+        db.insert(Place.TYPE_COFFEE, noventaYCinco);
 
-        Coffee aroma = new Coffee(3, "Aroma y Sabor", "", R.drawable.coffeshop512px,9.935199, -84.051267);
-        db.insert("Coffe", aroma);
+        Coffee krakovia = new Coffee(2,  "Café Krakovia", "El mejor capucciono del país", R.drawable.coffeshop512px,9.937929, -84.053974, "09:00 am - 7:00 pm", true, "Pan Bom con Café");
+        db.insert(Place.TYPE_COFFEE, krakovia);
 
-        Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "", R.drawable.pan512px,9.931796, -84.052945);
-        db.insert("Coffe", musmanni);
+        Coffee aroma = new Coffee(3, "Aroma y Sabor", "Para pasar la tarde", R.drawable.coffeshop512px,9.935199, -84.051267, "11:00 am - 8:00 pm", false, "Sandwich de Pollo");
+        db.insert(Place.TYPE_COFFEE, aroma);
 
-        Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "", R.drawable.coffeshop512px,9.931822, -84.052903);
-        db.insert("Coffe", rincon);
+        Coffee musmanni = new Coffee(4,  "Musmanni San Pedro", "A 3 por mil el melcochón", R.drawable.pan512px,9.931796, -84.052945, "11:00 am - 8:00 pm", true, "Sandwich de Pollo");
+        db.insert(Place.TYPE_COFFEE, musmanni);
 
-        Coffee cafe_esquina = new Coffee(6, "La Cafetería de la Esquina", "", R.drawable.coffeshop512px,9.931693, -84.052243);
-        db.insert("Coffe", cafe_esquina);
+        Coffee rincon = new Coffee(5, "Café El Rincón de la Vieja", "CAfé para toda la familia", R.drawable.coffeshop512px,9.931822, -84.052903, "09:00 am - 6:00 pm", false, "2x1 Cafés");
+        db.insert(Place.TYPE_COFFEE, rincon);
 
-        Coffee ruiseñor = new Coffee(7, "Cafetería Ruiseñor", "", R.drawable.coffeshop512px, 9.934383, -84.056577);
-        db.insert("Coffe", ruiseñor);
+        Coffee cafe_esquina = new Coffee(6, "La Cafetería de la Esquina", "La esquinita de San Peter ", R.drawable.coffeshop512px,9.931693, -84.052243, "10:00 am - 6:00 pm", true, "Café con Empanada");
+        db.insert(Place.TYPE_COFFEE, cafe_esquina);
+
+        Coffee ruiseñor = new Coffee(7, "Cafetería Ruiseñor", "Viva la liga...", R.drawable.coffeshop512px, 9.934383, -84.056577, "07:00 am - 5:00 pm", true, "Pie de Limón");
+        db.insert(Place.TYPE_COFFEE, ruiseñor);
 
         Log.d("coffeShops", "CoffeShops were inserted in database.");
     }
 
-    private void createPlaces() {
+    /*private void createPlaces() {
         List<Place> placesList = new ArrayList<>();
         String[] PlaceNames = {"Finca 1", "Finca 2", "Finca 3"};
         String[] PlaceDescriptions = {"Finca principal.", "Ciudad de la Investigación", "Deportivas"};
@@ -140,7 +141,7 @@ public class DeploymentScript {
             db.insert("Place", p);
         }
         Log.d("places", "Places were inserted in database.");
-    }
+    }*/
 
     private void createSchools() {
 
@@ -432,115 +433,115 @@ public class DeploymentScript {
 
     //Creación de las bibliotecas en la base de datos
     private void createLibrary() {
-        Library tinoco = new Library(0,  "Luis Demetrio Tinoco Castro", "", R.drawable.libros, 9.936151, -84.052704);
+        Library tinoco = new Library(0,  "Luis Demetrio Tinoco Castro", "", R.drawable.libros, 9.936151, -84.052704, "9:00 - 16:00", true);
         db.insert("Library", tinoco);
 
-        Library carlos = new Library(1, "Carlos Monge Alfaro", "", R.drawable.libros, 9.936166, -84.051072);
+        Library carlos = new Library(1, "Carlos Monge Alfaro", "", R.drawable.libros, 9.936166, -84.051072, "9:00 - 16:00", true);
         db.insert("Library", carlos);
 
-        Library salud = new Library(2, "Biblioteca Ciencias de la Salud", "", R.drawable.libros,9.938715, -84.051115 );
+        Library salud = new Library(2, "Biblioteca Ciencias de la Salud", "", R.drawable.libros,9.938715, -84.051115, "9:00 - 16:00", true);
         db.insert("Library", salud);
 
-        Library agro = new Library(3, "Biblioteca Ciencias Agroalimentarias", "", R.drawable.libros, 9.939773, -84.047757);
+        Library agro = new Library(3, "Biblioteca Ciencias Agroalimentarias", "", R.drawable.libros, 9.939773, -84.047757, "9:00 - 16:00", true);
         db.insert("Library", agro);
 
-        Library educa = new Library(4, "Biblioteca Facultad de Educación", "", R.drawable.libros, 9.936271, -84.048458);
+        Library educa = new Library(4, "Biblioteca Facultad de Educación", "", R.drawable.libros, 9.936271, -84.048458, "9:00 - 16:00", true);
         db.insert("Library", educa);
 
-        Library derecho = new Library(4, "Biblioteca Facultad de Derecho", "", R.drawable.libros, 9.936271, -84.048458);
+        Library derecho = new Library(4, "Biblioteca Facultad de Derecho", "", R.drawable.libros, 9.936271, -84.048458, "9:00 - 16:00", true);
         db.insert("Library", derecho);
     }
 
     //Creación de las oficinas en la base de datos
     private void createOffice() {
-        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.936313, -84.050436);
+        Office oficina1 = new Office(0,  "Oficina de Generales", "", R.drawable.administracion, 9.936313, -84.050436, "7:00-16:00", "2211-0000");
         db.insert("Office", oficina1);
 
-        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.938030, -84.052168);
+        Office oficina2 = new Office(1,  "OCCI", "", R.drawable.administracion, 9.938030, -84.052168, "7:00-16:00", "2211-0000");
         db.insert("Office", oficina2);
 
-        Office ori = new Office(2, "Oficinas de Registro e Información", "", R.drawable.administracion, 9.937079, -84.051010);
+        Office ori = new Office(2, "Oficinas de Registro e Información", "", R.drawable.administracion, 9.937079, -84.051010, "7:00-16:00", "2211-0000");
         db.insert("Office", ori);
 
-        Office becas = new Office(3, "Oficina de Becas y Atención Socioeconomicas", "", R.drawable.administracion, 9.935737, -84.054143);
+        Office becas = new Office(3, "Oficina de Becas y Atención Socioeconomicas", "", R.drawable.administracion, 9.935737, -84.054143, "7:00-16:00", "2211-0000");
         db.insert("Office", becas);
 
-        Office orientacion = new Office(4, "Oficina de Orientación Vocacional", "", R.drawable.administracion,9.937486, -84.053076);
+        Office orientacion = new Office(4, "Oficina de Orientación Vocacional", "", R.drawable.administracion,9.937486, -84.053076, "7:00-16:00", "2211-0000");
         db.insert("Office", orientacion);
 
-        Office juridica = new Office(5, "Oficina Jurídica de la UCR","",R.drawable.administracion,9.933635, -84.053301);
+        Office juridica = new Office(5, "Oficina Jurídica de la UCR","",R.drawable.administracion,9.933635, -84.053301, "7:00-16:00", "2211-0000");
         db.insert("Office", juridica);
 
-        Office ambiente = new Office(6, "Unidad de Gestión Ambiental", "", R.drawable.administracion, 9.933984, -84.052995);
+        Office ambiente = new Office(6, "Unidad de Gestión Ambiental", "", R.drawable.administracion, 9.933984, -84.052995, "7:00-16:00", "2211-0000");
         db.insert("Office", ambiente);
 
-        Office contra = new Office(7,  "Contraloría Universitaria", "", R.drawable.administracion, 9.935174, -84.054931);
+        Office contra = new Office(7,  "Contraloría Universitaria", "", R.drawable.administracion, 9.935174, -84.054931, "7:00-16:00", "2211-0000");
         db.insert("Office", contra);
 
-        Office obas = new Office(8,  "Oficinas de Bienestar y Salud (OBAS)", "", R.drawable.administracion,9.935477, -84.052358 );
+        Office obas = new Office(8,  "Oficinas de Bienestar y Salud (OBAS)", "", R.drawable.administracion,9.935477, -84.052358, "7:00-16:00", "2211-0000");
         db.insert("Office", obas);
 
     }
 
     private void createSoda() {
-        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535);
+        Soda farma = new Soda(0,  "Soda de Farmacia", "", R.drawable.sandwich, 9.939096, -84.049535, true,"7:00 am - 7:00pm", "Melcochon: 2x1", 0);
         db.insert("Soda", farma);
 
-        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514);
+        Soda generales = new Soda(1,  "Soda de Generales", "", R.drawable.sandwich, 9.936242, -84.050514, false, "5:00 am - 5:00pm", "Cafe con leche: 5x1", 1);
         db.insert("Soda", generales);
 
-        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875);
+        Soda lucy = new Soda(2,  "Soda Lucy", "", R.drawable.sandwich, 9.934352, -84.052875, true, "7:00 am - 7:00pm", "Chicky's gratis", 0);
         db.insert("Soda", lucy);
 
-        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012);
+        Soda derecho = new Soda(3,  "Soda de Derecho", "", R.drawable.sandwich, 9.936421, -84.054012, false, "7:00 am - 3:00pm",  "Rice and Beans: 2x1", 1);
         db.insert("Soda", derecho);
 
-        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890);
+        Soda educa = new Soda(4,  "Soda de Educación", "", R.drawable.sandwich, 9.936302, -84.048890, true, "9:00 am - 3:30pm",  "PanBon: 2x1", 1);
         db.insert("Soda", educa);
 
-        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600);
+        Soda comedor = new Soda(5,  "Comedor Estudiantil", "", R.drawable.sandwich, 9.938669, -84.053600, true, "10:00 am - 2:00pm",  "Lasagna: 3000", 0);
         db.insert("Soda", comedor);
 
-        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040);
+        Soda sodau = new Soda(6,  "Soda U", "", R.drawable.sandwich, 9.934635, -84.051040, true, "7:00 am - 7:00pm",  "Empanadas a mil", 1);
         db.insert("Soda", sodau);
 
-        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473);
+        Soda agro = new Soda(7,  "Soda de Agronomía", "", R.drawable.sandwich, 9.939332, -84.048473, true,"7:00 am - 7:00pm", "Elotes frescos a 500", 0);
         db.insert("Soda", agro);
 
     }
 
     private void createPhotocopier() {
-        Photocopier exactas = new Photocopier(0,  "CopiasExactas", "", R.drawable.impresora, 9.943473, -84.0469052);
+        Photocopier exactas = new Photocopier(0,  "CopiasExactas", "", R.drawable.impresora, 9.943473, -84.0469052, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", exactas);
 
-        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.935302, -84.050955);
+        Photocopier millenium = new Photocopier(1,  "Impresiones Millenium", "", R.drawable.impresora, 9.935302, -84.050955, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", millenium);
 
-        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.934919, -84.051658);
+        Photocopier misCopias = new Photocopier(2,  "Mis Copias", "", R.drawable.impresora, 9.934919, -84.051658, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", misCopias);
 
-        Photocopier kike = new Photocopier(3,  "Copias KIKE", "", R.drawable.impresora,9.935144, -84.051384 );
+        Photocopier kike = new Photocopier(3,  "Copias KIKE", "", R.drawable.impresora,9.935144, -84.051384, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", kike);
 
-        Photocopier derecho = new Photocopier(4,  "Centro de Fotocopiado Derecho UCR", "", R.drawable.impresora, 9.936306, -84.054077);
+        Photocopier derecho = new Photocopier(4,  "Centro de Fotocopiado Derecho UCR", "", R.drawable.impresora, 9.936306, -84.054077, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", derecho);
 
-        Photocopier activas = new Photocopier(5,  "Copias Activas", "", R.drawable.impresora, 9.932461, -84.051043);
+        Photocopier activas = new Photocopier(5,  "Copias Activas", "", R.drawable.impresora, 9.932461, -84.051043, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", activas);
 
-        Photocopier sui = new Photocopier(6,  "Fotocopiadora Sui Generis", "", R.drawable.impresora, 9.934026, -84.050932);
+        Photocopier sui = new Photocopier(6,  "Fotocopiadora Sui Generis", "", R.drawable.impresora, 9.934026, -84.050932, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", sui);
 
-        Photocopier logo = new Photocopier(7,  "Logo Print", "", R.drawable.impresora,9.935319, -84.050932 );
+        Photocopier logo = new Photocopier(7,  "Logo Print", "", R.drawable.impresora,9.935319, -84.050932, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", logo);
 
-        Photocopier express = new Photocopier(8,  "Kopias Express", "", R.drawable.impresora, 9.935945, -84.057178);
+        Photocopier express = new Photocopier(8,  "Kopias Express", "", R.drawable.impresora, 9.935945, -84.057178, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", express);
 
-        Photocopier meju = new Photocopier(9,  "MejuCopi", "", R.drawable.impresora, 9.932985, -84.051620);
+        Photocopier meju = new Photocopier(9,  "MejuCopi", "", R.drawable.impresora, 9.932985, -84.051620, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", meju);
 
-        Photocopier copicentro = new Photocopier(10, "Copicentro", "", R.drawable.impresora, 9.933344, -84.068378);
+        Photocopier copicentro = new Photocopier(10, "Copicentro", "", R.drawable.impresora, 9.933344, -84.068378, true, "9:00-19:30", "₡15 B/N \n₡25 Color");
         db.insert("Photocopier", copicentro);
     }
 
