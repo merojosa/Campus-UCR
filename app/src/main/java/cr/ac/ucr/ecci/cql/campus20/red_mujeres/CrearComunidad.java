@@ -87,7 +87,7 @@ public class CrearComunidad extends AppCompatActivity {
     }
 
     //Método para almacenar la nueva comunidad en la base de datos
-    private void escribirComunidadEnBD(String usuarioID, String nombreGrupo, String descripcionGrupo) {
+    public void escribirComunidadEnBD(String usuarioID, String nombreGrupo, String descripcionGrupo) {
         DatabaseReference ref = mDatabase.getReference("Comunidades");
 
         //Almacenamiento de los detalles del grupo en la base de datos
