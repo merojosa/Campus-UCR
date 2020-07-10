@@ -23,7 +23,7 @@ public class MisPreguntasForoGeneralTest {
     private final String USUARIO_TEST = "test";
     private final String TEXTO_PREGUNTA = "Cuándo comienza el segundo semestre?";
     private final int ID = 1;
-    private final int CONTADOR_LIKES = 0;
+    private final int CONTADOR_LIKES = 1;
     private final int CONTADOR_DISLIKES = 0;
     private final int RESUELTA = 0;
     private final int TEMA_ID = 1;
