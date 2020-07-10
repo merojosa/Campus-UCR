@@ -49,13 +49,13 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
     private Button adjuntarMapa;
+    private TextView textoMapaAgregado;
 
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-    private ArrayList<Double> coordenadas;
     private Double lat;
     private Double lon;
     private boolean mapaAgregado;
@@ -77,6 +77,8 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
+        textoMapaAgregado = (TextView) findViewById(R.id.textoMapaAdjuntado);
+
         //Si esta en el defaultValue es porque no viene de la actividad de agregar mapa.
         mapaAgregado = mIntent.getBooleanExtra("mapaAgregado", false);
 
@@ -84,6 +86,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         if (mapaAgregado == true) {
             lat = mIntent.getDoubleExtra("latitud", 0.0);
             lon = mIntent.getDoubleExtra("longitud", 0.0);
+            textoMapaAgregado.setText("Mapa Agregado");
         }
 
         // Codigo para manejar color del boton y evento de click
@@ -94,7 +97,6 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         adjuntarMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //coordenadas = agregarMapa();
                 agregarMapa();
             }
         });
@@ -175,6 +177,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private void agregarMapa() {
         Intent intent = new Intent(this, AgregarMapa.class);
         //AGREGAR DATOS
+        if(mapaAgregado == true){
+            intent.putExtra("latitud", lat);
+            intent.putExtra("longitud", lon);
+            intent.putExtra("mapaAgregado", true);//Indica que el mapa ya habia sido agregado
+
+        }
+        intent.putExtra("preguntaSeleccionada", pregunta);
+        intent.putExtra("nombreUsuario", nombreUsuario);
         startActivity(intent);
         //llama la actividad de mapas
 
@@ -189,13 +199,11 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         int idPregunta = pregunta.getId();
         int idTema = pregunta.getTemaID();
 
-        //TODO AGREGAR DATOS DE MAPA A OBJETO RESPUESTA
         //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
         //Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
         //mRespuestaViewModel.insert(respuesta);
 
         //insertar en firebase
-
         databaseReference.getRespuestasRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -206,7 +214,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                     id = (int) dataSnapshot.getChildrenCount() + 1;
                 }
                 String texto = mEditText.getText().toString();
-                Respuesta respuesta = new Respuesta(id, nombreUsuario, textoRespuesta, idPregunta, idTema, 0,0);
+                Respuesta respuesta = new Respuesta(id, nombreUsuario, textoRespuesta, idPregunta, idTema, 0,0, lat, lon, mapaAgregado);
 
                 // Inserta en Firebase tambien
                 CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(id)).setValue(respuesta);

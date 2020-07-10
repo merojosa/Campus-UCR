@@ -40,10 +40,10 @@
             android:layout_width="62dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:backgroundTint="@color/azul_UCR"
+
             android:elevation="0dp"
             app:srcCompat="@drawable/icono_agregar_preguntas_foro_general"
-            mapbox:backgroundTint="@color/verde_UCR"
+android:background="@color/gris_medio_UCR"
             mapbox:layout_constraintBottom_toBottomOf="@+id/mapView"
             mapbox:layout_constraintEnd_toEndOf="parent"
             mapbox:maxImageSize="26dp"

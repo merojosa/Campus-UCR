@@ -2,9 +2,9 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_crear_respuesta"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main_crear_respuesta"
     tools:context=".foro_general.CrearRespuestaForoGeneral">
 
     <RelativeLayout
@@ -62,6 +62,22 @@
             android:focusable="true"
             android:textStyle="bold" />
 
+
+        <TextView
+            android:id="@+id/textoMapaAdjuntado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="426dp"
+            android:layout_marginEnd="8dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btnCrearRespuesta"
             android:layout_width="wrap_content"
@@ -93,6 +109,6 @@
     <!-- Código para incluir el menu de navegación izquierda a derecha del Foro-->
     <include
         android:id="@+id/nv_foro"
-        layout="@layout/nav_izq_der_foro"/>
+        layout="@layout/nav_izq_der_foro" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

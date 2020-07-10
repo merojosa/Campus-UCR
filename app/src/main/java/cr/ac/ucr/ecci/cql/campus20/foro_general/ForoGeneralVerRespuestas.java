@@ -104,25 +104,24 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         //boton para marcar como resuelto
         marcarResuelto = findViewById(R.id.marcarResuelto);
 
-        if (cerrada[0] == 1){//la pregunta ha sido cerrada
+        if (cerrada[0] == 1) {//la pregunta ha sido cerrada
             marcarResuelto.setChecked(true);
             buttonAgregarRespuestas.setVisibility(View.INVISIBLE);
-        }
-        else{
+        } else {
             marcarResuelto.setChecked(false);
             marcarResuelto.setText("Marcar como resuelta");
             buttonAgregarRespuestas.setVisibility(View.VISIBLE);
         }
 
         // Asocia evento clic al boton
-        marcarResuelto.setOnClickListener(new View.OnClickListener(){
+        marcarResuelto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //primero verifica que la pregunta este abierta
                 String creador = preguntaSeleccionada.getNombreUsuario();
-                if(cerrada[0] != 1){
+                if (cerrada[0] != 1) {
                     //luego verifica si el usuario es el creador de la pregunta
-                    if(nombreUsuario.compareTo(creador) == 0){
+                    if (nombreUsuario.compareTo(creador) == 0) {
                         //llama al metodo para cerrar la pregunta
                         cerrarReabrirPregunta(preguntaSeleccionada, 1);
                         //reporta que se cerro la pregunta
@@ -130,17 +129,15 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                         marcarResuelto.setText("Resuelto");
                         //invisible para agregar respuestas
                         buttonAgregarRespuestas.setVisibility(View.INVISIBLE);
-                        cerrada[0] =1;
-                    }
-                    else{
+                        cerrada[0] = 1;
+                    } else {
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede cerrarla ", Toast.LENGTH_SHORT).show();
                         marcarResuelto.setChecked(false);
                     }
-                }
-                else //reabrir pregunta
+                } else //reabrir pregunta
                 {
                     //luego verifica si el usuario es el creador de la pregunta
-                    if(nombreUsuario.compareTo(creador) == 0){
+                    if (nombreUsuario.compareTo(creador) == 0) {
                         //llama al metodo para cerrar la pregunta
                         cerrarReabrirPregunta(preguntaSeleccionada, 0);
                         //reporta que se cerro la pregunta
@@ -148,9 +145,8 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                         marcarResuelto.setText("Marcar como resuelta");
                         //visible para agregar respuestas
                         buttonAgregarRespuestas.setVisibility(View.VISIBLE);
-                        cerrada[0] =0;
-                    }
-                    else{
+                        cerrada[0] = 0;
+                    } else {
                         Toast.makeText(ForoGeneralVerRespuestas.this, "Solo el creador puede reabrirla ", Toast.LENGTH_SHORT).show();
                         marcarResuelto.setChecked(true);
                     }
@@ -173,7 +169,6 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
 
-
         //sacar los elementos de la vista desde firebase
         //pasarlos a respuestas
         final boolean[] enNube = {false};
@@ -186,8 +181,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Se recorre el snapshot para sacar los datos
                 ForoGeneralVerRespuestas.this.respuestasFireBase.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     int id = ds.child("id").getValue(Integer.class);
                     String nombreUsuario = ds.child("nombreUsuario").getValue(String.class);
                     int preguntaID = ds.child("preguntaID").getValue(Integer.class);
@@ -196,15 +190,17 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                     int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
                     int contadorDisLikes = ds.child("contadorDislikes").getValue(Integer.class);
 
-                    // Se crea la respuesta
-                    if(temaID == idTemaSeleccionado){
+                    double latitud = ds.child("latitud").getValue(Double.class);
+                    double longitud = ds.child("longitud").getValue(Double.class);
+                    boolean mapaAgregado = ds.child("mapaAgregado").getValue(boolean.class);
 
-                        if (preguntaID == idPreguntaSeleccionada)
-                        {
-                            Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes);
+                    // Se crea la respuesta
+                    if (temaID == idTemaSeleccionado) {
+
+                        if (preguntaID == idPreguntaSeleccionada) {
+                            Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes, latitud, longitud, mapaAgregado);
                             ForoGeneralVerRespuestas.this.respuestasFireBase.add(respuesta);
                         }
-
 
 
                         //busca si esta en la base local, si no esta lo agrega
@@ -223,11 +219,11 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                 }
                 ordenarRespuestasPorRanking(ForoGeneralVerRespuestas.this.respuestasFireBase);
 
-                if(ForoGeneralVerRespuestas.this.respuestasFireBase.size()>0){
+                if (ForoGeneralVerRespuestas.this.respuestasFireBase.size() > 0) {
                     adapterRespuesta.setRespuestas(ForoGeneralVerRespuestas.this.respuestasFireBase);
                     //confirmacion temporal para saber cual presentar
                     enNube[0] = true;
-                }else {
+                } else {
                     tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
                 }
 
@@ -272,7 +268,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         });
 
         //Codigo que maneja la navegacion de izquierda a derecha
-        dl = (DrawerLayout)findViewById(R.id.activity_foro_general_ver_respuestas);
+        dl = (DrawerLayout) findViewById(R.id.activity_foro_general_ver_respuestas);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
@@ -281,13 +277,12 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Se lanza cada actividad, dependiendo de la selección del usuario
-        nv = (NavigationView)findViewById(R.id.nv_foro);
+        nv = (NavigationView) findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch(id)
-                {
+                switch (id) {
                     case R.id.home_foro:
                         startActivity(new Intent(ForoGeneralVerRespuestas.this, MainForoGeneral.class));
                         break;
@@ -320,14 +315,14 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void ordenarRespuestasPorRanking(List<Respuesta> firebaseRespuestas){
+    public void ordenarRespuestasPorRanking(List<Respuesta> firebaseRespuestas) {
 
         firebaseRespuestas.sort(new Comparator<Respuesta>() {
             @Override
             public int compare(Respuesta resp1, Respuesta resp2) {
-                if(resp1.getRanking() == resp2.getRanking()){
+                if (resp1.getRanking() == resp2.getRanking()) {
                     return 0;
-                }else if(resp1.getRanking() > resp2.getRanking()){
+                } else if (resp1.getRanking() > resp2.getRanking()) {
                     return -1;
                 }
                 return 1;
@@ -339,7 +334,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
      * Este metodo dirige a la actividad de crear respuesta
      *
      * @param pregunta indica la pregunta que será enviada mediante el intent para poder usarla
-     * para crear la respuesta asociada a esta pregunta
+     *                 para crear la respuesta asociada a esta pregunta
      */
     private void crearRespuesta(PreguntaCard pregunta) {
         Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
@@ -351,13 +346,14 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
     /**
      * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     *
      * @param item funciona para indicar el objeto de la lista que se selecionó
      * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(t.onOptionsItemSelected(item))
+        if (t.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
@@ -365,10 +361,11 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
     /**
      * Modifica la pregunta en la base de datos, ya sea marcandola o desmarcadola como resuelta
+     *
      * @param pregunta pregunta a modificar
-     * @param accion 0 para reabrir, 1 para cerrar
+     * @param accion   0 para reabrir, 1 para cerrar
      */
-    public void cerrarReabrirPregunta(@NotNull PreguntaCard pregunta, int accion){
+    public void cerrarReabrirPregunta(@NotNull PreguntaCard pregunta, int accion) {
         //llamar query sql con id de pregunta y accion como parametros
         //Pregunta preguntaTemp = new Pregunta(pregunta.getId(), pregunta.getNombreUsuario(), pregunta.getTemaID(), pregunta.getTexto(), pregunta.getContadorLikes(), pregunta.getContadorDislikes());
         //preguntaTemp.setResuelta(accion);

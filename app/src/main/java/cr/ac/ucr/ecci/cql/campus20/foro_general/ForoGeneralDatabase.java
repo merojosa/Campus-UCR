@@ -26,7 +26,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankRespuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Tema;
 
-@Database(entities = {Tema.class, Pregunta.class, Favorito.class, RankPregunta.class, Respuesta.class, RankRespuesta.class}, version = 14, exportSchema = false)
+@Database(entities = {Tema.class, Pregunta.class, Favorito.class, RankPregunta.class, Respuesta.class, RankRespuesta.class}, version = 15, exportSchema = false)
 public abstract class ForoGeneralDatabase extends RoomDatabase
 {
 

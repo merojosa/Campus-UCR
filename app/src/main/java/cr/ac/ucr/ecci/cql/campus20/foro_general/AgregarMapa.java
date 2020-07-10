@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -41,6 +42,10 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
     private LocationComponent locationComponent;
     FloatingActionButton floatingActionButton;
     Marker marcador;
+    boolean yaAgregado;
+    PreguntaCard pregunta;
+    String nombreUsuario;
+
 
     //En la UCR
     private static double latInicial = 9.9373255;
@@ -50,6 +55,9 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_mapa);
+        Intent mIntent = getIntent();
+        yaAgregado = mIntent.getBooleanExtra("mapaAgregado", false);
+        pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
 
         // Mapbox access token is configured here. This needs to be called either in your application
         // object or in the same activity which contains the mapview.
@@ -88,7 +96,6 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
                     AgregarMapa.this.mapboxMap = mapboxMap;
                     floatingActionButton = findViewById(R.id.floatingActionRespuestas);
                     floatingActionButton.setEnabled(false);//Inicialmente esta deshabilitado hasta que se ponga un marcador
-
                     AgregarMapa.this.mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                         @Override
                         public void onStyleLoaded(@NonNull Style style) {
@@ -97,6 +104,16 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
                             habilitarPermisos(style);
 
                             AgregarMapa.this.mapboxMap.addOnMapClickListener(AgregarMapa.this);
+
+                            pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
+                            nombreUsuario = mIntent.getStringExtra("nombreUsuario");
+                            //Si ya se habia agregado marcador, entonces pone de nuevo
+                            if (yaAgregado == true) {
+                                lat = mIntent.getDoubleExtra("latitud", 0.0);
+                                lon = mIntent.getDoubleExtra("longitud", 0.0);
+
+                                agregarMarcador(lat, lon);
+                            }
 
                             //Click largo para poner marcador.
                             AgregarMapa.this.mapboxMap.addOnMapLongClickListener(new MapboxMap.OnMapLongClickListener() {
@@ -185,16 +202,19 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
         this.lon = lon;
 
         floatingActionButton.setEnabled(true);
+        floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.azul_UCR)));
     }
 
     /**
      * Para mandar a la actividad de crear respuesta las coordenadas seleccionadas
      */
-    private void guardarMarcador(){
+    private void guardarMarcador() {
         Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
         intent.putExtra("latitud", lat);
         intent.putExtra("longitud", lon);
-        intent.putExtra("mapaAgregago", true);
+        intent.putExtra("mapaAgregado", true);
+        intent.putExtra("preguntaSeleccionada", pregunta);
+        intent.putExtra("nombreUsuario", nombreUsuario);
 
         startActivity(intent);
     }
