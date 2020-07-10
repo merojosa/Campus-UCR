@@ -168,7 +168,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
         //deleteCoordinates();
-        setUrlParameters();
+        setParameters();
+        saveDestination(1.0,1.0);
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -183,7 +184,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
     }
 
-    private void setUrlParameters(){
+    private void setParameters(){
         //extraemos los parametros de con la informacion de quien nos compartio el viaje
         Intent intent2 = getIntent();
         Bundle intent = getIntent().getExtras();
@@ -298,9 +299,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void enviarNotificacion() {
-        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj").child("EnRuta");
-        db.setValue(true);
-        db.setValue(false);
+        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj");
+        db.child("driverID").setValue(userID);
+        db.child("EnRuta").setValue(true);
+        db.child("EnRuta").setValue(false);
     }
 
     private void notificacionUnir() {
