@@ -69,23 +69,22 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private EditText editComment;
     private Button getRating;
     private Place place;
-    private Uri imgUrl;
+    private Uri imgUri;
     private StorageReference mStorageRef;
     private ImageButton sortRating;
     private boolean auxSorting;
     private boolean isPhotoLoaded;
-    private File imageFile;
     private String cameraFilePath;
 
     private static int CAMERA_REQUEST_CODE = 21;
     private static int CAMERA_PERMISSION_REQUEST = 22;
     private static int STORAGE_PERMISSION_REQUEST = 23;
 
-    public CommentPopUp(){}
-
     /**
-     * Crea lo necesario para levantar el popup
-     * @param view
+     * Creates the necessary things to show up the popup.
+     * @param view View where the popup is going to be opened.
+     * @param activity The activity from where the popup opening was triggered.
+     * @param place Place object containing its data stored in Firebase.
      */
     @SuppressLint("ClickableViewAccessibility")
     public CommentPopUp(final View view, Activity activity, Place place) {
@@ -94,12 +93,11 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         this.place = place;
         this.activity = activity;
 
-    /*Popup*/
-        LayoutInflater inflater = (LayoutInflater)
-                view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        /*Popup*/
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
-        int width = LinearLayout.LayoutParams.MATCH_PARENT; //revisar que sirve mejor
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         this.view = popupView;
         Comentarios = place.comments != null? place.comments : new ArrayList<>();
@@ -151,11 +149,18 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * MPS4 - 02 Foto en el comentario
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
+    /**
+     * Listener for Upload photo button.
+     * OnClick calls selectImage() method.
+     * */
     private void setPhotoListener(){
         Button upload = view.findViewById(R.id.foto);
         upload.setOnClickListener(v -> selectImage());
     }
 
+    /**
+     * Launches a dialog to pick the image from camera or gallery, or cancel.
+     * */
     private void selectImage() {
         final CharSequence[] options = { "Tomar foto", "Seleccionar imagen","Cancelar" };
 
@@ -163,7 +168,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         builder.setTitle("Subir una foto");
 
         builder.setItems(options, (dialog, item) -> {
-
             if (options[item].equals("Tomar foto")) {
                 takePicture();
 
@@ -177,60 +181,68 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         builder.show();
     }
 
+    /**
+     * Picks an image from gallery.
+     * */
     private void pickFromGallery(){
-        //Create an Intent with action as ACTION_PICK
         Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
         intent.setType("image/*");
-        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
         String[] mimeTypes = {"image/jpeg", "image/png"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
-        // Launching the Intent
         int GALLERY_REQUEST_CODE = 20;
         activity.startActivityForResult(intent, GALLERY_REQUEST_CODE);
-
     }
 
+    /**
+     * Takes a picture using the camera. Asks for permissions if needed and then opens the camera.
+     * The picture taken is sent to BaseCommentPopUp, who returns it here because this class is not
+     * an activity.
+     * */
     public void takePicture(){
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
         } else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
         }else {
-            imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
-            //imgUrl = FileProvider.getUriForFile(activity.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
             try {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", createImageFile()));
-                //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
             }catch(IOException ex){
                 ex.printStackTrace();
+                Toast.makeText(view.getContext(), "Ha ocurrido un error.", Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    /**
+     * Saves the camera taken picture to external storage.
+     * */
     private File createImageFile() throws IOException {
-        // Create an image file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        //This is the directory in which the file will be created. This is the default location of Camera photos
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpg",   /* suffix */
                 storageDir      /* directory */
         );
-        // Save a file: path for using again
         cameraFilePath = "file://" + image.getAbsolutePath();
         return image;
     }
 
+    /**
+     * Sets the selected picture Uri.
+     * @param uri Uniform resource identifier for the picture.
+     * */
     public void setImg(Uri uri){
-        imgUrl = uri;
+        imgUri = uri;
         isPhotoLoaded = true;
     }
 
+    /**
+     * Notifies this class from BaseCommentPopUp when the photo has been taken.
+     * */
     public void notifyPhotoTaken(){
         isPhotoLoaded = true;
     }
@@ -239,28 +251,33 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * MPS4 - 02 Foto en el comentario
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
+    /**
+     * Uploads the selected picture to Firebase cloud storage.
+     * @param filename Photo filename.
+     * */
     private void uploadPhoto(String filename){
         StorageReference photoRef = mStorageRef.child(filename);
         /*File compressed = null;
         try {
-            compressed = new Compressor(view.getContext()).compressToFile(new File(imgUrl.toString()));
+            compressed = new Compressor(view.getContext()).compressToFile(new File(imgUri.toString()));
         }catch(IOException ex){
             ex.printStackTrace();
         }*/
 
-        photoRef.putFile(imgUrl)
-        .addOnSuccessListener(taskSnapshot -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show())
-        .addOnFailureListener(exception -> {
-            // Handle unsuccessful uploads
-            // ...
-            Toast.makeText(view.getContext(), "No se pudo subir la imagen.", Toast.LENGTH_LONG).show();
-        });
+        photoRef.putFile(imgUri)
+            .addOnSuccessListener(taskSnapshot -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show())
+            .addOnFailureListener(exception -> Toast.makeText(view.getContext(), "No se pudo subir la imagen.", Toast.LENGTH_LONG).show());
     }
 
     /*
      * MPS4 - 02 Foto en el comentario
      * Participantes: D: Sebastián Cruz, N: Luis Carvajal
      */
+    /**
+     * Gets the file extension for a given URI.
+     * @param uri File uri for the file whose extension is needed.
+     * @return String containing the file extension.
+     * */
     private String getExtension(Uri uri){
         if(uri != null) {
             ContentResolver cr = view.getContext().getContentResolver();
@@ -311,7 +328,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             }
             //inserta en firebase
             if(isPhotoLoaded){
-                String filename = getExtension(imgUrl) + System.currentTimeMillis();
+                String filename = getExtension(imgUri) + System.currentTimeMillis();
                 uploadPhoto(filename);
                 comment.setPhotoPath(filename);
             }
@@ -322,7 +339,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             float rate = rt.getRating();
             comment.setRating(rate); // Repensar
 
-            ref.child(Integer.toString(comment.getId())).setValue(comment).addOnSuccessListener(aVoid -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show()).addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario..", Toast.LENGTH_LONG).show());
+            ref.child(Integer.toString(comment.getId())).setValue(comment)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario..", Toast.LENGTH_LONG).show());
             clearComment();
         });
 
@@ -352,8 +371,11 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
 
     }
 
+    /**
+     * Clears the editText comment field so that the user realizes the comment was sent.
+     * */
     private void clearComment(){
-        imgUrl = null;
+        imgUri = null;
         editComment = view.findViewById(R.id.comentario);
         editComment.setText("");
         isPhotoLoaded = false;

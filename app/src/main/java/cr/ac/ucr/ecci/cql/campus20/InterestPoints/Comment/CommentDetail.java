@@ -64,14 +64,17 @@ public class CommentDetail extends AppCompatActivity {
         like.setText(Integer.toString(comment.getLike()));
         dislike.setText(Integer.toString(comment.getDislike()));
 
+        /*Uses Picasso library to load a photo into imageView*/
         if(comment.getPhotoPath() != null) {
             spinner.setVisibility(View.VISIBLE);
+            /*Downloads the photo from Firebase and shows it.*/
             mStorageRef.child(comment.getPhotoPath()).getDownloadUrl().addOnSuccessListener(uri -> {
                 Picasso.get()
                         .load(uri)
                         .into(photo);
                 spinner.setVisibility(View.GONE);
             }).addOnFailureListener(exception -> {
+                /*If the photo isn't available (maybe because is still uploading) shows an error toast.*/
                 spinner.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), "Error: no se pudo cargar la imagen.", Toast.LENGTH_LONG).show();
             });
