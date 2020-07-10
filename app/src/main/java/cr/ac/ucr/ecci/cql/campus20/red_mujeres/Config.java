@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class Config extends AppCompatActivity {
+public class Config extends AppCompatActivity implements ExampleDialog.ExampleDialogListener{
 
     EditText contactoNom, contactoNum;
     private FirebaseDatabase mDatabase;
@@ -26,6 +27,11 @@ public class Config extends AppCompatActivity {
 
     private String name = "";
     private String num = "";
+
+    private TextView textViewName;
+    private TextView textViewNum;
+
+    private String id2Edit;
 
     public Config(){
         mDatabase = FirebaseDatabase.getInstance();
@@ -43,6 +49,7 @@ public class Config extends AppCompatActivity {
         contactoNom  = (EditText) findViewById(R.id.contactoNom);
         contactoNum  = (EditText) findViewById(R.id.contactoNum);
 
+
         validarContacto();
 
         final Button button = findViewById(R.id.save);
@@ -54,6 +61,26 @@ public class Config extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void onClick(View v) {
+        String tag = "Contacto #";
+        switch (v.getId()) {
+            case R.id.editar1:
+                tag = tag + "1";
+                id2Edit = "1";
+                break;
+            case R.id.editar2:
+                tag = tag + "2";
+                id2Edit = "2";
+                break;
+            case R.id.editar3:
+                tag = tag + "3";
+                id2Edit = "3";
+                break;
+        }
+        ExampleDialog exampleDialog = new ExampleDialog();
+        exampleDialog.show(getSupportFragmentManager(), tag);
     }
 
     public void guardarConfig(String name, String num, DatabaseReference ref){
@@ -83,5 +110,22 @@ public class Config extends AppCompatActivity {
                 contactoNum.setText("No Establecido");
             }
         });
+    }
+
+    @Override
+    public void guardarContactos(String name, String num) {
+
+        String name2Set = "name"+id2Edit;
+        String num2Set = "num"+id2Edit;
+
+        String packageName = getPackageName();
+        int nameId = getResources().getIdentifier(name2Set, "id", packageName);
+        int numId = getResources().getIdentifier(num2Set, "id", packageName);
+
+        textViewName = (TextView) findViewById(nameId);
+        textViewNum = (TextView) findViewById(numId);
+
+        textViewName.setText(name);
+        textViewNum.setText(num);
     }
 }
