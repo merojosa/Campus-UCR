@@ -33,6 +33,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class PhotocopierActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -41,12 +42,13 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Photocopier> photocopierList;
+    private List<Place> photocopierList;
 
     private ProgressBar spinner;
 
     private DatabaseReference ref;
     private ValueEventListener listener;
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,19 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
         if(getSupportActionBar() != null){
             setActivityTitle();
         }
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.photocopierProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -92,7 +107,7 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
 
 
         // Setting school and coordinate objects
-        Photocopier photocopier = photocopierList.get(index);
+        Place photocopier = photocopierList.get(index);
 
         childActivity.putExtra("place", photocopier);
         childActivity.putExtra("index", 2);
@@ -142,6 +157,10 @@ public class PhotocopierActivity extends AppCompatActivity implements ListAdapte
                 for(DataSnapshot photocopier : dataSnapshot.getChildren()){
                     photocopierList.add(photocopier.getValue(Photocopier.class));
                 }
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities();
+                photocopierList = mapUtilities.orderByDistance(photocopierList);
+                //**********************************************************************************
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();

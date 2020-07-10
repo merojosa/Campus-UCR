@@ -57,7 +57,7 @@ public class DeploymentScript {
         createSoda();
         createPhotocopier();
         createLaboratory();
-        //createAsociation();
+        createAsociation();
         createBathrooms();
         /*Saves the activity names in room database.*/
         AsyncTask.execute(new Runnable() {
@@ -352,10 +352,22 @@ public class DeploymentScript {
     }
 
     //verificar más adelante, pues es una asocia por escuela
-//    private void createAsociation(){
-//        Asociation asocia0 = new Asociation(0, 0, 0, "Asocia de ", "Asociación de estudiantes de ", 1, 15, true, true, false);
-//        db.insert("Asociation", asocia0);
-//    }
+    private void createAsociation(){
+        Asociation asocia0 = new Asociation(0, 36, 0, "Asocia de Info", "Asociación de estudiantes de la escuela de Computación e Informática", 2, 15, true, true);
+        db.insert("Asociation", asocia0);
+
+        Asociation asocia1 = new Asociation(1, 47, 0, "Asocia de Micro", "Asociación de estudiantes de la escuela de Microbiología", 1, 10, true, true);
+        db.insert("Asociation", asocia1);
+
+        Asociation asocia2 = new Asociation(2, 9, 0, "Asocia de Química", "Asociación de estudiantes de la escuela de Química", 3, 20, true, false);
+        db.insert("Asociation", asocia2);
+
+        Asociation asocia3 = new Asociation(3, 23, 0, "Asocia de Derecho", "Asociación de estudiantes de la escuela de Derecho", 1, 15, true, true);
+        db.insert("Asociation", asocia3);
+
+        Asociation asocia4 = new Asociation(4, 0, 0, "Asocia de Artes Dramáticas", "Asociación de estudiantes de la escuela de Artes Dramáticas", 1, 15, true, false);
+        db.insert("Asociation", asocia4);
+    }
 
     private void createBathrooms(){
         Bathroom br1 = new Bathroom(0, 0, 0, "Baño de Artes Dramáticas", "", 1, 3, true);

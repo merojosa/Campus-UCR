@@ -10,6 +10,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -41,12 +43,13 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Coffee> coffeeList;
+    private List<Place> coffeeList;
 
     private ProgressBar spinner;
 
     private DatabaseReference ref;
     private ValueEventListener listener;
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
 
     @Override
@@ -57,6 +60,20 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         if(getSupportActionBar() != null){
             setActivityTitle();
         }
+
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.coffeeProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -92,7 +109,7 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         childActivity.putExtra("attribute", coffeeList.get(index).getDescription());
 
         // Setting school and coordinate objects
-        Coffee coffee = coffeeList.get(index);
+        Place coffee = coffeeList.get(index);
 
         childActivity.putExtra("place", coffee);
         childActivity.putExtra("index", 2);
@@ -143,6 +160,14 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
                 for(DataSnapshot coffee : dataSnapshot.getChildren()){
                     coffeeList.add(coffee.getValue(Coffee.class));
                 }
+
+                //printCoffes();
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities();
+                coffeeList = mapUtilities.orderByDistance(coffeeList);
+                //**********************************************************************************
+                //printCoffes();
+
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();
@@ -157,6 +182,13 @@ public class CoffeShopsActivity extends AppCompatActivity implements ListAdapter
         };
         ref.addValueEventListener(listener);
     }
+
+    private void printCoffes() {
+        for(int i = 0; i < this.coffeeList.size(); ++i) {
+            Log.d("Cafeteria", " " + coffeeList.get(i).name);
+        }
+    }
+
 
     public void setDataList(){
         temp.addAll(coffeeList);
