@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ForoGeneralFirebaseDatabase;
+import cr.ac.ucr.ecci.cql.campus20.foro_general.VerMapaRespuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.PreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankPreguntaViewModel;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RankRespuestaViewModel;
@@ -33,6 +35,7 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankPregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.RankRespuesta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.RVAdapter;
 
 public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.RespuestaViewHolder> {
     private final Activity context;
@@ -292,6 +295,10 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
             holder.iconMapa.setImageResource(R.drawable.map256);
             holder.iconMapa.setClickable(true);
         }
+        //En caso de que no se agrega mapa a respuesta entonces se quita la opcion de hacer click a este imageview de la respuesta
+        else {
+            holder.iconMapa.setClickable(false);
+        }
 
         String pregString = String.valueOf(respuestas.get(i).getPreguntaID());
         String idString = String.valueOf(respuestas.get(i).getId());
@@ -338,6 +345,13 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
     }
 
     private void verMapa(int indice) {
-        Log.d("DEBUG", "Prueba");
+        Intent intent = new Intent(context.getApplicationContext(), VerMapaRespuesta.class);
+        //Para poder inicia una actividad fuera del contexto de una actividad (no es lo mas apropiado)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        double lat = respuestas.get(indice).latitud;
+        double lon = respuestas.get(indice).longitud;
+        intent.putExtra("latitud", lat);
+        intent.putExtra("longitud", lon);
+        context.getApplicationContext().startActivity(intent);
     }
 }

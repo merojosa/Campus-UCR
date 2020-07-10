@@ -88,6 +88,10 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
             lon = mIntent.getDoubleExtra("longitud", 0.0);
             textoMapaAgregado.setText("Mapa Agregado");
         }
+        else {
+            lat = 0.0;
+            lon = 0.0;
+        }
 
         // Codigo para manejar color del boton y evento de click
         adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);

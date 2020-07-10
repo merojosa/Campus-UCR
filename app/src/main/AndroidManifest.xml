@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".foro_general.AgregarMapa"></activity>
+        <activity android:name=".foro_general.VerMapaRespuesta"/>
+        <activity android:name=".foro_general.AgregarMapa" />
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
         <activity android:name=".red_mujeres.MisComunidades" />
@@ -53,8 +54,7 @@
         <activity android:name=".red_mujeres.ComunidadDetalle" />
 
         <service android:name=".GuardarAppService" />
-
-        <service android:name=".foro_general.NotificacionRespuestaService"/>
+        <service android:name=".foro_general.NotificacionRespuestaService" />
 
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
