@@ -50,6 +50,7 @@ public class Respuesta {
     @ColumnInfo(name = "longitud")
     public double longitud = 0.0;
 
+    //Bandera para ver si utiliza mapa o no, si no entonces ignora los datos de latitud y longitud
     @ColumnInfo(name = "mapa_agregado")
     public boolean mapaAgregado = false;
 

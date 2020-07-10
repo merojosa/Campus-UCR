@@ -190,9 +190,24 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
                     int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
                     int contadorDisLikes = ds.child("contadorDislikes").getValue(Integer.class);
 
-                    double latitud = ds.child("latitud").getValue(Double.class);
-                    double longitud = ds.child("longitud").getValue(Double.class);
-                    boolean mapaAgregado = ds.child("mapaAgregado").getValue(boolean.class);
+                    double latitud;
+                    double longitud;
+
+                    boolean mapaAgregado;
+                    try {
+                        mapaAgregado = ds.child("mapaAgregado").getValue(boolean.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mapaAgregado = false;
+                    }
+
+                    if (mapaAgregado) {
+                        latitud = ds.child("latitud").getValue(Double.class);
+                        longitud = ds.child("longitud").getValue(Double.class);
+                    } else {
+                        latitud = 0.0;
+                        longitud = 0.0;
+                    }
 
                     // Se crea la respuesta
                     if (temaID == idTemaSeleccionado) {
