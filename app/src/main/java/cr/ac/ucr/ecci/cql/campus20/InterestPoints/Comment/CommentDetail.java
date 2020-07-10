@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -71,11 +72,13 @@ public class CommentDetail extends AppCompatActivity {
             spinner.setVisibility(View.VISIBLE);
             /*Downloads the photo from Firebase and shows it.*/
             mStorageRef.child(comment.getPhotoPath()).getDownloadUrl().addOnSuccessListener(uri -> {
-                Picasso.get()
+                Glide.with(this).load(uri).placeholder(R.drawable.image_placeholder)
+                        .fitCenter().into(photo);
+                /*Picasso.get()
                         .load(uri)
                         .placeholder(R.drawable.image_placeholder)
                         .error(R.drawable.image_placeholder)
-                        .into(photo);
+                        .into(photo);*/
                 spinner.setVisibility(View.GONE);
             }).addOnFailureListener(exception -> {
                 /*If the photo isn't available (maybe because is still uploading) shows an error toast.*/

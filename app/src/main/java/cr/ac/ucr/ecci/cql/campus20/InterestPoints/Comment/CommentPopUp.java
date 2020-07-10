@@ -79,6 +79,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private boolean isPhotoLoaded;
     private String cameraFilePath;
 
+    public CommentPopUp() {
+    }
+
     /**
      * Creates the necessary things to show up the popup.
      * @param view View where the popup is going to be opened.
@@ -256,9 +259,18 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * */
     private void uploadPhoto(String filename){
         StorageReference photoRef = mStorageRef.child(filename);
-        /*File compressed = null;
+        /*
+        File compressed;
+        File original;
         try {
-            compressed = new Compressor(view.getContext()).compressToFile(new File(imgUri.toString()));
+
+            original = new File(Objects.requireNonNull(imgUri.getPath()));
+            Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", createImageFile());
+            compressed = new Compressor(view.getContext()).compressToFile(original);
+            boolean result = original.renameTo(compressed);
+            if(result)
+                imgUri = Uri.fromFile(original);
+
         }catch(IOException ex){
             ex.printStackTrace();
         }*/
