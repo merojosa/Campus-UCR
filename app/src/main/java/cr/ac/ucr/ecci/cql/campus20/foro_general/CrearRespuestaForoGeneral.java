@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -19,8 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.util.Log;
-
 import com.google.android.material.navigation.NavigationView;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
@@ -29,16 +26,12 @@ import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.ViewModels.RespuestaViewModel;
-import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Pregunta;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.models.Respuesta;
 
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //Crea respuesta a partir de la pregunta que se seleccionó del lista de preguntas.
 public class CrearRespuestaForoGeneral extends AppCompatActivity {
@@ -48,10 +41,23 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private Button btnCrearRespuesta;
     private PreguntaCard pregunta;
     private RespuestaViewModel mRespuestaViewModel;
+    private Button adjuntarMapa;
+
+    //Indica si se agrega un mapa
+    private TextView textoMapaAgregado;
+
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
+    private Double lat;
+    private Double lon;
+
+    //Necesita estos datos para el funcionamiento adecuado al insertar en bases de datos, pues se pierden al cambiar de contexto de actividad
+    private boolean mapaAgregado;
+    private String textoActual;
+    //Texto escrito hasta el momento en caso de haber ingresado a actividad de mapa, esto para mantenerlo
 
     private String nombreUsuario;
     ForoGeneralFirebaseDatabase databaseReference;
@@ -70,6 +76,22 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
+        textoMapaAgregado = (TextView) findViewById(R.id.textoMapaAdjuntado);
+
+        //Si esta en el defaultValue es porque no viene de la actividad de agregar mapa.
+        mapaAgregado = mIntent.getBooleanExtra("mapaAgregado", false);
+
+        // Codigo para manejar color del boton y evento de click
+        adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);
+        adjuntarMapa.setBackgroundColor(Color.parseColor("#005DA4"));
+        adjuntarMapa.setTextColor(Color.BLACK);
+        adjuntarMapa.setText("Adjuntar un mapa");
+        adjuntarMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarMapa();
+            }
+        });
 
         // Se instancia el firebaseReference
         databaseReference = new ForoGeneralFirebaseDatabase();
@@ -80,6 +102,20 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         gd.setColor(Color.parseColor("#00ffffff"));
         gd.setStroke(2, Color.parseColor("#00C0F3"));
         mEditText.setBackground(gd);
+
+        //Si se agregó al mapa entonces se agregan valores a objeto
+        if (mapaAgregado == true) {
+
+            lat = mIntent.getDoubleExtra("latitud", 0.0);
+            lon = mIntent.getDoubleExtra("longitud", 0.0);
+            textoMapaAgregado.setText("Mapa Agregado");
+            //Pone el texto digitado de nuevo en donde estaba antes de ir a la actividad de mapa.
+            textoActual = mIntent.getStringExtra("textoDigitado");
+            mEditText.setText(textoActual);
+        } else {
+            lat = 0.0;
+            lon = 0.0;
+        }
 
         // Codigo para manejar color del boton y evento de click
         btnCrearRespuesta = (Button) findViewById(R.id.btnCrearRespuesta);
@@ -96,7 +132,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         });
 
         //Codigo que maneja la navegacion de izquierda a derecha
-        dl = (DrawerLayout)findViewById(R.id.activity_main_crear_respuesta);
+        dl = (DrawerLayout) findViewById(R.id.activity_main_crear_respuesta);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
@@ -105,13 +141,12 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Se lanza cada actividad, dependiendo de la selección del usuario
-        nv = (NavigationView)findViewById(R.id.nv_foro);
+        nv = (NavigationView) findViewById(R.id.nv_foro);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch(id)
-                {
+                switch (id) {
                     case R.id.home_foro:
                         startActivity(new Intent(CrearRespuestaForoGeneral.this, MainForoGeneral.class));
                         break;
@@ -144,6 +179,25 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     }
 
+    private void agregarMapa() {
+        Intent intent = new Intent(this, AgregarMapa.class);
+        //AGREGAR DATOS
+        //Necesita estos datos para el funcionamiento adecuado al insertar en bases de datos, pues se pierden al cambiar de contexto de actividad
+        if (mapaAgregado == true) {
+            intent.putExtra("latitud", lat);
+            intent.putExtra("longitud", lon);
+            intent.putExtra("mapaAgregado", true);//Indica que el mapa ya habia sido agregado
+
+        }
+        intent.putExtra("preguntaSeleccionada", pregunta);
+        intent.putExtra("nombreUsuario", nombreUsuario);
+        String textoDigitado = mEditText.getText().toString();
+        intent.putExtra("textoDigitado", textoDigitado);
+        startActivity(intent);
+        //llama la actividad de mapas
+
+    }
+
     /**
      * Este método inserta una nueva respuesta partir de lo que se digite, luego de insertar en
      * la base de datos se devuelve a la vista de respuesta para dicha pregunta
@@ -158,18 +212,17 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         //mRespuestaViewModel.insert(respuesta);
 
         //insertar en firebase
-
         databaseReference.getRespuestasRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int id;
-                if(dataSnapshot.getValue() == null){
+                if (dataSnapshot.getValue() == null) {
                     id = 1;
-                }else{
+                } else {
                     id = (int) dataSnapshot.getChildrenCount() + 1;
                 }
                 String texto = mEditText.getText().toString();
-                Respuesta respuesta = new Respuesta(id, nombreUsuario, textoRespuesta, idPregunta, idTema, 0,0);
+                Respuesta respuesta = new Respuesta(id, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0, lat, lon, mapaAgregado);
 
                 // Inserta en Firebase tambien
                 CrearRespuestaForoGeneral.this.databaseReference.getRespuestasRef().child(Integer.toString(id)).setValue(respuesta);
@@ -180,8 +233,10 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
                 startActivity(intent);
 
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
 //        // Se lanza un SELECT en la base, para así poder recuperar el ID AUTOGENERADO de room y agregarlo de manera correcta a Firebase
@@ -218,6 +273,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Verifica si el contenido de respuesta no es vacio
+     *
      * @return boolean
      */
     private boolean verificarRespuesta() {
@@ -230,13 +286,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
     /**
      * Este método realiza una actividad cuando un objeto específico de la lista es seleccionado
+     *
      * @param item funciona para indicar el objeto de la lista que se selecionó
      * @return un booleano, ya que aún no se ha implementado el llamado a la base de datos
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(t.onOptionsItemSelected(item))
+        if (t.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
