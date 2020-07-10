@@ -193,6 +193,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 addDestinationIconSymbolLayer(style);
                 //setEmergencyPhone();
                 getGroupMembersPositions();
+                notificacionUnir();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
 
@@ -264,7 +265,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        notificacionUnir();
+                        enviarNotificacion();
                     }
                 });
 
@@ -282,15 +283,21 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         dialog.show();
     }
 
+    public void enviarNotificacion() {
+        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj").child("EnRuta");
+        db.setValue(true);
+        db.setValue(false);
+    }
+
     private void notificacionUnir() {
-        Intent servicioIntent = new Intent(this, NotificacionUnirse.class);
+        NotificacionUnirse not = new NotificacionUnirse();
 
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
                 // Se manda a correr el servicio
-                startService(servicioIntent);
+                not.setUnirseNotificacionListener(getApplicationContext());
                 // Se pregunta cada 20 segundos por alguna nueva respuesta
                 handler.postDelayed(this, 5000);
             }
