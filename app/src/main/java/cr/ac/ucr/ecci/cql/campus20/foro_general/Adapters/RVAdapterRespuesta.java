@@ -297,6 +297,7 @@ public class RVAdapterRespuesta extends RecyclerView.Adapter<RVAdapterRespuesta.
         }
         //En caso de que no se agrega mapa a respuesta entonces se quita la opcion de hacer click a este imageview de la respuesta
         else {
+            holder.iconMapa.setImageResource(0);
             holder.iconMapa.setClickable(false);
         }
 
