@@ -162,7 +162,6 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     // Botón para inicializar navegación
     private Button button;
-    private FireBaseRedMujeres bd = new FireBaseRedMujeres();
 
     // Despliegue mapa al llamar a la actividad
     @Override
