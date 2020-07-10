@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class MenuRedMujeres extends AppCompatActivity {
@@ -87,10 +90,33 @@ public class MenuRedMujeres extends AppCompatActivity {
                     }
                     i += 1;
                 }
-                recuperarDatos(currentUser); //Validacion
+
+                if(currentUser == null) { //Si el id es null es porque el usuario no pertenece a la base de datos
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
+
+                    builder.setTitle("Usuario inválido");
+                    builder.setMessage("El usuario ingresado no corresponde a la base de datos de la UCR");
+
+                    String positiveText = "Cerrar sesión";
+                    builder.setPositiveButton(positiveText,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    CampusBD login = new FirebaseBD(); //Se cierra la sesión para que se inicie con un correo válido
+                                    login.cerrarSesion();
+                                    startActivity(new Intent(MenuRedMujeres.this, LoginActivity.class));
+                                }
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    recuperarDatos(currentUser); //Validacion
+                }
             }
             @Override
-            public void fallo(DatabaseError databaseError) {}
+            public void fallo(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -357,10 +383,6 @@ public class MenuRedMujeres extends AppCompatActivity {
             System.out.println(s);
         }
     }
-
     // Recupera toda la informacion relacionada a los grupos
-
-
-
 }
 

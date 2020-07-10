@@ -1,9 +1,11 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.os.Bundle;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,12 +13,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
-import cr.ac.ucr.ecci.cql.campus20.R;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class MainRedMujeresTest {
 
@@ -26,14 +22,6 @@ class MainRedMujeresTest {
         Bundle btest = Mockito.mock(Bundle.class);
         test.onCreate(btest);
         verify(test, times(1)).onCreate(btest);
-    }
-
-    @Test
-    void onMapReady() {
-    }
-
-    @Test
-    void iniciarRuta() {
     }
 
     @Test
@@ -50,10 +38,6 @@ class MainRedMujeresTest {
         MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
         test.popupPanico();
         verify(test, times(1)).popupPanico();
-    }
-
-    @Test
-    void popupCompartir() {
     }
 
     @Test
@@ -77,59 +61,11 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void onRequestPermissionsResult() {
-    }
-
-    @Test
-    void onExplanationNeeded() {
-    }
-
-    @Test
-    void onPermissionResult() {
-    }
-
-    @Test
-    void onCancelNavigation() {
-    }
-
-    @Test
-    void onNavigationFinished() {
-    }
-
-    @Test
-    void onNavigationRunning() {
-    }
-
-    @Test
-    void onStart() {
-    }
-
-    @Test
-    void onResume() {
-    }
-
-    @Test
-    void onPause() {
-    }
-
-    @Test
-    void onStop() {
-    }
-
-    @Test
-    void onSaveInstanceState() {
-    }
-
-    @Test
     void onDestroy() {
         MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
         test.onDestroy();
 
         verify(test, times(1)).onDestroy();
-    }
-
-    @Test
-    void onLowMemory() {
     }
 
     @Test

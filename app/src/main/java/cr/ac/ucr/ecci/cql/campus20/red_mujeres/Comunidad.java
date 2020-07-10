@@ -2,20 +2,13 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 /**
  * Clase para representar una comunidad o grupo
  * */
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class Comunidad implements Parcelable
 {
