@@ -1,21 +1,23 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Library;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.BaseCommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Library;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class LibraryViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class LibraryViewActivity extends BaseCommentPopUp implements ListAdapter.ListAdapterOnClickHandler {
 
     String libraryName;
-    Library library;
+    Library place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +30,27 @@ public class LibraryViewActivity extends AppCompatActivity implements ListAdapte
         TextView tittle = findViewById(R.id.libraryName);
         tittle.setText(libraryName);
 
-        library = intentLibrary.getParcelableExtra("place");
+        place = intentLibrary.getParcelableExtra("place");
 
 
         TextView desc = findViewById(R.id.descripcion);
-        desc.setText(library.description);
+        desc.setText(place.description);
 
         TextView horario = findViewById(R.id.horario);
-        horario.setText(library.horario);
+        horario.setText(place.horario);
 
         ImageView wifi = findViewById(R.id.imageWiFi);
         AppCompatCheckBox wifiCheck = findViewById(R.id.checkboxWiFi);
 
         wifi.setImageResource(R.drawable.icon_wifi);
-        wifiCheck.setChecked(library.wifi);
+        wifiCheck.setChecked(place.wifi);
         wifiCheck.setEnabled(false);
 
+        /*POPUP*/
+        Button popButton = findViewById(R.id.comments);
+        /*Line needed for CommentPopUp to work properly.*/
+        popButton.setOnClickListener(view -> commentPopUp = new CommentPopUp(view, this, place));
+        /*POPUP*/
     }
 
     //    /**

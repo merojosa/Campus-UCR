@@ -56,7 +56,7 @@ public class SchoolViewActivity extends BaseCommentPopUp {
     public SchoolViewActivity() { }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_view);
 
@@ -76,10 +76,9 @@ public class SchoolViewActivity extends BaseCommentPopUp {
 
         tittle.setText(placeName);
         /*POPUP*/
-        Activity activity = this;
         Button popButton = findViewById(R.id.comments);
         /*Line needed for CommentPopUp to work properly.*/
-        popButton.setOnClickListener(view -> commentPopUp = new CommentPopUp(view, activity, place));
+        popButton.setOnClickListener(view -> commentPopUp = new CommentPopUp(view, this, place));
         /*POPUP*/
     }
 
