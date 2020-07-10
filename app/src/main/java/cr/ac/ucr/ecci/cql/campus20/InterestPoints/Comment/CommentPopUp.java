@@ -54,6 +54,9 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
+/**
+ * This class maanges the comments pop-up on any detailed view for each Interest Points place.
+ * */
 public class CommentPopUp extends AppCompatActivity implements CommentsList.CommentListOnClickHandler {
 
     private RecyclerView mRecyclerView;
@@ -75,10 +78,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     private boolean auxSorting;
     private boolean isPhotoLoaded;
     private String cameraFilePath;
-
-    private static int CAMERA_REQUEST_CODE = 21;
-    private static int CAMERA_PERMISSION_REQUEST = 22;
-    private static int STORAGE_PERMISSION_REQUEST = 23;
 
     /**
      * Creates the necessary things to show up the popup.
@@ -112,7 +111,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         mListAdapter.notifyDataSetChanged();
 
         /*Ratingbar y comentario*/
-        setupCommentRating();
+        uploadCommentListener();
         setCommentsListener();
         setPhotoListener();
        // setupLikesnDislikes
@@ -200,14 +199,14 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
      * */
     public void takePicture(){
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, BaseCommentPopUp.CAMERA_PERMISSION_REQUEST);
         } else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, BaseCommentPopUp.STORAGE_PERMISSION_REQUEST);
         }else {
             try {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", createImageFile()));
-                activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                activity.startActivityForResult(intent, BaseCommentPopUp.CAMERA_REQUEST_CODE);
             }catch(IOException ex){
                 ex.printStackTrace();
                 Toast.makeText(view.getContext(), "Ha ocurrido un error.", Toast.LENGTH_LONG).show();
@@ -287,12 +286,21 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         return "";
     }
 
+    /**
+     * Initializes the recycler view.
+     * */
     private void setupRecyclerView(){
         mRecyclerView = view.findViewById(R.id.comments_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
     }
 
+    /**
+     * Implements CommentList.onClick.
+     * Handles click on like or dislike buttons for each comment, and saves the data to Firebase.
+     * @param position The comment's position in the list.
+     * @param like true if it's a like, false otherwise.
+     * */
     @Override
     public void onClick(int position, boolean like){
         Comment comment = Comentarios.get(position);
@@ -304,6 +312,10 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         }
     }
 
+    /**
+     * Launches an intent to CommentDetail activity when a comment is tapped or clicked.
+     * @param comment Comment in which the user tapped to see its details.
+     * */
     @Override
     public void onClick(Comment comment){
         Intent childActivity = new Intent(view.getContext(), CommentDetail.class);
@@ -311,7 +323,11 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         ((Activity)view.getContext()).startActivity(childActivity);
     }
 
-    private void setupCommentRating() {
+    /**
+     * Sets up a listener to upload a comment when 'Send' button is clicked.
+     * Optionally uploads the comment image to Firebase Cloudstore if it exists.
+     * */
+    private void uploadCommentListener() {
         editComment = view.findViewById(R.id.comentario);
         rt = view.findViewById(R.id.ratingBar);
         getRating = view.findViewById(R.id.enviar_c_r);
@@ -345,7 +361,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                         if(Comentarios.size() > 0)
                             mRecyclerView.smoothScrollToPosition(Comentarios.size() - 1);
                     })
-                    .addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario..", Toast.LENGTH_LONG).show());
+                    .addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario.", Toast.LENGTH_LONG).show());
             clearComment();
         });
 
@@ -385,11 +401,17 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         isPhotoLoaded = false;
     }
 
+    /**
+     * Sets the comments in the list to be shown.
+     * */
     public void setDataList(){
         tmp = new ArrayList<>();
         tmp.addAll(Comentarios);
     }
 
+    /**
+     * Sets a listener on the comments list so that they can be updated on real-time in the app.
+     * */
     private void setCommentsListener(){
 
         db = new FirebaseDB();
@@ -416,6 +438,9 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         ref.addValueEventListener(listener);
     }
 
+    /**
+     * Gets the file path of the photo, so that BaseCommentPopUp can tell where the photo is.
+     * */
     public String getCameraFilePath(){
         return cameraFilePath;
     }

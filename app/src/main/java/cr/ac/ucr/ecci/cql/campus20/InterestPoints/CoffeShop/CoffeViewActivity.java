@@ -1,21 +1,24 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
+
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.BaseCommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Coffee;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class CoffeViewActivity extends BaseCommentPopUp implements ListAdapter.ListAdapterOnClickHandler {
 
     String coffeName;
     Coffee coffe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,11 @@ public class CoffeViewActivity extends AppCompatActivity implements ListAdapter.
         wifiCheck.setChecked(coffe.wifi);
         wifiCheck.setEnabled(false);
 
-
+        /*POPUP*/
+        Button popButton = findViewById(R.id.comments);
+        /*Line needed for CommentPopUp to work properly.*/
+        popButton.setOnClickListener(view -> commentPopUp = new CommentPopUp(view, this, coffe));
+        /*POPUP*/
 
     }
 

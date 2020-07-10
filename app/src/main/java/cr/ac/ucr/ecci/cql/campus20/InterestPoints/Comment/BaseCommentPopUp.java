@@ -15,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
  * */
 public abstract class BaseCommentPopUp extends AppCompatActivity {
     protected CommentPopUp commentPopUp;
+    public static final int GALLERY_REQUEST_CODE = 20;
+    public static final int CAMERA_REQUEST_CODE = 21;
+    public static final int CAMERA_PERMISSION_REQUEST = 22;
+    public static final int STORAGE_PERMISSION_REQUEST = 23;
 
     /**
      * Utility callback method when CommentPopUp selects an image.
@@ -22,7 +26,6 @@ public abstract class BaseCommentPopUp extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        final int GALLERY_REQUEST_CODE = 20, CAMERA_REQUEST_CODE = 21;
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case GALLERY_REQUEST_CODE:
@@ -41,7 +44,6 @@ public abstract class BaseCommentPopUp extends AppCompatActivity {
      * */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
-        final int CAMERA_PERMISSION_REQUEST = 22, STORAGE_PERMISSION_REQUEST = 23;
         switch (requestCode) {
             case STORAGE_PERMISSION_REQUEST:
             case CAMERA_PERMISSION_REQUEST: {
