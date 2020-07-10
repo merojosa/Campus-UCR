@@ -189,8 +189,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         Intent intent2 = getIntent();
         Bundle intent = getIntent().getExtras();
         assert intent != null;
-        targerUser = intent.getString("id");
-        targerUserName = intent.getString("nombre");
+        try {
+            targerUser = intent.getString("id");
+            targerUserName = intent.getString("nombre");
+        }catch (Exception e){
+            Log.d("error","wao");
+        }
 
     }
 
@@ -340,7 +344,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public void setUp() {
         DatabaseReference root = mDatabase.getReference();
-        String currentUser = new MenuRedMujeres().getCurrentUserID();
+        String currentUser = userID;
         bd.autCallback(root, new FirebaseListener() {
             @Override
             public void exito(DataSnapshot dataSnapshot) {
@@ -894,8 +898,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
-        Intent intent = getIntent();
-        this.userID ="2";
+        this.userID ="1";
 
     }
 
