@@ -37,6 +37,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
+        android:background="@drawable/comment_background"
         android:layout_width="match_parent"
         android:layout_height="198dp"
         android:descendantFocusability="blocksDescendants"

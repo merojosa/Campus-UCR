@@ -32,6 +32,7 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -340,7 +341,11 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
             comment.setRating(rate); // Repensar
 
             ref.child(Integer.toString(comment.getId())).setValue(comment)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show())
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(view.getContext(), "El comentario ha sido enviado.", Toast.LENGTH_LONG).show();
+                        if(Comentarios.size() > 0)
+                            mRecyclerView.smoothScrollToPosition(Comentarios.size() - 1);
+                    })
                     .addOnFailureListener(e -> Toast.makeText(view.getContext(), "No se pudo enviar el comentario..", Toast.LENGTH_LONG).show());
             clearComment();
         });
@@ -400,8 +405,6 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
                 setDataList();
                 mListAdapter.setListData(tmp);
                 mListAdapter.notifyDataSetChanged();
-                if(Comentarios.size() > 0)
-                    mRecyclerView.smoothScrollToPosition(Comentarios.size() - 1);
             }
 
             @Override

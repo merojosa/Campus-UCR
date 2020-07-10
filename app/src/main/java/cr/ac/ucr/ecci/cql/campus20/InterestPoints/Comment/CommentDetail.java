@@ -56,6 +56,8 @@ public class CommentDetail extends AppCompatActivity {
         goBack = findViewById(R.id.commentGoBack);
         spinner = findViewById(R.id.commentPhotoProgressBar);
 
+        goBack.setOnClickListener(v -> CommentDetail.super.onBackPressed());
+
         if(comment == null)
             return;
 
@@ -71,6 +73,8 @@ public class CommentDetail extends AppCompatActivity {
             mStorageRef.child(comment.getPhotoPath()).getDownloadUrl().addOnSuccessListener(uri -> {
                 Picasso.get()
                         .load(uri)
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
                         .into(photo);
                 spinner.setVisibility(View.GONE);
             }).addOnFailureListener(exception -> {

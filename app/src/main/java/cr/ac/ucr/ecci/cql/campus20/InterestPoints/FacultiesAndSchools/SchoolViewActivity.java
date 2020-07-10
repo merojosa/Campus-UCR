@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.BaseCommentPopUp;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Asociation;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Bathroom;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.FirebaseDB;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Laboratory;
@@ -46,9 +47,11 @@ public class SchoolViewActivity extends BaseCommentPopUp {
 
     private DatabaseReference refLabs;
     private DatabaseReference refBathrooms;
+    private DatabaseReference refAsociation;
 
     private ValueEventListener listenerLabs;
     private ValueEventListener listenerBathrooms;
+    private ValueEventListener listenerAsociation;
 
     public SchoolViewActivity() { }
 
@@ -178,7 +181,7 @@ public class SchoolViewActivity extends BaseCommentPopUp {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot asociation : dataSnapshot.getChildren()) {
-                    if(asociation.getValue(Asociation.class).getId_school_fk() == place.getId()){
+                    if(Objects.requireNonNull(asociation.getValue(Asociation.class)).getId_school_fk() == place.getId()){
                         asociationList.add(asociation.getValue(Laboratory.class));
                     }
                     removeListenerAsociations();

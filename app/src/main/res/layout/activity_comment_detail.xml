@@ -51,6 +51,7 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/feedback_item_margin"
         android:background="#00FFFFFF"
         tools:srcCompat="@tools:sample/avatars" />
 
