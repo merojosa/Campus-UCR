@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
-        android:text="Prueba" />
+        android:text="Para agregar un marcador mantenga presionado el dedo en el mapa." />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
@@ -42,7 +42,7 @@
             android:layout_gravity="bottom|end"
             android:backgroundTint="@color/azul_UCR"
             android:elevation="0dp"
-            app:srcCompat="@drawable/open"
+            app:srcCompat="@drawable/icono_agregar_preguntas_foro_general"
             mapbox:backgroundTint="@color/verde_UCR"
             mapbox:layout_constraintBottom_toBottomOf="@+id/mapView"
             mapbox:layout_constraintEnd_toEndOf="parent"

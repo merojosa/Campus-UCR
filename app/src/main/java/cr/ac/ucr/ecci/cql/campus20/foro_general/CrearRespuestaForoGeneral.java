@@ -57,6 +57,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
     private ArrayList<Double> coordenadas;
     private Double lat;
     private Double lon;
+    private boolean mapaAgregado;
 
     private String nombreUsuario;
     ForoGeneralFirebaseDatabase databaseReference;
@@ -75,8 +76,14 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
 
         mRespuestaViewModel = new ViewModelProvider(this).get(RespuestaViewModel.class);
 
-        lat = mIntent.getDoubleExtra("latitud", 0.0);
-        lon = mIntent.getDoubleExtra("longitud", 0.0);
+        //Si esta en el defaultValue es porque no viene de la actividad de agregar mapa.
+        mapaAgregado = mIntent.getBooleanExtra("mapaAgregado", false);
+
+        //Si se agregó al mapa entonces se agregan valores a objeto
+        if (mapaAgregado == true) {
+            lat = mIntent.getDoubleExtra("latitud", 0.0);
+            lon = mIntent.getDoubleExtra("longitud", 0.0);
+        }
 
         // Codigo para manejar color del boton y evento de click
         adjuntarMapa = (Button) findViewById(R.id.adjuntarMapa);
@@ -181,6 +188,7 @@ public class CrearRespuestaForoGeneral extends AppCompatActivity {
         int idPregunta = pregunta.getId();
         int idTema = pregunta.getTemaID();
 
+        //TODO AGREGAR DATOS DE MAPA A OBJETO RESPUESTA
         //Respuesta respuesta = new Respuesta(0, textoRespuesta, idPregunta, 0, 0);
         Respuesta respuesta = new Respuesta(0, nombreUsuario, textoRespuesta, idPregunta, idTema, 0, 0);
         mRespuestaViewModel.insert(respuesta);

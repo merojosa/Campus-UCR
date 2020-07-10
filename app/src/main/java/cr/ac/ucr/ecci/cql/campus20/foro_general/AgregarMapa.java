@@ -1,5 +1,6 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -24,8 +26,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.maps.SupportMapFragment;
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerView;
-import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 
 import java.util.List;
 
@@ -39,6 +39,8 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
     double lon;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
+    FloatingActionButton floatingActionButton;
+    Marker marcador;
 
     //En la UCR
     private static double latInicial = 9.9373255;
@@ -84,6 +86,9 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
                 @Override
                 public void onMapReady(@NonNull MapboxMap mapboxMap) {
                     AgregarMapa.this.mapboxMap = mapboxMap;
+                    floatingActionButton = findViewById(R.id.floatingActionRespuestas);
+                    floatingActionButton.setEnabled(false);//Inicialmente esta deshabilitado hasta que se ponga un marcador
+
                     AgregarMapa.this.mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                         @Override
                         public void onStyleLoaded(@NonNull Style style) {
@@ -93,17 +98,24 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
 
                             AgregarMapa.this.mapboxMap.addOnMapClickListener(AgregarMapa.this);
 
-                            FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionRespuestas);
+                            //Click largo para poner marcador.
+                            AgregarMapa.this.mapboxMap.addOnMapLongClickListener(new MapboxMap.OnMapLongClickListener() {
+                                @Override
+                                public boolean onMapLongClick(@NonNull LatLng point) {
+                                    //Si ya existe un marcador se quita este previo
+                                    if (marcador != null) {
+                                        marcador.remove();
+                                    }
+                                    agregarMarcador(point.getLatitude(), point.getLongitude());
+                                    return false;
+                                }
+                            });
+
+                            //Cuando se haga click se envian las coordenadas de vuelta a la actividad de donde fue llamada.
                             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (locationComponent.isLocationComponentEnabled()) {
-                                        locationComponent.setLocationComponentEnabled(false);
-                                        floatingActionButton.setImageResource(R.drawable.closed);
-                                    } else {
-                                        locationComponent.setLocationComponentEnabled(true);
-                                        floatingActionButton.setImageResource(R.drawable.open);
-                                    }
+                                    guardarMarcador();
                                 }
                             });
 
@@ -115,11 +127,10 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
     }
 
     //Habilitar permisos de ubicación
-    @SuppressWarnings( {"MissingPermission"})
-    private void habilitarPermisos(@NonNull Style loadedMapStyle){
+    @SuppressWarnings({"MissingPermission"})
+    private void habilitarPermisos(@NonNull Style loadedMapStyle) {
 // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(this))
-        {
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
             // Get an instance of the component
             locationComponent = mapboxMap.getLocationComponent();
 
@@ -135,29 +146,24 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
-        }
-        else
-        {
+        } else {
             permissionsManager = new PermissionsManager((PermissionsListener) this);
             permissionsManager.requestLocationPermissions(this);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain)
-    {
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
         Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onPermissionResult(boolean granted)
-    {
+    public void onPermissionResult(boolean granted) {
         if (granted) {
             habilitarPermisos(mapboxMap.getStyle());
         } else {
@@ -168,18 +174,28 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
 
     @Override
     public boolean onMapClick(@NonNull LatLng point) {
-        agregarMarcador(point.getLatitude(), point.getLongitude());
-        return true;
+        return false;
     }
 
-    private void agregarMarcador(double lat, double lon){
-
-        //TODO: Borrar anteriores
-        mapboxMap.addMarker(new MarkerOptions()
-        .position(new LatLng(lat, lon))
-        .title("Marcador"));
-
+    private void agregarMarcador(double lat, double lon) {
+        marcador = mapboxMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .title("Marcador"));
         this.lat = lat;
         this.lon = lon;
+
+        floatingActionButton.setEnabled(true);
+    }
+
+    /**
+     * Para mandar a la actividad de crear respuesta las coordenadas seleccionadas
+     */
+    private void guardarMarcador(){
+        Intent intent = new Intent(this, CrearRespuestaForoGeneral.class);
+        intent.putExtra("latitud", lat);
+        intent.putExtra("longitud", lon);
+        intent.putExtra("mapaAgregago", true);
+
+        startActivity(intent);
     }
 }
