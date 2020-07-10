@@ -42,12 +42,16 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
     private LocationComponent locationComponent;
     FloatingActionButton floatingActionButton;
     Marker marcador;
+
+    //Necesita estos datos para el funcionamiento adecuado al insertar en bases de datos, pues se pierden al cambiar de contexto de actividad
     boolean yaAgregado;
     PreguntaCard pregunta;
     String nombreUsuario;
+    //Texto escrito hasta el momento en caso de haber ingresado a actividad de mapa, esto para mantenerlo
+    String textoActual;
 
 
-    //En la UCR
+    //En la UCR por defecto
     private static double latInicial = 9.9373255;
     private static double lonInicial = -84.0515752;
 
@@ -58,11 +62,11 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
         Intent mIntent = getIntent();
         yaAgregado = mIntent.getBooleanExtra("mapaAgregado", false);
         pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
+        textoActual = mIntent.getStringExtra("textoDigitado");
 
         // Mapbox access token is configured here. This needs to be called either in your application
         // object or in the same activity which contains the mapview.
         Mapbox.getInstance(this, getString(R.string.MAPBOX_ACCESS_TOKEN));
-
 
         // Create supportMapFragment
         SupportMapFragment mapFragment;
@@ -104,7 +108,6 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
                             habilitarPermisos(style);
 
                             AgregarMapa.this.mapboxMap.addOnMapClickListener(AgregarMapa.this);
-
                             pregunta = mIntent.getParcelableExtra("preguntaSeleccionada");
                             nombreUsuario = mIntent.getStringExtra("nombreUsuario");
                             //Si ya se habia agregado marcador, entonces pone de nuevo
@@ -194,6 +197,11 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
         return false;
     }
 
+    /**
+     * Pone marcador en mapa
+     * @param lat
+     * @param lon
+     */
     private void agregarMarcador(double lat, double lon) {
         marcador = mapboxMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
@@ -215,6 +223,7 @@ public class AgregarMapa extends AppCompatActivity implements PermissionsListene
         intent.putExtra("mapaAgregado", true);
         intent.putExtra("preguntaSeleccionada", pregunta);
         intent.putExtra("nombreUsuario", nombreUsuario);
+        intent.putExtra("textoDigitado", textoActual);
 
         startActivity(intent);
     }

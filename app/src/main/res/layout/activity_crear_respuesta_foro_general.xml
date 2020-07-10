@@ -13,14 +13,14 @@
 
         <TextView
             android:id="@+id/tituloCrearRespuesta"
-            android:layout_width="109dp"
-            android:layout_height="52dp"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="145dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="156dp"
+            android:layout_marginStart="115dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="136dp"
             android:text="Nuevo comentario"
             android:textAlignment="center"
             android:textColor="#00C0F3"
@@ -38,7 +38,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="67dp"
-            android:layout_marginTop="181dp"
+            android:layout_marginTop="81dp"
             android:layout_marginEnd="81dp"
             android:layout_marginBottom="280dp"
             android:ellipsize="start"
@@ -46,22 +46,23 @@
             android:hint="Digite su respuesta"
             android:inputType="textCapSentences|textMultiLine" />
 
+
         <Button
             android:id="@+id/adjuntarMapa"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_below="@+id/textoCrearRespuesta"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="115dp"
-            android:layout_marginTop="382dp"
-            android:layout_marginEnd="128dp"
+            android:layout_marginStart="121dp"
+            android:layout_marginTop="411dp"
+            android:layout_marginEnd="132dp"
             android:layout_marginBottom="110dp"
             android:clickable="true"
             android:focusable="true"
             android:textStyle="bold" />
-
 
         <TextView
             android:id="@+id/textoMapaAdjuntado"
@@ -71,9 +72,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="-8dp"
-            android:layout_marginTop="426dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="-6dp"
+            android:layout_marginTop="451dp"
+            android:layout_marginEnd="6dp"
             android:text=""
             android:textAlignment="center"
             android:textStyle="bold" />
@@ -86,9 +87,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="114dp"
-            android:layout_marginTop="456dp"
-            android:layout_marginEnd="129dp"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="474dp"
+            android:layout_marginEnd="127dp"
             android:layout_marginBottom="110dp"
             android:clickable="true"
             android:focusable="true"

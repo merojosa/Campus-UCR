@@ -48,6 +48,7 @@ public class VerMapaRespuesta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_mapa_respuesta);
 
+        //Toma la latitud y longitud de la respuesta y los guarda para mostrarlos
         Intent mIntent = getIntent();
         lat = mIntent.getDoubleExtra("latitud", 0.0);
         lon = mIntent.getDoubleExtra("longitud", 0.0);
@@ -63,7 +64,7 @@ public class VerMapaRespuesta extends AppCompatActivity {
             // Create fragment
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            // Build mapboxMap
+            // Build mapboxMap y pone ubicacion de marcador enfocada en la camara
             options = MapboxMapOptions.createFromAttributes(this, null);
             options.camera(new CameraPosition.Builder()
                     .target(new LatLng(lat, lon))
@@ -97,6 +98,11 @@ public class VerMapaRespuesta extends AppCompatActivity {
         }
     }
 
+    /**
+     * Pone marcador en mapa
+     * @param lat
+     * @param lon
+     */
     private void agregarMarcador(double lat, double lon) {
         marcador = this.mapboxMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
