@@ -264,7 +264,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        notificacionUnir();
                     }
                 });
 
@@ -280,6 +280,23 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void notificacionUnir() {
+        Intent servicioIntent = new Intent(this, NotificacionUnirse.class);
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Se manda a correr el servicio
+                startService(servicioIntent);
+                // Se pregunta cada 20 segundos por alguna nueva respuesta
+                handler.postDelayed(this, 5000);
+            }
+        };
+        // The first time this runs we don't need a delay so we immediately post.
+        handler.post(runnable);
     }
 
     public void panico(int truePanic) {
