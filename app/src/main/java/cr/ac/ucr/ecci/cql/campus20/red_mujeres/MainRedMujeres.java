@@ -23,7 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceManager;
+
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -185,13 +185,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUrlParameters(){
         //extraemos los parametros de con la informacion de quien nos compartio el viaje
-        Uri uri = getIntent().getData();
-        if(uri!= null){
-            params = uri.getPathSegments();
-            targerUser = params.get(0);//id
-            targerUserName = params.get(1);//nombre
+        Intent intent2 = getIntent();
+        Bundle intent = getIntent().getExtras();
+        assert intent != null;
+        targerUser = intent.getString("id");
+        targerUserName = intent.getString("nombre");
 
-        }
     }
 
     // Determinar estilo de mapa y como reacciona a interacciones con el usuario
@@ -504,11 +503,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
+        saveDestination(latitudDes,longitudDes);
         button.setEnabled(true);
         button.setBackgroundResource(R.color.verde_UCR);
         button.setText("Iniciar Viaje");
         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
+    }
+
+    private void saveDestination(Double laititude, Double longitude){
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
+        ref.child(this.userID).child("latDestino").setValue(laititude);
+        ref.child(this.userID).child("longDestino").setValue(longitude);
     }
 
     // Calculo de ruta entre dos puntos
@@ -887,7 +893,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
         Intent intent = getIntent();
-        this.userID ="1";
+        this.userID ="2";
 
     }
 
