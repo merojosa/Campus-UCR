@@ -181,7 +181,7 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
         this.respuestasFireBase = new ArrayList<Respuesta>();
 
-        this.databaseReference.getRespuestasRef().child(String.valueOf(idPreguntaSeleccionada)).addValueEventListener(new ValueEventListener() {
+        this.databaseReference.getRespuestasRef()/*.child(String.valueOf(idPreguntaSeleccionada))*/.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Se recorre el snapshot para sacar los datos
@@ -198,8 +198,13 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
 
                     // Se crea la respuesta
                     if(temaID == idTemaSeleccionado){
-                        Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes);
-                        ForoGeneralVerRespuestas.this.respuestasFireBase.add(respuesta);
+
+                        if (preguntaID == idPreguntaSeleccionada)
+                        {
+                            Respuesta respuesta = new Respuesta(id, nombreUsuario, texto, preguntaID, temaID, contadorLikes, contadorDisLikes);
+                            ForoGeneralVerRespuestas.this.respuestasFireBase.add(respuesta);
+                        }
+
 
 
                         //busca si esta en la base local, si no esta lo agrega
@@ -243,19 +248,19 @@ public class ForoGeneralVerRespuestas extends AppCompatActivity {
         tituloPregunta = (TextView) findViewById(R.id.preguntaSeleccionada);
         tituloPregunta.setText(preguntaSeleccionada.getTexto());
 
-        if(!enNube[0]){
-            respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
-            respuestas.observe(this, new Observer<List<Respuesta>>() {
-                @Override
-                public void onChanged(List<Respuesta> respuestas) {
-                    if (respuestas.size() > 0) {
-                        adapterRespuesta.setRespuestas(respuestas);
-                    } /*else {
-                        tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
-                    }*/
-                }
-            });
-        }
+//        if(!enNube[0]){
+//            respuestas = mRespuestaViewModel.getRespuestasDePreguntaYTema(idPreguntaSeleccionada, idTemaSeleccionado);
+//            respuestas.observe(this, new Observer<List<Respuesta>>() {
+//                @Override
+//                public void onChanged(List<Respuesta> respuestas) {
+//                    if (respuestas.size() > 0) {
+//                        adapterRespuesta.setRespuestas(respuestas);
+//                    } /*else {
+//                        tituloPregunta.setText(preguntaSeleccionada.getTexto() + ": " + "No hay respuestas aun.");
+//                    }*/
+//                }
+//            });
+//        }
 
 
         // Asocia evento clic al boton

@@ -54,6 +54,8 @@
 
         <service android:name=".GuardarAppService" />
 
+        <service android:name=".foro_general.NotificacionRespuestaService"/>
+
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />

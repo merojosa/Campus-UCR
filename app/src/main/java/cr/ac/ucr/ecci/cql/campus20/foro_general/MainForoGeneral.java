@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,9 @@ public class MainForoGeneral extends AppCompatActivity {
     List<Tema> temasLocales;
     List<Favorito> favoritosLocales;
 
+    public Runnable runnable;
+    public Handler handler;
+
     int onlyOnce = 0;
 
     /**
@@ -92,15 +96,21 @@ public class MainForoGeneral extends AppCompatActivity {
         mFavoritoViewModel = new ViewModelProvider(this).get(FavoritoViewModel.class);
         mTemaViewModel = new ViewModelProvider(this).get(TemaViewModel.class);
 
+        // Servicio para detectar respuestas
+        Intent servicioIntent = new Intent(this, NotificacionRespuestaService.class);
 
-//        mTemaViewModel.getAllTemas().observe(this, new Observer<List<Tema>>() {
-//            @Override
-//            public void onChanged(List<Tema> temas) {
-//                adapter.setTemas(MainForoGeneral.this.temasLocales);
-//                //adapter.setTemas(temas);
-//                //llenarTemasFirebase(temas);
-//            }
-//        });
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Se manda a correr el servicio
+                startService(servicioIntent);
+                // Se pregunta cada 20 segundos por alguna nueva respuesta
+                handler.postDelayed(this, 20000);
+            }
+        };
+        // The first time this runs we don't need a delay so we immediately post.
+        handler.post(runnable);
 
         this.databaseReference.getTemasRef().addValueEventListener(new ValueEventListener() {
             @Override

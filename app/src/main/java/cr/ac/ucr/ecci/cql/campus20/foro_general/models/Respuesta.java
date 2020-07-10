@@ -44,6 +44,8 @@ public class Respuesta {
     @ColumnInfo(name = "cantidad_dislikes")
     public int contadorDislikes = 0;
 
+    public int notificada = 0;
+
     public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int temaID, int contadorLikes, int contadorDislikes) {
         //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
         this.id = id;
@@ -53,6 +55,7 @@ public class Respuesta {
         this.temaID = temaID;
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
+        this.notificada = 0;
     }
 
     //getters y setters
