@@ -254,4 +254,8 @@ public class SchoolViewActivity extends BaseCommentPopUp {
             refAsociation.removeEventListener(listenerAsociation);
     }
 
+    public void setPlace(Place place){
+        this.place = place;
+    }
+
 }
