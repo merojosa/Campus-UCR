@@ -33,6 +33,7 @@ public class FireBaseRedMujeres {
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase;
+    private String id = "";
 
     public FireBaseRedMujeres() {
 
@@ -71,4 +72,7 @@ public class FireBaseRedMujeres {
 
     }
 
+    public String getId() {
+        return id;
+    }
 }

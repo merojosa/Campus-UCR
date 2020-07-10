@@ -1,14 +1,15 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +54,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         this.userArr = new ArrayList<>();
         this.comunidadesUsuario = new ArrayList<String>();
         this.comunidadesTotales = new ArrayList<String>();
+
     }
 
 
@@ -64,7 +66,13 @@ public class MenuRedMujeres extends AppCompatActivity {
         recuperarId();
     }
 
-    private void recuperarId() {
+
+
+    public String getCurrentUserID(){
+        return currentUser;
+    }
+
+    void recuperarId() {
         DatabaseReference root = mDatabase.getReference();
 
         bd.autCallback(root, new FirebaseListener() {
@@ -86,6 +94,8 @@ public class MenuRedMujeres extends AppCompatActivity {
         });
     }
 
+
+
     private void recuperarDatos(String currentUserID) {
 
         DatabaseReference root = mDatabase.getReference();
@@ -96,7 +106,6 @@ public class MenuRedMujeres extends AppCompatActivity {
 
 
             // Manipulacion de datos del snapshot y llamados a metodos sin importar si el usuario no esta validado.
-
                 //recupera todas las comunidades
                 for (DataSnapshot snapshot : dataSnapshot.child("Comunidades").getChildren()) {
                     comunidadesTotales.add( (String) snapshot.child("Nombre").getValue());

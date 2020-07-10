@@ -122,12 +122,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="42dp"
         android:backgroundTint="@color/gris_medio_UCR"
-        android:src="@drawable/ic_foro_pref"
-        android:textSize="20dp"
-        app:backgroundTint="@color/azul_UCR"
+        android:elevation="0dp"
+        android:src="@drawable/configrm"
+        android:textSize="18sp"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/blanco_UCR"
+        app:elevation="0dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMyCommunities"
-        app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities" />
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities"
+        app:rippleColor="@color/blanco_UCR" />
 
     <TextView
         android:id="@+id/text_Not_Joined"
