@@ -285,6 +285,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         enviarNotificacion();
+                        setBotonEnRuta();
                     }
                 });
 
@@ -294,12 +295,16 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        iniciarRuta();
+                        setBotonEnRuta();
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private void setBotonEnRuta(){
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("En ruta");
     }
 
     public void enviarNotificacion() {
@@ -511,7 +516,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         getRoute(originPoint, destinationPoint);
         saveDestination(latitudDes,longitudDes);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.verde_UCR);
+        button.setBackgroundResource(R.color.naranja_UCR);
         button.setText("Iniciar Viaje");
         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
