@@ -110,4 +110,18 @@
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
+    <Button
+        android:id="@+id/comments"
+        android:layout_width="394dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/bottom_shape_comments"
+        android:fontFamily="@font/myriad_pro_semi"
+        android:text="@string/Comentarios"
+        android:textColor="@color/blanco_UCR"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

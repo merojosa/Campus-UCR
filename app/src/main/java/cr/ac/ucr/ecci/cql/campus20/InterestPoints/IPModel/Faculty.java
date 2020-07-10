@@ -23,16 +23,9 @@ public class Faculty extends Place implements Parcelable {
     }
 
     protected Faculty(Parcel in) {
+        super(in);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
     public static final Creator<Faculty> CREATOR = new Creator<Faculty>() {
         @Override

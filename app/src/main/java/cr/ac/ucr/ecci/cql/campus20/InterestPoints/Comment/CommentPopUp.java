@@ -32,7 +32,6 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,7 +94,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
         this.activity = activity;
 
         /*Popup*/
-        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.activity_comment_pop_up, null);
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -219,7 +218,7 @@ public class CommentPopUp extends AppCompatActivity implements CommentsList.Comm
     /**
      * Saves the camera taken picture to external storage.
      * */
-    private File createImageFile() throws IOException {
+    public File createImageFile() throws IOException {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
