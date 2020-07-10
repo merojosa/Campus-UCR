@@ -44,10 +44,10 @@ class NotificacionUnirse  {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Boolean val;
                 String idDriver;
-                val = Boolean.parseBoolean(String.valueOf(dataSnapshot.child("GrupoEj").child("EnRuta").getValue()));
-                idDriver = (String) dataSnapshot.child("driverID").getValue();
+                val = Boolean.parseBoolean(String.valueOf(dataSnapshot.child("Comunidades").child("GrupoEj").child("EnRuta").getValue()));
+                idDriver = (String) dataSnapshot.child("Comunidades").child("GrupoEj").child("driverID").getValue();
                 if(val == true && !(idDriver.equals(id))) {
-                    String nombre = (String) dataSnapshot.child(idDriver).child("Nombre").getValue();
+                    String nombre = String.valueOf(dataSnapshot.child("usuarios_red_mujeres").child(idDriver).child("Nombre").getValue());
                     enviarNotificacion(context, idDriver, nombre);
                 }
             }
