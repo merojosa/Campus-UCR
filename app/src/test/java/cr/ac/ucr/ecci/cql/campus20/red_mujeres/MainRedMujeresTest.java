@@ -24,21 +24,21 @@ class MainRedMujeresTest {
         verify(test, times(1)).onCreate(btest);
     }
 
-    @Test
-    void panico() { //
-        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
-        doNothing().when(test).panico(valueCapture.capture());
-        test.panico(1);
-        assertEquals( (Object) 1, (Object) valueCapture.getValue());
-    }
+//    @Test
+//    void panico() { //
+//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+//        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
+//        doNothing().when(test).panico(valueCapture.capture());
+//        test.panico(1);
+//        assertEquals( (Object) 1, (Object) valueCapture.getValue());
+//    }
 
-    @Test
-    void popupPanico() {
-        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-        test.popupPanico();
-        verify(test, times(1)).popupPanico();
-    }
+//    @Test
+//    void popupPanico() {
+//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+//        test.popupPanico();
+//        verify(test, times(1)).popupPanico();
+//    }
 
     @Test
     void enviarWhatsapp() {
