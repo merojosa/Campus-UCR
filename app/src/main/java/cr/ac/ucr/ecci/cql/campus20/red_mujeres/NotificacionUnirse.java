@@ -29,24 +29,26 @@ import java.util.Locale;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 class NotificacionUnirse  {
-    private static String MESSAGE = "El repartidor va rumbo a entregarte el pedido";
     public static String CHANNEL_ID = "Red_Mujeres";
 
 
 
-    public void setUnirseNotificacionListener(Context context)
+    public void setUnirseNotificacionListener(Context context, String id)
     {
         createNotificationChannel(context);
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("Comunidades");
-        ref.child("GrupoEj").child("EnRuta").addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = db.getReference();
+        ref.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Boolean val;
-                val = Boolean.parseBoolean(String.valueOf(dataSnapshot.getValue()));
-                if(val == true) {
-                    enviarNotificacion(context);
+                String idDriver;
+                val = Boolean.parseBoolean(String.valueOf(dataSnapshot.child("GrupoEj").child("EnRuta").getValue()));
+                idDriver = (String) dataSnapshot.child("driverID").getValue();
+                if(val == true && !(idDriver.equals(id))) {
+                    String nombre = (String) dataSnapshot.child(idDriver).child("Nombre").getValue();
+                    enviarNotificacion(context, idDriver, nombre);
                 }
             }
             @Override
@@ -62,9 +64,11 @@ class NotificacionUnirse  {
         return id;
     }
 
-    public void enviarNotificacion(Context context) {
-        String notificationMsg = MESSAGE;
+    public void enviarNotificacion(Context context, String id, String nombre) {
+        String notificationMsg = nombre + " está en ruta";
         Intent intent = new Intent(context, MainRedMujeres.class);
+        intent.putExtra("id", id);
+        intent.putExtra("nombre", nombre);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 

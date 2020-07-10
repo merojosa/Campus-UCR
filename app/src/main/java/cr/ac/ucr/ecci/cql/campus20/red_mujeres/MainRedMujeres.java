@@ -297,7 +297,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void run() {
                 // Se manda a correr el servicio
-                not.setUnirseNotificacionListener(getApplicationContext());
+                not.setUnirseNotificacionListener(getApplicationContext(), userID);
                 // Se pregunta cada 20 segundos por alguna nueva respuesta
                 handler.postDelayed(this, 5000);
             }
