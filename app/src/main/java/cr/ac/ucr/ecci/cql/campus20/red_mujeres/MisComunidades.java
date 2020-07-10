@@ -189,6 +189,6 @@ public class MisComunidades extends AppCompatActivity {
     }
 
     public void menuConfig() {
-        startActivity(new Intent(MisComunidades.this, Settings.class));
+        startActivity(new Intent(MisComunidades.this, Config.class));
     }
 }

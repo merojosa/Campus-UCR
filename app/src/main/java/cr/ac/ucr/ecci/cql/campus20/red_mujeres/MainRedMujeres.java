@@ -88,6 +88,8 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -165,6 +167,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
+    private FireBaseRedMujeres bd = new FireBaseRedMujeres();
 
     private Double lastLatitudeKnown = 0.0;
     private Double lastLongitudeKnown = 0.0;
@@ -267,7 +270,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        popupPanico();
+                        setUp();
                     }
                 });
 
@@ -285,10 +288,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         NavigationLauncher.startNavigation(MainRedMujeres.this, options);
     }
 
-    public void panico(int truePanic) {
+    public void panico(int truePanic, String numero) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String num = sharedPreferences.getString("contactoNum", "Número No Establecido");
+        String num = numero;
         if (truePanic==0){
             num="911";
         }
@@ -302,11 +304,29 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void popupPanico() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String name = sharedPreferences.getString("contactoNom", "Contacto No Establecido");
+    public void setUp() {
+        DatabaseReference root = mDatabase.getReference();
+        String currentUser = new MenuRedMujeres().getCurrentUserID();
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                String nombre =  (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("ContactoConfianza").child("Nombre").getValue();
+                String numero =  (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("ContactoConfianza").child("Numero").getValue();
+                popupPanico(nombre,numero);
 
-        final String [] items = new String[] {"911", name};
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void popupPanico(String nombre, String numero) {
+
+        final String [] items = new String[] {"911", nombre};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
         builder.setTitle("¡EMERGENCIA!");
@@ -316,7 +336,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                panico(which);
+                panico(which, numero);
             }
         });
 
@@ -795,6 +815,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         grupo.addListenerForSingleValueEvent(valueEventListener);
 
     }
+
+
 
     //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
     public  void readGroupUsersData(String id){

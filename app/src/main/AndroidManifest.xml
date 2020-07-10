@@ -13,10 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".red_mujeres.Settings"
+        <activity android:name=".red_mujeres.Config"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+            android:theme="@style/AppTheme.InterestsThemeNoBar"></activity>
 
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
