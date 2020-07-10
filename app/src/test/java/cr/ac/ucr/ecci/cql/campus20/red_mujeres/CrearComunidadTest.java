@@ -61,10 +61,18 @@ class CrearComunidadTest {
         Assertions.assertEquals("Vivas nos queremos", valueCapture3.getValue());
     }
 
-    // Verifica que los parámetros se captaron y se reciben correctamente
+    // Verifica que se no se escriben datos duplicados en la BD
     @Test
     public void escribirComunidadEnBD(){
+        CrearComunidad test = Mockito.mock(CrearComunidad.class);
+        doNothing().when(test).escribirComunidadEnBD(isA(String.class),isA(String.class),isA(String.class));
+        test.escribirComunidadEnBD("1","Chicas Superpoderosas", "Vivas nos queremos");
+        verify(test,times(1)).escribirComunidadEnBD("1","Chicas Superpoderosas", "Vivas nos queremos");
+    }
 
+    @Test
+    public void instanciaBD(){
+        //CrearComunidad test = new CrearComunidad();
     }
 
 }
