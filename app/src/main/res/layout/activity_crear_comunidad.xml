@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".red_mujeres.CrearComunidad">
+
+    <TextView
+        android:id="@+id/text_Activity_Title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blanco_UCR"
+        android:elevation="10dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Crear una nueva comunidad"
+        android:textAlignment="center"
+        android:textColor="@color/azul_UCR"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="403dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title">
+
+        <TextView
+            android:id="@+id/text_Community_Name_Create_Form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Nombre"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_Create_Community_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="top|left"
+            android:hint="Escribí acá el nombre..."
+            android:singleLine="false"
+            android:textColorHighlight="@color/celeste_UCR"
+            android:textColorLink="@color/azul_UCR"
+            android:textCursorDrawable="@null"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_NombreComunidad" />
+
+
+        <TextView
+            android:id="@+id/text_Create_Community_Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Descripción"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_Create_Community_Description"
+            android:layout_width="match_parent"
+            android:layout_height="149dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="top|left"
+            android:hint="Escribí acá la descripción..."
+            android:singleLine="false"
+            android:textColorHighlight="@color/celeste_UCR"
+            android:textColorLink="@color/azul_UCR"
+            android:textCursorDrawable="@null"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_NombreComunidad" />
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
+
+    <Button
+        android:id="@+id/button_Create_Community_Form"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/azul_UCR"
+        android:elevation="8dp"
+        android:text="Crear comunidad"
+        android:textAppearance="@style/AppTheme.RedMujeres"
+        android:textColor="@color/gris_claro_UCR"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:layout_editor_absoluteX="11dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

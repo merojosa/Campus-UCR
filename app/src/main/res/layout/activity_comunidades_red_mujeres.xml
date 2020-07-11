@@ -15,7 +15,7 @@
         android:elevation="10dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="Comunidades"
+        android:text="Unirse a una comunidad"
         android:textAlignment="center"
         android:textColor="@color/azul_UCR"
         android:textSize="24sp"

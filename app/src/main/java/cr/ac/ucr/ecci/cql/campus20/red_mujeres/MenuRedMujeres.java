@@ -1,23 +1,31 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
-import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
-import cr.ac.ucr.ecci.cql.campus20.MainEmptyActivity;
-import cr.ac.ucr.ecci.cql.campus20.R;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
+import androidx.preference.PreferenceManager;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class MenuRedMujeres extends AppCompatActivity {
 
@@ -27,7 +35,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 4 Julio no validado
     // 5 Claudia no validada
     // 6 Juan no validado
-    private static final String currentUser = "1";
+    private static String currentUser;
     //para pruebas a futuro se debe ligar con el usuario actual de la aplicacion
 
     private FirebaseDatabase mDatabase;
@@ -49,6 +57,7 @@ public class MenuRedMujeres extends AppCompatActivity {
         this.userArr = new ArrayList<>();
         this.comunidadesUsuario = new ArrayList<String>();
         this.comunidadesTotales = new ArrayList<String>();
+
     }
 
 
@@ -57,9 +66,62 @@ public class MenuRedMujeres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mDatabase = FirebaseDatabase.getInstance();
-        recuperarDatos(currentUser);
-
+        recuperarId();
     }
+
+
+
+    public String getCurrentUserID(){
+        return currentUser;
+    }
+
+    void recuperarId() { //Este metodo se encarga de recuperar el id de la personas logueada y compararlo contra la base de datos de la
+        //red de mujeres que estaría simulando los usuarios validos de la UCR
+        DatabaseReference root = mDatabase.getReference();
+
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                int i = 1; //Id del current user
+                String correoMujeres;
+                for (DataSnapshot snapshot : dataSnapshot.child("usuarios_red_mujeres").getChildren()) {
+                    correoMujeres = (String) snapshot.child("CorreoUCR").getValue(); //Correo bd red mujeres
+                    if (correoMujeres.equals(correo)) { //Correo de logueo
+                        currentUser = Integer.toString(i);
+                    }
+                    i += 1;
+                }
+
+                if(currentUser == null) { //Si el id es null es porque el usuario no pertenece a la base de datos
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MenuRedMujeres.this, R.style.AppTheme_RedMujeres);
+
+                    builder.setTitle("Usuario inválido");
+                    builder.setMessage("El usuario ingresado no corresponde a la base de datos de la UCR");
+
+                    String positiveText = "Cerrar sesión";
+                    builder.setPositiveButton(positiveText,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    CampusBD login = new FirebaseBD(); //Se cierra la sesión para que se inicie con un correo válido
+                                    login.cerrarSesion();
+                                    startActivity(new Intent(MenuRedMujeres.this, LoginActivity.class));
+                                }
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    recuperarDatos(currentUser); //Validacion
+                }
+            }
+            @Override
+            public void fallo(DatabaseError databaseError) {
+            }
+        });
+    }
+
+
 
     private void recuperarDatos(String currentUserID) {
 
@@ -71,7 +133,6 @@ public class MenuRedMujeres extends AppCompatActivity {
 
 
             // Manipulacion de datos del snapshot y llamados a metodos sin importar si el usuario no esta validado.
-
                 //recupera todas las comunidades
                 for (DataSnapshot snapshot : dataSnapshot.child("Comunidades").getChildren()) {
                     comunidadesTotales.add( (String) snapshot.child("Nombre").getValue());
@@ -323,10 +384,6 @@ public class MenuRedMujeres extends AppCompatActivity {
             System.out.println(s);
         }
     }
-
     // Recupera toda la informacion relacionada a los grupos
-
-
-
 }
 

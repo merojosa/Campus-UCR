@@ -1,20 +1,16 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 /**Actividad para el despliegue de los detalles de una comunidad
  * */
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ComunidadDetalle extends AppCompatActivity {
