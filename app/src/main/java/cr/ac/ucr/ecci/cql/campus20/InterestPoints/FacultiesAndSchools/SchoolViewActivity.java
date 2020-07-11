@@ -142,6 +142,8 @@ public class SchoolViewActivity extends BaseCommentPopUp {
                 }
                 adapter.verifyImage(listHelper, itemValue.getName());
                 adapter.notifyDataSetChanged();
+            }else{
+                new SchoolPlacesPopUp(view, itemValue);
             }
 
         });
