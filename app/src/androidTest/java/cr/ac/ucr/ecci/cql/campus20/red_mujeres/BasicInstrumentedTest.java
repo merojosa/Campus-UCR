@@ -20,7 +20,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class CrearComunidadUITest {
+public class BasicInstrumentedTest {
 
     //Textea el contexto de la aplicación
     @Test
@@ -28,4 +28,7 @@ public class CrearComunidadUITest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("cr.ac.ucr.ecci.cql.campus20", appContext.getPackageName());
     }
+
+
+
 }
