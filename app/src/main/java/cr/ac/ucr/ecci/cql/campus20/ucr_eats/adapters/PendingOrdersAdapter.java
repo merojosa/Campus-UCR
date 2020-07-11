@@ -119,6 +119,7 @@ public class PendingOrdersAdapter extends RecyclerView.Adapter<PendingOrdersAdap
                 intent.putExtra("Soda", order.getRestaurant());
                 intent.putExtra("IdOrder", order.getIdOrder());
                 intent.putExtra("Repartidor", order.getUsername());
+                intent.putExtra("Platillo", order.getMeal().getName());
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 context.startActivity(intent);
             });

@@ -24,11 +24,15 @@ public class RecogerOrdenActivity extends AppCompatActivity
         setContentView(R.layout.activity_recoger_pedido);
 
         String soda = getIntent().getStringExtra("Soda");
+        String platillo = getIntent().getStringExtra("Platillo");
         idOrden = getIntent().getStringExtra("IdOrder");
         repartidor = getIntent().getStringExtra("Repartidor");
 
         TextView sodaTexto = findViewById(R.id.titulo_soda_recoger);
         sodaTexto.setText(soda);
+
+        TextView platilloTexto = findViewById(R.id.texto_platillo_recoger);
+        platilloTexto.setText(platillo);
 
         Button button = findViewById(R.id.orden_recogida_button);
         button.setOnClickListener(v -> cambiarEstatusOrden());
