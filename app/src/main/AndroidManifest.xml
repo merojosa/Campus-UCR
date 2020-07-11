@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".red_mujeres.Config"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"></activity>
+
         <activity android:name=".red_mujeres.CrearComunidad"></activity>
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
@@ -108,7 +112,19 @@
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
         <activity
             android:name=".red_mujeres.MainRedMujeres"
-            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+            android:theme="@style/AppTheme.InterestsThemeNoBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="www.redmujeres.com"
+                    />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".red_mujeres.MenuRedMujeres"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />

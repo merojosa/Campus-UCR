@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".red_mujeres.MisComunidades"
-    android:fillViewport="true">
+    tools:context=".red_mujeres.MisComunidades">
+
 
     <TextView
         android:id="@+id/text_Activity_Title"
@@ -13,7 +13,7 @@
         android:layout_height="55dp"
         android:background="@color/blanco_UCR"
         android:elevation="10dp"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/myriad_pro_semi"
         android:gravity="center"
         android:text="Mis Comunidades"
         android:textAlignment="center"
@@ -37,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_Activity_Title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <fragment
         android:id="@+id/NavigationBar"
@@ -57,6 +57,10 @@
         android:layout_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_app_bar" />
+
+    // B2 Agregar configuración para establecer contacto de confianza.
+    // Tarea: Componentes de UI
+    // D: Berta N: Aaron N: Denisse
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -150,6 +154,25 @@
             app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
             app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/config"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="42dp"
+        android:backgroundTint="@color/gris_medio_UCR"
+        android:src="@drawable/configrm"
+        android:textSize="18sp"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/gris_medio_UCR"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMyCommunities"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities"
+        app:rippleColor="@color/blanco_UCR" />
 
     <TextView
         android:id="@+id/text_Not_Joined"

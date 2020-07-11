@@ -1,9 +1,17 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.os.Bundle;
+
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,12 +19,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
-import cr.ac.ucr.ecci.cql.campus20.R;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class MainRedMujeresTest {
 
@@ -28,33 +30,21 @@ class MainRedMujeresTest {
         verify(test, times(1)).onCreate(btest);
     }
 
-    @Test
-    void onMapReady() {
-    }
+//    @Test
+//    void panico() { //
+//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+//        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
+//        doNothing().when(test).panico(valueCapture.capture());
+//        test.panico(1);
+//        assertEquals( (Object) 1, (Object) valueCapture.getValue());
+//    }
 
-    @Test
-    void iniciarRuta() {
-    }
-
-    @Test
-    void panico() { //
-        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
-        doNothing().when(test).panico(valueCapture.capture());
-        test.panico(1);
-        assertEquals( (Object) 1, (Object) valueCapture.getValue());
-    }
-
-    @Test
-    void popupPanico() {
-        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-        test.popupPanico();
-        verify(test, times(1)).popupPanico();
-    }
-
-    @Test
-    void popupCompartir() {
-    }
+//    @Test
+//    void popupPanico() {
+//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+//        test.popupPanico();
+//        verify(test, times(1)).popupPanico();
+//    }
 
     @Test
     void enviarWhatsapp() {
@@ -77,59 +67,11 @@ class MainRedMujeresTest {
     }
 
     @Test
-    void onRequestPermissionsResult() {
-    }
-
-    @Test
-    void onExplanationNeeded() {
-    }
-
-    @Test
-    void onPermissionResult() {
-    }
-
-    @Test
-    void onCancelNavigation() {
-    }
-
-    @Test
-    void onNavigationFinished() {
-    }
-
-    @Test
-    void onNavigationRunning() {
-    }
-
-    @Test
-    void onStart() {
-    }
-
-    @Test
-    void onResume() {
-    }
-
-    @Test
-    void onPause() {
-    }
-
-    @Test
-    void onStop() {
-    }
-
-    @Test
-    void onSaveInstanceState() {
-    }
-
-    @Test
     void onDestroy() {
         MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
         test.onDestroy();
 
         verify(test, times(1)).onDestroy();
-    }
-
-    @Test
-    void onLowMemory() {
     }
 
     @Test
@@ -180,5 +122,48 @@ class MainRedMujeresTest {
         // define return value for method getUniqueId()
         when(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4)).thenReturn(true);
         assertTrue(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4));
+    }
+
+    @Test
+    void notificacionUnir() { //Verifica que el metodo que lanza el hilo se ejecuta una vez
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        Bundle btest = Mockito.mock(Bundle.class);
+        test.onCreate(btest);
+        verify(test, times(1)).onCreate(btest);
+    }
+
+    @Test
+    void popupRutaComunidades() { //Verifica que el metodo se limita a crear el popup sin tocar nada más de la app
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        doNothing().when(test).popupRutaComunidades();
+    }
+
+    @Test
+    void popupCompartir() { //Verifica que el metodo se limita a crear el popup sin tocar nada más de la app
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        doNothing().when(test).popupCompartir();
+    }
+
+    @Test
+    void testSetEmergencyPhones() {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.053143, 9.9379798 )));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9365951, -84.052528)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.051744, 9.9359527)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.050132, 9.9358129)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0493615, 9.9362323)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0487296, 9.9377568)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0513553, 9.9352736)));
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        when(test.setEmergencyPhone()).thenReturn(symbolLayerIconFeatureList);
+        assertEquals(symbolLayerIconFeatureList, test.setEmergencyPhone());
+        verify(test, times(1)).setEmergencyPhone();
     }
 }

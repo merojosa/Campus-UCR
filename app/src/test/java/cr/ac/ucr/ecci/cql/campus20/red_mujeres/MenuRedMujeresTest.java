@@ -28,14 +28,6 @@ class MenuRedMujeresTest {
         verify(test, times(1)).onCreate(btest);
     }
 
-    @Test
-    public void comunidadesUsuario() {
-
-    }
-
-    @Test
-    public void comunidadesTotales() {
-    }
 
     // Prueba que solo se llame enviarConfirmacion 1 vez dentro de verificarSolicitud, pues
     // los parametros de este llamado cambian dependiendo de si el usuario fue aceptado o
@@ -49,7 +41,6 @@ class MenuRedMujeresTest {
         test.enviarConfirmacion(true, "diana.ariasrojas@ucr.ac.cr");
 
         verify(test, times(1)).enviarConfirmacion(true, "diana.ariasrojas@ucr.ac.cr");
-
     }
 
     //Verifica que los parámetros se captaron y
@@ -72,6 +63,12 @@ class MenuRedMujeresTest {
         Assertions.assertEquals("diana.ariasrojas@ucr.ac.cr", valueCapture4.getValue());
     }
 
+    @Test
+    void recuperarId() {
 
+    }
 
+    @Test
+    void recuperarDatos() {
+    }
 }

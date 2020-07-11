@@ -9,11 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
-
-
 
 public class MisComunidades extends AppCompatActivity {
 
@@ -50,6 +45,7 @@ public class MisComunidades extends AppCompatActivity {
 
     //Variable para acceder a la base de datos
     private FirebaseDatabase mDatabase;
+    FloatingActionButton share;
 
     //Variables para el comportamiento de los botones flotantes
     Float translationY = 100f;
@@ -167,6 +163,7 @@ public class MisComunidades extends AppCompatActivity {
         fabCreateCommunity = findViewById(R.id.fabCreateCommunity);
         fabLabelCreate = findViewById(R.id.fabLabelCreateCommunity);
         fabLabelJoin = findViewById(R.id.fabLabelJoinCommunity);
+        share = findViewById(R.id.config);
 
         fabJoinCommunity.setAlpha(0f);
         fabCreateCommunity.setAlpha(0f);
@@ -207,6 +204,13 @@ public class MisComunidades extends AppCompatActivity {
                 startActivity(new Intent(MisComunidades.this, CrearComunidad.class).putExtra("userID",usuarioID));
             }
         });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuConfig();
+            }
+        });
     }
 
     public void openMenu()
@@ -227,5 +231,9 @@ public class MisComunidades extends AppCompatActivity {
         fabCreateCommunity.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
         fabLabelJoin.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
         fabLabelCreate.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(275).start();
+    }
+
+    public void menuConfig() {
+        startActivity(new Intent(MisComunidades.this, Config.class));
     }
 }

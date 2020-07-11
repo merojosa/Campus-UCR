@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,8 +66,6 @@ public class ComunidadDetalle extends AppCompatActivity {
         textViewCommunityName.setText(comunidad.getCommunityName());
         textViewCommunityDescription.setText("Descripción:\n" + comunidad.getCommunityDescription());
         textViewNoMembers.setText("Miembros ("+comunidad.getCommunityNoMembers()+"):");
-
-        System.out.println("********* Comunidad detalle de" + comunidad.getCommunityName() + " ***********");
 
         //Se llena despliegan los miembros de la comunidad
         ArrayList<String> miembros = comunidad.getCommunityMembers();
