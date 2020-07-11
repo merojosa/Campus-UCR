@@ -341,7 +341,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public void setUp() {
         DatabaseReference root = mDatabase.getReference();
-        String currentUser = userID;
+        String currentUser = new MenuRedMujeres().getCurrentUserID();
         bd.autCallback(root, new FirebaseListener() {
             @Override
             public void exito(DataSnapshot dataSnapshot) {

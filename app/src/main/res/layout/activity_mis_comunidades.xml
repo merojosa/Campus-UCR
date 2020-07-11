@@ -58,14 +58,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_app_bar" />
 
+    // B2 Agregar configuración para establecer contacto de confianza.
+    // Tarea: Componentes de UI
+    // D: Berta N: Aaron N: Denisse
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        android:gravity="center_horizontal">
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMyCommunities"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities"
+        tools:ignore="MissingConstraints">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabCreateCommunity"
@@ -109,10 +113,6 @@
             app:layout_constraintEnd_toEndOf="@+id/recyclerViewMyCommunities" />
     </LinearLayout>
 
-    // B2 Agregar configuración para establecer contacto de confianza.
-    // Tarea: Componentes de UI
-    // D: Berta N: Aaron N: Denisse
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/config"
         android:layout_width="wrap_content"
@@ -122,12 +122,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="42dp"
         android:backgroundTint="@color/gris_medio_UCR"
-        android:elevation="0dp"
         android:src="@drawable/configrm"
         android:textSize="18sp"
         android:tint="#FFFFFF"
-        app:backgroundTint="@color/blanco_UCR"
-        app:elevation="0dp"
+        app:backgroundTint="@color/gris_medio_UCR"
+        app:elevation="6dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewMyCommunities"
         app:layout_constraintStart_toStartOf="@+id/recyclerViewMyCommunities"
