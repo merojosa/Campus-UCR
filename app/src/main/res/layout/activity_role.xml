@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ucr_eats.activites.RoleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/role_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:text="@string/default_role_text"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <Spinner
+            android:id="@+id/default_role_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:dropDownWidth="wrap_content"
+            android:elevation="8dp"
+            android:spinnerMode="dialog" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <Button
+            android:id="@+id/save_role_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:text="@android:string/ok" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/appBar"
+        class="cr.ac.ucr.ecci.cql.campus20.AppBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_app_bar" />
+
+    <fragment
+        android:id="@+id/NavigationBar"
+        class="cr.ac.ucr.ecci.cql.campus20.NavigationBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout="@layout/fragment_navigation_bar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

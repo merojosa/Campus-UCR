@@ -43,4 +43,11 @@
     <string name="meals_left_placeholder">Restantes: %1$d de %2$d</string>
     <string name="capacity_left_placeholder">Capacidad: %1$d de %2$d</string>
     <string name="servings_placeholder">Porciones: %1$d de %2$d</string>
+    <string name="restaurant_name">Soda: %1$s</string>
+    <string name="meal_name">Plato: %1$s</string>
+    <string name="order_date">Fecha: %1$s</string>
+    <string name="order_distance">Distancia: %1$s km</string>
+    <string name="default_role_text">Elige tu rol predeterminado</string>
+    <string name="default_role_menu">Rol predeterminado</string>
+    <string name="take_order">Tomar orden</string>
 </resources>

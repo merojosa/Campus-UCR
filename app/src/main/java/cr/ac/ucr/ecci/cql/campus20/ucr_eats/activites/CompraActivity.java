@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,12 +41,17 @@ import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Order;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.OrderStatus;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.services.NotificacionPedidoService;
 
 public class CompraActivity extends AppCompatActivity implements PermissionsListener
 {
     private Meal meal;
     public static final String PATH_PEDIDOS = "ucr_eats/pedidos";
     private String currentRestaurant;
+    private String restLatitude;
+    private String restLongitude;
+
     private double latitude = 0.0;
     private double longitude = 0.0;
 
@@ -55,6 +63,9 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
     private boolean customLocation = false;
 
     private static final int CODIGO_RESULTADO = 0;
+
+    private NotificacionPedidoService mService;
+    Intent servicioIntent;
 
 
     @Override
@@ -68,7 +79,8 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
 
         meal = getIntent().getParcelableExtra(MealsActivity.MEAL_KEY);
         currentRestaurant = getIntent().getStringExtra(MealsActivity.NOMBRE_SODA_KEY);
-
+        restLatitude = getIntent().getStringExtra(MealsActivity.LATITUDE_SODA_KEY);
+        restLongitude = getIntent().getStringExtra(MealsActivity.LONGITUDE_SODA_KEY);
         TextView restaurant = findViewById(R.id.tituloCompra);
         restaurant.setText(currentRestaurant);
 
@@ -144,17 +156,38 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
             }
         }
 
-        Order order = new Order(username, meal, currentRestaurant, Calendar.getInstance().getTime(), latitude, longitude);
+        Order order = new Order(username, meal, currentRestaurant,Double.valueOf(restLatitude),Double.valueOf(restLongitude), Calendar.getInstance().getTime(), latitude, longitude, OrderStatus.PENDIENTE);
         String orderId = campusBD.obtenerIdUnicoPath(PATH_PEDIDOS);
         order.setIdOrder(orderId);
 
         campusBD.escribirDatos(PATH_PEDIDOS + "/" + orderId, order);
 
         Toast.makeText(this, "Se realizó el pedido exitosamente", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainUcrEats.class);
-        startActivity(intent);
-        finish();
 
+        // Servicio para detectar el estado de la orden
+        mService = new NotificacionPedidoService();
+        servicioIntent = new Intent(this, NotificacionPedidoService.class);
+        servicioIntent.putExtra(NotificacionPedidoService.LLAVE_ID_ORDEN, order.getIdOrder());
+        if (!isMyServiceRunning(mService.getClass())) {
+            startService(servicioIntent);
+        }
+
+        Intent actividadIntent = new Intent(this, MainUcrEats.class);
+        startActivity(actividadIntent);
+        finish();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass)
+    {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("Service status", "Running");
+                return true;
+            }
+        }
+        Log.i ("Service status", "Not running");
+        return false;
     }
 
     @SuppressWarnings( {"MissingPermission"})
@@ -234,6 +267,12 @@ public class CompraActivity extends AppCompatActivity implements PermissionsList
             customLocation = true;
             Toast.makeText(this, "Ubicación personalizada guardada", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        //stopService(servicioIntent);
+        super.onDestroy();
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 import cr.ac.ucr.ecci.cql.campus20.red_mujeres.MenuRedMujeres;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 
 public class Redireccionador
 {
@@ -107,33 +107,35 @@ public class Redireccionador
 
     private void irAppPredeterminada(int id, Context context)
     {
-        Intent intent;
-        switch (id)
+        if(id == 0)
         {
-            case 0:
-            default:
-            {
-                intent = new Intent(context, MainUcrEats.class);
-                break;
-            }
-            case 1:
-            {
-                intent = new Intent(context, MenuRedMujeres.class);
-                break;
-            }
-
-            case 2:
-            {
-                intent = new Intent(context, MainForoGeneral.class);
-                break;
-            }
-            case 3:
-            {
-                intent = new Intent(context, InterestPointsActivity.class);
-                break;
-            }
+            RoleActivity.startDefaultActivity(context);
         }
+        else
+        {
+            Intent intent;
+            switch (id)
+            {
+                default:
+                case 1:
+                {
+                    intent = new Intent(context, MenuRedMujeres.class);
+                    break;
+                }
 
-        context.startActivity(intent);
+                case 2:
+                {
+                    intent = new Intent(context, MainForoGeneral.class);
+                    break;
+                }
+                case 3:
+                {
+                    intent = new Intent(context, InterestPointsActivity.class);
+                    break;
+                }
+            }
+
+            context.startActivity(intent);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -60,7 +61,7 @@ public class RestaurantRateUITest {
         lock.await(5000, TimeUnit.MILLISECONDS);
 
         // Click Soda la U
-        onView(withId(R.id.ucr_eats_rv)).
+        onView(ViewMatchers.withId(R.id.ucr_eats_rv)).
                 perform(RecyclerViewActions.actionOnItemAtPosition(0, ViewActions.click()));
 
         previousRate = getText(withId(R.id.rating_num));
