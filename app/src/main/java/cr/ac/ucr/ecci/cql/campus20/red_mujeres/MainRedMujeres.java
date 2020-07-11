@@ -168,7 +168,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
         //deleteCoordinates();
-        setUrlParameters();
+        setParameters();
+        saveDestination(1.0,1.0);
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -183,13 +184,17 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
     }
 
-    private void setUrlParameters(){
+    private void setParameters(){
         //extraemos los parametros de con la informacion de quien nos compartio el viaje
         Intent intent2 = getIntent();
         Bundle intent = getIntent().getExtras();
         assert intent != null;
-        targerUser = intent.getString("id");
-        targerUserName = intent.getString("nombre");
+        try {
+            targerUser = intent.getString("id");
+            targerUserName = intent.getString("nombre");
+        }catch (Exception e){
+            Log.d("error","wao");
+        }
 
     }
 
@@ -280,6 +285,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         enviarNotificacion();
+                        setBotonEnRuta();
                     }
                 });
 
@@ -289,18 +295,23 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        iniciarRuta();
+                        setBotonEnRuta();
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    private void setBotonEnRuta(){
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("En ruta");
+    }
 
     public void enviarNotificacion() {
-        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj").child("EnRuta");
-        db.setValue(true);
-        db.setValue(false);
+        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj");
+        db.child("driverID").setValue(userID);
+        db.child("EnRuta").setValue(true);
+        db.child("EnRuta").setValue(false);
     }
 
     private void notificacionUnir() {
@@ -338,7 +349,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     public void setUp() {
         DatabaseReference root = mDatabase.getReference();
-        String currentUser = new MenuRedMujeres().getCurrentUserID();
+        String currentUser = userID;
         bd.autCallback(root, new FirebaseListener() {
             @Override
             public void exito(DataSnapshot dataSnapshot) {
@@ -505,7 +516,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         getRoute(originPoint, destinationPoint);
         saveDestination(latitudDes,longitudDes);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.verde_UCR);
+        button.setBackgroundResource(R.color.naranja_UCR);
         button.setText("Iniciar Viaje");
         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
@@ -892,8 +903,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
-        Intent intent = getIntent();
-        this.userID ="2";
+        this.userID ="1";
 
     }
 
