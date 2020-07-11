@@ -29,6 +29,4 @@ public class BasicInstrumentedTest {
         assertEquals("cr.ac.ucr.ecci.cql.campus20", appContext.getPackageName());
     }
 
-
-
 }
