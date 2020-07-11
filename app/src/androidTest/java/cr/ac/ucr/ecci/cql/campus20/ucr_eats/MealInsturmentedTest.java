@@ -1,4 +1,4 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import android.content.Intent;
 import android.os.Parcel;

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
         void onItemClick(View itemView, int position);
         // Método de la interfaz para el ToggleButton
         void onHeartClick(boolean check, int position);
+
+        void onLongClick(View itemView, int position);
     }
 
     // Define el método que permite a la actividad o fragmento llamar al listener
@@ -37,7 +40,7 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     }
 
     // Definición del ViewHolder
-    public class TemaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class TemaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private final TextView temaNombreView;
         private final TextView temaDescritionView;
@@ -79,6 +82,21 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
                 }
             }
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            Toast.makeText(v.getContext(), "LONG DESDE ADAPTER", Toast.LENGTH_SHORT).show();
+
+            if (listener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onLongClick(v, position);
+                }
+            }
+            return true;
+        }
+
     }
 
     private final LayoutInflater mInflater;

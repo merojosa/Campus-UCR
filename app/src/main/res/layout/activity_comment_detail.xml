@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_margin="15dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InterestPoints.Comment.CommentDetail">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:fontFamily="@font/myriad_pro_bold"
+            android:text="Fecha de creación:" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/myriad_pro_bold"
+            android:gravity="center"
+            android:text="Fecha de comentario" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RatingBar
+        android:id="@+id/ratingBarDetails"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:rating="3.5" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/commentText"
+        android:layout_width="395dp"
+        android:layout_height="89dp"
+        android:fontFamily="@font/myriad_pro_regular"
+        android:text="Texto del comentario" />
+
+    <ProgressBar
+        android:id="@+id/commentPhotoProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/azul_UCR"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/commentPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/feedback_item_margin"
+        android:background="#00FFFFFF"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/clike"
+            android:layout_width="38dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:focusable="false"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_thumb_up_grey_24dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/no_like_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/azul_UCR"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/cdislike"
+            android:layout_width="39dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:focusable="false"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_thumb_down_grey_24dp"/>
+
+        <TextView
+            android:id="@+id/no_dislike_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/azul_UCR"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/commentGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttom_shape_back"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:text="Atrás" />
+
+</LinearLayout>
+</ScrollView>

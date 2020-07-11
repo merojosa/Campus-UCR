@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.foro_general;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.ConfiguracionActivity;
@@ -77,11 +81,13 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     String texto = ds.child("texto").getValue(String.class);
                     int contadorLikes = ds.child("contadorLikes").getValue(Integer.class);
                     int contadorDisLikes = ds.child("contadorDisLikes").getValue(Integer.class);
+                    int resuelta = ds.child("resuelta").getValue(Integer.class);
 
                     // Se crea la pregunta
-                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes);
+                    Pregunta pregunta = new Pregunta(id, nombreUsuario, temaID, texto, contadorLikes, contadorDisLikes, resuelta);
                     ForoGeneralVerPreguntas.this.preguntasFireBase.add(pregunta);
                 }
+                ordenarPreguntasPorRanking(ForoGeneralVerPreguntas.this.preguntasFireBase);
 
                 // Setear el view para las preguntas
                 recyclerViewPreguntas = (RecyclerView)findViewById(R.id.verPreguntasRV);
@@ -138,6 +144,12 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
                     case R.id.temas_foro:
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(ForoGeneralVerPreguntas.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", ForoGeneralVerPreguntas.this.databaseReference.obtenerUsuario());
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(ForoGeneralVerPreguntas.this, ConfiguracionActivity.class));
                         break;
@@ -156,6 +168,21 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
             }
         });
 
+    }
+
+    public void ordenarPreguntasPorRanking(List<Pregunta> firebasePreguntas){
+
+        firebasePreguntas.sort(new Comparator<Pregunta>() {
+            @Override
+            public int compare(Pregunta preg1, Pregunta preg2) {
+                if(preg1.getRanking() == preg2.getRanking()){
+                    return 0;
+                }else if(preg1.getRanking() > preg2.getRanking()){
+                    return -1;
+                }
+                return 1;
+            }
+        });
     }
 
     /**
@@ -182,7 +209,7 @@ public class ForoGeneralVerPreguntas extends AppCompatActivity implements RVAdap
 
         Intent intent = new Intent(getApplicationContext(), ForoGeneralVerRespuestas.class);
         intent.putExtra("preguntaSeleccionada", preguntaSeleccionada);
-        //intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
+        intent.putExtra("nombreUsuario", this.databaseReference.obtenerUsuario());
         startActivity(intent);
     }
 }

@@ -13,4 +13,9 @@
         android:title="Órdenes pendientes"
         android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/defaultUcrEatsRole"
+        android:title="@string/default_role_menu"
+        android:visible="false" />
 </menu>

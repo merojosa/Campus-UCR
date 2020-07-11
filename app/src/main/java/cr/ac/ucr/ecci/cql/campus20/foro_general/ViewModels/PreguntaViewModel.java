@@ -61,4 +61,11 @@ public class PreguntaViewModel extends AndroidViewModel {
      * @return una lista con la pregunta con esas especificaciones dentro de un LiveData
      */
     public LiveData<List<Pregunta>> getIDPorTextoYUsuario(String texto, String nombreUsuario){ return mRepository.getIDPorTextoYUsuario(texto, nombreUsuario); }
+
+    /**
+     * Metodo utilizado para cerrar o reabrir una pregunta
+     * @param id Identificacion de la pregunta
+     * @param num valor para el atributo
+     */
+    public void updateResuelta(int id, int num) { mRepository.updateResuelta(id, num);}
 }

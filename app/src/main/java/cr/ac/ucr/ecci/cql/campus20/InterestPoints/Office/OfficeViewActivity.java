@@ -1,17 +1,20 @@
 package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Office;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.BaseCommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Comment.CommentPopUp;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Office;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
-public class OfficeViewActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
+public class OfficeViewActivity extends BaseCommentPopUp implements ListAdapter.ListAdapterOnClickHandler {
 
     String officeName;
+    Office office;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,19 +26,26 @@ public class OfficeViewActivity extends AppCompatActivity implements ListAdapter
 
         TextView tittle = findViewById(R.id.officeName);
         tittle.setText(officeName);
+
+        office = intentLibrary.getParcelableExtra("place");
+
+
+        TextView desc = findViewById(R.id.descripcion);
+        desc.setText(office.description);
+
+        TextView horario = findViewById(R.id.horario);
+        horario.setText(office.horario);
+
+        TextView telefono = findViewById(R.id.telefono);
+        telefono.setText(office.telefono);
+
+        /*POPUP*/
+        Button popButton = findViewById(R.id.comments);
+        /*Line needed for CommentPopUp to work properly.*/
+        popButton.setOnClickListener(view -> commentPopUp = new CommentPopUp(view, this, office));
+        /*POPUP*/
     }
 
-//     * EFE: send the user to the location in maps
-//     * REQ:
-//     * view: send by the button that calls this method
-//     * latitude : latitude of the point that the user wants to go.
-//     * longitude: longitude of the point that the user wants to go.
-//     * MOD: ---
-//     * */
-//    public void goTo(View view) {
-//        Intent intent = new Intent(this, Map.class);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onClick(String title) {

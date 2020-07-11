@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mapboxWhite"
+    tools:context=".foro_general.AgregarMapa">
+
+    <TextView
+        android:id="@+id/fragment_below_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="Para agregar un marcador mantenga presionado el dedo en el mapa." />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fragment_below_textview"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="@dimen/cardview_default_elevation">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionRespuestas"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+
+            android:elevation="0dp"
+            app:srcCompat="@drawable/icono_agregar_preguntas_foro_general"
+android:background="@color/gris_medio_UCR"
+            mapbox:layout_constraintBottom_toBottomOf="@+id/mapView"
+            mapbox:layout_constraintEnd_toEndOf="parent"
+            mapbox:maxImageSize="26dp"
+            mapbox:rippleColor="@color/blanco_UCR"
+            mapbox:useCompatPadding="true"/>
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

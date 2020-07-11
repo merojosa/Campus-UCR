@@ -3,19 +3,20 @@ package cr.ac.ucr.ecci.cql.campus20;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.OrdenesPendientesRepartidorActivity;
+import cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites.RoleActivity;
 
 
 public class AppBarFragment extends Fragment
@@ -77,6 +78,12 @@ public class AppBarFragment extends Fragment
                 startActivity(new Intent(getActivity(), OrdenesPendientesActivity.class));
                 return true;
             }
+            else if (item.getItemId() == R.id.defaultUcrEatsRole)
+            {
+                Intent intent = new Intent(getActivity(), RoleActivity.class);
+                intent.putExtra("NO_REDIRECT", true);
+                startActivity(intent);
+            }
             return false;
         });
 
@@ -90,6 +97,13 @@ public class AppBarFragment extends Fragment
         {
             MenuItem menuItem = toolbar.getMenu().findItem(R.id.ordenesPendientes);
             menuItem.setVisible(true);
+        }
+
+        if(getActivity() instanceof  MainUcrEats ||
+           getActivity() instanceof OrdenesPendientesRepartidorActivity)
+        {
+            MenuItem roleItem = toolbar.getMenu().findItem(R.id.defaultUcrEatsRole);
+            roleItem.setVisible(true);
         }
     }
 }

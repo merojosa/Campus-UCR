@@ -50,22 +50,31 @@ public class SchoolPlacesPopUp extends AppCompatActivity {
         capacity.setText(Integer.toString(place.getCapacity()));
 
         wifi.setImageResource(R.drawable.icon_wifi);
-        wifiCheck.setChecked(place.isWifi());
+        wifiCheck.setChecked(place.getWifi());
         wifiCheck.setEnabled(false);
 
         if(place.getType().equals(Place.TYPE_LABORATORY)) {
             computers.setImageResource(R.drawable.icon_pc);
-            computersCheck.setChecked(place.isComputers());
+            computersCheck.setChecked(place.getHaveComputers());
             computersCheck.setEnabled(false);
             projector.setImageResource(R.drawable.icon_projector);
-            projectorCheck.setChecked(place.isComputers());
+            projectorCheck.setChecked(place.getHaveComputers());
             projectorCheck.setEnabled(false);
             extintor.setImageResource(R.drawable.icon_ext);
-            extintorCheck.setChecked(place.isComputers());
+            extintorCheck.setChecked(place.getHaveComputers());
             extintorCheck.setEnabled(false);
-        }else {
+        }else if(place.getType().equals(Place.TYPE_BATHROOM)){
             computers.setVisibility(View.GONE);
             computersCheck.setVisibility(View.GONE);
+            projector.setVisibility(View.GONE);
+            projectorCheck.setVisibility(View.GONE);
+            extintor.setVisibility(View.GONE);
+            extintorCheck.setVisibility(View.GONE);
+        }else{ //TYPE_ASOCIATION
+            computers.setImageResource(R.drawable.icon_pc);
+            computersCheck.setChecked(place.getHaveComputers());
+            computersCheck.setEnabled(false);
+
             projector.setVisibility(View.GONE);
             projectorCheck.setVisibility(View.GONE);
             extintor.setVisibility(View.GONE);

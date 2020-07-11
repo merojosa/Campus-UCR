@@ -89,4 +89,15 @@ public class PreguntaRepository {
     public void borrarTodo(){
         mPreguntaDao.borrarTodo();
     }
+
+    /**
+     * Metodo utilizado para cerrar o reabrir una pregunta
+     * @param id Identificacion de la pregunta
+     * @param num valor para el atributo
+     */
+    public void updateResuelta(int id, int num) {
+        ForoGeneralDatabase.databaseWriteExecutor.execute(() -> {
+            mPreguntaDao.updateResuelta(id, num);
+        });
+    }
 }

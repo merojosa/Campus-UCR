@@ -142,6 +142,12 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     case R.id.temas_foro:
                         startActivity(new Intent(ForoGeneralVerTemas.this, ForoGeneralVerTemas.class));
                         break;
+                    case R.id.mis_preguntas_foro:
+                        Intent intent = new Intent(ForoGeneralVerTemas.this, ForoGeneralVerMisPreguntas.class);
+                        intent.putExtra("nombreUsuario", ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
+                        // Llamada a la actividad de crear pregunta
+                        startActivity(intent);
+                        break;
                     case R.id.pref_foro:
                         startActivity(new Intent(ForoGeneralVerTemas.this, ConfiguracionActivity.class));
                         break;
@@ -330,6 +336,10 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
                     eliminarTemaFavoritoFirebase(idTema, ForoGeneralVerTemas.this.databaseReference.obtenerUsuario());
                 }
             }
+            @Override
+            public void onLongClick(View view, int position){
+                Toast.makeText(ForoGeneralVerTemas.this, "HIII", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -380,8 +390,6 @@ public class ForoGeneralVerTemas extends AppCompatActivity {
         });
 
     }
-
-    //comentario para poder hacer commit
 
 
     /**

@@ -2,7 +2,6 @@ package cr.ac.ucr.ecci.cql.campus20.foro_general.UI;
 
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,9 +13,11 @@ import cr.ac.ucr.ecci.cql.campus20.foro_general.MainForoGeneral;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityForoGeneralTest {
@@ -32,5 +33,5 @@ public class MainActivityForoGeneralTest {
     public void testBotonAgregarPreguntas(){
         onView(withId(R.id.buttonAgregarPreguntas)).perform(click());
         intended(hasComponent(CrearPreguntaForoGeneral.class.getName()));
-    }
+   }
 }

@@ -26,7 +26,7 @@ public class Respuesta {
     public int id;
 
     @NonNull
-    @ColumnInfo(name="nombreUsuario")
+    @ColumnInfo(name = "nombreUsuario")
     public String nombreUsuario;
 
     @ColumnInfo(name = "texto")
@@ -44,7 +44,20 @@ public class Respuesta {
     @ColumnInfo(name = "cantidad_dislikes")
     public int contadorDislikes = 0;
 
-    public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int temaID, int contadorLikes, int contadorDislikes) {
+    @ColumnInfo(name = "latitud")
+    public double latitud = 0.0;
+
+    @ColumnInfo(name = "longitud")
+    public double longitud = 0.0;
+
+    //Bandera para ver si utiliza mapa o no, si no entonces ignora los datos de latitud y longitud
+    @ColumnInfo(name = "mapa_agregado")
+    public boolean mapaAgregado = false;
+
+    public int notificada = 0;
+
+    public Respuesta(int id, String nombreUsuario, String texto, int preguntaID, int temaID, int contadorLikes, int contadorDislikes,
+                     double latitud, double longitud, boolean mapaAgregado) {
         //public Respuesta(int id, String texto, int preguntaID, int contadorLikes, int contadorDislikes) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
@@ -53,6 +66,10 @@ public class Respuesta {
         this.temaID = temaID;
         this.contadorLikes = contadorLikes;
         this.contadorDislikes = contadorDislikes;
+        this.notificada = 0;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.mapaAgregado = mapaAgregado;
     }
 
     //getters y setters
@@ -100,5 +117,33 @@ public class Respuesta {
 
     public void setContadorDislikes(int contadorDislikes) {
         this.contadorDislikes = contadorDislikes;
+    }
+
+    public int getRanking() {
+        return this.contadorLikes - this.contadorDislikes;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public boolean isMapaAgregado() {
+        return mapaAgregado;
+    }
+
+    public void setMapaAgregado(boolean mapaAgregado) {
+        this.mapaAgregado = mapaAgregado;
     }
 }

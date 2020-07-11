@@ -32,6 +32,8 @@ public class OrdenesPendientesActivity extends AppCompatActivity
 {
     private List<Order> listaOrdenes;
     private CampusBD db;
+    private boolean ordenEscogida = false;
+    private RecyclerView.OnItemTouchListener listener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,24 +78,28 @@ public class OrdenesPendientesActivity extends AppCompatActivity
     {
         RecyclerView recyclerView = findViewById(R.id.ordenes_pendientes_rv);
 
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerView, (view, position) ->
-                {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Completar orden")
-                            .setMessage("¿Desea completar esta orden?")
-                            .setIcon(R.drawable.info_personalizado)
-                            .setPositiveButton("Completar orden", (dialog, whichButton) ->
-                            {
-                                db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
-                                        .get(position).getIdOrder());
-                                
-                                listaOrdenes.clear();
-                            })
-                            .setNegativeButton("Cancelar", (dialog, which) ->
-                            {}).show();
-                })
-        );
+        // Eliminar el listener previo
+        if(listener != null)
+            recyclerView.removeOnItemTouchListener(listener);
+
+        listener = new RecyclerItemClickListener(this, recyclerView, (view, position) ->
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Orden")
+                    .setMessage("Completar orden")
+                    .setIcon(R.drawable.info_personalizado)
+                    .setPositiveButton("¿Desea completar esta orden?", (dialog, whichButton) ->
+                    {
+                        db.eliminarDato(CompraActivity.PATH_PEDIDOS + "/" + listaOrdenes
+                                .get(position).getIdOrder());
+
+                        listaOrdenes.clear();
+                    })
+                    .setNegativeButton("Cancelar", (dialog, which) ->
+                    {}).show();
+        });
+
+        recyclerView.addOnItemTouchListener(listener);
 
         // Performance
         recyclerView.setHasFixedSize(true);
