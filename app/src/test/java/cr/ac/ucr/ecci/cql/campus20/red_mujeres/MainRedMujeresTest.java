@@ -24,21 +24,37 @@ class MainRedMujeresTest {
         verify(test, times(1)).onCreate(btest);
     }
 
-//    @Test
-//    void panico() { //
-//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-//        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
-//        doNothing().when(test).panico(valueCapture.capture());
-//        test.panico(1);
-//        assertEquals( (Object) 1, (Object) valueCapture.getValue());
-//    }
-//
-//    @Test
-//    void popupPanico() {
-//        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
-//        test.popupPanico();
-//        verify(test, times(1)).popupPanico();
-//    }
+    @Test
+    void panico() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        ArgumentCaptor<Integer> valueCapture = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> valueCapture2 = ArgumentCaptor.forClass(String.class);
+
+
+        doNothing().when(test).panico(valueCapture.capture(), valueCapture2.capture());
+        test.panico(1, "123");
+        assertEquals( (Object) 1, (Object) valueCapture.getValue());
+        assertEquals( (Object) "123", (Object) valueCapture2.getValue());
+    }
+
+    @Test
+    void popupPanico() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        test.popupPanico("Berta", "123");
+        verify(test, times(1)).popupPanico("Berta", "123");
+    }
+
+    @Test
+    void popUpPanicoArgs() {
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> valueCapture2 = ArgumentCaptor.forClass(String.class);
+
+        doNothing().when(test).popupPanico(valueCapture.capture(), valueCapture2.capture());
+        test.popupPanico("Berta", "123");
+        assertEquals( (Object) "Berta", (Object) valueCapture.getValue());
+        assertEquals( (Object) "123", (Object) valueCapture2.getValue());
+    }
 
     @Test
     void enviarWhatsapp() {

@@ -20,13 +20,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 public class MainRedMujeresUITest {
     @Rule
     public IntentsTestRule<MainRedMujeres> intentsTestRule = new IntentsTestRule<>(MainRedMujeres.class, true, false);
-
-    @Test
-    public void testBotonPanico(){
-        Intent intent = new Intent();
-        intentsTestRule.launchActivity(intent);
-        onView(withId(R.id.sos)).perform(click());
-    }
+    
     @Test
     public void testBotonCompartir(){
         Intent intent = new Intent();

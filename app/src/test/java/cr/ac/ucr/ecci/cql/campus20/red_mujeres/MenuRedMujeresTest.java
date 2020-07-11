@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,5 +73,28 @@ class MenuRedMujeresTest {
 
     @Test
     void recuperarDatos() {
+    }
+
+    @Test
+    public void verificarSolicitud(){
+        MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
+        ArgumentCaptor<String> valueCapture1 = ArgumentCaptor.forClass(String.class);
+        doNothing().when(test).verificarSolicitud(valueCapture1.capture());
+        test.verificarSolicitud("1");
+        Assertions.assertEquals("1", valueCapture1.getValue());
+    }
+
+    @Test
+    public void comunidadesUsuario(){
+        MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
+
+        ArgumentCaptor<List<String>> valueCapture1 = ArgumentCaptor.forClass(List.class);
+        doNothing().when(test).comunidadesUsuario(valueCapture1.capture());
+        List<String> fakeList = Arrays.asList("foo", "bar");
+
+        test.comunidadesUsuario(fakeList);
+
+        Assertions.assertEquals(fakeList, valueCapture1.getValue());
+
     }
 }
