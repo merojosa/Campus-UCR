@@ -164,7 +164,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // 2. Que el usuario haya envidado una solicitud
     // 3. Que el usuario sea mujer
     // Actualiza la BD acorde a esto
-    private void verificarSolicitud(String currentUserID){
+    public void verificarSolicitud(String currentUserID){
 
         DatabaseReference usuario = mDatabase.getReference();
 
@@ -210,7 +210,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     // Método que compone el correo de solicitud, lo llena con datos del usuario recuperados de BD
     // Y utiliza SendMailTask para enviarlo al administrador para revisión
     // Modifica el valor del atributo SolicitudEnviada del usuario en cuestión
-    private void enviarSolicitudAdmin(String nombre, String genero, String carne, String correo) {
+    public void enviarSolicitudAdmin(String nombre, String genero, String carne, String correo) {
         List<String> toEmailList = new ArrayList<>();
         toEmailList.add("admredmujeres@gmail.com");
 
@@ -285,7 +285,7 @@ public class MenuRedMujeres extends AppCompatActivity {
     }
 
     // Envía respuesta de solicitud a ingreso a la comunidad
-    private void enviarConfirmacion(boolean aceptado, String correoUCR) {
+    public void enviarConfirmacion(boolean aceptado, String correoUCR) {
         List<String> toEmailList = new ArrayList<>();
         toEmailList.add(correoUCR);
 
