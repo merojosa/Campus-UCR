@@ -92,7 +92,7 @@ public class ComunidadAdapter extends RecyclerView.Adapter<ComunidadAdapter.Comu
 
         //Asignación de los valores por mostrar en la vista
         holder.mTextViewCommunityName.setText(currentCommunity.getCommunityName());
-        holder.mTextViewNoMembers.setText(currentCommunity.getCommunityNoMembers());
+        holder.mTextViewNoMembers.setText("Miembros: "+currentCommunity.getCommunityNoMembers());
         holder.mImageView.setImageResource(currentCommunity.getCommunityImgRes());
         holder.mTextViewDescription.setText(currentCommunity.getCommunityDescription());
     }

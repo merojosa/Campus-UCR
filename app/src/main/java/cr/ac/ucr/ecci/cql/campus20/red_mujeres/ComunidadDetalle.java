@@ -1,6 +1,7 @@
 package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 /**Actividad para el despliegue de los detalles de una comunidad
  * */
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,12 +15,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class ComunidadDetalle extends AppCompatActivity {
 
     private Comunidad comunidad;    //Almacena los datos por ser desplegados en la vista
+    private FirebaseDatabase mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +42,9 @@ public class ComunidadDetalle extends AppCompatActivity {
         //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
+
+        // Instancia base de datos
+        mDatabase = FirebaseDatabase.getInstance();
 
         //Se recibe objeto Comunidad
         Intent intent = getIntent();
@@ -48,10 +64,19 @@ public class ComunidadDetalle extends AppCompatActivity {
         //Se actualizan los elementos del layout con los detalles de una comunidad
         imageView.setImageResource(comunidad.getCommunityImgRes());
         textViewCommunityName.setText(comunidad.getCommunityName());
-        textViewCommunityDescription.setText(comunidad.getCommunityDescription());
-        textViewNoMembers.setText(comunidad.getCommunityNoMembers());
-        //textViewMemberList.setText(); //Llenar con los miembros de la BD
+        textViewCommunityDescription.setText("Descripción:\n" + comunidad.getCommunityDescription());
+        textViewNoMembers.setText("Miembros ("+comunidad.getCommunityNoMembers()+"):");
 
+        System.out.println("********* Comunidad detalle de" + comunidad.getCommunityName() + " ***********");
+
+        //Se llena despliegan los miembros de la comunidad
+        ArrayList<String> miembros = comunidad.getCommunityMembers();
+        textViewMemberList.setText("");
+        for(int i = 0; i<miembros.size(); ++i)
+        {
+//            textViewMemberList.append(" - " + miembros.get(i) + "\n"); //Llenar con los miembros de la BD
+            obtenerNombreUsuario(miembros.get(i), textViewMemberList);
+        }
         //Condición para definir qué se muestra en el botón y su acción
         if(vis == 0)
         {
@@ -85,5 +110,24 @@ public class ComunidadDetalle extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    //Método que devuelve el nombre del usuario de la comunidad según el ID que recibo como parámetro
+    private void obtenerNombreUsuario(String miembroID, TextView textViewMemberList)
+    {
+        DatabaseReference usuario = mDatabase.getReference("usuarios_red_mujeres").child(miembroID);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+//                nombreUsuarioTemp = map.get("Nombre").toString();
+                textViewMemberList.append(" - " + map.get("Nombre").toString() + "\n");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        usuario.addListenerForSingleValueEvent(valueEventListener);
     }
 }

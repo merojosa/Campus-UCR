@@ -4,6 +4,7 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
  *  Muestra la lista de comunidades a las que el usuario se puede unir
  * */
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +16,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -30,10 +39,16 @@ public class ComunidadesRedMujeres extends AppCompatActivity {
     private ComunidadAdapter mAdapter;                  //Instancia del Adaptador que funciona como puente entre el RV y los datos
     private RecyclerView.LayoutManager mLayoutManager;  //Para el manejo del layout, en este caso se usa para el listview de las comunidades
 
+    //Variable para acceder a la base de datos
+    private FirebaseDatabase mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunidades_red_mujeres);
+
+        // Instancia base de datos
+        mDatabase = FirebaseDatabase.getInstance();
 
         //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
         if (getSupportActionBar() != null)
@@ -44,24 +59,44 @@ public class ComunidadesRedMujeres extends AppCompatActivity {
         ArrayList<String> comunidades = intent.getStringArrayListExtra("comunidadesTotales");
 
         createComunidadList(comunidades);   //Llamado al método para llenar el la lista de comunidades
-        buildRecyclerView();                //Llamado al método para desplegar en el RecyclerView los Cards donde se despliegan las comunidades
-
     }
 
     //Método que toma los datos de la BD provenientes del Intent y construye la lista de comunidades
     public void createComunidadList(List<String> comunidades)
     {
-        comunidadList = new ArrayList<>();
+        comunidadList = new ArrayList<>(); //Array que almacena las comunidades con la información proveniente de la base de datos
 
-        //Se toman los datos provenientes de la BD y se almacenan como objetos de tipo Comunidad
-        for(int i =0; i< comunidades.size(); ++i)
-        {
-            comunidadList.add(new Comunidad(R.drawable.community,
-                    comunidades.get(i),
-                    comunidades.size() + " miembros",
-                    new ArrayList<String>(),
-                    "Descripción genérica de ejemplo creada para la Comunidad "+ comunidades.get(0) + " del sistema"));
-        }
+        DatabaseReference ref = mDatabase.getReference("Comunidades");    //Comunidad
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null)
+                {
+                    for (int i = 0; i < comunidades.size(); ++i)
+                    {
+                        Map<String, Object> map = (HashMap<String, Object>) dataSnapshot.child(comunidades.get(i)).getValue();
+                        String comunidadNombre = map.get("Nombre").toString();
+                        String comunidadDescripcion = map.get("Descripcion").toString();
+                        String cantidadMiembros = String.valueOf(dataSnapshot.child(comunidades.get(i)).child("IDusuarios").getChildrenCount());
+                        ArrayList<String> miembros = new ArrayList<>();
+
+                        for (DataSnapshot idUserSnapshot : dataSnapshot.child(comunidades.get(i)).child("IDusuarios").getChildren()) {
+                            miembros.add(idUserSnapshot.getValue().toString());
+                        }
+                        //Se añade la nueva comunidad a la lista de comunidades a las que pertenece el usuario actual
+                        comunidadList.add(new Comunidad(R.drawable.community, comunidadNombre, cantidadMiembros, miembros, comunidadDescripcion));
+                    }
+                    //Se invoca al método para desplegar en el RecyclerView los Cards donde se despliegan las comunidades y sus detalles
+                    buildRecyclerView();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        ref.addListenerForSingleValueEvent(valueEventListener);
     }
 
     //Método para dibujar los cards de las comunidades a las que pertenece el usuario actual dentro del RecyclerViewer del layout

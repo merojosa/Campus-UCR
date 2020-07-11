@@ -76,9 +76,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:text="No. Miembros"
+            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="12dp"
-            android:textStyle="normal" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/text_Members_List_CD"
