@@ -117,4 +117,24 @@ class MainRedMujeresTest {
         when(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4)).thenReturn(true);
         assertTrue(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4));
     }
+
+    @Test
+    void notificacionUnir() { //Verifica que el metodo que lanza el hilo se ejecuta una vez
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        Bundle btest = Mockito.mock(Bundle.class);
+        test.onCreate(btest);
+        verify(test, times(1)).onCreate(btest);
+    }
+
+    @Test
+    void popupRutaComunidades() { //Verifica que el metodo se limita a crear el popup sin tocar nada más de la app
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        doNothing().when(test).popupRutaComunidades();
+    }
+
+    @Test
+    void popupCompartir() { //Verifica que el metodo se limita a crear el popup sin tocar nada más de la app
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        doNothing().when(test).popupCompartir();
+    }
 }

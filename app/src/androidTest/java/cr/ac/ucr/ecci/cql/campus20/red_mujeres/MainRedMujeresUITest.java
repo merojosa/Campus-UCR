@@ -27,6 +27,7 @@ public class MainRedMujeresUITest {
         intentsTestRule.launchActivity(intent);
         onView(withId(R.id.sos)).perform(click());
     }
+
     @Test
     public void testBotonCompartir(){
         Intent intent = new Intent();
@@ -46,6 +47,13 @@ public class MainRedMujeresUITest {
         Intent intent = new Intent();
         intentsTestRule.launchActivity(intent);
         onView(withId(R.id.mapView)).perform(click());
+    }
+
+    @Test
+    public void testIniciar() {
+        Intent intent = new Intent();
+        intentsTestRule.launchActivity(intent);
+        onView(withId(R.id.startButton)).perform(click());
     }
 
 }

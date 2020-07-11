@@ -263,16 +263,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    public void iniciarRuta() {
-        boolean simulateRoute = false; //Simulación de ruta para testing
-        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                .directionsRoute(currentRoute)
-                .shouldSimulateRoute(simulateRoute)
-                .build();
-
-        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
-    }
-
+    //Este metodo corresponde al popup que pregunta si la ruta quiere ser compartida con la comunidad por medio de la app
     public void popupRutaComunidades() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
 
@@ -284,7 +275,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        enviarNotificacion();
+                        enviarNotificacion(); //Si se quiere compartir la ruta, se envia una notificacion con la ubicacion en tiempo
+                        //real de la persona
                         setBotonEnRuta();
                     }
                 });
@@ -302,6 +294,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void setBotonEnRuta(){
         button.setBackgroundResource(R.color.verde_UCR);
         button.setText("En ruta");
@@ -314,7 +307,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         db.child("EnRuta").setValue(false);
     }
 
-    private void notificacionUnir() {
+    private void notificacionUnir() { //Este metodo tira un hilo que escucha constantemente por cambios
         NotificacionUnirse not = new NotificacionUnirse();
 
         handler = new Handler();
@@ -323,11 +316,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
             public void run() {
                 // Se manda a correr el servicio
                 not.setUnirseNotificacionListener(getApplicationContext(), userID);
-                // Se pregunta cada 20 segundos por alguna nueva respuesta
+                // Se pregunta cada 5 segundos por un cambio en la base de datos
                 handler.postDelayed(this, 5000);
             }
         };
-        // The first time this runs we don't need a delay so we immediately post.
         handler.post(runnable);
     }
 
@@ -407,7 +399,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                             enviarSMS(message);
                         } else {
                             Context context = getApplicationContext();
-                            CharSequence error = "Debés seleccionar la ruta antes de compartir.";
+                            CharSequence error = "Debe seleccionar la ruta antes de compartir.";
                             int duration = Toast.LENGTH_SHORT;
 
                             Toast toast = Toast.makeText(context, error, duration);

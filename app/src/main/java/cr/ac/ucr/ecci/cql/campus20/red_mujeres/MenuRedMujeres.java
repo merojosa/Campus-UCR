@@ -75,7 +75,8 @@ public class MenuRedMujeres extends AppCompatActivity {
         return currentUser;
     }
 
-    void recuperarId() {
+    void recuperarId() { //Este metodo se encarga de recuperar el id de la personas logueada y compararlo contra la base de datos de la
+        //red de mujeres que estaría simulando los usuarios validos de la UCR
         DatabaseReference root = mDatabase.getReference();
 
         bd.autCallback(root, new FirebaseListener() {
