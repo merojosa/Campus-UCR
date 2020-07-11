@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.MainEmptyActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
@@ -58,47 +59,10 @@ public class CoffeeShopTest {
     }
 
     @Rule
-    public ActivityTestRule<MainEmptyActivity> mActivityTestRule = new ActivityTestRule<>(MainEmptyActivity.class);
+    public ActivityTestRule<InterestPointsActivity> mActivityTestRule = new ActivityTestRule<>(InterestPointsActivity.class);
 
     @Test
     public void coffeeShopTest() throws InterruptedException {
-        //If it's already logged in, doesn't matter
-        try {
-            ViewInteraction appCompatEditText = onView(
-                    Matchers.allOf(ViewMatchers.withId(R.id.editTextCorreo),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    2),
-                            isDisplayed()));
-            appCompatEditText.perform(replaceText("test@ucr.ac.cr"), closeSoftKeyboard());
-
-            ViewInteraction appCompatEditText2 = onView(
-                    allOf(withId(R.id.editTextContrasenna),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    3),
-                            isDisplayed()));
-            appCompatEditText2.perform(replaceText("123456"), closeSoftKeyboard());
-
-            ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.buttonLogin), withText("Iniciar Sesión"),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    4),
-                            isDisplayed()));
-            appCompatButton.perform(click());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        lock.await(4000, TimeUnit.MILLISECONDS);
-
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.lugares), withContentDescription("Lugares"),
                         childAtPosition(
@@ -108,6 +72,8 @@ public class CoffeeShopTest {
                                 3),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+        lock.await(1000, TimeUnit.MILLISECONDS);
 
         ViewInteraction cardView = onView(
                 allOf(childAtPosition(

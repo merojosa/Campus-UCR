@@ -7,7 +7,7 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -15,7 +15,6 @@ import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
@@ -26,14 +25,13 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.InterestPointsActivity;
 import cr.ac.ucr.ecci.cql.campus20.MainEmptyActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -63,59 +61,17 @@ public class CommentPopUpUITest {
     }
 
     @Rule
-    public ActivityTestRule<MainEmptyActivity> mActivityTestRule = new ActivityTestRule<>(MainEmptyActivity.class);
+    public ActivityTestRule<InterestPointsActivity> mActivityTestRule = new ActivityTestRule<>(InterestPointsActivity.class);
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule = GrantPermissionRule.grant("android.permission.ACCESS_FINE_LOCATION");
 
+    @Rule
+    public ActivityScenarioRule<InterestPointsActivity> activityActivityScenarioRule =
+            new ActivityScenarioRule<>(InterestPointsActivity.class);
+
     @Test
     public void commentPopUpUITest() throws InterruptedException{
-        //If it's already logged in, doesn't matter
-        try {
-            ViewInteraction appCompatEditText = onView(
-                    Matchers.allOf(ViewMatchers.withId(R.id.editTextCorreo),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    2),
-                            isDisplayed()));
-            appCompatEditText.perform(replaceText("test@ucr.ac.cr"), closeSoftKeyboard());
-
-            ViewInteraction appCompatEditText2 = onView(
-                    allOf(withId(R.id.editTextContrasenna),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    3),
-                            isDisplayed()));
-            appCompatEditText2.perform(replaceText("123456"), closeSoftKeyboard());
-
-            ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.buttonLogin), withText("Iniciar Sesión"),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    4),
-                            isDisplayed()));
-            appCompatButton.perform(click());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        lock.await(4000, TimeUnit.MILLISECONDS);
-
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.lugares), withContentDescription("Lugares"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation),
-                                        0),
-                                3),
-                        isDisplayed()));
-        bottomNavigationItemView.perform(click());
-
         ViewInteraction cardView = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.mainGrid),
@@ -126,12 +82,16 @@ public class CommentPopUpUITest {
                         isDisplayed()));
         cardView.perform(click());
 
+        lock.await(1000, TimeUnit.MILLISECONDS);
+
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.rv_list_item),
                         childAtPosition(
                                 withClassName(is("android.widget.RelativeLayout")),
                                 1)));
         recyclerView.perform(actionOnItemAtPosition(4, click()));
+
+        lock.await(1000, TimeUnit.MILLISECONDS);
 
         ViewInteraction recyclerView2 = onView(
                 allOf(withId(R.id.rv_list_item),
