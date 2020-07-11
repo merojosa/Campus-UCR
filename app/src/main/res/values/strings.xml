@@ -50,4 +50,7 @@
     <string name="default_role_text">Elige tu rol predeterminado</string>
     <string name="default_role_menu">Rol predeterminado</string>
     <string name="take_order">Tomar orden</string>
+
+    <!-- Foro General-->
+    <string name="mis_preguntas">Mis preguntas</string>
 </resources>

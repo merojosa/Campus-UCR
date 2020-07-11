@@ -14,7 +14,7 @@ public class PreguntaUnitTest {
 
     @Before
     public void setUp() {
-        pruebaPregunta =  new Pregunta(0, "test", 1, "Pregunta de prueba", 0, 0);
+        pruebaPregunta =  new Pregunta(0, "test", 1, "Pregunta de prueba", 0, 0, 0);
     }
 
     @Test

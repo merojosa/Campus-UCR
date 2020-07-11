@@ -2,17 +2,17 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_foro_general_ver_respuestas"
+    android:id="@+id/activity_foro_general_ver_mis_preguntas"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".foro_general.ForoGeneralVerRespuestas">
+    tools:context=".foro_general.ForoGeneralVerPreguntas">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/preguntaSeleccionada"
+            android:id="@+id/preguntasUsuario"
             android:layout_width="307dp"
             android:layout_height="88dp"
             android:textAlignment="center"
@@ -27,27 +27,14 @@
             app:layout_constraintVertical_bias="0.044" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/verRespuestasRV"
+            android:id="@+id/verPreguntasRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preguntaSeleccionada"
-            app:layout_constraintVertical_bias="0.0"></androidx.recyclerview.widget.RecyclerView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buttonAgregarRespuestas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            android:backgroundTint="#005DA4"
-            android:clickable="true"
-            android:src="@drawable/icono_agregar_preguntas_foro_general"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/preguntasUsuario"
+            app:layout_constraintVertical_bias="0.0"/>
 
         <!-- Código para incluir la barra de navegación general-->
         <fragment
@@ -59,16 +46,6 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent" />
-
-        <CheckBox
-            android:id="@+id/marcarResuelto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Resuelto"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preguntaSeleccionada" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

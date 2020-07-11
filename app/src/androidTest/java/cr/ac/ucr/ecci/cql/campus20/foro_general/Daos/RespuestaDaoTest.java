@@ -45,13 +45,13 @@ public class RespuestaDaoTest {
     private static int TEMA_ID = 1;
     private static Tema TEMA_PRUEBA = new Tema(TEMA_ID, "PruebaTema", "Para ver si funciona", 100, R.drawable.foro1);
 
-    private static Pregunta PREGUNTA_PRUEBA = new Pregunta(1, USUARIO_TEST, TEMA_ID, "pregunta de prueba", 0, 0);
+    private static Pregunta PREGUNTA_PRUEBA = new Pregunta(1, USUARIO_TEST, TEMA_ID, "pregunta de prueba", 0, 0, 0);
     private static int PREGUNTA_ID = PREGUNTA_PRUEBA.id;
 
-    private static Respuesta RESPUESTA_PRUEBA_1 = new Respuesta(1, USUARIO_TEST, "respuesta de prueba", PREGUNTA_ID, TEMA_ID, 0, 0);
+    private static Respuesta RESPUESTA_PRUEBA_1 = new Respuesta(1, USUARIO_TEST, "respuesta de prueba", PREGUNTA_ID, TEMA_ID, 0, 0, 0.0, 0.0, false);
     private static int RESPUESTA_ID_1 = RESPUESTA_PRUEBA_1.getId();
 
-    private static Respuesta RESPUESTA_PRUEBA_2 = new Respuesta(2, USUARIO_TEST, "otra respuesta de prueba", PREGUNTA_ID, TEMA_ID, 1, 1);
+    private static Respuesta RESPUESTA_PRUEBA_2 = new Respuesta(2, USUARIO_TEST, "otra respuesta de prueba", PREGUNTA_ID, TEMA_ID, 1, 1, 0.0, 0.0, false);
     private static int RESPUESTA_ID_2 = RESPUESTA_PRUEBA_2.getId();
 
 
