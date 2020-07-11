@@ -14,7 +14,7 @@ public class RespuestaUnitTest {
 
     @Before
     public void setUp() {
-        respuesta =  new Respuesta(1, "test", "respuesta de prueba", 1, 1, 0, 0);
+        respuesta = new Respuesta(1, "test", "respuesta de prueba", 1, 1, 0, 0, 0.0, 0.0, false);
     }
 
     @Test
@@ -50,6 +50,17 @@ public class RespuestaUnitTest {
     @Test
     public void getContadorDislikes() {
         assertEquals(0, respuesta.getContadorDislikes());
+    }
+
+    @Test
+    public void getLatitudYLongitud() {
+        assertEquals(0.0, respuesta.getLatitud(), 1e-15);
+        assertEquals(0.0, respuesta.getLongitud(), 1e-15);
+    }
+
+    @Test
+    public void isMapaAgregado() {
+        assertEquals(false, respuesta.isMapaAgregado());
     }
 
     @After
