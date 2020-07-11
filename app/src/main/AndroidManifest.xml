@@ -28,11 +28,7 @@
         <activity
             android:name=".InterestPoints.Comment.CommentDetail"
             android:theme="@style/AppTheme.InterestsTheme"/>
-        <activity android:name=".red_mujeres.FormularioComunidad" />
-        <activity android:name=".InterestPoints.Comment.CommentPopUp" />
         <activity android:name=".red_mujeres.MisComunidades" />
-        <activity
-            android:name=".InterestPoints.Library.LibraryViewActivity"
         <activity android:name=".ucr_eats.activites.OrdenesPendientesRepartidorActivity" />
         <activity
             android:name=".InterestPoints.Library.LibraryViewActivity"
