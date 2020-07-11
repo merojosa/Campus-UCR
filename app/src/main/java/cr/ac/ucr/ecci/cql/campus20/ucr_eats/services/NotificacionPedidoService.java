@@ -169,7 +169,7 @@ public class NotificacionPedidoService extends Service
         //System.out.println("onTaskRemoved called");
         super.onTaskRemoved(rootIntent);
         ref.removeEventListener(listener);
-        Toast.makeText(this, "Reiniciando servicio...", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Reiniciando servicio...", Toast.LENGTH_SHORT).show();
         Intent broadcastIntent = new Intent();
         broadcastIntent.putExtra("idOrden", idOrden);
         broadcastIntent.setAction("restartservice");
