@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,14 +31,6 @@ class MenuRedMujeresTest {
         verify(test, times(1)).onCreate(btest);
     }
 
-    @Test
-    public void comunidadesUsuario() {
-
-    }
-
-    @Test
-    public void comunidadesTotales() {
-    }
 
     // Prueba que solo se llame enviarConfirmacion 1 vez dentro de verificarSolicitud, pues
     // los parametros de este llamado cambian dependiendo de si el usuario fue aceptado o
@@ -49,7 +44,6 @@ class MenuRedMujeresTest {
         test.enviarConfirmacion(true, "diana.ariasrojas@ucr.ac.cr");
 
         verify(test, times(1)).enviarConfirmacion(true, "diana.ariasrojas@ucr.ac.cr");
-
     }
 
     //Verifica que los parámetros se captaron y
@@ -72,6 +66,35 @@ class MenuRedMujeresTest {
         Assertions.assertEquals("diana.ariasrojas@ucr.ac.cr", valueCapture4.getValue());
     }
 
+    @Test
+    void recuperarId() {
 
+    }
 
+    @Test
+    void recuperarDatos() {
+    }
+
+    @Test
+    public void verificarSolicitud(){
+        MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
+        ArgumentCaptor<String> valueCapture1 = ArgumentCaptor.forClass(String.class);
+        doNothing().when(test).verificarSolicitud(valueCapture1.capture());
+        test.verificarSolicitud("1");
+        Assertions.assertEquals("1", valueCapture1.getValue());
+    }
+
+    @Test
+    public void comunidadesUsuario(){
+        MenuRedMujeres test = Mockito.mock(MenuRedMujeres.class);
+
+        ArgumentCaptor<List<String>> valueCapture1 = ArgumentCaptor.forClass(List.class);
+        doNothing().when(test).comunidadesUsuario(valueCapture1.capture());
+        List<String> fakeList = Arrays.asList("foo", "bar");
+
+        test.comunidadesUsuario(fakeList);
+
+        Assertions.assertEquals(fakeList, valueCapture1.getValue());
+
+    }
 }

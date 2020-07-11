@@ -32,7 +32,7 @@ public class FormularioComunidad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_comunidad);
 
-        //Se oculta el ActionBar para "reemplezarlo" por el AppBar definido
+        //Se oculta el ActionBar para "reemplazarlo" por el AppBar definido
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 

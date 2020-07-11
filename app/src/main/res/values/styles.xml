@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -46,6 +46,12 @@
         <item name="colorSecondary">@color/verde_UCR</item>
         <item name="colorSecondaryVariant">@color/amarillo_UCR</item>
         <item name="colorOnSecondary">@color/gris_oscuro_UCR</item>
+        <item name="android:fontFamily">@font/myriad_pro_semi</item>
+
+
+
+
+
     </style>
 
     <style name="NavigationMapRoute">

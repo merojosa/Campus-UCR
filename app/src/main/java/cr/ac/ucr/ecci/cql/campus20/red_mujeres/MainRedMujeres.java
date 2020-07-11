@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,53 +41,30 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-
-// Imports especificos de Directions API
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.geojson.FeatureCollection;
-
-import android.os.Handler;
-import android.view.Gravity;
-import android.widget.ListAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.style.layers.Layer;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-
-// Clases para calcular una ruta
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,37 +82,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseListener;
+import cr.ac.ucr.ecci.cql.campus20.LoginActivity;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Imports especificos de Directions API
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
+// Imports especificos de Directions API
+// Clases para calcular una ruta
+// Imports necesarios para la interfaz de usuario de navegacion
+// Imports especificos de Directions API
 // Imports para animación de ruta
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
-import android.view.animation.LinearInterpolator;
-import com.mapbox.api.directions.v5.MapboxDirections;
-import com.mapbox.geojson.LineString;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.style.layers.LineLayer;
-import com.mapbox.mapboxsdk.style.layers.Property;
-import com.mapbox.turf.TurfMeasurement;
-import timber.log.Timber;
-import static com.mapbox.core.constants.Constants.PRECISION_6;
 
 
 public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener,  PermissionsListener, NavigationListener {
@@ -143,6 +110,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private MapView mapView;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
+
+    private String targerUser = null;
+    private String targerUserName = null;
+    List<String> params;
 
     // Variables para calcular y dibujar una ruta
     private DirectionsRoute currentRoute;
@@ -163,9 +134,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     public DatabaseReference grupo;
     public DatabaseReference usuarios;
     private FirebaseDatabase mDatabase =  FirebaseDatabase.getInstance();;
+    private FireBaseRedMujeres bd = new FireBaseRedMujeres();
 
-    private Double lastLatitudeKnown = 0.0;
-    private Double lastLongitudeKnown = 0.0;
+    public  Double lastLatitudeKnown = 0.0;
+    public Double lastLongitudeKnown = 0.0;
 
     ArrayList<Map<String, Object>> userArr;
     ArrayList<Map<String, Object>> groupArr;
@@ -181,10 +153,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     private Double latitudOri;
     private Double longitudOri;
 
+    private Double userLat = 0.0;
+    private Double userLong = 0.0;
+
+    int posiciones = 0;
+
     private MainActivityLocationCallback callback = new MainActivityLocationCallback(this);
-//    // Builder para cambiar perfil de navegacion
-//    private MapboxDirections mapboxDirections;
-//    private MapboxDirections.Builder directionsBuilder;
 
     // Botón para inicializar navegación
     private Button button;
@@ -193,6 +167,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setUserID();
+        //deleteCoordinates();
+        setParameters();
+        saveDestination(1.0,1.0);
         userArr = new ArrayList<>();
         groupArr = new ArrayList<>();
         usersLocations = new ArrayList<>();
@@ -207,6 +184,20 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         //MapboxNavigation navigation = new MapboxNavigation(context, R.string.MAPBOX_ACCESS_TOKEN);
     }
 
+    private void setParameters(){
+        //extraemos los parametros de con la informacion de quien nos compartio el viaje
+        Intent intent2 = getIntent();
+        Bundle intent = getIntent().getExtras();
+        assert intent != null;
+        try {
+            targerUser = intent.getString("id");
+            targerUserName = intent.getString("nombre");
+        }catch (Exception e){
+            Log.d("error","wao");
+        }
+
+    }
+
     // Determinar estilo de mapa y como reacciona a interacciones con el usuario
     // En este caso, si el usuario hace tap en un punto del mapa se despliegan
     // funcionalidades del Navigation API, trazando una ruta sugerida al destino desde el punto actual.
@@ -219,7 +210,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 //Estilo cargado y mapa está listo
                 enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
+                //setEmergencyPhone();
                 getGroupMembersPositions();
+                notificacionUnir();
 
                 mapboxMap.addOnMapClickListener(MainRedMujeres.this);
 
@@ -228,9 +221,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
-                        iniciarRuta();
+                        popupRutaComunidades();
                     }
                 });
 
@@ -264,7 +255,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 sos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        popupPanico();
+                        setUp();
                     }
                 });
 
@@ -272,22 +263,73 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    public void iniciarRuta() {
-        boolean simulateRoute = false; //Simulación de ruta para testing
-        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                .directionsRoute(currentRoute)
-                .shouldSimulateRoute(simulateRoute)
-                .build();
+    //Este metodo corresponde al popup que pregunta si la ruta quiere ser compartida con la comunidad por medio de la app
+    public void popupRutaComunidades() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
 
-        NavigationLauncher.startNavigation(MainRedMujeres.this, options);
+        builder.setTitle("Enviar ruta a la comunidad");
+        builder.setMessage("¿Desea que las personas de la comunidad puedan unirse a su ruta?");
+
+        String positiveText = "Sí";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        enviarNotificacion(); //Si se quiere compartir la ruta, se envia una notificacion con la ubicacion en tiempo
+                        //real de la persona
+                        setBotonEnRuta();
+                    }
+                });
+
+        //No se desea compartir el viaje, cerramos el pop up
+        String negativeText = "No";
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setBotonEnRuta();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    public void panico(int truePanic) {
+    private void setBotonEnRuta(){
+        button.setBackgroundResource(R.color.verde_UCR);
+        button.setText("En ruta");
+    }
+
+    public void enviarNotificacion() {
+        DatabaseReference db = mDatabase.getReference("Comunidades").child("GrupoEj");
+        db.child("driverID").setValue(userID);
+        db.child("EnRuta").setValue(true);
+        db.child("EnRuta").setValue(false);
+    }
+
+    private void notificacionUnir() { //Este metodo tira un hilo que escucha constantemente por cambios
+        NotificacionUnirse not = new NotificacionUnirse();
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Se manda a correr el servicio
+                not.setUnirseNotificacionListener(getApplicationContext(), userID);
+                // Se pregunta cada 5 segundos por un cambio en la base de datos
+                handler.postDelayed(this, 5000);
+            }
+        };
+        handler.post(runnable);
+    }
+
+    public void panico(int truePanic, String numero) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
-        String num="911";
-        if (truePanic>0){
-            num = "12345678";
+        String num = numero;
+        if (truePanic==0){
+            num="911";
         }
+
         callIntent.setData(Uri.parse("tel:"+num));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -297,8 +339,29 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void popupPanico() {
-        final String [] items = new String[] {"911", "Contacto Emergencia"};
+    public void setUp() {
+        DatabaseReference root = mDatabase.getReference();
+        String currentUser = new MenuRedMujeres().getCurrentUserID();
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                String nombre =  (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("ContactoConfianza").child("Nombre").getValue();
+                String numero =  (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("ContactoConfianza").child("Numero").getValue();
+                popupPanico(nombre,numero);
+
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void popupPanico(String nombre, String numero) {
+
+        final String [] items = new String[] {"911", nombre};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainRedMujeres.this, R.style.AppTheme_RedMujeres);
         builder.setTitle("¡EMERGENCIA!");
@@ -308,7 +371,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                panico(which);
+                panico(which, numero);
             }
         });
 
@@ -336,7 +399,7 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                             enviarSMS(message);
                         } else {
                             Context context = getApplicationContext();
-                            CharSequence error = "Debés seleccionar la ruta antes de compartir.";
+                            CharSequence error = "Debe seleccionar la ruta antes de compartir.";
                             int duration = Toast.LENGTH_SHORT;
 
                             Toast toast = Toast.makeText(context, error, duration);
@@ -443,11 +506,18 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
 
         // Llamado a calculo de ruta con puntos de origen y destino establecidos
         getRoute(originPoint, destinationPoint);
+        saveDestination(latitudDes,longitudDes);
         button.setEnabled(true);
-        button.setBackgroundResource(R.color.verde_UCR);
+        button.setBackgroundResource(R.color.naranja_UCR);
         button.setText("Iniciar Viaje");
         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_navigation, 0);
         return true;
+    }
+
+    private void saveDestination(Double laititude, Double longitude){
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
+        ref.child(this.userID).child("latDestino").setValue(laititude);
+        ref.child(this.userID).child("longDestino").setValue(longitude);
     }
 
     // Calculo de ruta entre dos puntos
@@ -571,9 +641,9 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onNavigationRunning() {
         // Pregunta a usuario si desea compartir ruta con personas de confianza
-        FragmentManager fm = getSupportFragmentManager();
-        CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
-        alertDialog.show(fm, "fragment_compartir_ruta");
+        //FragmentManager fm = getSupportFragmentManager();
+        //CompartirRutaFragment alertDialog = CompartirRutaFragment.newInstance("Compartir ruta?");
+        //alertDialog.show(fm, "fragment_compartir_ruta");
     }
 
 
@@ -650,6 +720,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 if(Double.compare(latitude,lastLatitudeKnown) != 0 || Double.compare(longitude,lastLongitudeKnown) != 0) {
                     System.out.println( String.valueOf(result.getLastLocation().getLatitude()) +","+ String.valueOf(result.getLastLocation().getLongitude()));
                     UpdateMyLocation(latitude, longitude);
+                    userLat = latitude;
+                    userLong = longitude;
                 }
 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
@@ -691,15 +763,43 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         handler.post(runnable);
     }
 
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Denisse, Navigators: Berta, Aaron
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
+    public  List<Feature> setEmergencyPhone() {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.053143, 9.9379798 )));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9365951, -84.052528)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.051744, 9.9359527)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.050132, 9.9358129)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0493615, 9.9362323)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0487296, 9.9377568)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0513553, 9.9352736)));
+        return symbolLayerIconFeatureList;
+    }
+
+    //ID HU: CI0161-371. M5 Ubicación de teléfonos de emergencia de la UCR.
+    //Participantes: Driver: Aaron, Navigators: Berta, Denisse
+    //Agregar coordenadas de telefonos de emergencia de la UCR.
+
     //Recibe mapa que devuelve la base de datos con las posiciones de cada miembro del equipo
     // Marca en el mapa las posiciones de estos
     private void addMarkers(List<Map<String,Object>> map){
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-
+        symbolLayerIconFeatureList = setEmergencyPhone();
         for(int i = 0 ; i < map.size() ; ++i){
             symbolLayerIconFeatureList.add(Feature.fromGeometry(
                     Point.fromLngLat( (Double)map.get(i).get("Longitud"), (Double)map.get(i).get("Latitud"))));
         }
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat( userLong, userLong)));
 
         mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/streets-v11")
 
@@ -719,9 +819,12 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 ), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
-
-                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
-
+                if(targerUser!=null) {//Solo pasa si nos compartieron la ruta
+                    //Se dibuja la ruta a quien me compartio el viaje
+                    Point destinationPoint = Point.fromLngLat((Double)map.get(0).get("longDestino"), (Double)map.get(0).get("latDestino"));
+                    Point originPoint = Point.fromLngLat((Double)map.get(0).get("Longitud"),(Double) map.get(0).get("Latitud"));;
+                    getRoute(originPoint,destinationPoint);
+                }
 
             }
         });
@@ -739,13 +842,16 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
                 Map<String,Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
                 ArrayList<Integer> users = (ArrayList<Integer>)map.get("IDusuarios");
 
-                for(int i = 0 ; i< users.size();++i){
-                    //Recuperamos la informacion de los integrantes del grupo
-                    readGroupUsersData(""+users.get(i));
-                };
+                if(targerUser != null) {//Filtro por si es una persona especifica que nos compartio el viaje
+                    readGroupUsersData(targerUser);
+                }else {
+                    for (int i = 0; i < users.size(); ++i) {
+                        //Recuperamos la informacion de los integrantes del grupo
+                        readGroupUsersData("" + users.get(i));
+                    }
+                }
 
                 if(!usersLocations.equals(userArr)){
-                    System.out.println("Entreeeeeeee");
                     addMarkers(userArr);
                     usersLocations = new ArrayList<>(userArr);
                     userArr = new ArrayList<>();
@@ -761,6 +867,8 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         grupo.addListenerForSingleValueEvent(valueEventListener);
 
     }
+
+
 
     //Obtiene el json especifico para la referencia a la base de datos en el nodo del usuario especifcado
     public  void readGroupUsersData(String id){
@@ -783,16 +891,10 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         usuarios.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    //interfaz para trajar datos fuera del contexto del OnChangeData
-    public interface FirebaseCallBack {
 
-        void onCallBack(ArrayList<Map<String, Object>> list);
-
-    }
 
     private void setUserID(){
         //En su momento deberá usarse el id asociado a la comunidad
-        Intent intent = getIntent();
         this.userID ="1";
 
     }
@@ -802,9 +904,28 @@ public class MainRedMujeres extends AppCompatActivity implements OnMapReadyCallb
         DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres");
         ref.child(this.userID).child("Latitud").setValue(laititude);
         ref.child(this.userID).child("Longitud").setValue(longitude);
-
-
+        //ref.child(this.userID).child("coordenadas").push().setValue(new LatLng(laititude,longitude));
     }
+
+    private void deleteCoordinates(){
+        DatabaseReference ref = mDatabase.getReference("usuarios_red_mujeres").child(this.userID).child("coordenadas");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    snapshot.getRef().setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
 
 }
