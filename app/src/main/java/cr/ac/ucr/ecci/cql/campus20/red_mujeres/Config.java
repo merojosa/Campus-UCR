@@ -5,6 +5,7 @@ import androidx.preference.EditTextPreference;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,6 +41,13 @@ public class Config extends AppCompatActivity implements ExampleDialog.ExampleDi
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        validarGrupo();
+        validarContacto();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
@@ -50,14 +58,11 @@ public class Config extends AppCompatActivity implements ExampleDialog.ExampleDi
         contactoNum  = (EditText) findViewById(R.id.contactoNum);
 
 
-        validarContacto();
-
         final Button button = findViewById(R.id.save);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String name = contactoNom.getText().toString();
-                String num = contactoNum.getText().toString();
-                guardarConfig(name, num, ref);
+                guardarConfigContacto(ref);
+                guardarConfigGrupo(ref);
                 finish();
             }
         });
@@ -83,11 +88,32 @@ public class Config extends AppCompatActivity implements ExampleDialog.ExampleDi
         exampleDialog.show(getSupportFragmentManager(), tag);
     }
 
-    public void guardarConfig(String name, String num, DatabaseReference ref){
+    public void guardarConfigContacto(DatabaseReference ref){
+        String name = contactoNom.getText().toString();
+        String num = contactoNum.getText().toString();
+
         ref.child(currentUser).child("ContactoConfianza").child("Nombre").setValue(name);
         ref.child(currentUser).child("ContactoConfianza").child("Numero").setValue(num);
         this.name = name;
         this.num = num;
+    }
+
+    public void guardarConfigGrupo(DatabaseReference ref){
+        String packageName = getPackageName();
+        int nameId;
+        int numId;
+
+        for (int i = 1; i < 4; ++ i){
+           nameId = getResources().getIdentifier("name"+Integer.toString(i), "id", packageName);
+           numId = getResources().getIdentifier("num"+Integer.toString(i), "id", packageName);
+           TextView name = (TextView) findViewById(nameId);
+           TextView num = (TextView) findViewById(numId);
+           String name2Set = name.getText().toString();
+           String num2Set = num.getText().toString();
+           ref.child(currentUser).child("GrupoConfianza").child(Integer.toString(i)).child("Nombre").setValue(name2Set);
+           ref.child(currentUser).child("GrupoConfianza").child(Integer.toString(i)).child("Numero").setValue(num2Set);
+        }
+
     }
 
 
@@ -101,13 +127,50 @@ public class Config extends AppCompatActivity implements ExampleDialog.ExampleDi
                 String numero =  (String) dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("ContactoConfianza").child("Numero").getValue();
                 contactoNom.setText(nombre);
                 contactoNum.setText(numero);
-
             }
 
             @Override
             public void fallo(DatabaseError databaseError) {
                 contactoNom.setText("No Establecido");
                 contactoNum.setText("No Establecido");
+            }
+        });
+    }
+
+    public void validarGrupo(){
+        DatabaseReference root = mDatabase.getReference();
+
+        bd.autCallback(root, new FirebaseListener() {
+            @Override
+            public void exito(DataSnapshot dataSnapshot) {
+                int i = 1;
+                String packageName = getPackageName();
+                for (DataSnapshot snapshot : dataSnapshot.child("usuarios_red_mujeres").child(currentUser).child("GrupoConfianza").getChildren()) {
+
+                    String nombre =  (String) snapshot.child("Nombre").getValue();
+                    String numero =  (String) snapshot.child("Numero").getValue();
+
+                    String id = Integer.toString(i);
+                    int nameId = getResources().getIdentifier("name"+id, "id", packageName);
+                    int numId = getResources().getIdentifier("num"+id, "id", packageName);
+
+                    textViewName = (TextView) findViewById(nameId);
+                    textViewNum = (TextView) findViewById(numId);
+
+                    textViewName.setText(nombre);
+                    textViewNum.setText(numero);
+
+                    ++i;
+                }
+
+            }
+
+            @Override
+            public void fallo(DatabaseError databaseError) {
+                for (int i = 1; i < 4; ++i) {
+                    id2Edit = Integer.toString(i);
+                    guardarContactos("No Establecido", "No Establecido");
+                }
             }
         });
     }

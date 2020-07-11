@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:gravity="left"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
 
             <EditText
                 android:id="@+id/contactoNom"
-                android:layout_width="260dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
@@ -73,7 +74,7 @@
 
             <EditText
                 android:id="@+id/contactoNum"
-                android:layout_width="260dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
@@ -85,27 +86,31 @@
 
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/celeste_UCR" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="197dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            android:text="Grupo de Confianza"
+            android:textAlignment="viewStart"
+            android:textColor="@color/gris_oscuro_UCR"
+            android:textSize="18sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="197dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="12dp"
-                android:text="Grupo de Confianza"
-                android:textAlignment="viewStart"
-                android:textColor="@color/gris_oscuro_UCR"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:gravity="fill_horizontal"
             android:orientation="horizontal">
 
             <TextView
@@ -113,21 +118,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="#1" />
+                android:text="#1"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/name1"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Nombre" />
+                android:text="No"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/num1"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="12345678" />
+                android:text="Establecido"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/editar1"
@@ -137,7 +145,7 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:text="Editar"
-                android:textAlignment="textEnd"
+                android:textAlignment="viewStart"
                 android:textColor="@color/gris_medio_UCR"
                 android:textSize="12sp" />
 
@@ -150,6 +158,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:orientation="horizontal">
 
             <TextView
@@ -157,21 +166,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="#2" />
+                android:text="#2"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/name2"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Nombre" />
+                android:text="No"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/num2"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="12345678" />
+                android:text="Establecido"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/editar2"
@@ -181,7 +193,7 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:text="Editar"
-                android:textAlignment="textEnd"
+                android:textAlignment="viewStart"
                 android:textColor="@color/gris_medio_UCR"
                 android:textSize="12sp" />
 
@@ -194,6 +206,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:orientation="horizontal">
 
             <TextView
@@ -201,21 +214,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="#3" />
+                android:text="#3"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/name3"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Nombre" />
+                android:text="No"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/num3"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="12345678" />
+                android:text="Establecido"
+                android:textAlignment="viewStart" />
 
             <TextView
                 android:id="@+id/editar3"
@@ -225,7 +241,7 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:text="Editar"
-                android:textAlignment="textEnd"
+                android:textAlignment="viewStart"
                 android:textColor="@color/gris_medio_UCR"
                 android:textSize="12sp" />
 
@@ -238,7 +254,7 @@
         android:layout_width="111dp"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:background="@color/verde_UCR"
+        android:background="@color/celeste_UCR"
         android:text="Guardar"
         android:textColor="@color/blanco_UCR"
         app:iconTint="#FFFFFF"
