@@ -8,6 +8,18 @@
     tools:context=".InterestPoints.Photocopier.PhotocopierViewActivity">
 
     <TextView
+        android:id="@+id/cop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="Precio Copias"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
         android:id="@+id/photocopierName"
         android:layout_width="327dp"
         android:layout_height="117dp"
@@ -27,19 +39,68 @@
 
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="97dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="142dp"
-        android:layout_marginEnd="265dp"
-        android:layout_marginBottom="355dp"
-        android:fontFamily="@font/myriad_pro_semi"
+        android:id="@+id/descripcion"
+        android:layout_width="239dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="384dp"
+        android:fontFamily="sans-serif-black"
         android:text="Aquí iría toda la info "
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photocopierName" />
+        app:layout_constraintTop_toBottomOf="@+id/coffeName" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="186dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcion">
+
+        <ImageView
+            android:id="@+id/imageWiFi"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="25dp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkboxWiFi"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:buttonTint="@color/gris_medio_UCR"
+            android:padding="25dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="68dp"
+        android:text="Horario: "
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <TextView
+        android:id="@+id/horario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <!-- Inclusión de la barra de navegación general-->
     <fragment
@@ -60,5 +121,39 @@
         tools:layout_editor_absoluteX="142dp"
         tools:layout_editor_absoluteY="463dp"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/copias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cop" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="46dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:srcCompat="@drawable/impre" />
+
+    <Button
+        android:id="@+id/comments"
+        android:layout_width="394dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/bottom_shape_comments"
+        android:fontFamily="@font/myriad_pro_semi"
+        android:text="@string/Comentarios"
+        android:textColor="@color/blanco_UCR"
+        app:layout_constraintBottom_toTopOf="@+id/NavigationBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

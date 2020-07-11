@@ -3,9 +3,12 @@ package cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -37,6 +41,7 @@ import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.CoffeShop.CoffeViewActivity;
@@ -61,6 +66,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private MapView mapView;
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
+
+    private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+    private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
@@ -76,8 +85,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     private Button button;
     private Place place;
     private Intent details;
+
     private double destinationLatitude;
     private double destinationLongitude;
+
+    private LocationEngine locationEngine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,11 +232,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
-        System.out.print("Holaaaaaaaaaa********************************************************");
         if (PermissionsManager.areLocationPermissionsGranted(this))
         {
-            System.out.print("entré********************************************************");
-
             // Get an instance of the component
             locationComponent = mapboxMap.getLocationComponent();
 
@@ -319,7 +328,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
         //int tipo = intent.getExtras().getInt("typeActivity");
 
         getMenuInflater().inflate(R.menu.go_ip_details_menu, menu);
@@ -332,7 +341,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, CoffeViewActivity.class);
                 }else if(place.getType().equals(Place.TYPE_SCHOOL)){
                     details = new Intent(Map.this, SchoolViewActivity.class);
-                    details.putExtra("place", place);
                 } else if (place.getType().equals(Place.TYPE_SODA)) {
                     details = new Intent(Map.this, SodaViewActivity.class);
                 } else if (place.getType().equals(Place.TYPE_LIBRARY)) {
@@ -343,6 +351,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Mapbox
                     details = new Intent(Map.this, PhotocopierViewActivity.class);
                 }
                 details.putExtra(Intent.EXTRA_TEXT, getSupportActionBar().getTitle());
+                details.putExtra("place", place);
                 startActivity(details);
                 return true;
             }
