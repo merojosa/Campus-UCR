@@ -14,6 +14,7 @@ class ConfigTest {
     @Test
     public void guardarConfigContactoArgs(){
         Config test = Mockito.mock(Config.class);
+        DatabaseReference testdb = Mockito.mock(DatabaseReference.class);
 
         ArgumentCaptor<DatabaseReference> valueCapture = ArgumentCaptor.forClass(DatabaseReference.class);
         doNothing().when(test).guardarConfigContacto(valueCapture.capture());
