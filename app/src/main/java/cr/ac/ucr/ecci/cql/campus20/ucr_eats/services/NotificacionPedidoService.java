@@ -124,7 +124,7 @@ public class NotificacionPedidoService extends Service
                 Log.w("FIREBASE", "Failed to read value.", databaseError.toException());
             }
         };
-        Toast.makeText(this, db.toString()+ " " + ref.toString() + " " + listener.toString(), Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, db.toString()+ " " + ref.toString() + " " + listener.toString(), Toast.LENGTH_LONG).show();
         ref.addValueEventListener(listener);
     }
     // Parar el id de la notificación ( la precisión usada será suficiente puesto que los chances de recibir
