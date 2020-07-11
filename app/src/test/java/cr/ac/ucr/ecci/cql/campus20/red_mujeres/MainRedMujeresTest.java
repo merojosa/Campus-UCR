@@ -2,9 +2,15 @@ package cr.ac.ucr.ecci.cql.campus20.red_mujeres;
 
 import android.os.Bundle;
 
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -116,5 +122,28 @@ class MainRedMujeresTest {
         // define return value for method getUniqueId()
         when(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4)).thenReturn(true);
         assertTrue(test.coordenadasValidas(0.9, 10.2, 9.0, 3.4));
+    }
+
+    @Test
+    void testSetEmergencyPhones() {
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.053143, 9.9379798 )));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(9.9365951, -84.052528)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.051744, 9.9359527)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.050132, 9.9358129)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0493615, 9.9362323)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0487296, 9.9377568)));
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(-84.0513553, 9.9352736)));
+        MainRedMujeres test = Mockito.mock(MainRedMujeres.class);
+        when(test.setEmergencyPhone()).thenReturn(symbolLayerIconFeatureList);
+        assertEquals(symbolLayerIconFeatureList, test.setEmergencyPhone());
+        verify(test, times(1)).setEmergencyPhone();
     }
 }
