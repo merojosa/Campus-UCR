@@ -5,12 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,9 +74,27 @@ class CrearComunidadTest {
         verify(test,times(1)).escribirComunidadEnBD("1","Chicas Superpoderosas", "Vivas nos queremos");
     }
 
+    // Verifica que se no se escriben datos correctamente en la BD
     @Test
-    public void instanciaBD(){
-        //CrearComunidad test = new CrearComunidad();
+    public void escribirComunidadEnBD2(){
+        CrearComunidad test = Mockito.mock(CrearComunidad.class);
+        doNothing().when(test).escribirComunidadEnBD(isA(String.class),isA(String.class),isA(String.class));
+        test.escribirComunidadEnBD("1","Chicas Superpoderosas", "Vivas nos queremos");
+        //test.assertSucceeds()
     }
+
+//    @Test
+//    public void instanciaBD(){
+//        CrearComunidad test = Mockito.mock(CrearComunidad.class);
+//
+//        try{
+//            FirebaseApp.getInstance();
+//        }
+//        catch (IllegalStateException e)
+//        {
+//            //Firebase not initialized automatically, do it manually
+//            FirebaseApp.initializeApp(test);
+//        }
+//    }
 
 }
