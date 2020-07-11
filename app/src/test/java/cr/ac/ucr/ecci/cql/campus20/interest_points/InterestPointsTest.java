@@ -14,9 +14,6 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.School;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Utilities.UtilDates;
 import cr.ac.ucr.ecci.cql.campus20.MockParcel;
 import cr.ac.ucr.ecci.cql.campus20.R;
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-
-import static org.junit.Assert.assertEquals;
 
 public class InterestPointsTest {
 
@@ -41,7 +38,7 @@ public class InterestPointsTest {
 
     @Test
     public void testFacultyParcel(){
-        Place faculty = new Faculty(0, "Artes", "", R.drawable.artes512px, Place.TYPE_FACULTY, new ArrayList<Comment>());
+        Place faculty = new Faculty(0, "Artes", "", R.drawable.artes512px, Place.TYPE_FACULTY, new ArrayList<>());
 
         Parcel parcel = MockParcel.obtain();
 
@@ -56,7 +53,7 @@ public class InterestPointsTest {
 
     @Test
     public void testSchoolParcel(){
-        School school = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px, 0.0, 0.0, new ArrayList<Comment>());
+        School school = new School(5, 1, 0, "Tecnología de Alimentos", "", R.drawable.alimentos512px, 0.0, 0.0, new ArrayList<>());
 
         Parcel parcel = MockParcel.obtain();
 
@@ -68,4 +65,6 @@ public class InterestPointsTest {
 
         assert(school.equals(parcelledSchool));
     }
+
+
 }
