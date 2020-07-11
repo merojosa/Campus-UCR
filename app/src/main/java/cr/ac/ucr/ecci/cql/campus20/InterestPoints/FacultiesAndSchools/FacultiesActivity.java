@@ -34,6 +34,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.Place;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfoDao;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class FacultiesActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -42,12 +43,13 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Faculty> facultiesList;
+    private List<Place> facultiesList;
 
     private ProgressBar spinner;
 
     private DatabaseReference ref;
     private ValueEventListener listener;
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,19 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
         if(getSupportActionBar() != null){
             setActivityTitle();
         }
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.facultyProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -133,6 +148,10 @@ public class FacultiesActivity extends AppCompatActivity implements ListAdapter.
                 for (DataSnapshot faculty : dataSnapshot.getChildren()) {
                     facultiesList.add(faculty.getValue(Faculty.class));
                 }
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities();
+                facultiesList = mapUtilities.orderByDistance(facultiesList);
+                //**********************************************************************************
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();

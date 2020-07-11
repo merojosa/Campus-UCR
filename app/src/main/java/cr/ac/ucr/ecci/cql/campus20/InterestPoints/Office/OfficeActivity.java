@@ -10,6 +10,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,7 @@ import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.ActivityInfo
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.IPModel.RoomModel.IPRoomDatabase;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.ListAdapter;
 import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.Map;
+import cr.ac.ucr.ecci.cql.campus20.InterestPoints.Mapbox.MapUtilities;
 import cr.ac.ucr.ecci.cql.campus20.R;
 
 public class OfficeActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler {
@@ -41,13 +43,13 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
     private ListAdapter mListAdapter;
 
     private List<Place> temp = new ArrayList<>();
-    private List<Office> officeList;
+    private List<Place> officeList;
 
     private ProgressBar spinner;
 
     private DatabaseReference ref;
     private ValueEventListener listener;
-
+    private Double currentLatitude = -1.0, currentLongitude = -1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,19 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
         if (getSupportActionBar() != null) {
             setActivityTitle();
         }
+
+        // ************* Get Params from intent ***************************************************
+        Intent it = getIntent();
+        if (it != null)
+        {
+            Bundle params = it.getExtras();
+            if  (params != null)
+            {
+                this.currentLatitude = params.getDouble("currentLatitude");
+                this.currentLongitude = params.getDouble("currentLongitude");
+            }
+        }
+        // ****************************************************************************************
 
         spinner = findViewById(R.id.officeProgressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -93,9 +108,9 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
 
 
         // Setting school and coordinate objects
-        Office office = officeList.get(index);
+        Place office = officeList.get(index);
 
-        childActivity.putExtra("place", office);
+        childActivity.putExtra("place", (Parcelable) office);
         childActivity.putExtra("index", 2);
 
         startActivity(childActivity);
@@ -143,6 +158,10 @@ public class OfficeActivity extends AppCompatActivity implements ListAdapter.Lis
                 for(DataSnapshot office : dataSnapshot.getChildren()){
                     officeList.add(office.getValue(Office.class));
                 }
+                //**********************************************************************************
+                MapUtilities mapUtilities = new MapUtilities();
+                officeList = mapUtilities.orderByDistance(officeList);
+                //**********************************************************************************
                 setDataList();
                 mListAdapter.setListData(temp);
                 mListAdapter.notifyDataSetChanged();

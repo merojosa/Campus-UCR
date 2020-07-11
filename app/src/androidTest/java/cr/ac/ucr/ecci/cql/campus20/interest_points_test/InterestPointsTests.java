@@ -87,7 +87,7 @@ public class InterestPointsTests {
         onView(withText("Fotocopias")).perform(click());
         lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
         onView(withRecyclerView(R.id.rv_list_item).atPosition(2))
-                .check(matches(hasDescendant(withText("Mis Copias"))));
+                .check(matches(hasDescendant(withText("Impresiones Millenium"))));
     }
 
 
@@ -98,7 +98,7 @@ public class InterestPointsTests {
     public void testInterestPointsBibliotecas() throws InterruptedException{
         onView(withText("Bibliotecas")).perform(click());
         lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
-        onView(withRecyclerView(R.id.rv_list_item).atPosition(1))
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(3))
                 .check(matches(hasDescendant(withText("Carlos Monge Alfaro"))));
     }
 
@@ -109,7 +109,7 @@ public class InterestPointsTests {
     public void testInterestPointsOficinas() throws InterruptedException{
         onView(withText(" Oficinas")).perform(click());
         lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
-        onView(withRecyclerView(R.id.rv_list_item).atPosition(1))
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(2))
                 .check(matches(hasDescendant(withText("OCCI"))));
     }
 
@@ -121,7 +121,7 @@ public class InterestPointsTests {
         onView(withText("Facultades")).perform(click());
         lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
         onView(withRecyclerView(R.id.rv_list_item).atPosition(0))
-                .check(matches(hasDescendant(withText("Artes"))));
+                .check(matches(hasDescendant(withText("Odontología"))));
     }
 
     /**
@@ -131,7 +131,7 @@ public class InterestPointsTests {
     public void testInterestPointsCofeeShops() throws InterruptedException{
         onView(withText("Cafeterías")).perform(click());
         lock.await(TIMEOUT, TimeUnit.MILLISECONDS);
-        onView(withRecyclerView(R.id.rv_list_item).atPosition(6))
-                .check(matches(hasDescendant(withText("Café & Cacao"))));
+        onView(withRecyclerView(R.id.rv_list_item).atPosition(1))
+                .check(matches(hasDescendant(withText("Aroma y Sabor"))));
     }
 }
