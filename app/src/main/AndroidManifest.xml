@@ -3,6 +3,12 @@
     package="cr.ac.ucr.ecci.cql.campus20">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -12,12 +18,26 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
         <activity android:name=".foro_general.VerMapaRespuesta"/>
         <activity android:name=".foro_general.AgregarMapa" />
         <activity android:name=".red_mujeres.FormularioComunidad" />
         <activity android:name=".InterestPoints.Comment.CommentPopUp" />
+        <activity android:name=".ucr_eats.activites.RecogerOrdenActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar"/>
+        <activity
+            android:name=".ucr_eats.activites.RoleActivity"
+            android:theme="@style/AppTheme.InterestsThemeNoBar" />
+        <activity android:name=".red_mujeres.FormularioComunidad" />
+        <activity android:name=".InterestPoints.Comment.CommentPopUp" />
+        <activity
+            android:name=".InterestPoints.Comment.CommentDetail"
+            android:theme="@style/AppTheme.InterestsTheme"/>
         <activity android:name=".red_mujeres.MisComunidades" />
+        <activity
+            android:name=".InterestPoints.Library.LibraryViewActivity"
+        <activity android:name=".ucr_eats.activites.OrdenesPendientesRepartidorActivity" />
         <activity
             android:name=".InterestPoints.Library.LibraryViewActivity"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
@@ -55,6 +75,19 @@
 
         <service android:name=".GuardarAppService" />
         <service android:name=".foro_general.NotificacionRespuestaService" />
+
+
+        <service android:name=".ucr_eats.services.NotificacionPedidoService"
+                 android:enabled="true"
+                 android:stopWithTask="false"/>
+        <receiver
+            android:name=".ucr_eats.services.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".InterestPoints.CoffeShop.CoffeViewActivity"
@@ -122,6 +155,16 @@
             android:name=".LoginActivity"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme.InterestsThemeNoBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

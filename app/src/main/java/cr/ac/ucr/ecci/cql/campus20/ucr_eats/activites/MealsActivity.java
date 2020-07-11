@@ -1,10 +1,5 @@
 package cr.ac.ucr.ecci.cql.campus20.ucr_eats.activites;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,12 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,12 +31,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import cr.ac.ucr.ecci.cql.campus20.CampusBD;
+import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 import cr.ac.ucr.ecci.cql.campus20.R;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.SodaCard;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.UcrEatsFirebaseDatabase;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.adapters.MealsAdapter;
 import cr.ac.ucr.ecci.cql.campus20.ucr_eats.models.Meal;
-import cr.ac.ucr.ecci.cql.campus20.FirebaseBD;
 
 public class MealsActivity extends AppCompatActivity
 {
@@ -51,9 +49,31 @@ public class MealsActivity extends AppCompatActivity
 
     private String currentRestaurant;
 
+    public String getRestLatitude() {
+        return restLatitude;
+    }
+
+    public void setRestLatitude(String restLatitude) {
+        this.restLatitude = restLatitude;
+    }
+
+    public String getRestLongitude() {
+        return restLongitude;
+    }
+
+    public void setRestLongitude(String restLongitude) {
+        this.restLongitude = restLongitude;
+    }
+
+    private String restLatitude;
+    private String restLongitude;
+
+
     private static String FIREBASE_PATH = "ucr_eats";
     public final static String MEAL_KEY = "Meals";
     public final static String NOMBRE_SODA_KEY = "Soda";
+    public final static String LATITUDE_SODA_KEY = "0";
+    public final static String LONGITUDE_SODA_KEY = "1";
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -72,6 +92,9 @@ public class MealsActivity extends AppCompatActivity
             ((TextView)findViewById(R.id.meal_rest_name)).setText(card.getNombre());
             this.setRestaurantImage(card);
             this.currentRestaurant = card.getNombre();
+            this.restLatitude = String.valueOf(card.getLatitud());
+            this.restLongitude = String.valueOf(card.getLongitud());
+
             this.startMealsSync(card.getFirebaseId());
 
             sodaRatingNum = findViewById(R.id.rating_num);
@@ -145,7 +168,9 @@ public class MealsActivity extends AppCompatActivity
                 {
                     // Go checkout
                     Intent intent = new Intent(this, CompraActivity.class);
+                    intent.putExtra(LONGITUDE_SODA_KEY, restLongitude);
                     intent.putExtra(NOMBRE_SODA_KEY, currentRestaurant);
+                    intent.putExtra(LATITUDE_SODA_KEY, restLatitude);
                     intent.putExtra(MEAL_KEY, adapter.getMeals().get(position));
                     startActivity(intent);
                 })
@@ -207,9 +232,18 @@ public class MealsActivity extends AppCompatActivity
         DatabaseReference ref = db.getRestaurantRateByUser(restaurantId, encodedMail);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Double rate = dataSnapshot.getValue(Double.class);
-                sodaRatingNum.setText(rate.toString());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.exists())
+                {
+                    Double rate = dataSnapshot.getValue(Double.class);
+                    if(rate != null)
+                        sodaRatingNum.setText(rate.toString());
+                }
+                else
+                {
+                    sodaRatingNum.setText("Sin calificación");
+                }
             }
 
             @Override

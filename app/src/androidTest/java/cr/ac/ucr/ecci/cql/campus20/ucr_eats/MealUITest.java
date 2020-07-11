@@ -1,7 +1,8 @@
-package cr.ac.ucr.ecci.cql.campus20;
+package cr.ac.ucr.ecci.cql.campus20.ucr_eats;
 
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -13,7 +14,7 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import cr.ac.ucr.ecci.cql.campus20.ucr_eats.MainUcrEats;
+import cr.ac.ucr.ecci.cql.campus20.R;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -42,7 +43,7 @@ public class MealUITest
         lock.await(5000, TimeUnit.MILLISECONDS);
 
         // Click Soda la U
-        onView(withId(R.id.ucr_eats_rv)).
+        onView(ViewMatchers.withId(R.id.ucr_eats_rv)).
                 perform(RecyclerViewActions.actionOnItemAtPosition(0, ViewActions.click()));
 
         // Check name

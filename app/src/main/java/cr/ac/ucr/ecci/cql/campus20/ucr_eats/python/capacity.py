@@ -4,7 +4,6 @@ import random
 firebase = firebase.FirebaseApplication('https://campus-virtual-ucr.firebaseio.com/', None)
 
 while 1:
-	meal = random.randint(1, 3)
 	max_cap1 = firebase.get('/ucr_eats/restaurant/1' + '/capacity_max', '')
 	max_cap2 = firebase.get('/ucr_eats/restaurant/2' + '/capacity_max', '')
 	avail_num1 = random.randint(0, max_cap1)
